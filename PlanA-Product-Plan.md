@@ -301,56 +301,144 @@ A native Figma plugin so designers never need to leave Figma:
 
 ### Phase 0 — Architecture Foundations *(before any product code)*
 
-**Non-negotiable technical decisions:**
+#### Resolved Architectural Decisions
 
-| Decision | Rationale |
+| Decision | Resolution | Rationale |
+|---|---|---|
+| **Local-first sync architecture** | **Option A — local-first from day one** | Correct long-term architecture. Slower to first working product but avoids a painful migration later. Sub-100ms performance is non-negotiable and requires this. |
+| **Authentication** | **OAuth-only (Phase 1: GitHub + Google)** | Best practice for the developer audience. Eliminates password reset flows, storage of credentials, and brute-force attack surface. Password auth added later only if there is demonstrated demand. |
+| **Repository structure** | **Monorepo** | Single repo for all packages (web client, API server, AI service, mobile, shared types). Turborepo for task orchestration; pnpm workspaces for package management. |
+| **Deployment model** | **Container-native; cloud-agnostic** | Self-hosting is a first-class deployment target for both small teams and enterprise. Docker Compose for simple self-hosted setup; Kubernetes + Helm for production scale. No vendor lock-in — runs on AWS, GCP, Azure, Fly.io, bare metal, or air-gapped. Cloud-managed deployment offered but never required. |
+
+#### Non-Negotiable Technical Invariants
+
+| Invariant | Rationale |
 |---|---|
-| **Local-first + sync** | Client holds a replica of workspace data (as Linear does). All interactions are optimistic/instant. Server sync happens in background. This is the source of sub-100ms performance. |
-| **API-first** | Every product feature exposed via REST + GraphQL API before the UI consumes it. Third-party integrations are equal to first-party UI. |
-| **Multi-tenant from day one** | Workspace isolation and enterprise-ready data boundaries designed in, not retrofitted |
-| **Offline-capable** | Core views (board, backlog, story detail) function without connectivity |
+| **Local-first + CRDT sync** | Client holds a full replica of the user's workspace (Electric SQL — PostgreSQL-native CRDT, syncs directly from Postgres). All interactions are optimistic and instant. Server sync in background. Source of sub-100ms perf. |
+| **API-first** | Every product feature exposed via REST + GraphQL before the UI consumes it. Third-party integrations are equal citizens to the first-party UI. |
+| **Multi-tenant from day one** | Workspace isolation and enterprise-ready data boundaries designed in from the schema up, never retrofitted. |
+| **Offline-capable** | Core views (board, backlog, story detail) function without network connectivity. |
+| **Container-native everywhere** | Every service ships as a Docker image. No environment-specific code paths. Self-hosted and cloud-hosted run identical images. |
 
-**Recommended technology stack:**
+#### Monorepo Structure
+
+```
+projecta/
+  apps/
+    web/          # React + TypeScript frontend (Vite)
+    api/          # Go — sync engine, REST/GraphQL API, WebSocket server
+    ai/           # Node.js + TypeScript — AI features, webhook processor
+    mobile/       # React Native (iOS + Android, Phase 2)
+  packages/
+    types/        # Shared TypeScript types (API contracts, data models)
+    ui/           # Shared React component library (design system)
+    db/           # Database schema, migrations (Postgres)
+    sync/         # Electric SQL client config and CRDT helpers
+    config/       # Shared ESLint, TypeScript, Tailwind config
+  infra/
+    docker/       # Dockerfiles per service
+    compose/      # Docker Compose files (dev, self-hosted)
+    helm/         # Kubernetes Helm charts (production)
+  turbo.json
+  pnpm-workspace.yaml
+```
+
+#### Technology Stack (Locked)
 
 | Layer | Technology | Notes |
 |---|---|---|
-| Frontend | React + TypeScript | Local SQLite replica via CRDT (Automerge / Electric SQL); Tailwind CSS |
-| Backend — Core | Go | Performance-critical sync, API gateway, WebSocket server |
-| Backend — AI/Webhooks | Node.js + TypeScript | AI service integration, webhook processing, background jobs |
-| Database | PostgreSQL + JSONB | Primary store; flexible schema for custom fields |
-| Cache / Pub-Sub | Redis | Presence, pub/sub, rate limiting |
-| Search | Typesense or Meilisearch | Fast, self-hostable, typo-tolerant |
-| Real-time | WebSockets + SSE | WebSockets for presence and sync; SSE for notifications |
-| Mobile | React Native | Shared business logic with web client |
-| Docs Editor | Tiptap (ProseMirror) | Excellent collaborative editing; self-hostable |
+| Frontend | React 19 + TypeScript + Vite | Local replica via Electric SQL (CRDT); Tailwind CSS; Radix UI primitives |
+| Sync / Local store | Electric SQL | PostgreSQL-native CRDT sync; client-side SQLite replica; real-time reactive queries |
+| Backend — Core | Go | Sync engine, REST + GraphQL API gateway, WebSocket server, auth middleware |
+| Backend — AI / Events | Node.js + TypeScript | AI provider integration, webhook ingestion, background job queue |
+| Database | PostgreSQL 16 + JSONB | Primary store; Electric SQL syncs directly from Postgres logical replication |
+| Cache / Pub-Sub | Redis | Presence, pub/sub, rate limiting, job queues (via BullMQ in AI service) |
+| Search | Meilisearch | Fast, self-hostable, typo-tolerant; easy Docker deployment |
+| Auth | OAuth 2.0 (GitHub + Google) via custom Go middleware | No password storage; JWT session tokens; PKCE flow |
+| Real-time | Electric SQL sync + WebSockets | Electric SQL handles data sync; WebSockets handle presence and ephemeral events |
+| Mobile | React Native + Expo (Phase 2) | Shared `packages/types` and `packages/ui` logic with web |
+| Docs Editor | Tiptap (ProseMirror) | Collaborative rich text; self-hostable; extensible for BDD field types |
+| Container orchestration | Docker Compose (dev + self-hosted) / Helm (production) | Same images in all environments |
 
 ---
 
 ### Phase 1 — Core MVP
 
-**Goal:** A 3-person development team can use PlanA daily without reaching for another tool.
+**Goal:** A 3-person development team — with 30+ years of combined hands-on development and deep Agile experience — can use PlanA daily for two full sprints without reaching for another tool. These are expert users who will find every rough edge immediately.
+
+#### Authentication & Identity
 
 | Feature | Notes |
 |---|---|
-| Teams & Projects | Multi-user workspace, invite by email, roles: Admin / Member / Viewer |
-| Story hierarchy | Epics → Stories → Tasks. Drag-and-drop backlog prioritisation. |
-| Acceptance Criteria | Native BDD structured fields (Given / When / Then) on every story — not a free-text box |
-| Definition of Done | Configurable DoD checklist per project; shown on every story |
-| Sprint / Cycle | Create, populate, start, close. Velocity calculated automatically on close. |
-| Kanban board | Column-based, WIP limits, drag-to-update status |
-| Bug tracking | Bugs are first-class objects; linked to stories and sprints |
-| Basic reporting | Burndown chart, velocity trend (last 6 sprints), open impediment count |
-| GitHub / GitLab integration | Link PRs to stories; auto-transition story status on PR merge |
-| Figma link (basic) | URL paste + iframe embed on story; no API automation yet |
-| Web app performance | Sub-100ms navigation. No spinners on standard operations. |
+| OAuth login | GitHub and Google; PKCE flow; JWT session tokens; no passwords stored |
+| Invite to workspace | Invite link + OAuth sign-up flow; roles assigned on accept |
+| Roles | Admin / Member / Viewer per workspace |
 
-**Explicitly NOT in Phase 1:** Docs portal, test case management, AI features, mobile app, SSO, enterprise reporting, Figma API integration.
+#### Core Work Items
+
+| Feature | Notes |
+|---|---|
+| Story hierarchy | Epics → Stories → Tasks; drag-and-drop backlog prioritisation |
+| Story detail | Rich text description (Tiptap), labels, assignee, priority, status, story points |
+| Acceptance Criteria | Native BDD structured fields (Given / When / Then) on every story — structured input, not a free-text box |
+| Definition of Done | Configurable DoD checklist per project; visible and checkable on every story |
+| Bug tracking | Bugs are first-class objects; same lifecycle as stories; linked to sprint |
+| Teams & Projects | Multi-workspace; project scoped to a team; clean separation |
+
+#### Collaboration
+
+| Feature | Notes |
+|---|---|
+| Comments on work items | Threaded comments on Stories, Bugs, and Epics; @mention support |
+| Activity log | Chronological audit of all changes to a work item (status, assignee, AC edits, comments) |
+| In-app notifications | Notify on: assigned to you, mentioned, story you own changed status, comment on your item |
+| Email digest | Daily digest of unread notifications; configurable off |
+
+#### Sprint & Board
+
+| Feature | Notes |
+|---|---|
+| Sprint / Cycle | Create, populate by drag-from-backlog, start, close; velocity captured on close |
+| Kanban board | Column-based view of current sprint; WIP limits per column; drag-to-transition |
+| Backlog view | List view; drag-to-prioritise; filter by Epic, label, assignee, status |
+
+#### Reporting
+
+| Feature | Notes |
+|---|---|
+| Burndown chart | Story points remaining vs. ideal line for the current sprint |
+| Open impediment count | Count of work items flagged as blocked; visible on sprint dashboard |
+
+#### Design Integration
+
+| Feature | Notes |
+|---|---|
+| Figma link (basic) | Paste a Figma URL on any story; renders as a live iframe embed; no API auth yet |
+
+#### Non-Functional
+
+| Requirement | Target |
+|---|---|
+| Navigation performance | < 100ms P95 for board, backlog, and story detail transitions |
+| Self-hosted deployment | Single `docker compose up` installs and runs the full stack |
+| Cloud deployment | Same Docker images deployable to any cloud provider without modification |
+
+**Explicitly NOT in Phase 1:** GitHub/GitLab PR integration (Phase 2), velocity trend chart (Phase 2 — needs sprint history), test case management (Phase 2), docs portal (Phase 2), AI features (Phase 2), mobile app (Phase 2), SSO/SAML (Phase 3), Figma API automation (Phase 2).
 
 ---
 
 ### Phase 2 — The Differentiators
 
-**Goal:** Make PlanA unmissable. The features that do not exist anywhere else.
+**Goal:** Make PlanA unmissable. The features that do not exist anywhere else, plus the items deferred from Phase 1.
+
+#### Moved from Phase 1
+
+| Feature | Notes |
+|---|---|
+| **GitHub / GitLab PR integration** | OAuth app registration with GitHub + GitLab; link PRs to stories; webhook receiver; auto-transition story status on PR merge/close |
+| **Velocity trend chart** | Rolling 6-sprint velocity display; meaningful only once sprint history exists |
+
+#### Phase 2 Differentiators
 
 | Feature | Notes |
 |---|---|
@@ -414,7 +502,7 @@ A native Figma plugin so designers never need to leave Figma:
 
 | Milestone | Success Criteria |
 |---|---|
-| **Phase 1 complete** | A real 3-person team uses PlanA for 2 consecutive sprints without reaching for Jira, Trello, or any supplementary tool |
+| **Phase 1 complete** | Three developers with 30+ years of combined hands-on experience and Agile practice use PlanA for 2 consecutive sprints without reaching for Jira, Trello, Slack for work-item discussion, or any supplementary tool. Any rough edge they hit is a Phase 1 defect. |
 | **Phase 2 complete** | A QE can trace any story's AC → test case → pass/fail status in under 30 seconds; a PM can publish a release note from completed sprint work in under 5 minutes; a designer can link a Figma frame without opening PlanA (via plugin) |
 | **Phase 3 complete** | A 50-person team onboards and operates for 30 days without a "PlanA administrator" role being created |
 | **Performance SLA (ongoing)** | Navigation interactions (board, backlog, story detail) measure < 100ms P95 on standard cloud deployment at all times |
@@ -431,7 +519,7 @@ A native Figma plugin so designers never need to leave Figma:
 - AI embedded in core workflow — not bolted on after the fact
 - Figma deep integration (Phase 2); Figma Plugin (Phase 3)
 - Mobile-first for stand-ups, status updates, and blocker reporting
-- Cloud, self-hosted, and air-gapped deployment options (Phase 3)
+- Container-native, cloud-agnostic deployment: self-hosted via Docker Compose from Phase 1; Kubernetes/Helm for production scale; air-gapped (Phase 3)
 - Open API + MCP server for AI agent participation (Phase 4)
 
 ### Deliberately Excluded
@@ -446,14 +534,25 @@ A native Figma plugin so designers never need to leave Figma:
 
 ---
 
-## Part 9: Open Questions & Next Decisions
+## Part 9: Resolved Decisions & Open Questions
 
-1. **Name** — "PlanA" / "ProjectA" are working titles. Candidates worth exploring: *Cadence*, *Iterate*, *Accord*, *Relay*. Needs trademark and domain search.
+### Resolved
 
-2. **Open source vs. closed** — Plane's open-source (self-host) strategy gave it enterprise credibility and a developer community rapidly. An open-source core (BSL or Apache 2.0) with commercial cloud + enterprise tier is worth serious consideration.
+| Decision | Resolution |
+|---|---|
+| Local-first vs. conventional MVP | **Local-first from day one (Option A)** — Electric SQL + CRDT. Correct architecture; no future migration cost. |
+| Authentication model | **OAuth-only** — GitHub + Google for Phase 1. No password storage. |
+| Repository structure | **Monorepo** — pnpm workspaces + Turborepo. All packages in one repo. |
+| Deployment model | **Container-native, cloud-agnostic** — Docker Compose for self-hosted; Helm for production. Runs on any cloud or bare metal. Self-hosting is a first-class target from Phase 1. |
+| Phase 1 test team | **Three developers, 30+ years combined hands-on experience, deep Agile practice.** Expert users; high signal-to-noise on feedback. Any friction they hit is a defect. |
+| Open source timing | **Private until post-MVP** — Keep the repo private while building the floor. Open-source once the core is stable and genuinely usable. Premature open-sourcing invites noise before the product can defend itself. |
 
-3. **BDD toolchain sync** — Phase 3's test case management becomes dramatically more powerful by round-tripping results from Cucumber, Behave, or SpecFlow back into PlanA via CI pipeline. This is "working software as the primary measure of progress" made literal.
+### Open
 
-4. **AI model strategy** — Build on top of a foundation model API (OpenAI / Anthropic / Gemini) with a provider-agnostic abstraction layer, so enterprise customers can bring their own model or use on-premise AI.
+1. **Name** — "PlanA" / "ProjectA" are working titles. Candidates: *Cadence*, *Iterate*, *Accord*, *Relay*. Needs trademark search and domain availability check before any public presence.
 
-5. **Pricing model** — Consider: free tier for teams ≤ 5 (captures startups and freelancers); per-seat above that; enterprise contract for self-hosted + compliance features. Avoid the Atlassian trap of pricing that punishes growth.
+2. **AI model strategy** — Build on a foundation model API (OpenAI / Anthropic / Gemini) behind a provider-agnostic abstraction layer. Enterprise customers must be able to bring their own model or use on-premise AI. Decide on initial provider before Phase 2 AI features begin.
+
+3. **BDD toolchain sync** — Phase 3's test case management becomes dramatically more powerful when it round-trips test results from Cucumber, Behave, or SpecFlow back into PlanA via CI. Defines "working software as the primary measure of progress" literally. Needs a design decision on the sync protocol.
+
+4. **Pricing model** — Free tier for teams ≤ 5; per-seat SaaS above that; enterprise contract for self-hosted + compliance. Avoid the Atlassian model that punishes growth. Decide before any public launch.
