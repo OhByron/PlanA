@@ -1,32 +1,31 @@
 package server
 
 import (
-	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/rs/cors"
 
-	"github.com/OhByron/ProjectA/internal/config"
 	"github.com/OhByron/ProjectA/internal/handlers"
 	"github.com/OhByron/ProjectA/internal/server/middleware"
 )
 
-func New(cfg *config.Config, logger *slog.Logger) http.Handler {
+// New builds and returns the complete HTTP handler tree.
+func New(deps *Dependencies) http.Handler {
 	r := chi.NewRouter()
 
+	// Global middleware
 	r.Use(chimiddleware.RequestID)
 	r.Use(chimiddleware.RealIP)
-	r.Use(middleware.Logger(logger))
+	r.Use(middleware.Logger(deps.Logger))
 	r.Use(chimiddleware.Recoverer)
 
 	allowedOrigins := []string{"http://localhost:5173"}
-	if cfg.Environment == "production" {
-		// TODO Phase 1: read from ALLOWED_ORIGINS env var
-		allowedOrigins = []string{}
+	if deps.Config.Environment == "production" && deps.Config.AllowedOrigins != "" {
+		allowedOrigins = strings.Split(deps.Config.AllowedOrigins, ",")
 	}
-
 	c := cors.New(cors.Options{
 		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
@@ -36,44 +35,144 @@ func New(cfg *config.Config, logger *slog.Logger) http.Handler {
 	})
 	r.Use(c.Handler)
 
+	// Construct handler groups
+	authH    := handlers.NewAuthHandlers(deps.DB, deps.Auth, deps.GitHub, deps.Google, deps.Config)
+	userH    := handlers.NewUserHandlers(deps.DB, deps.Auth)
+	elecH    := handlers.NewElectricHandlers(deps.DB, deps.Auth)
+	orgH     := handlers.NewOrgHandlers(deps.DB)
+	initH    := handlers.NewInitiativeHandlers(deps.DB)
+	teamH    := handlers.NewTeamHandlers(deps.DB)
+	projH    := handlers.NewProjectHandlers(deps.DB)
+	wiH      := handlers.NewWorkItemHandlers(deps.DB)
+	acH      := handlers.NewACHandlers(deps.DB)
+	commH    := handlers.NewCommentHandlers(deps.DB)
+	epicH    := handlers.NewEpicHandlers(deps.DB)
+	sprintH  := handlers.NewSprintHandlers(deps.DB)
+	siH      := handlers.NewSprintItemHandlers(deps.DB)
+
 	// Public routes
 	r.Get("/health", handlers.Health)
 
-	// API v1
-	r.Route("/api/v1", func(r chi.Router) {
-		// Auth (OAuth callbacks — Phase 1)
+	r.Route("/api", func(r chi.Router) {
+		// ----------------------------------------------------------------
+		// Public — OAuth flows (no auth required)
+		// ----------------------------------------------------------------
 		r.Route("/auth", func(r chi.Router) {
-			r.Get("/github", handlers.NotImplemented)
-			r.Get("/github/callback", handlers.NotImplemented)
-			r.Get("/google", handlers.NotImplemented)
-			r.Get("/google/callback", handlers.NotImplemented)
-			r.Post("/logout", handlers.NotImplemented)
+			r.Post("/github", authH.GitHubInitiate)
+			r.Get("/github/callback", authH.GitHubCallback)
+			r.Post("/google", authH.GoogleInitiate)
+			r.Get("/google/callback", authH.GoogleCallback)
+			r.Delete("/logout", authH.Logout)
 		})
 
-		// Protected routes (auth middleware added in Phase 1)
+		// ----------------------------------------------------------------
+		// Protected — all routes below require a valid session JWT
+		// ----------------------------------------------------------------
 		r.Group(func(r chi.Router) {
-			r.Get("/me", handlers.NotImplemented)
+			r.Use(deps.Auth.RequireAuth)
 
-			r.Get("/organizations", handlers.NotImplemented)
-			r.Post("/organizations", handlers.NotImplemented)
-			r.Get("/organizations/{orgId}/teams", handlers.NotImplemented)
+			r.Get("/me", userH.Me)
+			r.Get("/electric/token", elecH.Token)
 
-			r.Get("/projects/{projectId}/work-items", handlers.NotImplemented)
-			r.Post("/projects/{projectId}/work-items", handlers.NotImplemented)
-			r.Get("/projects/{projectId}/work-items/{id}", handlers.NotImplemented)
-			r.Patch("/projects/{projectId}/work-items/{id}", handlers.NotImplemented)
-			r.Delete("/projects/{projectId}/work-items/{id}", handlers.NotImplemented)
+			// Organisations
+			r.Route("/orgs", func(r chi.Router) {
+				r.Get("/", orgH.List)
+				r.Post("/", orgH.Create)
+				r.Route("/{orgID}", func(r chi.Router) {
+					r.Get("/", orgH.Get)
+					r.Patch("/", orgH.Update)
+					r.Delete("/", orgH.Delete)
 
-			r.Get("/projects/{projectId}/sprints", handlers.NotImplemented)
-			r.Post("/projects/{projectId}/sprints", handlers.NotImplemented)
-			r.Patch("/projects/{projectId}/sprints/{id}", handlers.NotImplemented)
+					// Initiatives (cross-team, org-scoped)
+					r.Route("/initiatives", func(r chi.Router) {
+						r.Get("/", initH.List)
+						r.Post("/", initH.Create)
+						r.Route("/{initiativeID}", func(r chi.Router) {
+							r.Get("/", initH.Get)
+							r.Patch("/", initH.Update)
+							r.Delete("/", initH.Delete)
+						})
+					})
 
-			r.Get("/projects/{projectId}/epics", handlers.NotImplemented)
-			r.Post("/projects/{projectId}/epics", handlers.NotImplemented)
+					// Teams
+					r.Route("/teams", func(r chi.Router) {
+						r.Get("/", teamH.List)
+						r.Post("/", teamH.Create)
+						r.Route("/{teamID}", func(r chi.Router) {
+							r.Get("/", teamH.Get)
+							r.Patch("/", teamH.Update)
+							r.Delete("/", teamH.Delete)
 
-			r.Get("/notifications", handlers.NotImplemented)
-			r.Patch("/notifications/{id}/read", handlers.NotImplemented)
-			r.Post("/notifications/read-all", handlers.NotImplemented)
+							// Projects
+							r.Route("/projects", func(r chi.Router) {
+								r.Get("/", projH.List)
+								r.Post("/", projH.Create)
+								r.Route("/{projectID}", func(r chi.Router) {
+									r.Get("/", projH.Get)
+									r.Patch("/", projH.Update)
+									r.Delete("/", projH.Delete)
+								})
+							})
+						})
+					})
+				})
+			})
+
+			// Project-scoped resources (shortcut routes — no need to traverse org/team)
+			r.Route("/projects/{projectID}", func(r chi.Router) {
+				r.Route("/work-items", func(r chi.Router) {
+					r.Get("/", wiH.List)
+					r.Post("/", wiH.Create)
+					r.Route("/{workItemID}", func(r chi.Router) {
+						r.Get("/", wiH.Get)
+						r.Patch("/", wiH.Update)
+						r.Delete("/", wiH.Delete)
+					})
+				})
+				r.Route("/epics", func(r chi.Router) {
+					r.Get("/", epicH.List)
+					r.Post("/", epicH.Create)
+					r.Route("/{epicID}", func(r chi.Router) {
+						r.Get("/", epicH.Get)
+						r.Patch("/", epicH.Update)
+						r.Delete("/", epicH.Delete)
+					})
+				})
+				r.Route("/sprints", func(r chi.Router) {
+					r.Get("/", sprintH.List)
+					r.Post("/", sprintH.Create)
+					r.Route("/{sprintID}", func(r chi.Router) {
+						r.Patch("/", sprintH.Update)
+						r.Delete("/", sprintH.Delete)
+					})
+				})
+			})
+
+			// Sprint item management (add/remove work items from a sprint)
+			r.Route("/sprints/{sprintID}/items/{workItemID}", func(r chi.Router) {
+				r.Post("/", siH.Add)
+				r.Delete("/", siH.Remove)
+			})
+
+			// Work-item sub-resources
+			r.Route("/work-items/{workItemID}", func(r chi.Router) {
+				r.Route("/acceptance-criteria", func(r chi.Router) {
+					r.Get("/", acH.List)
+					r.Post("/", acH.Create)
+					r.Route("/{acID}", func(r chi.Router) {
+						r.Patch("/", acH.Update)
+						r.Delete("/", acH.Delete)
+					})
+				})
+				r.Route("/comments", func(r chi.Router) {
+					r.Get("/", commH.List)
+					r.Post("/", commH.Create)
+					r.Route("/{commentID}", func(r chi.Router) {
+						r.Patch("/", commH.Update)
+						r.Delete("/", commH.Delete)
+					})
+				})
+			})
 		})
 	})
 
