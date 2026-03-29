@@ -13,12 +13,12 @@ app.get('/health', (_req, res) => {
  * Body: { workItemTitle: string, workItemDescription?: string }
  * Returns: { suggestions: AcceptanceCriterion[] }
  *
- * Phase 1: generate BDD Given/When/Then criteria from story context.
+ * Phase 2: generate BDD Given/When/Then criteria from story context.
  */
 app.post('/api/suggest/acceptance-criteria', (_req, res) => {
   res.status(501).json({
     code: 'not_implemented',
-    message: 'AI acceptance criteria generation — coming in Phase 1',
+    message: 'AI acceptance criteria generation — coming in Phase 2',
   });
 });
 
@@ -30,7 +30,7 @@ app.post('/api/suggest/acceptance-criteria', (_req, res) => {
 app.post('/api/suggest/description', (_req, res) => {
   res.status(501).json({
     code: 'not_implemented',
-    message: 'AI description enhancement — coming in Phase 1',
+    message: 'AI description enhancement — coming in Phase 2',
   });
 });
 
@@ -42,7 +42,7 @@ app.post('/api/suggest/description', (_req, res) => {
 app.post('/api/suggest/story-points', (_req, res) => {
   res.status(501).json({
     code: 'not_implemented',
-    message: 'AI story point estimation — coming in Phase 1',
+    message: 'AI story point estimation — coming in Phase 2',
   });
 });
 

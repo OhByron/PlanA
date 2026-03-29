@@ -72,6 +72,29 @@ CREATE TABLE team_members (
 
 
 -- ---------------------------------------------------------------------------
+-- Initiatives  (cross-team, quarter/year scale; lives at org level)
+-- ---------------------------------------------------------------------------
+CREATE TABLE initiatives (
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID        NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  title           TEXT        NOT NULL,
+  description     TEXT,
+  status          TEXT        NOT NULL DEFAULT 'planned'
+                              CHECK (status IN ('planned', 'active', 'completed', 'cancelled')),
+  priority        TEXT        NOT NULL DEFAULT 'medium'
+                              CHECK (priority IN ('urgent', 'high', 'medium', 'low')),
+  start_date      DATE,
+  target_date     DATE,
+  order_index     FLOAT       NOT NULL DEFAULT 0,
+  created_by      UUID        NOT NULL REFERENCES users(id),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_initiatives_org_id ON initiatives(organization_id);
+
+
+-- ---------------------------------------------------------------------------
 -- Projects
 -- ---------------------------------------------------------------------------
 CREATE TABLE projects (
@@ -103,21 +126,23 @@ CREATE INDEX idx_dod_items_project_id ON dod_items(project_id);
 -- Epics
 -- ---------------------------------------------------------------------------
 CREATE TABLE epics (
-  id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id  UUID        NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
-  title       TEXT        NOT NULL,
-  description TEXT,
-  status      TEXT        NOT NULL DEFAULT 'open'
-                          CHECK (status IN ('open', 'in_progress', 'done', 'cancelled')),
-  priority    TEXT        NOT NULL DEFAULT 'medium'
-                          CHECK (priority IN ('urgent', 'high', 'medium', 'low')),
-  order_index FLOAT       NOT NULL DEFAULT 0,
-  created_by  UUID        NOT NULL REFERENCES users(id),
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id      UUID        NOT NULL REFERENCES projects(id)     ON DELETE CASCADE,
+  initiative_id   UUID                    REFERENCES initiatives(id) ON DELETE SET NULL,
+  title           TEXT        NOT NULL,
+  description     TEXT,
+  status          TEXT        NOT NULL DEFAULT 'open'
+                              CHECK (status IN ('open', 'in_progress', 'done', 'cancelled')),
+  priority        TEXT        NOT NULL DEFAULT 'medium'
+                              CHECK (priority IN ('urgent', 'high', 'medium', 'low')),
+  order_index     FLOAT       NOT NULL DEFAULT 0,
+  created_by      UUID        NOT NULL REFERENCES users(id),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_epics_project_id ON epics(project_id);
+CREATE INDEX idx_epics_project_id    ON epics(project_id);
+CREATE INDEX idx_epics_initiative_id ON epics(initiative_id);
 
 
 -- ---------------------------------------------------------------------------
@@ -309,6 +334,8 @@ CREATE TRIGGER trg_users_updated_at
   BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER trg_organizations_updated_at
   BEFORE UPDATE ON organizations FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER trg_initiatives_updated_at
+  BEFORE UPDATE ON initiatives FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER trg_teams_updated_at
   BEFORE UPDATE ON teams FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER trg_projects_updated_at

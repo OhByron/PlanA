@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/Coding/ProjectA -maxdepth 3 -type d -not -path */node_modules/* -not -path */.git/* -not -path */.turbo/*)",
+      "Bash(find /d/Coding/ProjectA/apps -maxdepth 2 -name \"package.json\" -exec head -20 {} +)"
+    ]
+  }
+}

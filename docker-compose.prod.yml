@@ -1,0 +1,78 @@
+# PlanA — production / self-hosted full-stack
+#
+# Brings up the complete PlanA stack: all backing services + all application services.
+# Intended for self-hosted deployments and production environments.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# Prerequisites:
+#   - Copy .env.prod.example to .env.prod and fill in all secrets before running.
+#   - JWT_SECRET must be at least 32 characters.
+#   - ELECTRIC_SECRET must match between the electric service and the API.
+#   - OAuth credentials (GitHub + Google) must be real values, not placeholders.
+#
+# All application images are built from source in this file.
+# For deployments pulling pre-built images from a registry, replace the
+# `build:` blocks with `image: ghcr.io/ohbyron/projecta/<service>:<tag>`.
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-plana}
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      ELECTRIC_URL: http://electric:3000
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      ENV: production
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+      args:
+        VITE_API_URL: ${PUBLIC_URL:-http://localhost:8080}
+        VITE_ELECTRIC_URL: ${PUBLIC_ELECTRIC_URL:-http://localhost:3000}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+  ai:
+    build:
+      context: .
+      dockerfile: infra/docker/ai.Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: "3001"
+      NODE_ENV: production
+      API_URL: http://api:8080
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "3001:3001"
+    depends_on:
+      api:
+        condition: service_healthy

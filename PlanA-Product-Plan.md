@@ -116,10 +116,11 @@ performance and configuration overhead.
 
 ```
 Organization
+  ├── Initiative              (cross-team, quarter/year scale; groups Epics across Projects)
   └── Team
-        └── Initiative              (cross-team, quarter/year scale)
-              └── Epic              (multi-sprint, feature scope)
-                    └── Story       (deliverable within one sprint)
+        └── Project           (team's work container; defines methodology: Scrum/Kanban/Shape Up)
+              └── Epic         (multi-sprint feature scope; optionally linked to an Initiative)
+                    └── Story  (deliverable within one sprint)
                           ├── Task  (sub-work, dev-owned)
                           ├── Acceptance Criterion (BDD: Given/When/Then)
                           │     └── Test Case (linked or AI-suggested)
@@ -134,7 +135,7 @@ Organization
                                 │     └── embedded_preview      (live iframe, Dev Mode)
                                 └── Other (URL, image upload, Canva embed)
 
-Sprint / Cycle        (time-boxed container for Stories and Tasks)
+Sprint / Cycle        (time-boxed container for Stories and Tasks; scoped to a Project)
 Document              (auto-assembled from Epics/Stories, or hand-authored)
   └── Published Portal page  (stakeholder-facing, clean, accessible)
 
@@ -319,10 +320,10 @@ A native Figma plugin so designers never need to leave Figma:
 
 | Invariant | Rationale |
 |---|---|
-| **Local-first + CRDT sync** | Client holds a full replica of the user's workspace (Electric SQL — PostgreSQL-native CRDT, syncs directly from Postgres). All interactions are optimistic and instant. Server sync in background. Source of sub-100ms perf. |
-| **API-first** | Every product feature exposed via REST + GraphQL before the UI consumes it. Third-party integrations are equal citizens to the first-party UI. |
-| **Multi-tenant from day one** | Workspace isolation and enterprise-ready data boundaries designed in from the schema up, never retrofitted. |
-| **Offline-capable** | Core views (board, backlog, story detail) function without network connectivity. |
+| **Local-first sync** | Client holds a full replica of the user's workspace (Electric SQL — Postgres-native sync protocol with a client-side SQLite replica). All reads are instant from local replica; writes are optimistic and sync to Postgres in the background. Conflict model: Postgres is authoritative; offline writes are queued and replayed on reconnect with last-write-wins semantics. Source of sub-100ms perf. |
+| **API-first** | Every product feature exposed via REST API before the UI consumes it. Third-party integrations are equal citizens to the first-party UI. GraphQL introduced only if external API consumers warrant the investment — not before. |
+| **Multi-tenant from day one** | Workspace isolation and enterprise-ready data boundaries designed in from the schema up, never retrofitted. Electric SQL shape subscriptions are scoped by org-issued JWTs — no cross-tenant data leakage. |
+| **Offline-capable** | Core views (board, backlog, story detail) render from the local replica without network. Offline writes are queued; conflict resolution on reconnect is last-write-wins against Postgres. |
 | **Container-native everywhere** | Every service ships as a Docker image. No environment-specific code paths. Self-hosted and cloud-hosted run identical images. |
 
 #### Monorepo Structure
@@ -338,13 +339,14 @@ projecta/
     types/        # Full domain model — User, Org, Team, Project, Epic, WorkItem,
     #               AcceptanceCriterion, Sprint, Comment, Notification, DesignAttachment ✅
     ui/           # Radix UI + CVA component library stub (Button, cn utility) ✅
-    db/           # PostgreSQL 16 schema (12 tables, triggers, indexes) + migration 001 ✅
+    db/           # PostgreSQL 16 schema (17 tables, triggers, indexes) + migrations 001–002 ✅
     sync/         # Electric SQL client abstraction + pre-defined shape definitions ✅
     config/       # Shared ESLint, TypeScript (base/react/node), Tailwind configs ✅
   infra/
     docker/       # Dockerfiles: api.Dockerfile, web.Dockerfile, ai.Dockerfile, nginx.conf ✅
     helm/         # Kubernetes Helm charts (Phase 3)
-  docker-compose.yml  # Dev infra: PostgreSQL 16, Electric SQL, Redis 7, Meilisearch ✅
+  docker-compose.yml       # Dev infra: PostgreSQL 16, Electric SQL, Redis 7, Meilisearch ✅
+  docker-compose.prod.yml  # Full-stack overlay: adds api, web, ai services for self-hosted ✅
   turbo.json          # Turborepo pipeline (build, dev, typecheck, lint, test) ✅
   pnpm-workspace.yaml ✅
   .github/workflows/  # CI: TS typecheck + lint + Go build/vet/test; Docker build ✅
@@ -361,9 +363,9 @@ projecta/
 
 | Layer | Technology | Notes |
 |---|---|---|
-| Frontend | React 19 + TypeScript + Vite | Local replica via Electric SQL (CRDT); Tailwind CSS; Radix UI primitives |
-| Sync / Local store | Electric SQL | PostgreSQL-native CRDT sync; client-side SQLite replica; real-time reactive queries |
-| Backend — Core | Go | Sync engine, REST + GraphQL API gateway, WebSocket server, auth middleware |
+| Frontend | React 19 + TypeScript + Vite | Local replica via Electric SQL; Tailwind CSS; Radix UI primitives |
+| Sync / Local store | Electric SQL | Postgres-native sync protocol; client-side SQLite replica; real-time reactive queries |
+| Backend — Core | Go | REST API gateway, sync engine, WebSocket server, auth middleware |
 | Backend — AI / Events | Node.js + TypeScript | AI provider integration, webhook ingestion, background job queue |
 | Database | PostgreSQL 16 + JSONB | Primary store; Electric SQL syncs directly from Postgres logical replication |
 | Cache / Pub-Sub | Redis | Presence, pub/sub, rate limiting, job queues (via BullMQ in AI service) |
@@ -371,8 +373,8 @@ projecta/
 | Auth | OAuth 2.0 (GitHub + Google) via custom Go middleware | No password storage; JWT session tokens; PKCE flow |
 | Real-time | Electric SQL sync + WebSockets | Electric SQL handles data sync; WebSockets handle presence and ephemeral events |
 | Mobile | React Native + Expo (Phase 2) | Shared `packages/types` and `packages/ui` logic with web |
-| Docs Editor | Tiptap (ProseMirror) | Collaborative rich text; self-hostable; extensible for BDD field types |
-| Container orchestration | Docker Compose (dev + self-hosted) / Helm (production) | Same images in all environments |
+| Docs Editor | Tiptap (ProseMirror) | Rich text editing (single-editor, Phase 1); real-time collaborative editing (Yjs, Phase 2) |
+| Container orchestration | Docker Compose (dev infra) + Docker Compose prod overlay (full stack) / Helm (production) | Same images in all environments |
 
 #### Local Dev — Getting Started
 
@@ -391,7 +393,13 @@ pnpm dev
 cd apps/api && go run ./cmd/server
 ```
 
-| Service | URL |
+**Self-hosted / full-stack (production-style):**
+```bash
+cp .env.example .env.prod      # fill in all secrets
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+| Service | Dev URL |
 |---|---|
 | Web app (Vite) | http://localhost:5173 |
 | Go API | http://localhost:8080 |
@@ -420,7 +428,7 @@ cd apps/api && go run ./cmd/server
 | Feature | Notes |
 |---|---|
 | Story hierarchy | Epics → Stories → Tasks; drag-and-drop backlog prioritisation |
-| Story detail | Rich text description (Tiptap), labels, assignee, priority, status, story points |
+| Story detail | Rich text description (Tiptap — single-editor; real-time collaborative editing is Phase 2), labels, assignee, priority, status, story points |
 | Acceptance Criteria | Native BDD structured fields (Given / When / Then) on every story — structured input, not a free-text box |
 | Definition of Done | Configurable DoD checklist per project; visible and checkable on every story |
 | Bug tracking | Bugs are first-class objects; same lifecycle as stories; linked to sprint |
@@ -456,15 +464,22 @@ cd apps/api && go run ./cmd/server
 |---|---|
 | Figma link (basic) | Paste a Figma URL on any story; renders as a live iframe embed; no API auth yet |
 
+#### Infrastructure & Platform (Phase 1 prerequisites)
+
+| Requirement | Notes |
+|---|---|
+| Database migration runner | golang-migrate integrated into Go API; runs `migrate up` on startup. Replaces docker-compose init-SQL approach. |
+| Electric SQL production auth | Go API issues Electric SQL JWTs with org-scoped shape claims; clients present these JWTs when subscribing to shapes. Enforces tenant isolation in sync. |
+
 #### Non-Functional
 
 | Requirement | Target |
 |---|---|
 | Navigation performance | < 100ms P95 for board, backlog, and story detail transitions |
-| Self-hosted deployment | Single `docker compose up` installs and runs the full stack |
+| Self-hosted deployment | `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d` starts the full stack on a clean machine |
 | Cloud deployment | Same Docker images deployable to any cloud provider without modification |
 
-**Explicitly NOT in Phase 1:** GitHub/GitLab PR integration (Phase 2), velocity trend chart (Phase 2 — needs sprint history), test case management (Phase 2), docs portal (Phase 2), AI features (Phase 2), mobile app (Phase 2), SSO/SAML (Phase 3), Figma API automation (Phase 2).
+**Explicitly NOT in Phase 1:** GitHub/GitLab PR integration (Phase 2), velocity trend chart (Phase 2 — needs sprint history), test case management (Phase 2), docs portal (Phase 2), AI features (Phase 2), real-time collaborative editing (Phase 2), mobile app (Phase 2), SSO/SAML (Phase 3), Figma API automation (Phase 2).
 
 ---
 
@@ -496,6 +511,7 @@ cd apps/api && go run ./cmd/server
 | **AI — AC Generator** | From story title + description, suggest Gherkin ACs for author approval |
 | **AI — Duplicate Detector** | Warn on similar story creation before save |
 | **AI — Release Note Drafter** | Auto-draft from sprint's completed stories and ACs |
+| **Real-time collaborative editing** | Yjs + Hocuspocus collaboration server; multiple users editing the same story description or AC simultaneously |
 | **Mobile app** | iOS and Android. Native stand-up experience: update task, log blocker, view sprint. |
 
 ---
@@ -582,12 +598,13 @@ cd apps/api && go run ./cmd/server
 
 | Decision | Resolution |
 |---|---|
-| Local-first vs. conventional MVP | **Local-first from day one (Option A)** — Electric SQL + CRDT. Correct architecture; no future migration cost. |
+| Local-first vs. conventional MVP | **Local-first from day one (Option A)** — Electric SQL Postgres-native sync with client-side SQLite replica. Correct architecture; no future migration cost. Offline reads are native; offline writes queue and replay on reconnect. |
 | Authentication model | **OAuth-only** — GitHub + Google for Phase 1. No password storage. |
 | Repository structure | **Monorepo** — pnpm workspaces + Turborepo. All packages in one repo. |
-| Deployment model | **Container-native, cloud-agnostic** — Docker Compose for self-hosted; Helm for production. Runs on any cloud or bare metal. Self-hosting is a first-class target from Phase 1. |
+| Deployment model | **Container-native, cloud-agnostic** — `docker-compose.yml` for dev infra; `docker-compose.prod.yml` overlay for full self-hosted stack; Helm for production Kubernetes. Runs on any cloud or bare metal. Self-hosting is a first-class target from Phase 1. |
+| GraphQL | **REST-first; GraphQL deferred** — REST API is the only required transport. GraphQL is introduced only if and when external API consumers demonstrate the need. Premature GraphQL complexity violates "maximise work not done." |
 | Phase 1 test team | **Three developers, 30+ years combined hands-on experience, deep Agile practice.** Expert users; high signal-to-noise on feedback. Any friction they hit is a defect. |
-| Open source timing | **Private until post-MVP** — Keep the repo private while building the floor. Open-source once the core is stable and genuinely usable. Premature open-sourcing invites noise before the product can defend itself. |
+| Open source timing | **Private until Phase 2 complete + readiness criteria met** — see Part 10. |
 
 ### Open
 
@@ -598,3 +615,69 @@ cd apps/api && go run ./cmd/server
 3. **BDD toolchain sync** — Phase 3's test case management becomes dramatically more powerful when it round-trips test results from Cucumber, Behave, or SpecFlow back into PlanA via CI. Defines "working software as the primary measure of progress" literally. Needs a design decision on the sync protocol.
 
 4. **Pricing model** — Free tier for teams ≤ 5; per-seat SaaS above that; enterprise contract for self-hosted + compliance. Avoid the Atlassian model that punishes growth. Decide before any public launch.
+
+---
+
+## Part 10: Open Source Release Criteria
+
+The single greatest risk to an open source project is releasing too early. A tool with a
+half-built UI, missing critical features, or no compelling differentiation is not adopted —
+it is catalogued and forgotten. Release once there is something worth defending.
+
+### The Bar: Phase 2 Feature Complete + All Checklist Items Met
+
+Phase 1 alone is not enough. PlanA's differentiation lives in Phase 2 — the traceability
+chain, living documentation, and stakeholder portal. Without these, it is just another
+underpowered issue tracker and the market will treat it as one.
+
+### Checklist
+
+#### Functional
+- [ ] Phase 2 complete: Story → AC → Test Case → pass/fail status traceability works end-to-end
+- [ ] Living Documentation and Stakeholder Portal generate from real sprint data
+- [ ] At least one AI feature complete and production-quality (AC Generator or Release Note Drafter)
+- [ ] Self-hosted deployment: `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d` brings up the full product on a clean machine in under 5 minutes
+
+#### Quality
+- [ ] Performance SLA met in practice: < 100ms P95 navigation measured on a standard cloud instance with real data, not synthetic benchmarks
+- [ ] Multi-tenant isolation verified: penetration test confirms no cross-org data leakage via Electric SQL shapes or API endpoints
+- [ ] No open P0 or P1 bugs
+- [ ] OAuth flows (GitHub + Google) tested end-to-end in production conditions, not just dev
+- [ ] REST API documented: OpenAPI spec complete and accurate for all Phase 1 + Phase 2 endpoints
+
+#### Validation
+- [ ] Internal team has completed at least **4 full sprints** in PlanA (double the Phase 1 success criterion — one discovery, one refinement)
+- [ ] At least one **external team** (outside the core contributors) has onboarded and run one full sprint without a walkthrough or hand-holding from the PlanA team
+- [ ] Zero critical rough edges in the external team's experience
+
+#### Developer Experience
+- [ ] Architecture documented at the level where a competent new contributor can understand the sync model, write a new API endpoint, and add a UI route without asking anyone
+- [ ] Test coverage exists at API level: unit tests + integration tests against a real database
+- [ ] `make dev` or equivalent one-command local setup works on macOS and Linux
+
+#### Community Readiness
+- [ ] **Name and domain secured** — trademark search completed, no conflicts; `.com` or equivalent domain registered
+- [ ] **License chosen and applied** — Recommendation: AGPL v3. Protects against cloud providers hosting modified versions without contributing back. Consistent with Plane, Mattermost, and Gitea, which occupy similar self-hosted/SaaS positioning. If the licensing strategy changes (e.g. BUSL for commercial protection), decide this before any code is public — retroactive relicensing is painful.
+- [ ] `CONTRIBUTING.md` written — explains the sync model, how to add a feature, how to run tests, and what a good PR looks like
+- [ ] `CODE_OF_CONDUCT.md` — Contributor Covenant (standard; does not need to be written from scratch)
+- [ ] Issue templates: bug report, feature request
+- [ ] Public roadmap: Phases 3 and 4 are publicly stated so contributors understand where the project is heading
+- [ ] The README communicates the "why" in 30 seconds to a developer who has never heard of PlanA — the Jira indictment, the traceability chain, the architecture choice
+
+#### Anti-Patterns — Do Not Release Until These Are Gone
+- **No placeholder copy** — No "Coming in Phase X" in any UI element or API response visible to users
+- **No half-built feature surfaces** — If a feature is incomplete, it is hidden behind a feature flag or removed from the build, not shipped with a skeleton UI
+- **No `TODO` comments in public-facing code paths** — Internal TODOs are acceptable in clearly non-critical areas, but not on any path a user or external contributor will read first
+- **No hard-coded credentials, example secrets, or development URLs** in any non-example config file
+
+### What a Failed Release Looks Like
+
+For reference, the failure mode to avoid is specific and well-documented in the developer
+tool market:
+
+- Ship before the differentiating features exist → catalogued as "yet another Jira" → ignored
+- Ship with performance issues → Linear has reset developer expectations; anything over 200ms feels broken
+- Ship without clear self-hosting docs → enterprise/privacy-conscious teams (your early adopters) bounce immediately
+- Ship without a compelling README → developers decide in 45 seconds whether to continue reading; if the "why" is buried, they do not continue
+
+The question is not "is it ready enough?" The question is: **"Would we be embarrassed if 1,000 developers read this codebase tomorrow?"** Release when the answer is no.
