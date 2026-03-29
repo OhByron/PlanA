@@ -12,12 +12,16 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
+	"github.com/OhByron/ProjectA/internal/db"
+	"github.com/OhByron/ProjectA/internal/migrations"
+	"github.com/OhByron/ProjectA/internal/oauth"
 	"github.com/OhByron/ProjectA/internal/server"
 )
 
 func main() {
-	// Load .env in development (silently ignored if absent)
+	// Load .env in development (silently ignored if absent in production)
 	_ = godotenv.Load()
 
 	cfg, err := config.Load()
@@ -31,7 +35,38 @@ func main() {
 	}))
 	slog.SetDefault(logger)
 
-	handler := server.New(cfg, logger)
+	// Connect to the database
+	ctx := context.Background()
+	pool, err := db.Connect(ctx, cfg.DatabaseURL)
+	if err != nil {
+		slog.Error("failed to connect to database", "error", err)
+		os.Exit(1)
+	}
+	defer pool.Close()
+
+	// Run pending migrations before accepting traffic
+	slog.Info("running database migrations")
+	if err := migrations.Run(cfg.DatabaseURL); err != nil {
+		slog.Error("migration failed", "error", err)
+		os.Exit(1)
+	}
+	slog.Info("migrations complete")
+
+	// Build service layer
+	authSvc := auth.NewService(cfg)
+	ghProvider := oauth.NewGitHubProvider(cfg)
+	googProvider := oauth.NewGoogleProvider(cfg)
+
+	deps := &server.Dependencies{
+		Config: cfg,
+		Logger: logger,
+		DB:     pool,
+		Auth:   authSvc,
+		GitHub: ghProvider,
+		Google: googProvider,
+	}
+
+	handler := server.New(deps)
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.Port),
@@ -54,10 +89,10 @@ func main() {
 	<-quit
 
 	slog.Info("shutting down gracefully...")
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	if err := httpServer.Shutdown(ctx); err != nil {
+	if err := httpServer.Shutdown(shutdownCtx); err != nil {
 		slog.Error("forced shutdown", "error", err)
 	}
 

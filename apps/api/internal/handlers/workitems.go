@@ -1,0 +1,400 @@
+package handlers
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+
+	"github.com/OhByron/ProjectA/internal/auth"
+)
+
+// WorkItem represents a work_items row returned to clients.
+type WorkItem struct {
+	ID            string          `json:"id"`
+	ProjectID     string          `json:"project_id"`
+	EpicID        *string         `json:"epic_id"`
+	ParentID      *string         `json:"parent_id"`
+	Type          string          `json:"type"`
+	Title         string          `json:"title"`
+	Description   json.RawMessage `json:"description"`
+	Status        string          `json:"status"`
+	Priority      string          `json:"priority"`
+	AssigneeID    *string         `json:"assignee_id"`
+	StoryPoints   *int            `json:"story_points"`
+	Labels        []string        `json:"labels"`
+	OrderIndex    float64         `json:"order_index"`
+	IsBlocked     bool            `json:"is_blocked"`
+	BlockedReason *string         `json:"blocked_reason"`
+	CreatedBy     string          `json:"created_by"`
+	CreatedAt     time.Time       `json:"created_at"`
+	UpdatedAt     time.Time       `json:"updated_at"`
+}
+
+// WorkItemHandlers handles CRUD for stories, bugs, and tasks within a project.
+type WorkItemHandlers struct {
+	db *pgxpool.Pool
+}
+
+func NewWorkItemHandlers(db *pgxpool.Pool) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
+
+// List returns all work items for a given project, with optional filters.
+func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	if projectID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "projectID is required")
+		return
+	}
+
+	query := `SELECT id, project_id, epic_id, parent_id, type, title, description,
+		status, priority, assignee_id, story_points, labels, order_index,
+		is_blocked, blocked_reason, created_by, created_at, updated_at
+		FROM work_items WHERE project_id = $1`
+	args := []any{projectID}
+	argN := 2
+
+	if v := r.URL.Query().Get("type"); v != "" {
+		query += fmt.Sprintf(" AND type = $%d", argN)
+		args = append(args, v)
+		argN++
+	}
+	if v := r.URL.Query().Get("status"); v != "" {
+		query += fmt.Sprintf(" AND status = $%d", argN)
+		args = append(args, v)
+		argN++
+	}
+	if v := r.URL.Query().Get("epic_id"); v != "" {
+		query += fmt.Sprintf(" AND epic_id = $%d", argN)
+		args = append(args, v)
+		argN++
+	}
+	if v := r.URL.Query().Get("assignee_id"); v != "" {
+		query += fmt.Sprintf(" AND assignee_id = $%d", argN)
+		args = append(args, v)
+		argN++
+	}
+
+	query += " ORDER BY order_index, created_at"
+
+	rows, err := h.db.Query(r.Context(), query, args...)
+	if err != nil {
+		slog.Error("workitems.List: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list work items")
+		return
+	}
+	defer rows.Close()
+
+	items := []WorkItem{}
+	for rows.Next() {
+		var wi WorkItem
+		if err := rows.Scan(
+			&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+			&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+		); err != nil {
+			slog.Error("workitems.List: scan failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read work item row")
+			return
+		}
+		if wi.Labels == nil {
+			wi.Labels = []string{}
+		}
+		items = append(items, wi)
+	}
+	if err := rows.Err(); err != nil {
+		slog.Error("workitems.List: rows iteration error", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list work items")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, items)
+}
+
+// createWorkItemRequest is the JSON body for creating a work item.
+type createWorkItemRequest struct {
+	Type        string          `json:"type"`
+	Title       string          `json:"title"`
+	Description json.RawMessage `json:"description"`
+	EpicID      *string         `json:"epic_id"`
+	ParentID    *string         `json:"parent_id"`
+	Priority    *string         `json:"priority"`
+	AssigneeID  *string         `json:"assignee_id"`
+	StoryPoints *int            `json:"story_points"`
+	Labels      []string        `json:"labels"`
+	OrderIndex  *float64        `json:"order_index"`
+}
+
+// Create inserts a new work item under the given project.
+func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	if projectID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "projectID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+
+	var body createWorkItemRequest
+	if !readJSON(w, r, &body) {
+		return
+	}
+	if body.Type == "" {
+		writeError(w, http.StatusBadRequest, "validation_error", "type is required")
+		return
+	}
+	if body.Title == "" {
+		writeError(w, http.StatusBadRequest, "validation_error", "title is required")
+		return
+	}
+
+	priority := "medium"
+	if body.Priority != nil && *body.Priority != "" {
+		priority = *body.Priority
+	}
+
+	labels := body.Labels
+	if labels == nil {
+		labels = []string{}
+	}
+
+	var orderIndex float64
+	if body.OrderIndex != nil {
+		orderIndex = *body.OrderIndex
+	}
+
+	var wi WorkItem
+	err := h.db.QueryRow(r.Context(),
+		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
+			priority, assignee_id, story_points, labels, order_index, created_by)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+		 RETURNING id, project_id, epic_id, parent_id, type, title, description,
+			status, priority, assignee_id, story_points, labels, order_index,
+			is_blocked, blocked_reason, created_by, created_at, updated_at`,
+		projectID, body.EpicID, body.ParentID, body.Type, body.Title, body.Description,
+		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID,
+	).Scan(
+		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+	)
+	if err != nil {
+		slog.Error("workitems.Create: insert failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
+		return
+	}
+
+	if wi.Labels == nil {
+		wi.Labels = []string{}
+	}
+
+	writeJSON(w, http.StatusCreated, wi)
+}
+
+// Get returns a single work item by ID.
+func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
+	workItemID := chi.URLParam(r, "workItemID")
+	if workItemID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+
+	var wi WorkItem
+	err := h.db.QueryRow(r.Context(),
+		`SELECT id, project_id, epic_id, parent_id, type, title, description,
+			status, priority, assignee_id, story_points, labels, order_index,
+			is_blocked, blocked_reason, created_by, created_at, updated_at
+		 FROM work_items WHERE id = $1`, workItemID,
+	).Scan(
+		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+			return
+		}
+		slog.Error("workitems.Get: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to get work item")
+		return
+	}
+
+	if wi.Labels == nil {
+		wi.Labels = []string{}
+	}
+
+	writeJSON(w, http.StatusOK, wi)
+}
+
+// updateWorkItemRequest is the JSON body for patching a work item.
+type updateWorkItemRequest struct {
+	Title         *string          `json:"title"`
+	Description   *json.RawMessage `json:"description"`
+	Type          *string          `json:"type"`
+	Status        *string          `json:"status"`
+	Priority      *string          `json:"priority"`
+	EpicID        *string          `json:"epic_id"`
+	ParentID      *string          `json:"parent_id"`
+	AssigneeID    *string          `json:"assignee_id"`
+	StoryPoints   *int             `json:"story_points"`
+	Labels        *[]string        `json:"labels"`
+	OrderIndex    *float64         `json:"order_index"`
+	IsBlocked     *bool            `json:"is_blocked"`
+	BlockedReason *string          `json:"blocked_reason"`
+}
+
+// Update patches a work item by ID using dynamic SET clause.
+func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
+	workItemID := chi.URLParam(r, "workItemID")
+	if workItemID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+
+	var body updateWorkItemRequest
+	if !readJSON(w, r, &body) {
+		return
+	}
+
+	fields := []string{}
+	args := []any{}
+	argN := 1
+
+	if body.Title != nil {
+		fields = append(fields, fmt.Sprintf("title = $%d", argN))
+		args = append(args, *body.Title)
+		argN++
+	}
+	if body.Description != nil {
+		fields = append(fields, fmt.Sprintf("description = $%d", argN))
+		args = append(args, *body.Description)
+		argN++
+	}
+	if body.Type != nil {
+		fields = append(fields, fmt.Sprintf("type = $%d", argN))
+		args = append(args, *body.Type)
+		argN++
+	}
+	if body.Status != nil {
+		fields = append(fields, fmt.Sprintf("status = $%d", argN))
+		args = append(args, *body.Status)
+		argN++
+	}
+	if body.Priority != nil {
+		fields = append(fields, fmt.Sprintf("priority = $%d", argN))
+		args = append(args, *body.Priority)
+		argN++
+	}
+	if body.EpicID != nil {
+		fields = append(fields, fmt.Sprintf("epic_id = $%d", argN))
+		args = append(args, *body.EpicID)
+		argN++
+	}
+	if body.ParentID != nil {
+		fields = append(fields, fmt.Sprintf("parent_id = $%d", argN))
+		args = append(args, *body.ParentID)
+		argN++
+	}
+	if body.AssigneeID != nil {
+		fields = append(fields, fmt.Sprintf("assignee_id = $%d", argN))
+		args = append(args, *body.AssigneeID)
+		argN++
+	}
+	if body.StoryPoints != nil {
+		fields = append(fields, fmt.Sprintf("story_points = $%d", argN))
+		args = append(args, *body.StoryPoints)
+		argN++
+	}
+	if body.Labels != nil {
+		fields = append(fields, fmt.Sprintf("labels = $%d", argN))
+		args = append(args, *body.Labels)
+		argN++
+	}
+	if body.OrderIndex != nil {
+		fields = append(fields, fmt.Sprintf("order_index = $%d", argN))
+		args = append(args, *body.OrderIndex)
+		argN++
+	}
+	if body.IsBlocked != nil {
+		fields = append(fields, fmt.Sprintf("is_blocked = $%d", argN))
+		args = append(args, *body.IsBlocked)
+		argN++
+	}
+	if body.BlockedReason != nil {
+		fields = append(fields, fmt.Sprintf("blocked_reason = $%d", argN))
+		args = append(args, *body.BlockedReason)
+		argN++
+	}
+
+	if len(fields) == 0 {
+		writeError(w, http.StatusBadRequest, "validation_error", "No fields to update")
+		return
+	}
+
+	// Always update updated_at.
+	fields = append(fields, "updated_at = NOW()")
+
+	args = append(args, workItemID)
+	query := fmt.Sprintf(
+		`UPDATE work_items SET %s WHERE id = $%d
+		 RETURNING id, project_id, epic_id, parent_id, type, title, description,
+			status, priority, assignee_id, story_points, labels, order_index,
+			is_blocked, blocked_reason, created_by, created_at, updated_at`,
+		strings.Join(fields, ", "), argN,
+	)
+
+	var wi WorkItem
+	err := h.db.QueryRow(r.Context(), query, args...).Scan(
+		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+			return
+		}
+		slog.Error("workitems.Update: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to update work item")
+		return
+	}
+
+	if wi.Labels == nil {
+		wi.Labels = []string{}
+	}
+
+	writeJSON(w, http.StatusOK, wi)
+}
+
+// Delete removes a work item by ID.
+func (h *WorkItemHandlers) Delete(w http.ResponseWriter, r *http.Request) {
+	workItemID := chi.URLParam(r, "workItemID")
+	if workItemID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+
+	tag, err := h.db.Exec(r.Context(), `DELETE FROM work_items WHERE id = $1`, workItemID)
+	if err != nil {
+		slog.Error("workitems.Delete: exec failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to delete work item")
+		return
+	}
+	if tag.RowsAffected() == 0 {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}

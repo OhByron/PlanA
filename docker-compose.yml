@@ -3,6 +3,14 @@
 #
 # Starts: PostgreSQL 16, Electric SQL sync service, Redis 7, Meilisearch
 # The web app and API run outside Docker in development (pnpm dev / go run).
+#
+# Schema management: the Go API runs golang-migrate on startup and applies all
+# pending migrations automatically. Do NOT mount schema.sql here — the migration
+# runner is the single source of truth for schema state.
+#
+# ⚠  If you previously ran this file with the old schema.sql initdb mount, you
+# must destroy the existing volume before restarting:
+#   docker compose down -v && docker compose up -d
 
 services:
 
@@ -17,7 +25,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./packages/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     # wal_level=logical is required for Electric SQL sync
     command: >
       postgres

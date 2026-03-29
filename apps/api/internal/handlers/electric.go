@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"log/slog"
 	"net/http"
 
@@ -43,7 +44,7 @@ func (h *ElectricHandlers) Token(w http.ResponseWriter, r *http.Request) {
 		WHERE organization_id = $1 AND user_id = $2
 	`, orgID, claims.UserID).Scan(&role)
 
-	if err == pgx.ErrNoRows {
+	if errors.Is(err, pgx.ErrNoRows) {
 		writeError(w, http.StatusForbidden, "not_a_member", "You are not a member of this organisation")
 		return
 	}

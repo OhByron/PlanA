@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 )
@@ -19,17 +18,4 @@ func Health(w http.ResponseWriter, r *http.Request) {
 		Time:    time.Now().UTC(),
 	}
 	writeJSON(w, http.StatusOK, resp)
-}
-
-func NotImplemented(w http.ResponseWriter, _ *http.Request) {
-	writeJSON(w, http.StatusNotImplemented, map[string]string{
-		"code":    "not_implemented",
-		"message": "This endpoint is not yet implemented",
-	})
-}
-
-func writeJSON(w http.ResponseWriter, status int, v any) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(v)
 }

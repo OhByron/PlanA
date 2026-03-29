@@ -1,0 +1,2 @@
+-- Cannot easily restore FK constraints without cleaning data, so this is a no-op.
+-- The columns remain UUID and functional either way.

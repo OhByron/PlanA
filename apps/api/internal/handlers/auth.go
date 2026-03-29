@@ -13,6 +13,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
@@ -142,6 +143,103 @@ func (h *AuthHandlers) Logout(w http.ResponseWriter, r *http.Request) {
 			`DELETE FROM auth_sessions WHERE token_hash = $1`, hashToken(token))
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// DevLogin is a development-only endpoint that creates a test user and returns
+// a session token without requiring OAuth. Gated on ENV=development in the router.
+func (h *AuthHandlers) DevLogin(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		Email string `json:"email"`
+		Name  string `json:"name"`
+	}
+	if !readJSON(w, r, &body) {
+		return
+	}
+	if body.Email == "" {
+		body.Email = "dev@plana.local"
+	}
+	if body.Name == "" {
+		body.Name = "Dev User"
+	}
+
+	var userID, email string
+	err := h.db.QueryRow(r.Context(), `
+		INSERT INTO users (email, name)
+		VALUES ($1, $2)
+		ON CONFLICT (email) DO UPDATE SET updated_at = NOW()
+		RETURNING id, email
+	`, body.Email, body.Name).Scan(&userID, &email)
+	if err != nil {
+		slog.Error("dev-login: upsert failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create dev user")
+		return
+	}
+
+	token, err := h.auth.IssueSessionToken(userID, email)
+	if err != nil {
+		slog.Error("dev-login: token failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "token_error", "Failed to issue token")
+		return
+	}
+
+	_ = storeSession(r.Context(), h.db, userID, token)
+
+	writeJSON(w, http.StatusOK, map[string]string{
+		"token":   token,
+		"user_id": userID,
+		"email":   email,
+	})
+}
+
+// PasswordLogin authenticates with email + password.
+// POST /api/auth/login
+func (h *AuthHandlers) PasswordLogin(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	if !readJSON(w, r, &body) {
+		return
+	}
+	if body.Email == "" || body.Password == "" {
+		writeError(w, http.StatusBadRequest, "validation_error", "Email and password are required")
+		return
+	}
+
+	var userID, email, hash string
+	err := h.db.QueryRow(r.Context(),
+		`SELECT id, email, password_hash FROM users WHERE email = $1`,
+		body.Email).Scan(&userID, &email, &hash)
+	if err != nil {
+		writeError(w, http.StatusUnauthorized, "invalid_credentials", "Invalid email or password")
+		return
+	}
+	if hash == "" {
+		writeError(w, http.StatusUnauthorized, "invalid_credentials", "This account uses OAuth login (GitHub/Google)")
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(body.Password)); err != nil {
+		writeError(w, http.StatusUnauthorized, "invalid_credentials", "Invalid email or password")
+		return
+	}
+
+	token, err := h.auth.IssueSessionToken(userID, email)
+	if err != nil {
+		slog.Error("password login: token failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "token_error", "Failed to issue token")
+		return
+	}
+
+	if err := storeSession(r.Context(), h.db, userID, token); err != nil {
+		slog.Error("password login: store session failed", "error", err)
+	}
+
+	writeJSON(w, http.StatusOK, map[string]string{
+		"token":   token,
+		"user_id": userID,
+		"email":   email,
+	})
 }
 
 // --- shared login completion ---

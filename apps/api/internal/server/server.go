@@ -49,6 +49,9 @@ func New(deps *Dependencies) http.Handler {
 	epicH    := handlers.NewEpicHandlers(deps.DB)
 	sprintH  := handlers.NewSprintHandlers(deps.DB)
 	siH      := handlers.NewSprintItemHandlers(deps.DB)
+	depH     := handlers.NewDependencyHandlers(deps.DB)
+	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
+	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -63,6 +66,20 @@ func New(deps *Dependencies) http.Handler {
 			r.Post("/google", authH.GoogleInitiate)
 			r.Get("/google/callback", authH.GoogleCallback)
 			r.Delete("/logout", authH.Logout)
+			r.Post("/login", authH.PasswordLogin)
+
+			// Dev-only: bypass OAuth for local testing.
+			if deps.Config.Environment == "development" {
+				r.Post("/dev-login", authH.DevLogin)
+			}
+		})
+
+		// ----------------------------------------------------------------
+		// Public — invitation acceptance (no auth required)
+		// ----------------------------------------------------------------
+		r.Route("/invitations/{token}", func(r chi.Router) {
+			r.Get("/", invH.Get)
+			r.Post("/accept", invH.Accept)
 		})
 
 		// ----------------------------------------------------------------
@@ -72,6 +89,7 @@ func New(deps *Dependencies) http.Handler {
 			r.Use(deps.Auth.RequireAuth)
 
 			r.Get("/me", userH.Me)
+			r.Get("/me/work-items", userH.MyWorkItems)
 			r.Get("/electric/token", elecH.Token)
 
 			// Organisations
@@ -82,6 +100,8 @@ func New(deps *Dependencies) http.Handler {
 					r.Get("/", orgH.Get)
 					r.Patch("/", orgH.Update)
 					r.Delete("/", orgH.Delete)
+					r.Post("/archive", orgH.Archive)
+					r.Post("/unarchive", orgH.Unarchive)
 
 					// Initiatives (cross-team, org-scoped)
 					r.Route("/initiatives", func(r chi.Router) {
@@ -102,6 +122,7 @@ func New(deps *Dependencies) http.Handler {
 							r.Get("/", teamH.Get)
 							r.Patch("/", teamH.Update)
 							r.Delete("/", teamH.Delete)
+							r.Get("/members", teamH.ListMembers)
 
 							// Projects
 							r.Route("/projects", func(r chi.Router) {
@@ -120,6 +141,9 @@ func New(deps *Dependencies) http.Handler {
 
 			// Project-scoped resources (shortcut routes — no need to traverse org/team)
 			r.Route("/projects/{projectID}", func(r chi.Router) {
+				r.Get("/", projH.Get)
+				r.Get("/dependencies", depH.ListByProject)
+				r.Get("/sprint-assigned", siH.AssignedItemIDs)
 				r.Route("/work-items", func(r chi.Router) {
 					r.Get("/", wiH.List)
 					r.Post("/", wiH.Create)
@@ -127,6 +151,15 @@ func New(deps *Dependencies) http.Handler {
 						r.Get("/", wiH.Get)
 						r.Patch("/", wiH.Update)
 						r.Delete("/", wiH.Delete)
+					})
+				})
+				r.Route("/members", func(r chi.Router) {
+					r.Get("/", pmH.List)
+					r.Post("/", pmH.Create)
+					r.Route("/{memberID}", func(r chi.Router) {
+						r.Patch("/", pmH.Update)
+						r.Delete("/", pmH.Delete)
+						r.Post("/invite", invH.Create)
 					})
 				})
 				r.Route("/epics", func(r chi.Router) {
@@ -149,6 +182,7 @@ func New(deps *Dependencies) http.Handler {
 			})
 
 			// Sprint item management (add/remove work items from a sprint)
+			r.Get("/sprints/{sprintID}/items", siH.ListItems)
 			r.Route("/sprints/{sprintID}/items/{workItemID}", func(r chi.Router) {
 				r.Post("/", siH.Add)
 				r.Delete("/", siH.Remove)
@@ -171,6 +205,11 @@ func New(deps *Dependencies) http.Handler {
 						r.Patch("/", commH.Update)
 						r.Delete("/", commH.Delete)
 					})
+				})
+				r.Route("/dependencies", func(r chi.Router) {
+					r.Get("/", depH.List)
+					r.Post("/", depH.Create)
+					r.Delete("/{depID}", depH.Delete)
 				})
 			})
 		})
