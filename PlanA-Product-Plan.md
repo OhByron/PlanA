@@ -299,7 +299,12 @@ A native Figma plugin so designers never need to leave Figma:
 
 ## Part 6: Build Plan
 
-### Phase 0 — Architecture Foundations *(before any product code)*
+### Phase 0 — Architecture Foundations ✅ *Complete — 29 March 2026*
+
+> **Status:** Scaffolded, verified, and pushed to `main` (commit `baa346b`).
+> All TypeScript packages typecheck clean (`pnpm turbo typecheck`: 5/5).
+> Go API builds and vets clean (`go build ./...`).
+> Local dev stack starts with `docker compose up -d` + `pnpm dev`.
 
 #### Resolved Architectural Decisions
 
@@ -325,25 +330,34 @@ A native Figma plugin so designers never need to leave Figma:
 ```
 projecta/
   apps/
-    web/          # React + TypeScript frontend (Vite)
-    api/          # Go — sync engine, REST/GraphQL API, WebSocket server
-    ai/           # Node.js + TypeScript — AI features, webhook processor
-    mobile/       # React Native (iOS + Android, Phase 2)
+    web/          # React 19 + TypeScript + Vite + TanStack Router ✅
+    api/          # Go 1.26 + Chi + pgx/v5 — health endpoint + full route skeleton ✅
+    ai/           # Node.js + TypeScript + Express — AI suggestion stubs ✅
+    mobile/       # React Native placeholder (Phase 2) ✅
   packages/
-    types/        # Shared TypeScript types (API contracts, data models)
-    ui/           # Shared React component library (design system)
-    db/           # Database schema, migrations (Postgres)
-    sync/         # Electric SQL client config and CRDT helpers
-    config/       # Shared ESLint, TypeScript, Tailwind config
+    types/        # Full domain model — User, Org, Team, Project, Epic, WorkItem,
+    #               AcceptanceCriterion, Sprint, Comment, Notification, DesignAttachment ✅
+    ui/           # Radix UI + CVA component library stub (Button, cn utility) ✅
+    db/           # PostgreSQL 16 schema (12 tables, triggers, indexes) + migration 001 ✅
+    sync/         # Electric SQL client abstraction + pre-defined shape definitions ✅
+    config/       # Shared ESLint, TypeScript (base/react/node), Tailwind configs ✅
   infra/
-    docker/       # Dockerfiles per service
-    compose/      # Docker Compose files (dev, self-hosted)
-    helm/         # Kubernetes Helm charts (production)
-  turbo.json
-  pnpm-workspace.yaml
+    docker/       # Dockerfiles: api.Dockerfile, web.Dockerfile, ai.Dockerfile, nginx.conf ✅
+    helm/         # Kubernetes Helm charts (Phase 3)
+  docker-compose.yml  # Dev infra: PostgreSQL 16, Electric SQL, Redis 7, Meilisearch ✅
+  turbo.json          # Turborepo pipeline (build, dev, typecheck, lint, test) ✅
+  pnpm-workspace.yaml ✅
+  .github/workflows/  # CI: TS typecheck + lint + Go build/vet/test; Docker build ✅
 ```
 
 #### Technology Stack (Locked)
+
+| Tool | Version | Status |
+|---|---|---|
+| Node.js | 22.14.0 | ✅ confirmed |
+| pnpm | 10.33.0 | ✅ installed |
+| Go | 1.26.1 | ✅ installed |
+| Turborepo | 2.8.21 | ✅ installed |
 
 | Layer | Technology | Notes |
 |---|---|---|
@@ -359,6 +373,33 @@ projecta/
 | Mobile | React Native + Expo (Phase 2) | Shared `packages/types` and `packages/ui` logic with web |
 | Docs Editor | Tiptap (ProseMirror) | Collaborative rich text; self-hostable; extensible for BDD field types |
 | Container orchestration | Docker Compose (dev + self-hosted) / Helm (production) | Same images in all environments |
+
+#### Local Dev — Getting Started
+
+```bash
+# 1. Copy environment config
+cp .env.example .env           # fill in JWT_SECRET (min 32 chars)
+cp apps/api/.env.example apps/api/.env
+
+# 2. Start backing services (PostgreSQL + Electric SQL + Redis + Meilisearch)
+docker compose up -d
+
+# 3. Start all TypeScript apps in watch mode
+pnpm dev
+
+# 4. Start the Go API (separate terminal)
+cd apps/api && go run ./cmd/server
+```
+
+| Service | URL |
+|---|---|
+| Web app (Vite) | http://localhost:5173 |
+| Go API | http://localhost:8080 |
+| AI service | http://localhost:3001 |
+| Electric SQL sync | http://localhost:3000 |
+| PostgreSQL | localhost:5432 |
+| Redis | localhost:6379 |
+| Meilisearch | http://localhost:7700 |
 
 ---
 
@@ -502,6 +543,7 @@ projecta/
 
 | Milestone | Success Criteria |
 |---|---|
+| **Phase 0 complete** ✅ | Monorepo scaffolded; all TypeScript packages typecheck clean; Go API builds and vets clean; `docker compose up -d` starts all backing services; web app renders at localhost:5173. *Achieved 29 March 2026 — commit `baa346b`.* |
 | **Phase 1 complete** | Three developers with 30+ years of combined hands-on experience and Agile practice use PlanA for 2 consecutive sprints without reaching for Jira, Trello, Slack for work-item discussion, or any supplementary tool. Any rough edge they hit is a Phase 1 defect. |
 | **Phase 2 complete** | A QE can trace any story's AC → test case → pass/fail status in under 30 seconds; a PM can publish a release note from completed sprint work in under 5 minutes; a designer can link a Figma frame without opening PlanA (via plugin) |
 | **Phase 3 complete** | A 50-person team onboards and operates for 30 days without a "PlanA administrator" role being created |
