@@ -56,9 +56,11 @@ export function MyWorkPage() {
 
       {items.length === 0 && (
         <div className="py-16 text-center">
-          <p className="text-gray-400">Nothing assigned yet.</p>
-          <p className="mt-1 text-sm text-gray-400">
-            Check the backlog to pick up some work.
+          <p className="text-gray-400">No items assigned to you.</p>
+          <p className="mt-2 text-sm text-gray-400">
+            Items appear here when you're added as a project team member and have
+            stories or tasks assigned to you. Make sure your account email matches
+            your team member email, or that you accepted an invitation.
           </p>
         </div>
       )}

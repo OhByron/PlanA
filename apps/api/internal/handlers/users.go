@@ -51,19 +51,23 @@ func (h *UserHandlers) Me(w http.ResponseWriter, r *http.Request) {
 func (h *UserHandlers) MyWorkItems(w http.ResponseWriter, r *http.Request) {
 	claims, _ := auth.ClaimsFromContext(r.Context())
 
+	// Find items assigned to any project_member linked to this user
+	// (by user_id match OR email match for admins who aren't formally linked)
 	rows, err := h.db.Query(r.Context(), `
-		SELECT id, project_id, epic_id, parent_id, type, title, description,
-		       status, priority, assignee_id, story_points, labels, order_index,
-		       is_blocked, blocked_reason, created_by, created_at, updated_at
-		  FROM work_items
-		 WHERE assignee_id = $1
-		   AND status NOT IN ('done', 'cancelled')
-		 ORDER BY CASE priority
+		SELECT wi.id, wi.project_id, wi.epic_id, wi.parent_id, wi.type, wi.title, wi.description,
+		       wi.status, wi.priority, wi.assignee_id, wi.story_points, wi.labels, wi.order_index,
+		       wi.is_blocked, wi.blocked_reason, wi.created_by, wi.created_at, wi.updated_at
+		  FROM work_items wi
+		  JOIN project_members pm ON pm.id = wi.assignee_id
+		  JOIN users u ON u.id = $1
+		 WHERE (pm.user_id = $1 OR pm.email = u.email)
+		   AND wi.status NOT IN ('done', 'cancelled')
+		 ORDER BY CASE wi.priority
 		     WHEN 'urgent' THEN 0
 		     WHEN 'high' THEN 1
 		     WHEN 'medium' THEN 2
 		     WHEN 'low' THEN 3
-		 END, created_at`, claims.UserID)
+		 END, wi.created_at`, claims.UserID)
 	if err != nil {
 		slog.Error("users.MyWorkItems: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list work items")

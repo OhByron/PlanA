@@ -135,6 +135,8 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		methodology = *body.Methodology
 	}
 
+	claims, _ := auth.ClaimsFromContext(r.Context())
+
 	var p Project
 	err := h.db.QueryRow(r.Context(),
 		fmt.Sprintf(`INSERT INTO projects (team_id, name, slug, description, methodology,
@@ -149,6 +151,17 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create project")
 		return
 	}
+
+	// Auto-add creator as a project member (PM role)
+	var userName, userEmail string
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT name, email FROM users WHERE id = $1`, claims.UserID,
+	).Scan(&userName, &userEmail)
+	_, _ = h.db.Exec(r.Context(),
+		`INSERT INTO project_members (project_id, user_id, name, email, job_role)
+		 VALUES ($1, $2, $3, $4, 'pm')
+		 ON CONFLICT DO NOTHING`,
+		p.ID, claims.UserID, userName, userEmail)
 
 	writeJSON(w, http.StatusCreated, p)
 }
