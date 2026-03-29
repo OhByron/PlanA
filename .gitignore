@@ -45,3 +45,12 @@ coverage/
 .cache/
 .temp/
 tmp/
+
+# Turbo local cache — build artefacts (remote cache handles CI)
+.turbo/
+
+# Go build outputs and test binaries
+bin/
+*.test
+vendor/
+
