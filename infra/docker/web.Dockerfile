@@ -22,9 +22,8 @@ ARG VITE_ELECTRIC_URL=http://localhost:3000
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_ELECTRIC_URL=$VITE_ELECTRIC_URL
 
-RUN pnpm --filter @projecta/types build && \
-    pnpm --filter @projecta/ui build && \
-    cd apps/web && npx vite build
+# Vite resolves @projecta/ui and @projecta/types from source via aliases
+RUN cd apps/web && npx vite build
 
 # Runtime — nginx
 FROM nginx:alpine
