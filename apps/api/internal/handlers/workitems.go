@@ -19,6 +19,7 @@ import (
 // WorkItem represents a work_items row returned to clients.
 type WorkItem struct {
 	ID            string          `json:"id"`
+	ItemNumber    *int            `json:"item_number"`
 	ProjectID     string          `json:"project_id"`
 	EpicID        *string         `json:"epic_id"`
 	ParentID      *string         `json:"parent_id"`
@@ -89,7 +90,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := fmt.Sprintf(`SELECT id, project_id, epic_id, parent_id, type, title, description,
+	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
 		status, priority, assignee_id, story_points, labels, order_index,
 		is_blocked, blocked_reason, created_by, created_at, updated_at
 		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
@@ -107,7 +108,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var wi WorkItem
 		if err := rows.Scan(
-			&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
 			&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
@@ -185,18 +186,29 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		orderIndex = *body.OrderIndex
 	}
 
-	var wi WorkItem
+	// Atomically increment the project's item counter to get a sequential number.
+	var itemNumber int
 	err := h.db.QueryRow(r.Context(),
+		`UPDATE projects SET item_counter = item_counter + 1 WHERE id = $1 RETURNING item_counter`,
+		projectID).Scan(&itemNumber)
+	if err != nil {
+		slog.Error("workitems.Create: failed to increment item counter", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
+		return
+	}
+
+	var wi WorkItem
+	err = h.db.QueryRow(r.Context(),
 		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
-			priority, assignee_id, story_points, labels, order_index, created_by)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-		 RETURNING id, project_id, epic_id, parent_id, type, title, description,
+			priority, assignee_id, story_points, labels, order_index, created_by, item_number)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
 			is_blocked, blocked_reason, created_by, created_at, updated_at`,
 		projectID, body.EpicID, body.ParentID, body.Type, body.Title, body.Description,
-		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID,
+		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID, itemNumber,
 	).Scan(
-		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
@@ -223,12 +235,12 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(),
-		`SELECT id, project_id, epic_id, parent_id, type, title, description,
+		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
 			is_blocked, blocked_reason, created_by, created_at, updated_at
 		 FROM work_items WHERE id = $1`, workItemID,
 	).Scan(
-		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
@@ -268,6 +280,7 @@ type updateWorkItemRequest struct {
 
 // Update patches a work item by ID using dynamic SET clause.
 func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
 	workItemID := chi.URLParam(r, "workItemID")
 	if workItemID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
@@ -368,7 +381,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	args = append(args, workItemID)
 	query := fmt.Sprintf(
 		`UPDATE work_items SET %s WHERE id = $%d
-		 RETURNING id, project_id, epic_id, parent_id, type, title, description,
+		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
 			is_blocked, blocked_reason, created_by, created_at, updated_at`,
 		strings.Join(fields, ", "), argN,
@@ -376,7 +389,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
-		&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
@@ -407,6 +420,15 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			slog.Error("workitems.Update: failed to log status change", "error", err)
 		}
+		// Notify assignee of status change
+		if wi.AssigneeID != nil {
+			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, *body.Status, claims.UserID, wi.ID)
+		}
+	}
+
+	// Notify new assignee when assignment changes
+	if body.AssigneeID != nil && wi.AssigneeID != nil {
+		NotifyAssignee(r.Context(), h.db, *wi.AssigneeID, wi.Title, claims.UserID, wi.ID)
 	}
 
 	writeJSON(w, http.StatusOK, wi)

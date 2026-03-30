@@ -134,6 +134,9 @@ export function WorkItemDetailPage() {
         {/* Title */}
         <div className="mb-6 flex items-start gap-3">
           <TypeIcon type={item.type} />
+          {(item as unknown as { itemNumber?: number | null }).itemNumber != null && (
+            <span className="text-sm text-gray-400">#{(item as unknown as { itemNumber: number }).itemNumber}</span>
+          )}
           {editingTitle ? (
             <Input
               autoFocus

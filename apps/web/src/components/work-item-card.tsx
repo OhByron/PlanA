@@ -51,6 +51,9 @@ export function WorkItemCard({
 
       <div className="flex items-start gap-2">
         <TypeIcon type={item.type} />
+        {(item as unknown as { itemNumber?: number | null }).itemNumber != null && (
+          <span className="text-xs text-gray-400 shrink-0">#{(item as unknown as { itemNumber: number }).itemNumber}</span>
+        )}
         <span className="flex-1 text-sm font-medium text-gray-900 line-clamp-2">
           {item.title}
         </span>

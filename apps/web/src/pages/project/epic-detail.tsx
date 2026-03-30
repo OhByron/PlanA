@@ -63,6 +63,9 @@ export function EpicDetailPage() {
 
         {/* Title */}
         <div className="mb-4">
+          {(epic as unknown as { itemNumber?: number | null }).itemNumber != null && (
+            <span className="text-sm text-gray-400 mr-2">#{(epic as unknown as { itemNumber: number }).itemNumber}</span>
+          )}
           {editingTitle ? (
             <Input
               autoFocus

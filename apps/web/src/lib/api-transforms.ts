@@ -86,9 +86,10 @@ export function toProject(w: any): Project {
   };
 }
 
-export function toWorkItem(w: any): WorkItem {
+export function toWorkItem(w: any): WorkItem & { itemNumber?: number | null } {
   return {
     id: w.id,
+    itemNumber: w.item_number ?? null,
     projectId: w.project_id,
     epicId: w.epic_id,
     parentId: w.parent_id,
@@ -109,9 +110,10 @@ export function toWorkItem(w: any): WorkItem {
   };
 }
 
-export function toEpic(w: any): Epic & { assigneeId?: string | null } {
+export function toEpic(w: any): Epic & { assigneeId?: string | null; itemNumber?: number | null } {
   return {
     id: w.id,
+    itemNumber: w.item_number ?? null,
     projectId: w.project_id,
     title: w.title,
     description: w.description,

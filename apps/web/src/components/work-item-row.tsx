@@ -42,6 +42,10 @@ export function WorkItemRow({ item, projectId, calculatedPoints, dragHandleProps
 
       <TypeIcon type={item.type} />
 
+      {(item as unknown as { itemNumber?: number | null }).itemNumber != null && (
+        <span className="text-xs text-gray-400 shrink-0 w-10">#{(item as unknown as { itemNumber: number }).itemNumber}</span>
+      )}
+
       <Link
         to="/p/$projectId/items/$workItemId"
         params={{ projectId, workItemId: item.id }}

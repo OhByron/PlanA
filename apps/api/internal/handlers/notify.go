@@ -30,8 +30,45 @@ func NotifyAssignee(ctx context.Context, db *pgxpool.Pool, memberID, workItemTit
 	if userID == nil {
 		return // unregistered member — can't notify
 	}
+	// Don't notify yourself
+	if *userID == actorUserID {
+		return
+	}
 	wiID := workItemID
 	CreateNotification(ctx, db, *userID, "assigned", &wiID, &actorUserID, map[string]string{
+		"title": workItemTitle,
+	})
+}
+
+// NotifyStatusChange notifies the assignee that the status of their work item changed.
+func NotifyStatusChange(ctx context.Context, db *pgxpool.Pool, assigneeMemberID, workItemTitle, newStatus, actorUserID, workItemID string) {
+	if assigneeMemberID == "" {
+		return
+	}
+	var userID *string
+	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID)
+	if userID == nil || *userID == actorUserID {
+		return
+	}
+	wiID := workItemID
+	CreateNotification(ctx, db, *userID, "status_changed", &wiID, &actorUserID, map[string]string{
+		"title":  workItemTitle,
+		"status": newStatus,
+	})
+}
+
+// NotifyComment notifies the assignee that someone commented on their work item.
+func NotifyComment(ctx context.Context, db *pgxpool.Pool, assigneeMemberID, workItemTitle, actorUserID, workItemID string) {
+	if assigneeMemberID == "" {
+		return
+	}
+	var userID *string
+	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID)
+	if userID == nil || *userID == actorUserID {
+		return
+	}
+	wiID := workItemID
+	CreateNotification(ctx, db, *userID, "comment_added", &wiID, &actorUserID, map[string]string{
 		"title": workItemTitle,
 	})
 }
