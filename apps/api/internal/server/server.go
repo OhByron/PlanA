@@ -183,6 +183,7 @@ func New(deps *Dependencies) http.Handler {
 				})
 				r.Get("/ai-settings", aiH.GetSettings)
 				r.Patch("/ai-settings", aiH.UpdateSettings)
+				r.Post("/ai/suggest-inline", aiH.SuggestInline)
 				r.Route("/epics", func(r chi.Router) {
 					r.Get("/", epicH.List)
 					r.Post("/", epicH.Create)

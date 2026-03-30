@@ -256,6 +256,78 @@ func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) 
 	writeJSON(w, http.StatusOK, result)
 }
 
+// SuggestInline handles AI suggestions for stories that haven't been created yet.
+// Accepts context in the request body instead of looking it up from the DB.
+// POST /api/projects/{projectID}/ai/suggest-inline
+func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+
+	var providerType, model, apiKey, endpoint *string
+	var projectName string
+	err := h.db.QueryRow(r.Context(),
+		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
+		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Project not found")
+		return
+	}
+	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
+		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
+		return
+	}
+
+	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+		return
+	}
+
+	var body struct {
+		Type        string `json:"type"` // "ac" or "description"
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		EpicTitle   string `json:"epic_title"`
+		EpicDesc    string `json:"epic_description"`
+		StoryType   string `json:"story_type"`
+	}
+	if !readJSON(w, r, &body) {
+		return
+	}
+
+	if body.Type == "ac" {
+		req := ai.SuggestACRequest{
+			StoryTitle:       body.Title,
+			StoryDescription: body.Description,
+			EpicTitle:        body.EpicTitle,
+			EpicDescription:  body.EpicDesc,
+			ProjectName:      projectName,
+		}
+		result, err := provider.SuggestAC(r.Context(), req)
+		if err != nil {
+			slog.Error("ai.SuggestInline AC failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "ai_error", "AI request failed: "+err.Error())
+			return
+		}
+		writeJSON(w, http.StatusOK, result)
+	} else {
+		req := ai.SuggestDescRequest{
+			StoryTitle:      body.Title,
+			CurrentDesc:     body.Description,
+			EpicTitle:       body.EpicTitle,
+			EpicDescription: body.EpicDesc,
+			ProjectName:     projectName,
+			StoryType:       body.StoryType,
+		}
+		result, err := provider.SuggestDescription(r.Context(), req)
+		if err != nil {
+			slog.Error("ai.SuggestInline desc failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "ai_error", "AI request failed: "+err.Error())
+			return
+		}
+		writeJSON(w, http.StatusOK, result)
+	}
+}
+
 func nilIfEmpty(s string) *string {
 	if s == "" {
 		return nil

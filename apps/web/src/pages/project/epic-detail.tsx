@@ -142,6 +142,8 @@ export function EpicDetailPage() {
             <AddStoryForm
               projectId={projectId}
               epicId={epicId}
+              epicTitle={epic.title}
+              epicDescription={epic.description ?? ''}
               members={members}
               onDone={() => setShowAddStory(false)}
             />
@@ -243,11 +245,15 @@ const TASK_TEMPLATES: { role: string; label: string; titlePrefix: string }[] = [
 function AddStoryForm({
   projectId,
   epicId,
+  epicTitle,
+  epicDescription,
   members,
   onDone,
 }: {
   projectId: string;
   epicId: string;
+  epicTitle: string;
+  epicDescription: string;
   members: ProjectMember[];
   onDone: () => void;
 }) {
@@ -260,6 +266,8 @@ function AddStoryForm({
   const [acRows, setAcRows] = useState<ACRow[]>([{ given: '', when: '', then: '' }]);
   const [createTasks, setCreateTasks] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [aiDescLoading, setAiDescLoading] = useState(false);
+  const [aiAcLoading, setAiAcLoading] = useState(false);
 
   const points = storyPoints ? Number(storyPoints) : 0;
   const isLarge = points >= 8;
@@ -376,7 +384,27 @@ function AddStoryForm({
 
       {/* Description */}
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Description</label>
+        <div className="mb-1 flex items-center justify-between">
+          <label className="text-xs font-medium text-gray-500">Description</label>
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={!title.trim() || aiDescLoading}
+            onClick={async () => {
+              setAiDescLoading(true);
+              try {
+                const result = await api.post<{ description: string; questions: string[] }>(
+                  `/projects/${projectId}/ai/suggest-inline`,
+                  { type: 'description', title, description, epic_title: epicTitle, epic_description: epicDescription, story_type: 'story' }
+                );
+                if (result.description) setDescription(result.description);
+              } catch { /* silently fail */ }
+              finally { setAiDescLoading(false); }
+            }}
+          >
+            {aiDescLoading ? 'Thinking...' : '✨ Suggest'}
+          </Button>
+        </div>
         <Textarea
           placeholder="Context, requirements, and details..."
           rows={3}
@@ -450,9 +478,31 @@ function AddStoryForm({
               testable. Use <strong>Given / When / Then</strong> format.
             </ContextHelp>
           </label>
-          <button onClick={addAcRow} className="text-xs text-brand-600 hover:text-brand-800">
-            + Add criterion
-          </button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={!title.trim() || aiAcLoading}
+              onClick={async () => {
+                setAiAcLoading(true);
+                try {
+                  const result = await api.post<{ suggestions: Array<{ given: string; when: string; then: string }>; questions: string[] }>(
+                    `/projects/${projectId}/ai/suggest-inline`,
+                    { type: 'ac', title, description, epic_title: epicTitle, epic_description: epicDescription }
+                  );
+                  if (result.suggestions?.length) {
+                    setAcRows([...acRows.filter(ac => ac.given || ac.when || ac.then), ...result.suggestions.map(s => ({ given: s.given, when: s.when, then: s.then }))]);
+                  }
+                } catch { /* silently fail */ }
+                finally { setAiAcLoading(false); }
+              }}
+            >
+              {aiAcLoading ? 'Thinking...' : '✨ Suggest'}
+            </Button>
+            <button onClick={addAcRow} className="text-xs text-brand-600 hover:text-brand-800">
+              + Add criterion
+            </button>
+          </div>
         </div>
         {acRows.map((ac, idx) => (
           <div key={idx} className="mb-2 rounded border border-gray-200 bg-white p-2 space-y-1.5">
