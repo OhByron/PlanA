@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { UserMenu } from './user-menu';
 import {
   useNotifications,
@@ -72,6 +73,7 @@ function NotificationIcon({ type }: { type: string }) {
 }
 
 export function TopBar() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -143,11 +145,20 @@ export function TopBar() {
                     No notifications yet
                   </div>
                 ) : (
-                  notifications.map((n) => (
-                    <a
+                  notifications.map((n) => {
+                    const pid = n.data.project_id as string | undefined;
+                    return (
+                    <button
                       key={n.id}
-                      href={n.workItemId ? `/work-items/${n.workItemId}` : '#'}
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        setOpen(false);
+                        if (pid && n.workItemId) {
+                          navigate({
+                            to: '/p/$projectId/items/$workItemId',
+                            params: { projectId: pid, workItemId: n.workItemId },
+                          });
+                        }
+                      }}
                       className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 ${
                         n.readAt ? 'opacity-60' : ''
                       }`}
@@ -164,8 +175,9 @@ export function TopBar() {
                       {!n.readAt && (
                         <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-blue-500" />
                       )}
-                    </a>
-                  ))
+                    </button>
+                    );
+                  })
                 )}
               </div>
             </div>

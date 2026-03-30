@@ -55,11 +55,22 @@ func (h *TeamHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pp := parsePagination(r)
+
+	var total int
+	err = h.db.QueryRow(r.Context(),
+		`SELECT COUNT(*) FROM teams WHERE organization_id = $1`, orgID).Scan(&total)
+	if err != nil {
+		slog.Error("teams.List: count failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list teams")
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, organization_id, name, slug, created_at, updated_at
 		   FROM teams
 		  WHERE organization_id = $1
-		  ORDER BY name`, orgID)
+		  ORDER BY name LIMIT $2 OFFSET $3`, orgID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("teams.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list teams")
@@ -83,7 +94,7 @@ func (h *TeamHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, teams)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: teams, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // Create creates a new team and adds the creator as an admin member.
