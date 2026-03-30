@@ -30,7 +30,7 @@ services:
       dockerfile: infra/docker/api.Dockerfile
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-plana}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD:-plana}@postgres:5432/${POSTGRES_DB:-plana}?sslmode=disable
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET}
       ELECTRIC_JWT_SECRET: ${ELECTRIC_JWT_SECRET:-changeme-electric-32chars-min}
