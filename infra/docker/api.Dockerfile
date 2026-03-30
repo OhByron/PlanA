@@ -1,6 +1,9 @@
 # Build stage
 FROM golang:1.24-alpine AS builder
 
+RUN apk add --no-cache git
+ENV GOTOOLCHAIN=local
+
 WORKDIR /app
 
 # Fetch dependencies first (layer cache)

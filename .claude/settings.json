@@ -52,7 +52,9 @@
       "Bash(pnpm --filter @projecta/web add -D @tailwindcss/typography)",
       "Bash(xargs -I{} taskkill //F //PID {} 2)",
       "Bash(1 sleep:*)",
-      "Bash(go run:*)"
+      "Bash(go run:*)",
+      "Bash(curl -s \"https://hub.docker.com/v2/repositories/library/golang/tags?page_size=10&name=1.24\")",
+      "Bash(curl -s \"https://hub.docker.com/v2/repositories/library/golang/tags?page_size=5&name=1.25\")"
     ]
   }
 }
