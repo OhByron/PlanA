@@ -104,9 +104,14 @@ export function OrgDetailPage() {
                     )}
                   </div>
                 </div>
-                <Link to="/p/$projectId/board" params={{ projectId: p.id }}>
-                  <Button size="xs" variant="outline">Open</Button>
-                </Link>
+                <div className="flex gap-2">
+                  <Link to="/p/$projectId/settings" params={{ projectId: p.id }}>
+                    <Button size="xs" variant="ghost">Settings</Button>
+                  </Link>
+                  <Link to="/p/$projectId/board" params={{ projectId: p.id }}>
+                    <Button size="xs" variant="outline">Open</Button>
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

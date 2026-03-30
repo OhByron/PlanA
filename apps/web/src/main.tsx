@@ -25,6 +25,7 @@ import { ReportsPage } from './pages/project/reports';
 import { TeamPage } from './pages/project/team';
 import { SprintsPage } from './pages/project/sprints';
 import { SprintDetailPage } from './pages/project/sprint-detail';
+import { AISettingsPage } from './pages/project/ai-settings';
 import { MyWorkPage } from './pages/my-work';
 import { OrgsPage } from './pages/orgs';
 import { OrgDetailPage } from './pages/org-detail';
@@ -167,6 +168,12 @@ const sprintDetailRoute = createRoute({
   component: SprintDetailPage,
 });
 
+const settingsRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/settings',
+  component: AISettingsPage,
+});
+
 const workItemDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/p/$projectId/items/$workItemId',
@@ -185,7 +192,7 @@ const routeTree = rootRoute.addChildren([
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
-    projectRoute.addChildren([boardRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute]),
+    projectRoute.addChildren([boardRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute, settingsRoute]),
     epicDetailRoute,
     sprintDetailRoute,
     workItemDetailRoute,

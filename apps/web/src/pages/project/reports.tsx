@@ -493,6 +493,32 @@ function BurndownChart({
   );
 }
 
+// --- Test Coverage ---
+function TestCoverage() {
+  return (
+    <Section title="Test Coverage" subtitle="Import test results to track coverage">
+      <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500 space-y-2">
+        <p>Test results can be imported from any CI pipeline or test framework:</p>
+        <div className="font-mono text-xs bg-gray-50 rounded p-3 space-y-1">
+          <p className="text-gray-400"># JUnit XML (Cypress, Playwright, pytest, Jest, etc.)</p>
+          <p>curl -X POST {window.location.origin}/api/projects/PROJECT_ID/test-results/junit \</p>
+          <p className="pl-4">-H &quot;Authorization: Bearer TOKEN&quot; \</p>
+          <p className="pl-4">-H &quot;Content-Type: application/xml&quot; \</p>
+          <p className="pl-4">-d @test-results.xml</p>
+          <p className="mt-2 text-gray-400"># Webhook (any tool)</p>
+          <p>curl -X POST {window.location.origin}/api/projects/PROJECT_ID/test-results/webhook \</p>
+          <p className="pl-4">-H &quot;Authorization: Bearer TOKEN&quot; \</p>
+          <p className="pl-4">-H &quot;Content-Type: application/json&quot; \</p>
+          <p className="pl-4">-d &apos;{'{'}&quot;test_name&quot;:&quot;test_#42_login&quot;,&quot;status&quot;:&quot;pass&quot;,&quot;source&quot;:&quot;cypress&quot;{'}'}&apos;</p>
+        </div>
+        <p className="text-xs text-gray-400">
+          Include <code className="bg-gray-100 px-1 rounded">#42</code> in your test name to auto-link results to story #42.
+        </p>
+      </div>
+    </Section>
+  );
+}
+
 // --- Section wrapper ---
 function Section({
   title,

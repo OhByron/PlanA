@@ -55,6 +55,8 @@ func New(deps *Dependencies) http.Handler {
 	linkH    := handlers.NewLinkHandlers(deps.DB)
 	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
 	notifH   := handlers.NewNotificationHandlers(deps.DB)
+	aiH      := handlers.NewAIHandlers(deps.DB)
+	testH    := handlers.NewTestResultHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 
@@ -166,6 +168,8 @@ func New(deps *Dependencies) http.Handler {
 						r.Get("/", wiH.Get)
 						r.Patch("/", wiH.Update)
 						r.Delete("/", wiH.Delete)
+						r.Post("/suggest-ac", aiH.SuggestAC)
+						r.Post("/suggest-desc", aiH.SuggestDescription)
 					})
 				})
 				r.Route("/members", func(r chi.Router) {
@@ -177,6 +181,8 @@ func New(deps *Dependencies) http.Handler {
 						r.Post("/invite", invH.Create)
 					})
 				})
+				r.Get("/ai-settings", aiH.GetSettings)
+				r.Patch("/ai-settings", aiH.UpdateSettings)
 				r.Route("/epics", func(r chi.Router) {
 					r.Get("/", epicH.List)
 					r.Post("/", epicH.Create)
@@ -195,6 +201,11 @@ func New(deps *Dependencies) http.Handler {
 						r.Get("/burndown", sprintH.Burndown)
 					})
 				})
+				r.Route("/test-results", func(r chi.Router) {
+					r.Get("/", testH.List)
+					r.Post("/junit", testH.ImportJUnit)
+					r.Post("/webhook", testH.Webhook)
+				})
 			})
 
 			// Sprint item management (add/remove work items from a sprint)
@@ -206,6 +217,7 @@ func New(deps *Dependencies) http.Handler {
 
 			// Work-item sub-resources
 			r.Route("/work-items/{workItemID}", func(r chi.Router) {
+				r.Get("/test-summary", testH.Summary)
 				r.Route("/acceptance-criteria", func(r chi.Router) {
 					r.Get("/", acH.List)
 					r.Post("/", acH.Create)

@@ -1,0 +1,117 @@
+package ai
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+type OpenAIProvider struct {
+	apiKey   string
+	model    string
+	endpoint string
+}
+
+func NewOpenAIProvider(apiKey, model, endpoint string) *OpenAIProvider {
+	if model == "" {
+		model = "gpt-4o"
+	}
+	return &OpenAIProvider{apiKey: apiKey, model: model, endpoint: endpoint}
+}
+
+func (p *OpenAIProvider) SuggestAC(ctx context.Context, req SuggestACRequest) (*SuggestACResponse, error) {
+	systemPrompt := `You are an experienced Business Systems Analyst helping define acceptance criteria for user stories in an Agile project. Use Given/When/Then format. Be specific and testable. Consider edge cases. If ambiguous, ask clarifying questions. Return JSON: {"suggestions": [{"given": "...", "when": "...", "then": "..."}], "questions": ["..."]}`
+
+	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nStory: %s\n%s\nSuggest acceptance criteria.",
+		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryTitle, req.StoryDescription)
+
+	body := map[string]any{
+		"model":      p.model,
+		"max_tokens": 1024,
+		"messages": []map[string]string{
+			{"role": "system", "content": systemPrompt},
+			{"role": "user", "content": userPrompt},
+		},
+		"response_format": map[string]string{"type": "json_object"},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
+	if err != nil {
+		return nil, fmt.Errorf("building request: %w", err)
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("calling OpenAI API: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody)
+	}
+
+	var openaiResp struct {
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
+	}
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
+		return nil, fmt.Errorf("parsing OpenAI response: %w", err)
+	}
+	if len(openaiResp.Choices) == 0 {
+		return nil, fmt.Errorf("empty response from OpenAI")
+	}
+
+	var result SuggestACResponse
+	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil {
+		return nil, fmt.Errorf("parsing AC suggestions: %w", err)
+	}
+
+	return &result, nil
+}
+
+func (p *OpenAIProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
+	systemPrompt := `You are a BSA writing story descriptions. Write 2-4 concise paragraphs covering context, requirements, and edge cases. Return JSON: {"description": "...", "questions": []}`
+
+	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nType: %s\nTitle: %s\n%s\nWrite a description.",
+		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryType, req.StoryTitle,
+		func() string { if req.CurrentDesc != "" { return "Current: " + req.CurrentDesc }; return "" }())
+
+	body := map[string]any{
+		"model": p.model, "max_tokens": 1024,
+		"messages": []map[string]string{{"role": "system", "content": systemPrompt}, {"role": "user", "content": userPrompt}},
+		"response_format": map[string]string{"type": "json_object"},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
+	if err != nil { return nil, err }
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil { return nil, err }
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 { return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody) }
+
+	var openaiResp struct {
+		Choices []struct{ Message struct{ Content string `json:"content"` } `json:"message"` } `json:"choices"`
+	}
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil { return nil, err }
+	if len(openaiResp.Choices) == 0 { return nil, fmt.Errorf("empty response") }
+
+	var result SuggestDescResponse
+	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil { return nil, err }
+	return &result, nil
+}

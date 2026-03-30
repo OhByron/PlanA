@@ -5,7 +5,7 @@ import type { WorkItemStatus, Priority, WorkItemType } from '@projecta/types';
 import { useWorkItem } from '../../hooks/use-work-item';
 import { useUpdateWorkItem, useWorkItems, useCreateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
-import { useAcceptanceCriteria, useCreateAcceptanceCriterion, useDeleteAcceptanceCriterion } from '../../hooks/use-acceptance-criteria';
+import { useAcceptanceCriteria, useCreateAcceptanceCriterion, useUpdateAcceptanceCriterion, useDeleteAcceptanceCriterion } from '../../hooks/use-acceptance-criteria';
 import { useComments, useCreateComment } from '../../hooks/use-comments';
 import { TypeIcon } from '../../components/type-icon';
 import { PriorityIndicator } from '../../components/priority-indicator';
@@ -15,6 +15,8 @@ import { RichTextDisplay } from '../../components/rich-text-display';
 import { ContextHelp } from '../../components/context-help';
 import { useDependencies, useCreateDependency, useDeleteDependency } from '../../hooks/use-dependencies';
 import { useLinks, useCreateLink, useDeleteLink } from '../../hooks/use-links';
+import { useTestSummary } from '../../hooks/use-test-results';
+import { TestStatusBadge } from '../../components/test-status-badge';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api-client';
 
@@ -33,6 +35,7 @@ export function WorkItemDetailPage() {
   const updateItem = useUpdateWorkItem(projectId);
   const { data: criteria = [] } = useAcceptanceCriteria(workItemId);
   const createAC = useCreateAcceptanceCriterion(workItemId);
+  const updateAC = useUpdateAcceptanceCriterion(workItemId);
   const deleteAC = useDeleteAcceptanceCriterion(workItemId);
   const { data: comments = [] } = useComments(workItemId);
   const createComment = useCreateComment(workItemId);
@@ -55,6 +58,8 @@ export function WorkItemDetailPage() {
   const [descDraft, setDescDraft] = useState('');
   const [acDraft, setAcDraft] = useState({ given: '', when: '', then: '' });
   const [showACForm, setShowACForm] = useState(false);
+  const [editingACId, setEditingACId] = useState<string | null>(null);
+  const [editingACData, setEditingACData] = useState({ given: '', when: '', then: '' });
   const [showDepForm, setShowDepForm] = useState(false);
   const [commentKey, setCommentKey] = useState(0);
   const [depTargetId, setDepTargetId] = useState('');
@@ -63,15 +68,38 @@ export function WorkItemDetailPage() {
   const { data: links = [] } = useLinks(workItemId);
   const createLink = useCreateLink(workItemId);
   const deleteLink = useDeleteLink(workItemId);
+  const { data: testSummary } = useTestSummary(workItemId);
   const [showLinkForm, setShowLinkForm] = useState(false);
   const [linkLabel, setLinkLabel] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
+
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiDescLoading, setAiDescLoading] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<Array<{given: string; when: string; then: string}>>([]);
+  const [aiQuestions, setAiQuestions] = useState<string[]>([]);
 
   const submitLink = () => {
     if (linkLabel.trim() && linkUrl.trim()) {
       createLink.mutate({ label: linkLabel.trim(), url: linkUrl.trim() }, {
         onSuccess: () => { setLinkLabel(''); setLinkUrl(''); setShowLinkForm(false); }
       });
+    }
+  };
+
+  const suggestAC = async () => {
+    setAiLoading(true);
+    setAiSuggestions([]);
+    setAiQuestions([]);
+    try {
+      const result = await api.post<{ suggestions: Array<{given: string; when: string; then: string}>; questions: string[] }>(
+        `/projects/${projectId}/work-items/${workItemId}/suggest-ac`, {}
+      );
+      setAiSuggestions(result.suggestions ?? []);
+      setAiQuestions(result.questions ?? []);
+    } catch (err: any) {
+      setAiQuestions([err.message ?? 'AI suggestion failed']);
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -181,7 +209,34 @@ export function WorkItemDetailPage() {
 
         {/* Description */}
         <section className="mb-8">
-          <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h2>
+          <div className="mb-2 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={aiDescLoading}
+              onClick={async () => {
+                setAiDescLoading(true);
+                try {
+                  const result = await api.post<{ description: string; questions: string[] }>(
+                    `/projects/${projectId}/work-items/${workItemId}/suggest-desc`, {}
+                  );
+                  if (result.description) {
+                    patchField({ description: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: result.description }] }] } });
+                  }
+                  if (result.questions?.length) {
+                    setAiQuestions(result.questions);
+                  }
+                } catch (err: any) {
+                  setAiQuestions([err.message ?? 'AI suggestion failed']);
+                } finally {
+                  setAiDescLoading(false);
+                }
+              }}
+            >
+              {aiDescLoading ? 'Thinking...' : '✨ Suggest'}
+            </Button>
+          </div>
           {editingDesc ? (
             <div className="space-y-2">
               <RichTextEditor
@@ -236,13 +291,23 @@ export function WorkItemDetailPage() {
                 not a vague wish.
               </ContextHelp>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowACForm(!showACForm)}
-            >
-              + Add
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowACForm(!showACForm)}
+              >
+                + Add
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={suggestAC}
+                disabled={aiLoading}
+              >
+                {aiLoading ? 'Thinking...' : '\u2728 Suggest AC'}
+              </Button>
+            </div>
           </div>
 
           {criteria.length === 0 && !showACForm && (
@@ -251,38 +316,69 @@ export function WorkItemDetailPage() {
             </p>
           )}
 
-          {criteria.map((ac) => (
-            <div
-              key={ac.id}
-              className="mb-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
-            >
-              <div className="flex justify-between">
-                <div className="space-y-1 text-sm">
-                  <p>
-                    <span className="font-medium text-gray-500">Given </span>
-                    <span className="text-gray-900">{ac.given}</span>
-                  </p>
-                  <p>
-                    <span className="font-medium text-gray-500">When </span>
-                    <span className="text-gray-900">{ac.when}</span>
-                  </p>
-                  <p>
-                    <span className="font-medium text-gray-500">Then </span>
-                    <span className="text-gray-900">{ac.then}</span>
-                  </p>
+          {criteria.map((ac) =>
+            editingACId === ac.id ? (
+              <div key={ac.id} className="mb-3 rounded-lg border border-brand-200 bg-brand-50/30 p-3 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-12 text-right text-xs font-medium text-gray-400">Given</span>
+                  <Input value={editingACData.given} onChange={(e) => setEditingACData({ ...editingACData, given: e.target.value })} className="flex-1" />
                 </div>
-                <button
-                  onClick={() => deleteAC.mutate(ac.id)}
-                  className="ml-2 self-start text-gray-400 hover:text-red-500"
-                  title="Delete"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="w-12 text-right text-xs font-medium text-gray-400">When</span>
+                  <Input value={editingACData.when} onChange={(e) => setEditingACData({ ...editingACData, when: e.target.value })} className="flex-1" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-12 text-right text-xs font-medium text-gray-400">Then</span>
+                  <Input value={editingACData.then} onChange={(e) => setEditingACData({ ...editingACData, then: e.target.value })} className="flex-1" />
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <Button size="sm" onClick={() => {
+                    updateAC.mutate({
+                      acId: ac.id,
+                      data: { given_clause: editingACData.given, when_clause: editingACData.when, then_clause: editingACData.then },
+                    });
+                    setEditingACId(null);
+                  }}>Save</Button>
+                  <Button size="sm" variant="ghost" onClick={() => setEditingACId(null)}>Cancel</Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              <div
+                key={ac.id}
+                className="mb-3 rounded-lg border border-gray-200 bg-gray-50 p-3 cursor-pointer hover:border-gray-300"
+                onClick={() => {
+                  setEditingACId(ac.id);
+                  setEditingACData({ given: ac.given, when: ac.when, then: ac.then });
+                }}
+              >
+                <div className="flex justify-between">
+                  <div className="space-y-1 text-sm">
+                    <p>
+                      <span className="font-medium text-gray-500">Given </span>
+                      <span className="text-gray-900">{ac.given}</span>
+                    </p>
+                    <p>
+                      <span className="font-medium text-gray-500">When </span>
+                      <span className="text-gray-900">{ac.when}</span>
+                    </p>
+                    <p>
+                      <span className="font-medium text-gray-500">Then </span>
+                      <span className="text-gray-900">{ac.then}</span>
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteAC.mutate(ac.id); }}
+                    className="ml-2 self-start text-gray-400 hover:text-red-500"
+                    title="Delete"
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ),
+          )}
 
           {showACForm && (
             <div className="rounded-lg border border-brand-200 bg-brand-50/30 p-3 space-y-2">
@@ -305,6 +401,35 @@ export function WorkItemDetailPage() {
                 <Button size="sm" onClick={submitAC}>Save</Button>
                 <Button size="sm" variant="ghost" onClick={() => setShowACForm(false)}>Cancel</Button>
               </div>
+            </div>
+          )}
+
+          {aiSuggestions.length > 0 && (
+            <div className="mt-3 space-y-2">
+              <p className="text-xs font-medium text-brand-600">AI Suggestions — click to add:</p>
+              {aiSuggestions.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    createAC.mutate({ given_clause: s.given, when_clause: s.when, then_clause: s.then });
+                    setAiSuggestions(aiSuggestions.filter((_, j) => j !== i));
+                  }}
+                  className="w-full rounded-lg border border-brand-200 bg-brand-50/30 p-3 text-left text-sm hover:bg-brand-50"
+                >
+                  <p><span className="font-medium text-gray-500">Given </span>{s.given}</p>
+                  <p><span className="font-medium text-gray-500">When </span>{s.when}</p>
+                  <p><span className="font-medium text-gray-500">Then </span>{s.then}</p>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {aiQuestions.length > 0 && (
+            <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+              <p className="text-xs font-medium text-amber-700 mb-1">The AI needs more information:</p>
+              {aiQuestions.map((q, i) => (
+                <p key={i} className="text-sm text-amber-800">{'\u2022'} {q}</p>
+              ))}
             </div>
           )}
         </section>
@@ -463,7 +588,7 @@ export function WorkItemDetailPage() {
               <div className="flex gap-2">
                 <Input
                   autoFocus
-                  placeholder="Label (e.g. GitHub PR, Figma mockup)"
+                  placeholder="Label (e.g. GitHub PR, Figma, Test results, Docs)"
                   value={linkLabel}
                   onChange={(e) => setLinkLabel(e.target.value)}
                   className="flex-1"
@@ -483,6 +608,31 @@ export function WorkItemDetailPage() {
             </div>
           )}
         </section>
+
+        {/* Test Results */}
+        {testSummary && testSummary.total > 0 && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+              Test Results
+            </h2>
+            <div className="rounded-lg border border-gray-200 bg-white p-4">
+              <div className="flex items-center gap-4">
+                <TestStatusBadge status={testSummary.status} total={testSummary.total} pass={testSummary.pass} />
+                <div className="flex gap-3 text-xs text-gray-500">
+                  <span className="text-green-600">{testSummary.pass} passed</span>
+                  {testSummary.fail > 0 && <span className="text-red-600">{testSummary.fail} failed</span>}
+                  {testSummary.error > 0 && <span className="text-red-600">{testSummary.error} errors</span>}
+                  {testSummary.skip > 0 && <span className="text-gray-400">{testSummary.skip} skipped</span>}
+                </div>
+                {testSummary.lastRun && (
+                  <span className="ml-auto text-xs text-gray-400">
+                    Last run: {new Date(testSummary.lastRun).toLocaleString()}
+                  </span>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Comments */}
         <section>
