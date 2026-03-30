@@ -17,7 +17,14 @@ RUN pnpm install --frozen-lockfile
 COPY tsconfig.base.json ./
 COPY packages/ packages/
 COPY apps/web/ apps/web/
-RUN pnpm --filter @projecta/web build
+ARG VITE_API_URL=http://localhost
+ARG VITE_ELECTRIC_URL=http://localhost:3000
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_ELECTRIC_URL=$VITE_ELECTRIC_URL
+
+RUN pnpm --filter @projecta/types build && \
+    pnpm --filter @projecta/ui build && \
+    cd apps/web && npx vite build
 
 # Runtime — nginx
 FROM nginx:alpine
