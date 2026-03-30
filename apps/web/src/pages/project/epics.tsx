@@ -4,6 +4,7 @@ import { useEpics } from '../../hooks/use-epics';
 import { useWorkItems } from '../../hooks/use-work-items';
 import { PriorityIndicator } from '../../components/priority-indicator';
 import { CreateEpicDialog } from '../../components/create-epic-dialog';
+import { HelpOverlay } from '../../components/help-overlay';
 
 const statusColors: Record<string, 'success' | 'default' | 'secondary' | 'outline' | 'warning'> = {
   open: 'default',
@@ -27,6 +28,16 @@ export function EpicsPage() {
 
   return (
     <div className="p-6">
+      <HelpOverlay id="epics-intro" title="Epics">
+        <p className="mb-2">
+          Epics are feature-level groupings. Each epic contains related stories that
+          together deliver a business capability.
+        </p>
+        <p>
+          Click an epic to see its stories, add new ones, and track progress.
+        </p>
+      </HelpOverlay>
+
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Epics</h2>
         <CreateEpicDialog projectId={projectId} />

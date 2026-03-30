@@ -10,6 +10,7 @@ interface Props {
   childTaskCount?: number | undefined;
   calculatedPoints?: number | undefined;
   isBlocked?: boolean | undefined;
+  assigneeName?: string | undefined;
 }
 
 export function SortableWorkItemCard({
@@ -19,6 +20,7 @@ export function SortableWorkItemCard({
   childTaskCount,
   calculatedPoints,
   isBlocked,
+  assigneeName,
 }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id });
@@ -38,6 +40,7 @@ export function SortableWorkItemCard({
         childTaskCount={childTaskCount}
         calculatedPoints={calculatedPoints}
         isBlocked={isBlocked}
+        assigneeName={assigneeName}
       />
     </div>
   );

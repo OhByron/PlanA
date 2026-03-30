@@ -152,6 +152,9 @@ function MemberRow({
         <Badge variant={roleColors[m.jobRole] ?? 'secondary'}>
           {m.jobRole.toUpperCase()}
         </Badge>
+        {m.capacity != null && (
+          <span className="text-xs text-gray-500">{m.capacity} pts/sprint</span>
+        )}
         <div className="flex gap-1">
           <Button size="xs" variant="ghost" onClick={onEdit}>Edit</Button>
           <Button size="xs" variant="ghost" className="text-red-500 hover:text-red-700" onClick={onDelete}>
@@ -190,7 +193,7 @@ function AddMemberForm({
   onCancel,
   isPending,
 }: {
-  onSubmit: (data: { name: string; email?: string; phone?: string; job_role: string }) => void;
+  onSubmit: (data: { name: string; email?: string; phone?: string; job_role: string; capacity?: number }) => void;
   onCancel: () => void;
   isPending: boolean;
 }) {
@@ -198,11 +201,12 @@ function AddMemberForm({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [jobRole, setJobRole] = useState('dev');
+  const [capacity, setCapacity] = useState('');
 
   return (
     <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50/30 p-4">
       <h3 className="mb-3 text-sm font-medium text-gray-900">Add Team Member</h3>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-5 gap-3">
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-500">Name *</label>
           <Input autoFocus placeholder="Jane Smith" value={name} onChange={(e) => setName(e.target.value)} />
@@ -223,18 +227,23 @@ function AddMemberForm({
             ))}
           </Select>
         </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">Capacity</label>
+          <Input type="number" placeholder="pts/sprint" value={capacity} onChange={(e) => setCapacity(e.target.value)} />
+        </div>
       </div>
       <div className="mt-3 flex gap-2">
         <Button
           size="sm"
           onClick={() => {
             if (!name.trim()) return;
-            const data: { name: string; email?: string; phone?: string; job_role: string } = {
+            const data: { name: string; email?: string; phone?: string; job_role: string; capacity?: number } = {
               name: name.trim(),
               job_role: jobRole,
             };
             if (email.trim()) data.email = email.trim();
             if (phone.trim()) data.phone = phone.trim();
+            if (capacity) data.capacity = Number(capacity);
             onSubmit(data);
           }}
           disabled={!name.trim() || isPending}
@@ -263,6 +272,7 @@ function EditMemberRow({
   const [email, setEmail] = useState(m.email ?? '');
   const [phone, setPhone] = useState(m.phone ?? '');
   const [jobRole, setJobRole] = useState(m.jobRole);
+  const [capacity, setCapacity] = useState(m.capacity != null ? String(m.capacity) : '');
 
   const submit = () => {
     const data: Record<string, unknown> = {};
@@ -270,13 +280,15 @@ function EditMemberRow({
     if (email !== (m.email ?? '')) data.email = email || null;
     if (phone !== (m.phone ?? '')) data.phone = phone || null;
     if (jobRole !== m.jobRole) data.job_role = jobRole;
+    const newCapacity = capacity ? Number(capacity) : null;
+    if (newCapacity !== m.capacity) data.capacity = newCapacity;
     if (Object.keys(data).length === 0) { onCancel(); return; }
     onSave(data);
   };
 
   return (
     <div className="rounded-lg border border-brand-300 bg-brand-50/20 px-4 py-3">
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-5 gap-3">
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-500">Name</label>
           <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -296,6 +308,10 @@ function EditMemberRow({
               <option key={r.value} value={r.value}>{r.label}</option>
             ))}
           </Select>
+        </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">Capacity</label>
+          <Input type="number" placeholder="pts/sprint" value={capacity} onChange={(e) => setCapacity(e.target.value)} />
         </div>
       </div>
       <div className="mt-2 flex gap-2">

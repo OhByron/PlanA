@@ -10,7 +10,9 @@ import {
 } from '@dnd-kit/core';
 import { useMemo, useState } from 'react';
 import type { WorkItem, WorkItemStatus } from '@projecta/types';
+import { cn } from '@projecta/ui';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
+import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus } from '../../hooks/use-project-dependencies';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
@@ -21,8 +23,26 @@ const COLUMNS: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review
 export function BoardPage() {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: items = [], isLoading } = useWorkItems(projectId);
+  const { data: members = [] } = useProjectMembers(projectId);
   const updateItem = useUpdateWorkItem(projectId);
   const { blockedItems } = useProjectBlockedStatus(projectId, items);
+
+  const memberNames = useMemo(
+    () => new Map(members.map((m) => [m.id, m.name])),
+    [members],
+  );
+
+  const totalCapacity = useMemo(
+    () => members.reduce((s, m) => s + (m.capacity ?? 0), 0),
+    [members],
+  );
+
+  const totalInProgress = useMemo(
+    () => items
+      .filter((i) => i.status === 'in_progress' || i.status === 'in_review')
+      .reduce((s, i) => s + (i.storyPoints ?? 0), 0),
+    [items],
+  );
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
 
   const sensors = useSensors(
@@ -131,6 +151,19 @@ export function BoardPage() {
         <p className="text-sm text-gray-500">
           {items.length} item{items.length !== 1 ? 's' : ''}
         </p>
+        {totalCapacity > 0 && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className={cn(
+              'font-medium',
+              totalInProgress > totalCapacity ? 'text-red-600' : 'text-gray-500'
+            )}>
+              {totalInProgress} / {totalCapacity} pts in flight
+            </span>
+            {totalInProgress > totalCapacity && (
+              <span className="text-xs text-red-500">&#x26A0; Over capacity</span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 gap-4 overflow-x-auto px-6 pb-6">
@@ -149,6 +182,8 @@ export function BoardPage() {
               childTaskCounts={childTaskCounts}
               calculatedPointsMap={calculatedPointsMap}
               blockedItems={blockedItems}
+              wipWarning={status === 'in_progress' && totalInProgress > totalCapacity}
+              memberNames={memberNames}
             />
           ))}
 

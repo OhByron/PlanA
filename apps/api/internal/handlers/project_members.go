@@ -13,7 +13,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-const projectMemberColumns = `id, project_id, user_id, name, email, phone, job_role, created_at, updated_at`
+const projectMemberColumns = `id, project_id, user_id, name, email, phone, job_role, capacity, created_at, updated_at`
 
 // projectMemberResponse represents a project_members row returned to clients.
 type projectMemberResponse struct {
@@ -24,13 +24,14 @@ type projectMemberResponse struct {
 	Email     *string   `json:"email"`
 	Phone     *string   `json:"phone"`
 	JobRole   string    `json:"job_role"`
+	Capacity  *int      `json:"capacity"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (m *projectMemberResponse) scanFields() []any {
 	return []any{
-		&m.ID, &m.ProjectID, &m.UserID, &m.Name, &m.Email, &m.Phone, &m.JobRole,
+		&m.ID, &m.ProjectID, &m.UserID, &m.Name, &m.Email, &m.Phone, &m.JobRole, &m.Capacity,
 		&m.CreatedAt, &m.UpdatedAt,
 	}
 }
@@ -93,10 +94,11 @@ func (h *ProjectMemberHandlers) List(w http.ResponseWriter, r *http.Request) {
 }
 
 type createProjectMemberRequest struct {
-	Name    string  `json:"name"`
-	Email   *string `json:"email"`
-	Phone   *string `json:"phone"`
-	JobRole string  `json:"job_role"`
+	Name     string  `json:"name"`
+	Email    *string `json:"email"`
+	Phone    *string `json:"phone"`
+	JobRole  string  `json:"job_role"`
+	Capacity *int    `json:"capacity"`
 }
 
 // Create inserts a new member into a project.
@@ -122,10 +124,10 @@ func (h *ProjectMemberHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	var m projectMemberResponse
 	err := h.db.QueryRow(r.Context(),
-		fmt.Sprintf(`INSERT INTO project_members (project_id, name, email, phone, job_role)
-		 VALUES ($1, $2, $3, $4, $5)
+		fmt.Sprintf(`INSERT INTO project_members (project_id, name, email, phone, job_role, capacity)
+		 VALUES ($1, $2, $3, $4, $5, $6)
 		 RETURNING %s`, projectMemberColumns),
-		projectID, body.Name, body.Email, body.Phone, body.JobRole,
+		projectID, body.Name, body.Email, body.Phone, body.JobRole, body.Capacity,
 	).Scan(m.scanFields()...)
 	if err != nil {
 		slog.Error("project_members.Create: insert failed", "error", err)
@@ -137,10 +139,11 @@ func (h *ProjectMemberHandlers) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 type updateProjectMemberRequest struct {
-	Name    *string `json:"name"`
-	Email   *string `json:"email"`
-	Phone   *string `json:"phone"`
-	JobRole *string `json:"job_role"`
+	Name     *string `json:"name"`
+	Email    *string `json:"email"`
+	Phone    *string `json:"phone"`
+	JobRole  *string `json:"job_role"`
+	Capacity *int    `json:"capacity"`
 }
 
 // Update patches an existing project member.
@@ -179,6 +182,11 @@ func (h *ProjectMemberHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			args = append(args, *f.val)
 			argN++
 		}
+	}
+	if body.Capacity != nil {
+		fields = append(fields, fmt.Sprintf("capacity = $%d", argN))
+		args = append(args, *body.Capacity)
+		argN++
 	}
 
 	if len(fields) == 0 {

@@ -10,6 +10,7 @@ export interface ProjectMember {
   email: string | null;
   phone: string | null;
   jobRole: string;
+  capacity: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -23,6 +24,7 @@ function toMember(w: Record<string, unknown>): ProjectMember {
     email: (w.email as string) ?? null,
     phone: (w.phone as string) ?? null,
     jobRole: w.job_role as string,
+    capacity: (w.capacity as number) ?? null,
     createdAt: w.created_at as string,
     updatedAt: w.updated_at as string,
   };
@@ -42,7 +44,7 @@ export function useProjectMembers(projectId: string) {
 export function useCreateProjectMember(projectId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (data: { name: string; email?: string; phone?: string; job_role: string }) => {
+    mutationFn: async (data: { name: string; email?: string; phone?: string; job_role: string; capacity?: number }) => {
       const raw = await api.post(`/projects/${projectId}/members`, data);
       return toMember(raw as Record<string, unknown>);
     },

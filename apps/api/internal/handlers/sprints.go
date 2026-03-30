@@ -13,6 +13,118 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// Burndown returns daily burndown data for a sprint.
+// GET /api/projects/{projectID}/sprints/{sprintID}/burndown
+func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
+	sprintID := chi.URLParam(r, "sprintID")
+
+	// Get sprint dates
+	var startDate, endDate *time.Time
+	err := h.db.QueryRow(r.Context(),
+		`SELECT start_date, end_date FROM sprints WHERE id = $1`, sprintID,
+	).Scan(&startDate, &endDate)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Sprint not found")
+			return
+		}
+		slog.Error("burndown: sprint query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to get sprint")
+		return
+	}
+
+	if startDate == nil || endDate == nil {
+		writeJSON(w, http.StatusOK, map[string]any{"days": []any{}, "total_points": 0})
+		return
+	}
+
+	// Get total points committed to the sprint
+	var totalPoints int
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT COALESCE(SUM(wi.story_points), 0)
+		 FROM sprint_items si JOIN work_items wi ON wi.id = si.work_item_id
+		 WHERE si.sprint_id = $1`, sprintID).Scan(&totalPoints)
+
+	// Get status changes for items in this sprint, grouped by day
+	rows, err := h.db.Query(r.Context(), `
+		SELECT DATE(changed_at) as day, new_status, COALESCE(SUM(points), 0)
+		FROM status_changes
+		WHERE sprint_id = $1
+		GROUP BY DATE(changed_at), new_status
+		ORDER BY day`, sprintID)
+	if err != nil {
+		slog.Error("burndown: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to get burndown data")
+		return
+	}
+	defer rows.Close()
+
+	// Build day-by-day change data
+	type dayChange struct {
+		Day    string
+		Status string
+		Points int
+	}
+	changes := []dayChange{}
+	for rows.Next() {
+		var dc dayChange
+		var day time.Time
+		if err := rows.Scan(&day, &dc.Status, &dc.Points); err != nil {
+			continue
+		}
+		dc.Day = day.Format("2006-01-02")
+		changes = append(changes, dc)
+	}
+
+	// Calculate remaining points per day
+	type burndownDay struct {
+		Date      string `json:"date"`
+		Remaining int    `json:"remaining"`
+		Ideal     int    `json:"ideal"`
+	}
+
+	start := startDate.Truncate(24 * time.Hour)
+	end := endDate.Truncate(24 * time.Hour)
+	totalDays := int(end.Sub(start).Hours()/24) + 1
+	if totalDays < 1 {
+		totalDays = 1
+	}
+
+	// Build remaining points curve
+	remaining := totalPoints
+	days := []burndownDay{}
+
+	for d := start; !d.After(end); d = d.Add(24 * time.Hour) {
+		dayStr := d.Format("2006-01-02")
+		// Subtract points that moved to "done" or "cancelled" on this day
+		for _, c := range changes {
+			if c.Day == dayStr && (c.Status == "done" || c.Status == "cancelled") {
+				remaining -= c.Points
+			}
+		}
+		if remaining < 0 {
+			remaining = 0
+		}
+
+		dayIndex := int(d.Sub(start).Hours() / 24)
+		ideal := totalPoints - (totalPoints * dayIndex / (totalDays - 1))
+		if totalDays == 1 {
+			ideal = 0
+		}
+
+		days = append(days, burndownDay{
+			Date:      dayStr,
+			Remaining: remaining,
+			Ideal:     ideal,
+		})
+	}
+
+	writeJSON(w, http.StatusOK, map[string]any{
+		"total_points": totalPoints,
+		"days":         days,
+	})
+}
+
 // Sprint represents a sprint row returned to clients.
 type Sprint struct {
 	ID        string     `json:"id"`

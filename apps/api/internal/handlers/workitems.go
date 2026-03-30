@@ -354,6 +354,14 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Capture old status before update so we can log status changes for burndown.
+	var oldStatus string
+	if body.Status != nil {
+		_ = h.db.QueryRow(r.Context(),
+			`SELECT status FROM work_items WHERE id = $1`, workItemID,
+		).Scan(&oldStatus)
+	}
+
 	// Always update updated_at.
 	fields = append(fields, "updated_at = NOW()")
 
@@ -384,6 +392,21 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 	if wi.Labels == nil {
 		wi.Labels = []string{}
+	}
+
+	// Log status change for burndown tracking.
+	if body.Status != nil && *body.Status != oldStatus {
+		var sprintID *string
+		_ = h.db.QueryRow(r.Context(),
+			`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`,
+			workItemID).Scan(&sprintID)
+		_, err := h.db.Exec(r.Context(),
+			`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
+			 VALUES ($1, $2, $3, $4, $5)`,
+			workItemID, sprintID, oldStatus, *body.Status, wi.StoryPoints)
+		if err != nil {
+			slog.Error("workitems.Update: failed to log status change", "error", err)
+		}
 	}
 
 	writeJSON(w, http.StatusOK, wi)

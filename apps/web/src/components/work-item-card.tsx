@@ -11,6 +11,7 @@ interface WorkItemCardProps {
   childTaskCount?: number | undefined;
   calculatedPoints?: number | undefined;
   isBlocked?: boolean | undefined;
+  assigneeName?: string | undefined;
 }
 
 export function WorkItemCard({
@@ -20,6 +21,7 @@ export function WorkItemCard({
   childTaskCount,
   calculatedPoints,
   isBlocked: isBlockedProp,
+  assigneeName,
 }: WorkItemCardProps) {
   const navigate = useNavigate();
 
@@ -73,7 +75,7 @@ export function WorkItemCard({
         </div>
 
         {item.assigneeId && (
-          <Avatar name={item.assigneeId.slice(0, 8)} size="xs" />
+          <Avatar name={assigneeName ?? '?'} size="xs" />
         )}
       </div>
     </button>

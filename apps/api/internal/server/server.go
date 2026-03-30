@@ -52,6 +52,7 @@ func New(deps *Dependencies) http.Handler {
 	siH      := handlers.NewSprintItemHandlers(deps.DB)
 	depH     := handlers.NewDependencyHandlers(deps.DB)
 	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
+	notifH   := handlers.NewNotificationHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 
@@ -93,6 +94,13 @@ func New(deps *Dependencies) http.Handler {
 			r.Get("/me", userH.Me)
 			r.Get("/me/work-items", userH.MyWorkItems)
 			r.Get("/electric/token", elecH.Token)
+
+			// Notifications
+			r.Route("/notifications", func(r chi.Router) {
+				r.Get("/", notifH.List)
+				r.Get("/unread-count", notifH.UnreadCount)
+				r.Post("/mark-all-read", notifH.MarkAllRead)
+			})
 
 			// Organisations
 			r.Route("/orgs", func(r chi.Router) {
@@ -179,6 +187,7 @@ func New(deps *Dependencies) http.Handler {
 					r.Route("/{sprintID}", func(r chi.Router) {
 						r.Patch("/", sprintH.Update)
 						r.Delete("/", sprintH.Delete)
+						r.Get("/burndown", sprintH.Burndown)
 					})
 				})
 			})

@@ -3,6 +3,7 @@ import { Badge } from '@projecta/ui';
 import type { Sprint, SprintStatus } from '@projecta/types';
 import { useSprints } from '../../hooks/use-sprints';
 import { CreateSprintDialog } from '../../components/create-sprint-dialog';
+import { HelpOverlay } from '../../components/help-overlay';
 
 const statusOrder: SprintStatus[] = ['active', 'planned', 'completed', 'cancelled'];
 const statusColors: Record<SprintStatus, 'success' | 'default' | 'secondary' | 'outline'> = {
@@ -30,6 +31,16 @@ export function SprintsPage() {
 
   return (
     <div className="p-6">
+      <HelpOverlay id="sprints-intro" title="Sprint Planning">
+        <p className="mb-2">
+          Sprints are time-boxed iterations (typically 2 weeks). Pull stories from
+          the backlog into a sprint to plan your team's work.
+        </p>
+        <p>
+          Watch the capacity indicator to avoid overloading the team.
+        </p>
+      </HelpOverlay>
+
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Sprints</h2>
         <CreateSprintDialog projectId={projectId} />

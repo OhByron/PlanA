@@ -28,6 +28,8 @@ interface BoardColumnProps {
   childTaskCounts?: Map<string, number> | undefined;
   calculatedPointsMap?: Map<string, number> | undefined;
   blockedItems?: Set<string> | undefined;
+  wipWarning?: boolean | undefined;
+  memberNames?: Map<string, string> | undefined;
 }
 
 export function BoardColumn({
@@ -38,6 +40,8 @@ export function BoardColumn({
   childTaskCounts,
   calculatedPointsMap,
   blockedItems,
+  wipWarning,
+  memberNames,
 }: BoardColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id: status });
   const itemIds = items.map((i) => i.id);
@@ -55,7 +59,10 @@ export function BoardColumn({
         <h3 className="text-sm font-semibold text-gray-700">
           {columnLabels[status] ?? status}
         </h3>
-        <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-600">
+        <span className={cn(
+          'rounded-full px-2 py-0.5 text-xs font-medium',
+          wipWarning ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-600',
+        )}>
           {items.length}
         </span>
       </div>
@@ -76,6 +83,7 @@ export function BoardColumn({
               childTaskCount={childTaskCounts?.get(item.id)}
               calculatedPoints={calculatedPointsMap?.get(item.id)}
               isBlocked={blockedItems?.has(item.id)}
+              assigneeName={memberNames?.get(item.assigneeId ?? '')}
             />
           ))}
         </SortableContext>

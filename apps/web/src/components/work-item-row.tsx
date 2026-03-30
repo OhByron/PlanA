@@ -8,20 +8,38 @@ import { StatusBadge } from './status-badge';
 interface WorkItemRowProps {
   item: WorkItem;
   projectId: string;
-  /** Calculated points from child tasks — used instead of item.storyPoints for stories */
   calculatedPoints?: number | undefined;
+  /** Drag handle props from dnd-kit — if provided, shows a drag handle */
+  dragHandleProps?: Record<string, unknown> | undefined;
 }
 
-export function WorkItemRow({ item, projectId, calculatedPoints }: WorkItemRowProps) {
+export function WorkItemRow({ item, projectId, calculatedPoints, dragHandleProps }: WorkItemRowProps) {
   const displayPoints = calculatedPoints != null ? calculatedPoints : item.storyPoints;
 
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2.5 transition-colors hover:bg-gray-50',
+        'flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 transition-colors hover:bg-gray-50',
         item.isBlocked && 'border-red-200 bg-red-50/30',
       )}
     >
+      {/* Drag handle */}
+      {dragHandleProps && (
+        <button
+          className="cursor-grab touch-none text-gray-300 hover:text-gray-500 active:cursor-grabbing"
+          {...dragHandleProps}
+        >
+          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="5" cy="3" r="1.5" />
+            <circle cx="11" cy="3" r="1.5" />
+            <circle cx="5" cy="8" r="1.5" />
+            <circle cx="11" cy="8" r="1.5" />
+            <circle cx="5" cy="13" r="1.5" />
+            <circle cx="11" cy="13" r="1.5" />
+          </svg>
+        </button>
+      )}
+
       <TypeIcon type={item.type} />
 
       <Link

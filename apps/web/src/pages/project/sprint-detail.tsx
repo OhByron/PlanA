@@ -5,6 +5,7 @@ import type { WorkItem } from '@projecta/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSprints, useSprintItems, useRemoveSprintItem, useUpdateSprint, useAddSprintItem } from '../../hooks/use-sprints';
 import { useWorkItems } from '../../hooks/use-work-items';
+import { useProjectMembers } from '../../hooks/use-project-members';
 import { api } from '../../lib/api-client';
 import { TypeIcon } from '../../components/type-icon';
 import { PriorityIndicator } from '../../components/priority-indicator';
@@ -27,7 +28,13 @@ export function SprintDetailPage() {
   const sprint = sprints.find((s) => s.id === sprintId);
   const { data: sprintItems = [], isLoading } = useSprintItems(sprintId);
   const { data: allItems = [] } = useWorkItems(projectId);
+  const { data: members = [] } = useProjectMembers(projectId);
   const removeItem = useRemoveSprintItem();
+
+  const totalCapacity = useMemo(
+    () => members.reduce((s, m) => s + (m.capacity ?? 0), 0),
+    [members],
+  );
   const addItem = useAddSprintItem();
   const updateSprint = useUpdateSprint(projectId);
 
@@ -154,7 +161,13 @@ export function SprintDetailPage() {
           <div className="mt-1 flex items-center gap-4 text-xs text-gray-400">
             {sprint?.startDate && <span>Start: {new Date(sprint.startDate).toLocaleDateString()}</span>}
             {sprint?.endDate && <span>End: {new Date(sprint.endDate).toLocaleDateString()}</span>}
-            <span>{totalPoints} story points</span>
+            {totalCapacity > 0 ? (
+              <span className={totalPoints > totalCapacity ? 'text-red-500 font-medium' : ''}>
+                {totalPoints} / {totalCapacity} capacity
+              </span>
+            ) : (
+              <span>{totalPoints} story points</span>
+            )}
             <span>{stories.length} stories, {sprintItems.length} total items</span>
           </div>
         </div>

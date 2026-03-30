@@ -7,8 +7,10 @@ import { useSprints, useSprintItems } from '../../hooks/use-sprints';
 import { useEpics } from '../../hooks/use-epics';
 import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus } from '../../hooks/use-project-dependencies';
+import { useBurndown } from '../../hooks/use-burndown';
 import { StatusBadge } from '../../components/status-badge';
 import { TypeIcon } from '../../components/type-icon';
+import { HelpOverlay } from '../../components/help-overlay';
 
 export function ReportsPage() {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
@@ -24,11 +26,25 @@ export function ReportsPage() {
 
   return (
     <div className="p-6 space-y-8 max-w-5xl">
+      <HelpOverlay id="reports-intro" title="Project Reports">
+        <p className="mb-2">
+          Reports give you visibility into your team's delivery. Velocity shows
+          how many points you complete per sprint — it stabilizes over time.
+        </p>
+        <p>
+          Use the sprint progress and team workload charts to spot bottlenecks
+          early.
+        </p>
+      </HelpOverlay>
+
       <h2 className="text-lg font-semibold text-gray-900">Reports</h2>
 
       <VelocityChart sprints={sprints} allItems={items} />
       {activeSprint && (
         <SprintProgress sprint={activeSprint} items={activeSprintItems} allItems={items} />
+      )}
+      {activeSprint && (
+        <BurndownChart projectId={projectId} sprintId={activeSprint.id} sprintName={activeSprint.name} />
       )}
       <EpicProgress epics={epics} items={items} projectId={projectId} />
       {activeSprint && (
@@ -320,6 +336,159 @@ function BlockedReport({
           ))}
         </div>
       )}
+    </Section>
+  );
+}
+
+// --- Burndown Chart ---
+function BurndownChart({
+  projectId,
+  sprintId,
+  sprintName,
+}: {
+  projectId: string;
+  sprintId: string;
+  sprintName: string;
+}) {
+  const { data } = useBurndown(projectId, sprintId);
+
+  if (!data || data.days.length === 0) {
+    return (
+      <Section title={`Burndown: ${sprintName}`}>
+        <p className="text-sm text-gray-400">
+          No burndown data yet. Data appears as items move through statuses during the sprint.
+        </p>
+      </Section>
+    );
+  }
+
+  const { totalPoints, days } = data;
+  const maxPoints = Math.max(totalPoints, 1);
+  const chartWidth = 600;
+  const chartHeight = 200;
+  const paddingLeft = 40;
+  const paddingBottom = 30;
+  const paddingTop = 10;
+  const plotWidth = chartWidth - paddingLeft;
+  const plotHeight = chartHeight - paddingBottom - paddingTop;
+
+  const xScale = (i: number) => paddingLeft + (i / Math.max(days.length - 1, 1)) * plotWidth;
+  const yScale = (pts: number) => paddingTop + plotHeight - (pts / maxPoints) * plotHeight;
+
+  // Build SVG path for ideal line
+  const idealPath = days
+    .map((d, i) => `${i === 0 ? 'M' : 'L'}${xScale(i)},${yScale(d.ideal)}`)
+    .join(' ');
+
+  // Build SVG path for actual remaining
+  const actualPath = days
+    .map((d, i) => `${i === 0 ? 'M' : 'L'}${xScale(i)},${yScale(d.remaining)}`)
+    .join(' ');
+
+  // Today marker
+  const today = new Date().toISOString().slice(0, 10);
+  const todayIdx = days.findIndex((d) => d.date >= today);
+
+  // Y-axis labels
+  const yTicks = [0, Math.round(maxPoints / 2), maxPoints];
+
+  return (
+    <Section title={`Burndown: ${sprintName}`} subtitle="Story points remaining vs ideal">
+      <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full max-w-2xl">
+        {/* Grid lines */}
+        {yTicks.map((tick) => (
+          <g key={tick}>
+            <line
+              x1={paddingLeft}
+              y1={yScale(tick)}
+              x2={chartWidth}
+              y2={yScale(tick)}
+              stroke="#e5e7eb"
+              strokeDasharray="4 4"
+            />
+            <text
+              x={paddingLeft - 8}
+              y={yScale(tick) + 4}
+              textAnchor="end"
+              className="fill-gray-400"
+              fontSize="10"
+            >
+              {tick}
+            </text>
+          </g>
+        ))}
+
+        {/* Ideal line (dashed gray) */}
+        <path d={idealPath} fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeDasharray="6 4" />
+
+        {/* Actual line (solid blue) */}
+        <path d={actualPath} fill="none" stroke="#2563eb" strokeWidth="2" />
+
+        {/* Data points on actual line */}
+        {days.map((d, i) => (
+          <circle
+            key={d.date}
+            cx={xScale(i)}
+            cy={yScale(d.remaining)}
+            r="3"
+            fill={d.remaining <= d.ideal ? '#22c55e' : '#ef4444'}
+            stroke="white"
+            strokeWidth="1"
+          />
+        ))}
+
+        {/* Today marker */}
+        {todayIdx >= 0 && todayIdx < days.length && (
+          <line
+            x1={xScale(todayIdx)}
+            y1={paddingTop}
+            x2={xScale(todayIdx)}
+            y2={chartHeight - paddingBottom}
+            stroke="#2563eb"
+            strokeWidth="1"
+            strokeDasharray="3 3"
+            opacity="0.5"
+          />
+        )}
+
+        {/* X-axis date labels (first, middle, last) */}
+        {[0, Math.floor(days.length / 2), days.length - 1].map((i) => {
+          const d = days[i];
+          if (!d) return null;
+          return (
+            <text
+              key={d.date}
+              x={xScale(i)}
+              y={chartHeight - 8}
+              textAnchor="middle"
+              className="fill-gray-400"
+              fontSize="9"
+            >
+              {new Date(d.date + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+            </text>
+          );
+        })}
+      </svg>
+
+      {/* Legend */}
+      <div className="mt-2 flex gap-4 text-xs text-gray-500">
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-0.5 w-4 bg-gray-400" style={{ borderTop: '1.5px dashed #9ca3af' }} />
+          Ideal
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-0.5 w-4 bg-brand-600" />
+          Actual
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
+          On track
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
+          Behind
+        </span>
+      </div>
     </Section>
   );
 }
