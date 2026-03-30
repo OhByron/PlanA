@@ -1,22 +1,28 @@
 # PlanA — production / self-hosted full-stack
 #
-# Brings up the complete PlanA stack: all backing services + all application services.
-# Intended for self-hosted deployments and production environments.
-#
 # Usage:
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 #
-# Prerequisites:
-#   - Copy .env.prod.example to .env.prod and fill in all secrets before running.
-#   - JWT_SECRET must be at least 32 characters.
-#   - ELECTRIC_SECRET must match between the electric service and the API.
-#   - OAuth credentials (GitHub + Google) must be real values, not placeholders.
-#
-# All application images are built from source in this file.
-# For deployments pulling pre-built images from a registry, replace the
-# `build:` blocks with `image: ghcr.io/ohbyron/projecta/<service>:<tag>`.
+# Set DOMAIN=yourdomain.com in .env.prod for automatic HTTPS via Let's Encrypt.
+# Without DOMAIN, Caddy serves on HTTP (localhost).
 
 services:
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    depends_on:
+      - api
+      - web
 
   api:
     build:
@@ -27,15 +33,19 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-plana}
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET}
-      ELECTRIC_URL: http://electric:3000
+      ELECTRIC_JWT_SECRET: ${ELECTRIC_JWT_SECRET:-changeme-electric-32chars-min}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      APP_BASE_URL: ${PUBLIC_URL:-http://localhost}
+      FRONTEND_URL: ${PUBLIC_URL:-http://localhost}
+      ALLOWED_ORIGINS: ${PUBLIC_URL:-http://localhost}
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       ENV: production
       PORT: "8080"
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -52,11 +62,11 @@ services:
       context: .
       dockerfile: infra/docker/web.Dockerfile
       args:
-        VITE_API_URL: ${PUBLIC_URL:-http://localhost:8080}
+        VITE_API_URL: ${PUBLIC_URL:-http://localhost}
         VITE_ELECTRIC_URL: ${PUBLIC_ELECTRIC_URL:-http://localhost:3000}
     restart: unless-stopped
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     depends_on:
       - api
 
@@ -71,8 +81,32 @@ services:
       API_URL: http://api:8080
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     depends_on:
       api:
         condition: service_healthy
+
+  backup:
+    build:
+      context: .
+      dockerfile: infra/docker/backup.Dockerfile
+    restart: unless-stopped
+    environment:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGUSER: ${POSTGRES_USER:-plana}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-plana}
+      PGDATABASE: ${POSTGRES_DB:-plana}
+      BACKUP_DIR: /backups
+      RETENTION_DAYS: "30"
+    volumes:
+      - backup_data:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  caddy_data:
+  caddy_config:
+  backup_data:

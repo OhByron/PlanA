@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
@@ -16,6 +17,7 @@ type Dependencies struct {
 	Config *config.Config
 	Logger *slog.Logger
 	DB     *pgxpool.Pool
+	Redis  *redis.Client
 	Auth   *auth.Service
 	GitHub *oauth.GitHubProvider
 	Google *oauth.GoogleProvider

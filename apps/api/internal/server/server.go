@@ -22,6 +22,7 @@ func New(deps *Dependencies) http.Handler {
 	r.Use(chimiddleware.RealIP)
 	r.Use(middleware.Logger(deps.Logger))
 	r.Use(chimiddleware.Recoverer)
+	r.Use(middleware.SanitizeBody)
 
 	allowedOrigins := []string{"http://localhost:5173"}
 	if deps.Config.Environment == "production" && deps.Config.AllowedOrigins != "" {
@@ -37,7 +38,7 @@ func New(deps *Dependencies) http.Handler {
 	r.Use(c.Handler)
 
 	// Construct handler groups
-	authH    := handlers.NewAuthHandlers(deps.DB, deps.Auth, deps.GitHub, deps.Google, deps.Config)
+	authH    := handlers.NewAuthHandlers(deps.DB, deps.Auth, deps.GitHub, deps.Google, deps.Config, deps.Redis)
 	userH    := handlers.NewUserHandlers(deps.DB, deps.Auth)
 	elecH    := handlers.NewElectricHandlers(deps.DB, deps.Auth)
 	orgH     := handlers.NewOrgHandlers(deps.DB)
@@ -65,6 +66,9 @@ func New(deps *Dependencies) http.Handler {
 		// Public — OAuth flows (no auth required)
 		// ----------------------------------------------------------------
 		r.Route("/auth", func(r chi.Router) {
+			authLimiter := middleware.NewRateLimiter(1, 5)
+			r.Use(authLimiter.Middleware)
+
 			r.Post("/github", authH.GitHubInitiate)
 			r.Get("/github/callback", authH.GitHubCallback)
 			r.Post("/google", authH.GoogleInitiate)

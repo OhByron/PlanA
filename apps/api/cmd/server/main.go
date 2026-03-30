@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
@@ -52,6 +53,20 @@ func main() {
 	}
 	slog.Info("migrations complete")
 
+	// Connect to Redis
+	redisOpts, err := redis.ParseURL(cfg.RedisURL)
+	if err != nil {
+		slog.Error("invalid REDIS_URL", "error", err)
+		os.Exit(1)
+	}
+	rdb := redis.NewClient(redisOpts)
+	if err := rdb.Ping(ctx).Err(); err != nil {
+		slog.Error("failed to connect to Redis", "error", err)
+		os.Exit(1)
+	}
+	defer rdb.Close()
+	slog.Info("redis connected", "addr", redisOpts.Addr)
+
 	// Build service layer
 	authSvc := auth.NewService(cfg)
 	ghProvider := oauth.NewGitHubProvider(cfg)
@@ -61,6 +76,7 @@ func main() {
 		Config: cfg,
 		Logger: logger,
 		DB:     pool,
+		Redis:  rdb,
 		Auth:   authSvc,
 		GitHub: ghProvider,
 		Google: googProvider,

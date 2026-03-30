@@ -1,0 +1,29 @@
+# PlanA — Caddy reverse proxy
+# Automatic HTTPS via Let's Encrypt when DOMAIN is set.
+# Falls back to HTTP on localhost for dev/testing.
+
+{$DOMAIN:localhost} {
+	# API
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	# Health check (no /api prefix)
+	handle /health {
+		reverse_proxy api:8080
+	}
+
+	# Web app (SPA — serve index.html for all non-API routes)
+	handle {
+		reverse_proxy web:80
+	}
+
+	# Security headers
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}

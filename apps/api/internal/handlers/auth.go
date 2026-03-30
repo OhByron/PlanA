@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/OhByron/ProjectA/internal/auth"
@@ -29,10 +29,11 @@ type AuthHandlers struct {
 	github *oauth.GitHubProvider
 	google *oauth.GoogleProvider
 	cfg    *config.Config
+	redis  *redis.Client
 }
 
-func NewAuthHandlers(db *pgxpool.Pool, authSvc *auth.Service, gh *oauth.GitHubProvider, goog *oauth.GoogleProvider, cfg *config.Config) *AuthHandlers {
-	return &AuthHandlers{db: db, auth: authSvc, github: gh, google: goog, cfg: cfg}
+func NewAuthHandlers(db *pgxpool.Pool, authSvc *auth.Service, gh *oauth.GitHubProvider, goog *oauth.GoogleProvider, cfg *config.Config, rdb *redis.Client) *AuthHandlers {
+	return &AuthHandlers{db: db, auth: authSvc, github: gh, google: goog, cfg: cfg, redis: rdb}
 }
 
 // GitHubInitiate generates PKCE params, sets a short-lived cookie, and returns
@@ -269,35 +270,22 @@ func (h *AuthHandlers) completeLogin(w http.ResponseWriter, r *http.Request, use
 	http.Redirect(w, r, h.cfg.FrontendURL+"/auth/callback#token="+token, http.StatusFound)
 }
 
-// --- PKCE state storage (in-memory, keyed by state parameter) ---
+// --- PKCE state storage (Redis-backed, survives API restarts) ---
 
-var pkceStore = struct {
-	sync.Mutex
-	m map[string]pkceEntry
-}{m: make(map[string]pkceEntry)}
+const pkcePrefix = "pkce:"
+const pkceTTL = 10 * time.Minute
 
-type pkceEntry struct {
-	verifier  string
-	expiresAt time.Time
+func (h *AuthHandlers) storePKCE(ctx context.Context, state, verifier string) error {
+	return h.redis.Set(ctx, pkcePrefix+state, verifier, pkceTTL).Err()
 }
 
-func (h *AuthHandlers) storePKCE(_ context.Context, state, verifier string) error {
-	pkceStore.Lock()
-	defer pkceStore.Unlock()
-	pkceStore.m[state] = pkceEntry{verifier: verifier, expiresAt: time.Now().Add(10 * time.Minute)}
-	return nil
-}
-
-func (h *AuthHandlers) consumePKCE(_ context.Context, state string) (verifier string, ok bool) {
-	pkceStore.Lock()
-	defer pkceStore.Unlock()
-	entry, exists := pkceStore.m[state]
-	if !exists || time.Now().After(entry.expiresAt) {
-		delete(pkceStore.m, state)
+func (h *AuthHandlers) consumePKCE(ctx context.Context, state string) (verifier string, ok bool) {
+	key := pkcePrefix + state
+	val, err := h.redis.GetDel(ctx, key).Result()
+	if err != nil {
 		return "", false
 	}
-	delete(pkceStore.m, state)
-	return entry.verifier, true
+	return val, true
 }
 
 func (h *AuthHandlers) redirectError(w http.ResponseWriter, r *http.Request, reason string) {

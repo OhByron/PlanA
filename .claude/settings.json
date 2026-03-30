@@ -49,7 +49,10 @@
       "Read(//dev/**)",
       "Bash(curl --include -X POST http://localhost:8080/api/auth/github)",
       "Bash(pnpm --filter @projecta/web add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder @tiptap/pm)",
-      "Bash(pnpm --filter @projecta/web add -D @tailwindcss/typography)"
+      "Bash(pnpm --filter @projecta/web add -D @tailwindcss/typography)",
+      "Bash(xargs -I{} taskkill //F //PID {} 2)",
+      "Bash(1 sleep:*)",
+      "Bash(go run:*)"
     ]
   }
 }
