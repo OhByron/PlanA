@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
-import { Badge } from '@projecta/ui';
+import { Badge, Select } from '@projecta/ui';
 import type { WorkItem } from '@projecta/types';
 import { useWorkItems } from '../../hooks/use-work-items';
 import { useSprints, useSprintItems } from '../../hooks/use-sprints';
@@ -20,9 +20,22 @@ export function ReportsPage() {
   const { data: members = [] } = useProjectMembers(projectId);
   const { blockedItems } = useProjectBlockedStatus(projectId, items);
 
-  // Find active sprint
+  // Sprint selector — default to active sprint, allow selecting any
   const activeSprint = sprints.find((s) => s.status === 'active');
-  const { data: activeSprintItems = [] } = useSprintItems(activeSprint?.id ?? '');
+  const [selectedSprintId, setSelectedSprintId] = useState<string | null>(null);
+
+  // Resolve the selected sprint (default to active if none selected)
+  const displaySprint = selectedSprintId
+    ? sprints.find((s) => s.id === selectedSprintId)
+    : activeSprint;
+
+  const { data: sprintItems = [] } = useSprintItems(displaySprint?.id ?? '');
+
+  // Sort sprints for the dropdown: active first, then planned, then completed (newest first)
+  const sortedSprints = useMemo(() => {
+    const order: Record<string, number> = { active: 0, planned: 1, completed: 2, cancelled: 3 };
+    return [...sprints].sort((a, b) => (order[a.status] ?? 4) - (order[b.status] ?? 4));
+  }, [sprints]);
 
   return (
     <div className="p-6 space-y-8 max-w-5xl">
@@ -37,18 +50,36 @@ export function ReportsPage() {
         </p>
       </HelpOverlay>
 
-      <h2 className="text-lg font-semibold text-gray-900">Reports</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-900">Reports</h2>
+        {sprints.length > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-500">Sprint:</span>
+            <Select
+              value={selectedSprintId ?? displaySprint?.id ?? ''}
+              onChange={(e) => setSelectedSprintId(e.target.value || null)}
+              className="w-56"
+            >
+              {sortedSprints.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} ({s.status}{s.velocity != null ? ` · ${s.velocity} pts` : ''})
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
+      </div>
 
       <VelocityChart sprints={sprints} allItems={items} />
-      {activeSprint && (
-        <SprintProgress sprint={activeSprint} items={activeSprintItems} allItems={items} />
+      {displaySprint && (
+        <SprintProgress sprint={displaySprint} items={sprintItems} allItems={items} />
       )}
-      {activeSprint && (
-        <BurndownChart projectId={projectId} sprintId={activeSprint.id} sprintName={activeSprint.name} />
+      {displaySprint && (
+        <BurndownChart projectId={projectId} sprintId={displaySprint.id} sprintName={displaySprint.name} />
       )}
       <EpicProgress epics={epics} items={items} projectId={projectId} />
-      {activeSprint && (
-        <TeamWorkload items={activeSprintItems} allItems={items} members={members} />
+      {displaySprint && (
+        <TeamWorkload items={sprintItems} allItems={items} members={members} />
       )}
       <BlockedReport items={items} blockedItems={blockedItems} projectId={projectId} />
     </div>
