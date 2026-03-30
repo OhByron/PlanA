@@ -53,35 +53,47 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := `SELECT id, project_id, epic_id, parent_id, type, title, description,
-		status, priority, assignee_id, story_points, labels, order_index,
-		is_blocked, blocked_reason, created_by, created_at, updated_at
-		FROM work_items WHERE project_id = $1`
+	pp := parsePagination(r)
+
+	where := "WHERE project_id = $1"
 	args := []any{projectID}
 	argN := 2
 
 	if v := r.URL.Query().Get("type"); v != "" {
-		query += fmt.Sprintf(" AND type = $%d", argN)
+		where += fmt.Sprintf(" AND type = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("status"); v != "" {
-		query += fmt.Sprintf(" AND status = $%d", argN)
+		where += fmt.Sprintf(" AND status = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("epic_id"); v != "" {
-		query += fmt.Sprintf(" AND epic_id = $%d", argN)
+		where += fmt.Sprintf(" AND epic_id = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("assignee_id"); v != "" {
-		query += fmt.Sprintf(" AND assignee_id = $%d", argN)
+		where += fmt.Sprintf(" AND assignee_id = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 
-	query += " ORDER BY order_index, created_at"
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(), "SELECT COUNT(*) FROM work_items "+where, args...).Scan(&total)
+	if err != nil {
+		slog.Error("workitems.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list work items")
+		return
+	}
+
+	query := fmt.Sprintf(`SELECT id, project_id, epic_id, parent_id, type, title, description,
+		status, priority, assignee_id, story_points, labels, order_index,
+		is_blocked, blocked_reason, created_by, created_at, updated_at
+		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
+	args = append(args, pp.PageSize, pp.Offset)
 
 	rows, err := h.db.Query(r.Context(), query, args...)
 	if err != nil {
@@ -114,7 +126,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, items)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: items, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // createWorkItemRequest is the JSON body for creating a work item.

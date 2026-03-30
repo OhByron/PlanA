@@ -8,6 +8,7 @@ import (
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/rs/cors"
 
+	"github.com/OhByron/ProjectA/internal/email"
 	"github.com/OhByron/ProjectA/internal/handlers"
 	"github.com/OhByron/ProjectA/internal/server/middleware"
 )
@@ -51,7 +52,8 @@ func New(deps *Dependencies) http.Handler {
 	siH      := handlers.NewSprintItemHandlers(deps.DB)
 	depH     := handlers.NewDependencyHandlers(deps.DB)
 	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
-	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config)
+	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
+	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 
 	// Public routes
 	r.Get("/health", handlers.Health)

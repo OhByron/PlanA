@@ -94,18 +94,28 @@ func (h *OrgHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	includeArchived := r.URL.Query().Get("include_archived") == "true"
-	query := fmt.Sprintf(
-		`SELECT %s
-		   FROM organizations o
-		   JOIN organization_members om ON om.organization_id = o.id
-		  WHERE om.user_id = $1`, orgColumnsAliased)
-	if !includeArchived {
-		query += " AND o.archived_at IS NULL"
-	}
-	query += " ORDER BY o.name"
+	pp := parsePagination(r)
 
-	rows, err := h.db.Query(r.Context(), query, claims.UserID)
+	includeArchived := r.URL.Query().Get("include_archived") == "true"
+	fromWhere := `FROM organizations o
+		   JOIN organization_members om ON om.organization_id = o.id
+		  WHERE om.user_id = $1`
+	if !includeArchived {
+		fromWhere += " AND o.archived_at IS NULL"
+	}
+
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(), "SELECT COUNT(*) "+fromWhere, claims.UserID).Scan(&total)
+	if err != nil {
+		slog.Error("orgs.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list organizations")
+		return
+	}
+
+	query := fmt.Sprintf("SELECT %s %s ORDER BY o.name LIMIT $2 OFFSET $3", orgColumnsAliased, fromWhere)
+
+	rows, err := h.db.Query(r.Context(), query, claims.UserID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("orgs.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list organizations")
@@ -129,7 +139,7 @@ func (h *OrgHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, orgs)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: orgs, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // Create creates a new organisation and adds the creator as an admin member.

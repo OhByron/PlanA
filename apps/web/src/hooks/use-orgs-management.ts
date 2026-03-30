@@ -1,14 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api-client';
 import { toOrgDetail, type OrgDetail } from '../lib/api-transforms';
+import type { PaginatedResponse } from '../lib/api-pagination';
 
 export function useOrgsList(includeArchived = false) {
   return useQuery({
     queryKey: ['orgs-list', includeArchived],
     queryFn: async (): Promise<OrgDetail[]> => {
-      const qs = includeArchived ? '?include_archived=true' : '';
-      const raw = await api.get<unknown[]>(`/orgs${qs}`);
-      return raw.map(toOrgDetail);
+      const qs = includeArchived ? 'include_archived=true&page_size=200' : 'page_size=200';
+      const raw = await api.get<PaginatedResponse>(`/orgs?${qs}`);
+      return raw.items.map(toOrgDetail);
     },
   });
 }

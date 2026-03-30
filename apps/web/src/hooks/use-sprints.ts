@@ -2,14 +2,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Sprint } from '@projecta/types';
 import { api } from '../lib/api-client';
 import { toSprint, toWorkItem } from '../lib/api-transforms';
+import type { PaginatedResponse } from '../lib/api-pagination';
 import type { WorkItem } from '@projecta/types';
 
 export function useSprints(projectId: string) {
   return useQuery({
     queryKey: ['sprints', projectId],
     queryFn: async (): Promise<Sprint[]> => {
-      const raw = await api.get<unknown[]>(`/projects/${projectId}/sprints`);
-      return raw.map(toSprint);
+      const raw = await api.get<PaginatedResponse>(`/projects/${projectId}/sprints?page_size=200`);
+      return raw.items.map(toSprint);
     },
     enabled: !!projectId,
   });

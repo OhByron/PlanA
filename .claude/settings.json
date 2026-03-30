@@ -46,7 +46,10 @@
       "Bash(pnpm --filter @projecta/web add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities)",
       "Bash(pnpm --filter @projecta/ui add @radix-ui/react-dialog)",
       "Bash(ls d:/Coding/ProjectA/packages/ui/dist/components/dialog*)",
-      "Read(//dev/**)"
+      "Read(//dev/**)",
+      "Bash(curl --include -X POST http://localhost:8080/api/auth/github)",
+      "Bash(pnpm --filter @projecta/web add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder @tiptap/pm)",
+      "Bash(pnpm --filter @projecta/web add -D @tailwindcss/typography)"
     ]
   }
 }

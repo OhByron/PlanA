@@ -10,6 +10,8 @@ import { useComments, useCreateComment } from '../../hooks/use-comments';
 import { TypeIcon } from '../../components/type-icon';
 import { PriorityIndicator } from '../../components/priority-indicator';
 import { StatusBadge } from '../../components/status-badge';
+import { RichTextEditor } from '../../components/rich-text-editor';
+import { RichTextDisplay } from '../../components/rich-text-display';
 import { ContextHelp } from '../../components/context-help';
 import { useDependencies, useCreateDependency, useDeleteDependency } from '../../hooks/use-dependencies';
 import { useQueryClient } from '@tanstack/react-query';
@@ -53,6 +55,7 @@ export function WorkItemDetailPage() {
   const [acDraft, setAcDraft] = useState({ given: '', when: '', then: '' });
   const [showACForm, setShowACForm] = useState(false);
   const [showDepForm, setShowDepForm] = useState(false);
+  const [commentKey, setCommentKey] = useState(0);
   const [depTargetId, setDepTargetId] = useState('');
   const [depType, setDepType] = useState<'depends_on' | 'relates_to'>('depends_on');
 
@@ -88,9 +91,10 @@ export function WorkItemDetailPage() {
   };
 
   const submitComment = () => {
-    if (commentDraft.trim()) {
-      createComment.mutate({ text: commentDraft.trim() });
+    if (commentDraft) {
+      createComment.mutate(JSON.parse(commentDraft));
       setCommentDraft('');
+      setCommentKey((k) => k + 1);
     }
   };
 
@@ -161,18 +165,17 @@ export function WorkItemDetailPage() {
           <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h2>
           {editingDesc ? (
             <div className="space-y-2">
-              <Textarea
-                autoFocus
-                rows={6}
-                value={descDraft}
-                onChange={(e) => setDescDraft(e.target.value)}
+              <RichTextEditor
+                content={item.description as Record<string, unknown> | null}
                 placeholder="Describe the requirement, goal, and context..."
+                autoFocus
+                onChange={(json) => setDescDraft(JSON.stringify(json))}
               />
               <div className="flex gap-2">
                 <Button
                   size="sm"
                   onClick={() => {
-                    patchField({ description: { text: descDraft } });
+                    patchField({ description: descDraft ? JSON.parse(descDraft) : null });
                     setEditingDesc(false);
                   }}
                 >
@@ -185,21 +188,17 @@ export function WorkItemDetailPage() {
             </div>
           ) : (
             <div
-              className="cursor-pointer rounded-md border border-transparent p-2 text-sm text-gray-600 hover:border-gray-200 hover:bg-gray-50"
+              className="cursor-pointer rounded-md border border-transparent p-2 hover:border-gray-200 hover:bg-gray-50"
               onClick={() => {
-                const current = item.description;
-                const text = current && typeof current === 'object' && 'text' in current
-                  ? String((current as Record<string, unknown>).text)
-                  : '';
-                setDescDraft(text);
+                setDescDraft('');
                 setEditingDesc(true);
               }}
             >
-              {item.description && typeof item.description === 'object' && 'text' in item.description
-                ? String((item.description as Record<string, unknown>).text)
-                    .split('\n')
-                    .map((line, i) => <p key={i} className={line ? '' : 'h-4'}>{line}</p>)
-                : <span className="italic text-gray-400">Click to add a description...</span>}
+              {item.description ? (
+                <RichTextDisplay content={item.description as Record<string, unknown>} />
+              ) : (
+                <span className="text-sm italic text-gray-400">Click to add a description...</span>
+              )}
             </div>
           )}
         </section>
@@ -411,36 +410,33 @@ export function WorkItemDetailPage() {
             <p className="mb-3 text-sm text-gray-400">No comments yet.</p>
           )}
 
-          {comments.map((c) => (
-            <div key={c.id} className="mb-3 rounded-lg border border-gray-200 bg-white p-3">
-              <div className="mb-1 flex items-center gap-2 text-xs text-gray-500">
-                <span className="font-medium text-gray-700">{c.userId.slice(0, 8)}...</span>
-                <span>·</span>
-                <span>{new Date(c.createdAt).toLocaleDateString()}</span>
+          {comments.map((c) => {
+            const member = projectMembers.find((m) => m.id === c.userId) ??
+              projectMembers.find((m) => m.userId === c.userId);
+            return (
+              <div key={c.id} className="mb-3 rounded-lg border border-gray-200 bg-white p-3">
+                <div className="mb-1 flex items-center gap-2 text-xs text-gray-500">
+                  <span className="font-medium text-gray-700">
+                    {member?.name ?? c.userId.slice(0, 8)}
+                  </span>
+                  <span>·</span>
+                  <span>{new Date(c.createdAt).toLocaleDateString()}</span>
+                </div>
+                <RichTextDisplay content={c.body as Record<string, unknown>} />
               </div>
-              <p className="text-sm text-gray-900">
-                {typeof c.body === 'object' && c.body && 'text' in c.body
-                  ? String((c.body as Record<string, unknown>).text)
-                  : JSON.stringify(c.body)}
-              </p>
-            </div>
-          ))}
+            );
+          })}
 
-          <div className="flex gap-2">
-            <Textarea
+          <div className="space-y-2">
+            <RichTextEditor
+              key={commentKey}
               placeholder="Add a comment..."
-              rows={2}
-              value={commentDraft}
-              onChange={(e) => setCommentDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitComment();
-              }}
+              onChange={(json) => setCommentDraft(JSON.stringify(json))}
             />
             <Button
               size="sm"
-              className="self-end"
               onClick={submitComment}
-              disabled={!commentDraft.trim()}
+              disabled={!commentDraft}
             >
               Send
             </Button>

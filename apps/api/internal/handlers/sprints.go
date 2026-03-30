@@ -42,9 +42,21 @@ func (h *SprintHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pp := parsePagination(r)
+
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(),
+		`SELECT COUNT(*) FROM sprints WHERE project_id = $1`, projectID).Scan(&total)
+	if err != nil {
+		slog.Error("sprints.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list sprints")
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, project_id, name, goal, start_date, end_date, status, velocity, created_at, updated_at
-		 FROM sprints WHERE project_id = $1 ORDER BY created_at`, projectID)
+		 FROM sprints WHERE project_id = $1 ORDER BY created_at LIMIT $2 OFFSET $3`, projectID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("sprints.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list sprints")
@@ -68,7 +80,7 @@ func (h *SprintHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, sprints)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: sprints, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // createSprintRequest is the JSON body for creating a sprint.

@@ -7,8 +7,10 @@ export function useMyWorkItems() {
   return useQuery({
     queryKey: ['my-work-items'],
     queryFn: async (): Promise<WorkItem[]> => {
-      const raw = await api.get<unknown[]>('/me/work-items');
-      return raw.map(toWorkItem);
+      // /me/work-items may or may not be paginated — handle both formats
+      const data = await api.get<unknown>('/me/work-items');
+      const arr = Array.isArray(data) ? data : (data as { items: unknown[] }).items;
+      return arr.map(toWorkItem);
     },
   });
 }

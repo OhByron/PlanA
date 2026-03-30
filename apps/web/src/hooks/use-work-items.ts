@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { WorkItem } from '@projecta/types';
 import { api } from '../lib/api-client';
 import { toWorkItem } from '../lib/api-transforms';
+import type { PaginatedResponse } from '../lib/api-pagination';
 
 interface WorkItemFilters {
   type?: string;
@@ -19,11 +20,12 @@ export function useWorkItems(projectId: string, filters?: WorkItemFilters) {
       if (filters?.status) params.set('status', filters.status);
       if (filters?.epicId) params.set('epic_id', filters.epicId);
       if (filters?.assigneeId) params.set('assignee_id', filters.assigneeId);
+      params.set('page_size', '200');
       const qs = params.toString();
-      const raw = await api.get<unknown[]>(
-        `/projects/${projectId}/work-items${qs ? `?${qs}` : ''}`,
+      const raw = await api.get<PaginatedResponse>(
+        `/projects/${projectId}/work-items?${qs}`,
       );
-      return raw.map(toWorkItem);
+      return raw.items.map(toWorkItem);
     },
   });
 }

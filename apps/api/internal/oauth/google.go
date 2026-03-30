@@ -32,7 +32,7 @@ func NewGoogleProvider(cfg *config.Config) *GoogleProvider {
 		cfg: &oauth2.Config{
 			ClientID:     cfg.GoogleClientID,
 			ClientSecret: cfg.GoogleClientSecret,
-			RedirectURL:  cfg.AppBaseURL + "/api/auth/google/callback",
+			RedirectURL:  cfg.FrontendURL + "/api/auth/google/callback",
 			Scopes:       []string{"openid", "email", "profile"},
 			Endpoint:     google.Endpoint,
 		},

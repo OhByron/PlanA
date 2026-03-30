@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"strings"
+	"sync"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
@@ -45,7 +45,11 @@ func (h *AuthHandlers) GitHubInitiate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.setPKCECookie(w, state+":"+verifier)
+	if err := h.storePKCE(r.Context(), state, verifier); err != nil {
+		slog.Error("pkce storage failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "server_error", "Failed to initiate OAuth flow")
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]string{
 		"url": h.github.AuthURL(state, oauth.Challenge(verifier)),
 	})
@@ -54,27 +58,30 @@ func (h *AuthHandlers) GitHubInitiate(w http.ResponseWriter, r *http.Request) {
 // GitHubCallback handles the redirect from GitHub, upserts the user, issues a
 // session token, and redirects to the frontend.
 func (h *AuthHandlers) GitHubCallback(w http.ResponseWriter, r *http.Request) {
-	state, verifier, ok := h.consumePKCECookie(w, r)
+	slog.Info("github callback received", "query", r.URL.RawQuery)
+
+	state := r.URL.Query().Get("state")
+	verifier, ok := h.consumePKCE(r.Context(), state)
 	if !ok {
+		slog.Error("github callback: bad_state", "state", state)
 		h.redirectError(w, r, "bad_state")
 		return
 	}
 
-	if r.URL.Query().Get("state") != state {
-		h.redirectError(w, r, "csrf")
-		return
-	}
 	if e := r.URL.Query().Get("error"); e != "" {
+		slog.Error("github callback: provider error", "error", e)
 		h.redirectError(w, r, e)
 		return
 	}
 
+	slog.Info("github exchange starting", "code_len", len(r.URL.Query().Get("code")))
 	ghUser, err := h.github.Exchange(r.Context(), r.URL.Query().Get("code"), verifier)
 	if err != nil {
 		slog.Error("github exchange failed", "error", err)
 		h.redirectError(w, r, "exchange_failed")
 		return
 	}
+	slog.Info("github exchange success", "user", ghUser.Login, "email", ghUser.Email)
 
 	userID, email, err := upsertGitHubUser(r.Context(), h.db, ghUser)
 	if err != nil {
@@ -95,7 +102,11 @@ func (h *AuthHandlers) GoogleInitiate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.setPKCECookie(w, state+":"+verifier)
+	if err := h.storePKCE(r.Context(), state, verifier); err != nil {
+		slog.Error("pkce storage failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "server_error", "Failed to initiate OAuth flow")
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]string{
 		"url": h.google.AuthURL(state, oauth.Challenge(verifier)),
 	})
@@ -103,16 +114,13 @@ func (h *AuthHandlers) GoogleInitiate(w http.ResponseWriter, r *http.Request) {
 
 // GoogleCallback handles the redirect from Google, upserts the user, and issues a session token.
 func (h *AuthHandlers) GoogleCallback(w http.ResponseWriter, r *http.Request) {
-	state, verifier, ok := h.consumePKCECookie(w, r)
+	state := r.URL.Query().Get("state")
+	verifier, ok := h.consumePKCE(r.Context(), state)
 	if !ok {
 		h.redirectError(w, r, "bad_state")
 		return
 	}
 
-	if r.URL.Query().Get("state") != state {
-		h.redirectError(w, r, "csrf")
-		return
-	}
 	if e := r.URL.Query().Get("error"); e != "" {
 		h.redirectError(w, r, e)
 		return
@@ -261,34 +269,35 @@ func (h *AuthHandlers) completeLogin(w http.ResponseWriter, r *http.Request, use
 	http.Redirect(w, r, h.cfg.FrontendURL+"/auth/callback#token="+token, http.StatusFound)
 }
 
-// --- PKCE cookie helpers ---
+// --- PKCE state storage (in-memory, keyed by state parameter) ---
 
-func (h *AuthHandlers) setPKCECookie(w http.ResponseWriter, value string) {
-	http.SetCookie(w, &http.Cookie{
-		Name:     "oauth_pkce",
-		Value:    value,
-		Path:     "/api/auth",
-		MaxAge:   600, // 10 minutes — enough time to complete the OAuth round-trip
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-		Secure:   h.cfg.Environment == "production",
-	})
+var pkceStore = struct {
+	sync.Mutex
+	m map[string]pkceEntry
+}{m: make(map[string]pkceEntry)}
+
+type pkceEntry struct {
+	verifier  string
+	expiresAt time.Time
 }
 
-// consumePKCECookie reads the oauth_pkce cookie, clears it, and returns the
-// state and verifier. Returns ok=false if the cookie is absent or malformed.
-func (h *AuthHandlers) consumePKCECookie(w http.ResponseWriter, r *http.Request) (state, verifier string, ok bool) {
-	cookie, err := r.Cookie("oauth_pkce")
-	// Always clear regardless of validity
-	http.SetCookie(w, &http.Cookie{Name: "oauth_pkce", Path: "/api/auth", MaxAge: -1})
-	if err != nil {
-		return "", "", false
+func (h *AuthHandlers) storePKCE(_ context.Context, state, verifier string) error {
+	pkceStore.Lock()
+	defer pkceStore.Unlock()
+	pkceStore.m[state] = pkceEntry{verifier: verifier, expiresAt: time.Now().Add(10 * time.Minute)}
+	return nil
+}
+
+func (h *AuthHandlers) consumePKCE(_ context.Context, state string) (verifier string, ok bool) {
+	pkceStore.Lock()
+	defer pkceStore.Unlock()
+	entry, exists := pkceStore.m[state]
+	if !exists || time.Now().After(entry.expiresAt) {
+		delete(pkceStore.m, state)
+		return "", false
 	}
-	parts := strings.SplitN(cookie.Value, ":", 2)
-	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
-		return "", "", false
-	}
-	return parts[0], parts[1], true
+	delete(pkceStore.m, state)
+	return entry.verifier, true
 }
 
 func (h *AuthHandlers) redirectError(w http.ResponseWriter, r *http.Request, reason string) {

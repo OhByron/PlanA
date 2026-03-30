@@ -15,16 +15,18 @@ import (
 
 	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
+	"github.com/OhByron/ProjectA/internal/email"
 )
 
 type InvitationHandlers struct {
-	db   *pgxpool.Pool
-	auth *auth.Service
-	cfg  *config.Config
+	db    *pgxpool.Pool
+	auth  *auth.Service
+	cfg   *config.Config
+	email *email.Sender
 }
 
-func NewInvitationHandlers(db *pgxpool.Pool, authSvc *auth.Service, cfg *config.Config) *InvitationHandlers {
-	return &InvitationHandlers{db: db, auth: authSvc, cfg: cfg}
+func NewInvitationHandlers(db *pgxpool.Pool, authSvc *auth.Service, cfg *config.Config, emailSender *email.Sender) *InvitationHandlers {
+	return &InvitationHandlers{db: db, auth: authSvc, cfg: cfg, email: emailSender}
 }
 
 type invitationResponse struct {
@@ -50,11 +52,11 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	memberID := chi.URLParam(r, "memberID")
 
-	// Get the member's email
-	var email string
+	// Get the member's email and job role
+	var memberEmail, jobRole string
 	err := h.db.QueryRow(r.Context(),
-		`SELECT email FROM project_members WHERE id = $1 AND project_id = $2`,
-		memberID, projectID).Scan(&email)
+		`SELECT email, job_role FROM project_members WHERE id = $1 AND project_id = $2`,
+		memberID, projectID).Scan(&memberEmail, &jobRole)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Member not found")
@@ -64,7 +66,7 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create invitation")
 		return
 	}
-	if email == "" {
+	if memberEmail == "" {
 		writeError(w, http.StatusBadRequest, "validation_error", "Member must have an email address to be invited")
 		return
 	}
@@ -84,7 +86,7 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		`INSERT INTO invitations (project_id, member_id, email, token, invited_by, expires_at)
 		 VALUES ($1, $2, $3, $4, $5, $6)
 		 RETURNING id, project_id, member_id, email, token, expires_at, created_at`,
-		projectID, memberID, email, token, claims.UserID, expiresAt,
+		projectID, memberID, memberEmail, token, claims.UserID, expiresAt,
 	).Scan(&inv.ID, &inv.ProjectID, &inv.MemberID, &inv.Email, &inv.Token, &inv.ExpiresAt, &inv.CreatedAt)
 	if err != nil {
 		slog.Error("invitations.Create: insert failed", "error", err)
@@ -94,8 +96,28 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	inv.InviteURL = h.cfg.FrontendURL + "/invite/" + token
 
-	// TODO: Send email here when SMTP is configured
-	slog.Info("invitation created", "email", email, "invite_url", inv.InviteURL)
+	// Send invitation email
+	var projectName, orgName string
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT p.name, o.name
+		 FROM projects p
+		 JOIN teams t ON t.id = p.team_id
+		 JOIN organizations o ON o.id = t.organization_id
+		 WHERE p.id = $1`, projectID).Scan(&projectName, &orgName)
+
+	roleNames := map[string]string{
+		"pm": "Project Manager", "po": "Product Owner", "bsa": "Business Systems Analyst",
+		"ba": "Business Analyst", "qe": "Quality Engineer", "ux": "UX Designer", "dev": "Developer",
+	}
+	roleName := roleNames[jobRole]
+	if roleName == "" {
+		roleName = jobRole
+	}
+
+	if err := h.email.SendInvitation(memberEmail, inv.InviteURL, projectName, orgName, roleName); err != nil {
+		slog.Error("invitation email failed", "error", err, "to", memberEmail)
+		// Don't fail the request — the invite link is still valid
+	}
 
 	writeJSON(w, http.StatusCreated, inv)
 }

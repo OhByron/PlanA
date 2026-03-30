@@ -2,13 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Epic } from '@projecta/types';
 import { api } from '../lib/api-client';
 import { toEpic } from '../lib/api-transforms';
+import type { PaginatedResponse } from '../lib/api-pagination';
 
 export function useEpics(projectId: string) {
   return useQuery({
     queryKey: ['epics', projectId],
     queryFn: async (): Promise<Epic[]> => {
-      const raw = await api.get<unknown[]>(`/projects/${projectId}/epics`);
-      return raw.map(toEpic);
+      const raw = await api.get<PaginatedResponse>(`/projects/${projectId}/epics?page_size=200`);
+      return raw.items.map(toEpic);
     },
     enabled: !!projectId,
   });

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 
 	"golang.org/x/oauth2"
@@ -33,7 +34,7 @@ func NewGitHubProvider(cfg *config.Config) *GitHubProvider {
 		cfg: &oauth2.Config{
 			ClientID:     cfg.GitHubClientID,
 			ClientSecret: cfg.GitHubClientSecret,
-			RedirectURL:  cfg.AppBaseURL + "/api/auth/github/callback",
+			RedirectURL:  cfg.FrontendURL + "/api/auth/github/callback",
 			Scopes:       []string{"read:user", "user:email"},
 			Endpoint:     github.Endpoint,
 		},
@@ -69,14 +70,17 @@ func (p *GitHubProvider) Exchange(ctx context.Context, code, codeVerifier string
 		return nil, err
 	}
 
-	// GitHub omits email if the user has set it to private. Fall back to the
-	// /user/emails endpoint and use the primary verified address.
+	// GitHub omits email if the user has set it to private. Try the /user/emails
+	// endpoint, but don't fail if it's inaccessible (some OAuth apps don't get this scope).
 	if user.Email == "" {
 		email, err := fetchPrimaryGitHubEmail(ctx, client)
 		if err != nil {
-			return nil, err
+			// Fall back to noreply address: {id}+{login}@users.noreply.github.com
+			slog.Warn("github email fallback", "error", err, "login", user.Login)
+			user.Email = fmt.Sprintf("%d+%s@users.noreply.github.com", user.ID, user.Login)
+		} else {
+			user.Email = email
 		}
-		user.Email = email
 	}
 
 	return user, nil

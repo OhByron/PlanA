@@ -34,6 +34,9 @@ type Config struct {
 
 	// FrontendURL is the base URL of the web app; used for OAuth post-login redirects.
 	FrontendURL string
+
+	// Resend API key for email delivery (optional — invites work without it, just no email sent)
+	ResendAPIKey string
 }
 
 func Load() (*Config, error) {
@@ -54,6 +57,7 @@ func Load() (*Config, error) {
 		AppBaseURL:     getEnv("APP_BASE_URL", "http://localhost:8080"),
 		AllowedOrigins: os.Getenv("ALLOWED_ORIGINS"),
 		FrontendURL:    getEnv("FRONTEND_URL", "http://localhost:5173"),
+		ResendAPIKey:   os.Getenv("RESEND_API_KEY"),
 	}
 
 	if cfg.DatabaseURL == "" {

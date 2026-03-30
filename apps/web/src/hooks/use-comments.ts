@@ -2,13 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Comment } from '@projecta/types';
 import { api } from '../lib/api-client';
 import { toComment } from '../lib/api-transforms';
+import type { PaginatedResponse } from '../lib/api-pagination';
 
 export function useComments(workItemId: string) {
   return useQuery({
     queryKey: ['comments', workItemId],
     queryFn: async (): Promise<Comment[]> => {
-      const raw = await api.get<unknown[]>(`/work-items/${workItemId}/comments`);
-      return raw.map(toComment);
+      const raw = await api.get<PaginatedResponse>(`/work-items/${workItemId}/comments?page_size=200`);
+      return raw.items.map(toComment);
     },
     enabled: !!workItemId,
   });

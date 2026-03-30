@@ -52,8 +52,20 @@ func (h *ProjectMemberHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pp := parsePagination(r)
+
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(),
+		`SELECT COUNT(*) FROM project_members WHERE project_id = $1`, projectID).Scan(&total)
+	if err != nil {
+		slog.Error("project_members.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list project members")
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
-		fmt.Sprintf(`SELECT %s FROM project_members WHERE project_id = $1 ORDER BY name`, projectMemberColumns), projectID)
+		fmt.Sprintf(`SELECT %s FROM project_members WHERE project_id = $1 ORDER BY name LIMIT $2 OFFSET $3`, projectMemberColumns), projectID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("project_members.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list project members")
@@ -77,7 +89,7 @@ func (h *ProjectMemberHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, members)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: members, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 type createProjectMemberRequest struct {

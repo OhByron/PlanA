@@ -46,9 +46,21 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pp := parsePagination(r)
+
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(),
+		`SELECT COUNT(*) FROM epics WHERE project_id = $1`, projectID).Scan(&total)
+	if err != nil {
+		slog.Error("epics.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list epics")
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, created_at, updated_at
-		 FROM epics WHERE project_id = $1 ORDER BY order_index, created_at`, projectID)
+		 FROM epics WHERE project_id = $1 ORDER BY order_index, created_at LIMIT $2 OFFSET $3`, projectID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("epics.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list epics")
@@ -72,7 +84,7 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, epics)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: epics, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // createEpicRequest is the JSON body for creating an epic.

@@ -39,9 +39,21 @@ func (h *CommentHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pp := parsePagination(r)
+
+	// Count total matching rows.
+	var total int
+	err := h.db.QueryRow(r.Context(),
+		`SELECT COUNT(*) FROM comments WHERE work_item_id = $1`, workItemID).Scan(&total)
+	if err != nil {
+		slog.Error("comments.List: count query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list comments")
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, work_item_id, user_id, body, created_at, updated_at
-		 FROM comments WHERE work_item_id = $1 ORDER BY created_at`, workItemID)
+		 FROM comments WHERE work_item_id = $1 ORDER BY created_at LIMIT $2 OFFSET $3`, workItemID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("comments.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list comments")
@@ -65,7 +77,7 @@ func (h *CommentHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, comments)
+	writeJSON(w, http.StatusOK, paginatedResponse{Items: comments, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
 // createCommentRequest is the JSON body for creating a comment.

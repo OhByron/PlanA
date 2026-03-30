@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api-client';
+import type { PaginatedResponse } from '../lib/api-pagination';
 
 export interface ProjectMember {
   id: string;
@@ -31,8 +32,8 @@ export function useProjectMembers(projectId: string) {
   return useQuery({
     queryKey: ['project-members', projectId],
     queryFn: async (): Promise<ProjectMember[]> => {
-      const raw = await api.get<Record<string, unknown>[]>(`/projects/${projectId}/members`);
-      return raw.map(toMember);
+      const raw = await api.get<PaginatedResponse>(`/projects/${projectId}/members?page_size=200`);
+      return (raw.items as Record<string, unknown>[]).map(toMember);
     },
     enabled: !!projectId,
   });
