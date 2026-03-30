@@ -14,6 +14,7 @@ import { RichTextEditor } from '../../components/rich-text-editor';
 import { RichTextDisplay } from '../../components/rich-text-display';
 import { ContextHelp } from '../../components/context-help';
 import { useDependencies, useCreateDependency, useDeleteDependency } from '../../hooks/use-dependencies';
+import { useLinks, useCreateLink, useDeleteLink } from '../../hooks/use-links';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api-client';
 
@@ -58,6 +59,21 @@ export function WorkItemDetailPage() {
   const [commentKey, setCommentKey] = useState(0);
   const [depTargetId, setDepTargetId] = useState('');
   const [depType, setDepType] = useState<'depends_on' | 'relates_to'>('depends_on');
+
+  const { data: links = [] } = useLinks(workItemId);
+  const createLink = useCreateLink(workItemId);
+  const deleteLink = useDeleteLink(workItemId);
+  const [showLinkForm, setShowLinkForm] = useState(false);
+  const [linkLabel, setLinkLabel] = useState('');
+  const [linkUrl, setLinkUrl] = useState('');
+
+  const submitLink = () => {
+    if (linkLabel.trim() && linkUrl.trim()) {
+      createLink.mutate({ label: linkLabel.trim(), url: linkUrl.trim() }, {
+        onSuccess: () => { setLinkLabel(''); setLinkUrl(''); setShowLinkForm(false); }
+      });
+    }
+  };
 
   if (isLoading || !item) {
     return (
@@ -398,6 +414,71 @@ export function WorkItemDetailPage() {
                 <Button size="sm" variant="ghost" onClick={() => setShowDepForm(false)}>
                   Cancel
                 </Button>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Links */}
+        <section className="mb-8">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Links</h2>
+            <Button variant="ghost" size="sm" onClick={() => setShowLinkForm(!showLinkForm)}>
+              + Add Link
+            </Button>
+          </div>
+
+          {links.length === 0 && !showLinkForm && (
+            <p className="text-sm text-gray-400">No links yet.</p>
+          )}
+
+          {links.map((link) => (
+            <div key={link.id} className="mb-2 flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+              <svg className="h-4 w-4 shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 truncate text-sm text-brand-600 hover:text-brand-800"
+              >
+                {link.label}
+              </a>
+              <span className="text-xs text-gray-400 truncate max-w-[200px]">{link.url}</span>
+              <button
+                onClick={() => deleteLink.mutate(link.id)}
+                className="text-gray-400 hover:text-red-500"
+                title="Remove"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ))}
+
+          {showLinkForm && (
+            <div className="rounded-lg border border-brand-200 bg-brand-50/30 p-3 space-y-2">
+              <div className="flex gap-2">
+                <Input
+                  autoFocus
+                  placeholder="Label (e.g. GitHub PR, Figma mockup)"
+                  value={linkLabel}
+                  onChange={(e) => setLinkLabel(e.target.value)}
+                  className="flex-1"
+                />
+                <Input
+                  placeholder="https://..."
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                  className="flex-1"
+                  onKeyDown={(e) => { if (e.key === 'Enter') submitLink(); }}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={submitLink} disabled={!linkLabel.trim() || !linkUrl.trim()}>Add</Button>
+                <Button size="sm" variant="ghost" onClick={() => setShowLinkForm(false)}>Cancel</Button>
               </div>
             </div>
           )}

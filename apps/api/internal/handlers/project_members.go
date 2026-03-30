@@ -122,12 +122,35 @@ func (h *ProjectMemberHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If a user with this email exists, link them and add to org/team
+	var linkedUserID *string
+	if body.Email != nil && *body.Email != "" {
+		var uid string
+		lookupErr := h.db.QueryRow(r.Context(),
+			`SELECT id FROM users WHERE email = $1`, *body.Email).Scan(&uid)
+		if lookupErr == nil {
+			linkedUserID = &uid
+			// Auto-add to org and team membership so sidebar works
+			_, _ = h.db.Exec(r.Context(), `
+				INSERT INTO organization_members (organization_id, user_id, role)
+				SELECT t.organization_id, $1, 'member'
+				FROM projects p JOIN teams t ON t.id = p.team_id
+				WHERE p.id = $2
+				ON CONFLICT DO NOTHING`, uid, projectID)
+			_, _ = h.db.Exec(r.Context(), `
+				INSERT INTO team_members (team_id, user_id, role)
+				SELECT p.team_id, $1, 'member'
+				FROM projects p WHERE p.id = $2
+				ON CONFLICT DO NOTHING`, uid, projectID)
+		}
+	}
+
 	var m projectMemberResponse
 	err := h.db.QueryRow(r.Context(),
-		fmt.Sprintf(`INSERT INTO project_members (project_id, name, email, phone, job_role, capacity)
-		 VALUES ($1, $2, $3, $4, $5, $6)
+		fmt.Sprintf(`INSERT INTO project_members (project_id, user_id, name, email, phone, job_role, capacity)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7)
 		 RETURNING %s`, projectMemberColumns),
-		projectID, body.Name, body.Email, body.Phone, body.JobRole, body.Capacity,
+		projectID, linkedUserID, body.Name, body.Email, body.Phone, body.JobRole, body.Capacity,
 	).Scan(m.scanFields()...)
 	if err != nil {
 		slog.Error("project_members.Create: insert failed", "error", err)

@@ -1,30 +1,39 @@
 import { useMemo } from 'react';
 import { Link } from '@tanstack/react-router';
+import { useQuery } from '@tanstack/react-query';
 import type { WorkItem } from '@projecta/types';
 import { useMyWorkItems } from '../hooks/use-my-work-items';
 import { useAuth } from '../auth/auth-context';
 import { TypeIcon } from '../components/type-icon';
 import { PriorityIndicator } from '../components/priority-indicator';
 import { StatusBadge } from '../components/status-badge';
-import { useNavigationTree } from '../hooks/use-orgs';
+import { api } from '../lib/api-client';
+import { toProject } from '../lib/api-transforms';
 
 export function MyWorkPage() {
   const { user } = useAuth();
   const { data: items = [], isLoading } = useMyWorkItems();
-  const { data: navTree = [] } = useNavigationTree();
 
-  // Build a project name lookup from the nav tree
-  const projectNames = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const org of navTree) {
-      for (const team of org.teams) {
-        for (const project of team.projects) {
-          map.set(project.id, project.name);
+  // Fetch project names for all unique project IDs in a single query
+  const projectIds = useMemo(() => [...new Set(items.map((i) => i.projectId))], [items]);
+  const { data: projectNameMap = new Map<string, string>() } = useQuery({
+    queryKey: ['my-work-project-names', projectIds.join(',')],
+    queryFn: async () => {
+      const map = new Map<string, string>();
+      for (const pid of projectIds) {
+        try {
+          const raw = await api.get<{ name: string }>(`/projects/${pid}`);
+          map.set(pid, raw.name);
+        } catch {
+          // project not accessible — use short ID
         }
       }
-    }
-    return map;
-  }, [navTree]);
+      return map;
+    },
+    enabled: projectIds.length > 0,
+    staleTime: 5 * 60_000,
+  });
+  const projectNames = projectNameMap;
 
   // Group items by project
   const grouped = useMemo(() => {

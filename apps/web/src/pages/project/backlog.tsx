@@ -66,37 +66,69 @@ export function BacklogPage() {
     return map;
   }, [items]);
 
+  // Group: stories/bugs with their child tasks nested, standalone tasks at top level
+  const grouped = useMemo(() => {
+    const childIds = new Set<string>();
+    const parentChildren = new Map<string, typeof sorted>();
+
+    // Collect children
+    for (const item of sorted) {
+      if (item.parentId) {
+        childIds.add(item.id);
+        const siblings = parentChildren.get(item.parentId) ?? [];
+        siblings.push(item);
+        parentChildren.set(item.parentId, siblings);
+      }
+    }
+
+    // Build ordered list: parent followed by its children
+    const result: Array<{ item: typeof sorted[0]; indent: boolean }> = [];
+    for (const item of sorted) {
+      if (childIds.has(item.id)) continue; // skip children — they render under their parent
+      result.push({ item, indent: false });
+      const children = parentChildren.get(item.id);
+      if (children) {
+        for (const child of children) {
+          result.push({ item: child, indent: true });
+        }
+      }
+    }
+    return result;
+  }, [sorted]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
+
+  // Flat list of top-level items only (no children) for reorder calculations
+  const topLevel = useMemo(
+    () => sorted.filter((i) => !i.parentId),
+    [sorted],
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const activeIdx = sorted.findIndex((i) => i.id === active.id);
-    const overIdx = sorted.findIndex((i) => i.id === over.id);
+    const activeIdx = topLevel.findIndex((i) => i.id === active.id);
+    const overIdx = topLevel.findIndex((i) => i.id === over.id);
     if (activeIdx === -1 || overIdx === -1) return;
 
     // Calculate new orderIndex — fractional between neighbors
     let newOrderIndex: number;
     if (overIdx === 0) {
-      // Moving to the top
-      newOrderIndex = (sorted[0]?.orderIndex ?? 0) - 1;
-    } else if (overIdx >= sorted.length - 1) {
-      // Moving to the bottom
-      newOrderIndex = (sorted[sorted.length - 1]?.orderIndex ?? 0) + 1;
+      newOrderIndex = (topLevel[0]?.orderIndex ?? 0) - 1;
+    } else if (overIdx >= topLevel.length - 1) {
+      newOrderIndex = (topLevel[topLevel.length - 1]?.orderIndex ?? 0) + 1;
     } else if (activeIdx < overIdx) {
-      // Moving down — place between over and the one after
-      const above = sorted[overIdx]!;
-      const below = sorted[overIdx + 1];
+      const above = topLevel[overIdx]!;
+      const below = topLevel[overIdx + 1];
       newOrderIndex = below
         ? (above.orderIndex + below.orderIndex) / 2
         : above.orderIndex + 1;
     } else {
-      // Moving up — place between the one before over and over
-      const above = sorted[overIdx - 1];
-      const below = sorted[overIdx]!;
+      const above = topLevel[overIdx - 1];
+      const below = topLevel[overIdx]!;
       newOrderIndex = above
         ? (above.orderIndex + below.orderIndex) / 2
         : below.orderIndex - 1;
@@ -175,21 +207,22 @@ export function BacklogPage() {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={sorted.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-2">
-            {sorted.map((item) => (
-              <SortableWorkItemRow
-                key={item.id}
-                item={item}
-                projectId={projectId}
-                calculatedPoints={calculatedPointsMap.get(item.id)}
-              />
+        <SortableContext items={grouped.map((g) => g.item.id)} strategy={verticalListSortingStrategy}>
+          <div className="space-y-1">
+            {grouped.map(({ item, indent }) => (
+              <div key={item.id} className={indent ? 'ml-8' : ''}>
+                <SortableWorkItemRow
+                  item={item}
+                  projectId={projectId}
+                  calculatedPoints={calculatedPointsMap.get(item.id)}
+                />
+              </div>
             ))}
           </div>
         </SortableContext>
       </DndContext>
 
-      {sorted.length === 0 && (
+      {grouped.length === 0 && (
         <p className="py-12 text-center text-gray-400">
           No items match your filters. Try adjusting or create a new item.
         </p>

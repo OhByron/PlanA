@@ -21,22 +21,25 @@ export function useNavigationTree() {
     queryKey: ['nav-tree'],
     queryFn: async (): Promise<NavOrg[]> => {
       // 1. Fetch orgs
-      const rawOrgs = await api.get<PaginatedResponse>('/orgs?page_size=200');
-      const orgs = rawOrgs.items.map(toOrg);
+      const rawOrgs = await api.get<unknown>('/orgs?page_size=200');
+      const orgsArr = Array.isArray(rawOrgs) ? rawOrgs : (rawOrgs as PaginatedResponse).items ?? [];
+      const orgs = orgsArr.map(toOrg);
 
       // 2. Fetch teams for each org in parallel
       const orgsWithTeams = await Promise.all(
         orgs.map(async (org) => {
-          const rawTeams = await api.get<PaginatedResponse>(`/orgs/${org.id}/teams?page_size=200`);
-          const teams = rawTeams.items.map(toTeam);
+          const rawTeams = await api.get<unknown>(`/orgs/${org.id}/teams?page_size=200`);
+          const teamsArr = Array.isArray(rawTeams) ? rawTeams : (rawTeams as PaginatedResponse).items;
+          const teams = teamsArr.map(toTeam);
 
           // 3. Fetch projects for each team in parallel
           const teamsWithProjects = await Promise.all(
             teams.map(async (team) => {
-              const rawProjects = await api.get<PaginatedResponse>(
+              const rawProjects = await api.get<unknown>(
                 `/orgs/${org.id}/teams/${team.id}/projects?page_size=200`,
               );
-              return { ...team, projects: rawProjects.items.map(toProject) };
+              const projArr = Array.isArray(rawProjects) ? rawProjects : (rawProjects as PaginatedResponse).items ?? [];
+              return { ...team, projects: projArr.map(toProject) };
             }),
           );
 
