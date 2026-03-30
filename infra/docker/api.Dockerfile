@@ -2,17 +2,14 @@
 FROM golang:1.24-alpine AS builder
 
 RUN apk add --no-cache git
-ENV GOTOOLCHAIN=local
 
 WORKDIR /app
 
-# Fetch dependencies first (layer cache)
 COPY apps/api/go.mod apps/api/go.sum ./
 RUN go mod download
 
 COPY apps/api/ .
 
-# Build a fully static binary
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /bin/api ./cmd/server
 
 # Runtime — minimal scratch image
