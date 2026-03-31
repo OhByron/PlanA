@@ -73,7 +73,8 @@
       "Bash(grep -n \"source_test_result\" d:/Coding/ProjectA/apps/api/internal/migrations/sql/*.sql)",
       "Read(//d/Coding/ProjectA/**)",
       "Bash(grep -r \"localhost:3000\\\\|3000\\\\|5173\\\\|localhost\\\\|onboarding@resend\" /d/Coding/ProjectA/apps --include=*.go --include=*.ts --include=*.tsx)",
-      "Bash(grep -n \"_ = h.db.QueryRow\" /d/Coding/ProjectA/apps/api/internal/handlers/*.go)"
+      "Bash(grep -n \"_ = h.db.QueryRow\" /d/Coding/ProjectA/apps/api/internal/handlers/*.go)",
+      "Bash(pnpm install:*)"
     ]
   }
 }
