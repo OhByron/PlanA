@@ -56,6 +56,8 @@ func New(deps *Dependencies) http.Handler {
 	notifH   := handlers.NewNotificationHandlers(deps.DB)
 	aiH      := handlers.NewAIHandlers(deps.DB)
 	testH    := handlers.NewTestResultHandlers(deps.DB)
+	shareH   := handlers.NewShareHandlers(deps.DB)
+	reportH  := handlers.NewReportHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 
@@ -90,6 +92,11 @@ func New(deps *Dependencies) http.Handler {
 			r.Get("/", invH.Get)
 			r.Post("/accept", invH.Accept)
 		})
+
+		// ----------------------------------------------------------------
+		// Public — stakeholder dashboard (token-authenticated, no login)
+		// ----------------------------------------------------------------
+		r.Get("/share/{token}/dashboard", shareH.Dashboard)
 
 		// ----------------------------------------------------------------
 		// Protected — all routes below require a valid session JWT
@@ -208,6 +215,16 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/junit", testH.ImportJUnit)
 					r.Post("/webhook", testH.Webhook)
 				})
+
+				// Share tokens (stakeholder dashboard links)
+				r.Route("/share-tokens", func(r chi.Router) {
+					r.Get("/", shareH.List)
+					r.Post("/", shareH.Create)
+					r.Post("/{tokenID}/revoke", shareH.Revoke)
+				})
+
+				// Report generation
+				r.Post("/reports/generate", reportH.Generate)
 			})
 
 			// Sprint item management (add/remove work items from a sprint)

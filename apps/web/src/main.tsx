@@ -29,6 +29,8 @@ import { AISettingsPage } from './pages/project/ai-settings';
 import { MyWorkPage } from './pages/my-work';
 import { OrgsPage } from './pages/orgs';
 import { OrgDetailPage } from './pages/org-detail';
+import { ShareDashboardPage } from './pages/share-dashboard';
+import { ReportViewPage } from './pages/project/report-view';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -76,6 +78,12 @@ const inviteRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/invite/$token',
   component: InvitePage,
+});
+
+const shareDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/share/$token',
+  component: ShareDashboardPage,
 });
 
 // --- Authenticated layout ---
@@ -174,6 +182,12 @@ const settingsRoute = createRoute({
   component: AISettingsPage,
 });
 
+const reportViewRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/report',
+  component: ReportViewPage,
+});
+
 const workItemDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/p/$projectId/items/$workItemId',
@@ -187,12 +201,13 @@ const routeTree = rootRoute.addChildren([
   authCallbackRoute,
   authErrorRoute,
   inviteRoute,
+  shareDashboardRoute,
   authenticatedRoute.addChildren([
     indexRoute,
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
-    projectRoute.addChildren([boardRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute, settingsRoute]),
+    projectRoute.addChildren([boardRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute, settingsRoute, reportViewRoute]),
     epicDetailRoute,
     sprintDetailRoute,
     workItemDetailRoute,

@@ -105,6 +105,9 @@ export function OrgDetailPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
+                  <Link to="/p/$projectId/report" params={{ projectId: p.id }}>
+                    <Button size="xs" variant="ghost">Report</Button>
+                  </Link>
                   <Link to="/p/$projectId/settings" params={{ projectId: p.id }}>
                     <Button size="xs" variant="ghost">Settings</Button>
                   </Link>

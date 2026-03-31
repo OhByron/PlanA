@@ -30,6 +30,7 @@ export function ProjectLayout() {
     { label: 'Epics', to: '/p/$projectId/epics' as const },
     { label: 'Sprints', to: '/p/$projectId/sprints' as const },
     { label: 'Reports', to: '/p/$projectId/reports' as const },
+    { label: 'Report', to: '/p/$projectId/report' as const },
     { label: 'Team', to: '/p/$projectId/team' as const },
     { label: 'Settings', to: '/p/$projectId/settings' as const },
   ];
