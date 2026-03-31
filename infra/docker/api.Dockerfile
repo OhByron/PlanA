@@ -12,10 +12,10 @@ COPY apps/api/ .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /bin/api ./cmd/server
 
-# Runtime — minimal scratch image
-FROM scratch
+# Runtime
+FROM alpine:3.21
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+RUN apk add --no-cache ca-certificates wget
 COPY --from=builder /bin/api /api
 
 EXPOSE 8080
