@@ -56,7 +56,8 @@
       "Bash(curl -s \"https://hub.docker.com/v2/repositories/library/golang/tags?page_size=10&name=1.24\")",
       "Bash(curl -s \"https://hub.docker.com/v2/repositories/library/golang/tags?page_size=5&name=1.25\")",
       "Bash(GOTOOLCHAIN=local go get golang.org/x/crypto@v0.36.0 golang.org/x/oauth2@v0.28.0 golang.org/x/sync@v0.12.0 golang.org/x/sys@v0.31.0 golang.org/x/text@v0.23.0)",
-      "Bash(GOTOOLCHAIN=local go build ./...)"
+      "Bash(GOTOOLCHAIN=local go build ./...)",
+      "Bash(npx turbo:*)"
     ]
   }
 }

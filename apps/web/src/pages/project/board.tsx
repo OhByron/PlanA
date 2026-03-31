@@ -8,9 +8,10 @@ import {
   type DragStartEvent,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { WorkItem, WorkItemStatus } from '@projecta/types';
 import { cn } from '@projecta/ui';
+import { ApiError } from '../../lib/api-client';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus } from '../../hooks/use-project-dependencies';
@@ -44,6 +45,14 @@ export function BoardPage() {
     [items],
   );
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Auto-dismiss error after 5 seconds
+  useEffect(() => {
+    if (!errorMessage) return;
+    const t = setTimeout(() => setErrorMessage(null), 5000);
+    return () => clearTimeout(t);
+  }, [errorMessage]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -104,20 +113,26 @@ export function BoardPage() {
     const item = items.find((i) => i.id === active.id);
     if (!item || item.status === newStatus) return;
 
+    const onMutateError = (err: Error) => {
+      if (err instanceof ApiError) {
+        setErrorMessage(err.message);
+      }
+    };
+
     // Move the item
-    updateItem.mutate({
-      workItemId: item.id,
-      data: { status: newStatus },
-    });
+    updateItem.mutate(
+      { workItemId: item.id, data: { status: newStatus } },
+      { onError: onMutateError },
+    );
 
     // Cascade: if it's a story, move child tasks too
     if (item.type === 'story') {
       const children = items.filter((i) => i.parentId === item.id && i.status !== newStatus);
       for (const child of children) {
-        updateItem.mutate({
-          workItemId: child.id,
-          data: { status: newStatus },
-        });
+        updateItem.mutate(
+          { workItemId: child.id, data: { status: newStatus } },
+          { onError: onMutateError },
+        );
       }
     }
   };
@@ -146,6 +161,15 @@ export function BoardPage() {
           team finish things instead of starting new ones.
         </p>
       </HelpOverlay>
+
+      {errorMessage && (
+        <div className="mx-6 mt-2 flex items-center justify-between rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+          <span>{errorMessage}</span>
+          <button onClick={() => setErrorMessage(null)} className="ml-4 font-medium hover:text-red-900">
+            Dismiss
+          </button>
+        </div>
+      )}
 
       <div className="flex items-center justify-between px-6 py-3">
         <p className="text-sm text-gray-500">

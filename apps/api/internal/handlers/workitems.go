@@ -367,12 +367,38 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Capture old status before update so we can log status changes for burndown.
+	// Capture old status (and QE gate fields) before update.
 	var oldStatus string
 	if body.Status != nil {
-		_ = h.db.QueryRow(r.Context(),
-			`SELECT status FROM work_items WHERE id = $1`, workItemID,
-		).Scan(&oldStatus)
+		var assigneeID *string
+		var parentID *string
+		var jobRole string
+		err := h.db.QueryRow(r.Context(),
+			`SELECT w.status, w.assignee_id, w.parent_id, COALESCE(pm.job_role, '')
+			 FROM work_items w
+			 LEFT JOIN project_members pm ON pm.id = w.assignee_id
+			 WHERE w.id = $1`, workItemID,
+		).Scan(&oldStatus, &assigneeID, &parentID, &jobRole)
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			slog.Error("workitems.Update: pre-check query failed", "error", err)
+		}
+
+		// QE status gate: QE-assigned items require linked test results before moving to Done.
+		if *body.Status == "done" && jobRole == "qe" {
+			var hasResults bool
+			_ = h.db.QueryRow(r.Context(),
+				`SELECT EXISTS(
+					SELECT 1 FROM test_results
+					WHERE work_item_id = $1
+					   OR ($2::uuid IS NOT NULL AND work_item_id = $2)
+				)`, workItemID, parentID,
+			).Scan(&hasResults)
+			if !hasResults {
+				writeError(w, http.StatusUnprocessableEntity, "qe_gate_blocked",
+					"QE items require at least one linked test result before moving to Done")
+				return
+			}
+		}
 	}
 
 	// Always update updated_at.

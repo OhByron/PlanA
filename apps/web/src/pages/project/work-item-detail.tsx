@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import { Button, Badge, Select, Input, Textarea } from '@projecta/ui';
 import type { WorkItemStatus, Priority, WorkItemType } from '@projecta/types';
@@ -18,7 +18,7 @@ import { useLinks, useCreateLink, useDeleteLink } from '../../hooks/use-links';
 import { useTestSummary } from '../../hooks/use-test-results';
 import { TestStatusBadge } from '../../components/test-status-badge';
 import { useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api-client';
+import { api, ApiError } from '../../lib/api-client';
 
 const STATUSES: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review', 'done', 'cancelled'];
 const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
@@ -73,6 +73,15 @@ export function WorkItemDetailPage() {
   const [linkLabel, setLinkLabel] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
 
+  const [fieldError, setFieldError] = useState<string | null>(null);
+
+  // Auto-dismiss field error after 5 seconds
+  useEffect(() => {
+    if (!fieldError) return;
+    const t = setTimeout(() => setFieldError(null), 5000);
+    return () => clearTimeout(t);
+  }, [fieldError]);
+
   const [aiLoading, setAiLoading] = useState(false);
   const [aiDescLoading, setAiDescLoading] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<Array<{given: string; when: string; then: string}>>([]);
@@ -112,7 +121,17 @@ export function WorkItemDetailPage() {
   }
 
   const patchField = (data: Record<string, unknown>) => {
-    updateItem.mutate({ workItemId: item.id, data });
+    updateItem.mutate(
+      { workItemId: item.id, data },
+      {
+        onError: (err) => {
+          if (err instanceof ApiError) {
+            setFieldError(err.message);
+          }
+        },
+        onSuccess: () => setFieldError(null),
+      },
+    );
   };
 
   const saveTitle = () => {
@@ -680,6 +699,12 @@ export function WorkItemDetailPage() {
 
       {/* Sidebar panel */}
       <aside className="w-72 border-l border-gray-200 bg-white p-4 overflow-y-auto">
+        {fieldError && (
+          <div className="mb-3 flex items-center justify-between rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+            <span>{fieldError}</span>
+            <button onClick={() => setFieldError(null)} className="ml-2 font-medium hover:text-red-900">×</button>
+          </div>
+        )}
         <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Details</h2>
 
         {/* Status */}
