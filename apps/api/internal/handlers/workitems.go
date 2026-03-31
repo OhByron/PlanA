@@ -11,7 +11,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
@@ -32,19 +31,37 @@ type WorkItem struct {
 	StoryPoints   *int            `json:"story_points"`
 	Labels        []string        `json:"labels"`
 	OrderIndex    float64         `json:"order_index"`
-	IsBlocked     bool            `json:"is_blocked"`
-	BlockedReason *string         `json:"blocked_reason"`
-	CreatedBy     string          `json:"created_by"`
-	CreatedAt     time.Time       `json:"created_at"`
-	UpdatedAt     time.Time       `json:"updated_at"`
+	IsBlocked          bool            `json:"is_blocked"`
+	BlockedReason      *string         `json:"blocked_reason"`
+	SourceTestResultID *string         `json:"source_test_result_id"`
+	CreatedBy          string          `json:"created_by"`
+	CreatedAt          time.Time       `json:"created_at"`
+	UpdatedAt          time.Time       `json:"updated_at"`
 }
 
 // WorkItemHandlers handles CRUD for stories, bugs, and tasks within a project.
 type WorkItemHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewWorkItemHandlers(db *pgxpool.Pool) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
+func NewWorkItemHandlers(db DBPOOL) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
+
+// qeGateCheck validates whether a QE-assigned work item can move to Done.
+// Returns ("", "") if the gate passes, or (code, message) if blocked.
+func qeGateCheck(jobRole string, totalResults, failedResults int) (code string, message string) {
+	if jobRole != "qe" {
+		return "", ""
+	}
+	if totalResults == 0 {
+		return "qe_gate_no_results",
+			"QE items require at least one linked test result before moving to Done"
+	}
+	if failedResults > 0 {
+		return "qe_gate_failing_tests",
+			fmt.Sprintf("Cannot close: %d test(s) still failing. Resolve defects and retest before moving to Done", failedResults)
+	}
+	return "", ""
+}
 
 // List returns all work items for a given project, with optional filters.
 func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
@@ -92,7 +109,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
 		status, priority, assignee_id, story_points, labels, order_index,
-		is_blocked, blocked_reason, created_by, created_at, updated_at
+		is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
 	args = append(args, pp.PageSize, pp.Offset)
 
@@ -110,7 +127,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-			&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
 			slog.Error("workitems.List: scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read work item row")
@@ -132,16 +149,17 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 // createWorkItemRequest is the JSON body for creating a work item.
 type createWorkItemRequest struct {
-	Type        string          `json:"type"`
-	Title       string          `json:"title"`
-	Description json.RawMessage `json:"description"`
-	EpicID      *string         `json:"epic_id"`
-	ParentID    *string         `json:"parent_id"`
-	Priority    *string         `json:"priority"`
-	AssigneeID  *string         `json:"assignee_id"`
-	StoryPoints *int            `json:"story_points"`
-	Labels      []string        `json:"labels"`
-	OrderIndex  *float64        `json:"order_index"`
+	Type               string          `json:"type"`
+	Title              string          `json:"title"`
+	Description        json.RawMessage `json:"description"`
+	EpicID             *string         `json:"epic_id"`
+	ParentID           *string         `json:"parent_id"`
+	Priority           *string         `json:"priority"`
+	AssigneeID         *string         `json:"assignee_id"`
+	StoryPoints        *int            `json:"story_points"`
+	Labels             []string        `json:"labels"`
+	OrderIndex         *float64        `json:"order_index"`
+	SourceTestResultID *string         `json:"source_test_result_id"`
 }
 
 // Create inserts a new work item under the given project.
@@ -200,17 +218,17 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err = h.db.QueryRow(r.Context(),
 		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
-			priority, assignee_id, story_points, labels, order_index, created_by, item_number)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+			priority, assignee_id, story_points, labels, order_index, created_by, item_number, source_test_result_id)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
-			is_blocked, blocked_reason, created_by, created_at, updated_at`,
+			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		projectID, body.EpicID, body.ParentID, body.Type, body.Title, body.Description,
-		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID, itemNumber,
+		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID, itemNumber, body.SourceTestResultID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
 		slog.Error("workitems.Create: insert failed", "error", err)
@@ -237,12 +255,12 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
-			is_blocked, blocked_reason, created_by, created_at, updated_at
+			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		 FROM work_items WHERE id = $1`, workItemID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -383,19 +401,21 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			slog.Error("workitems.Update: pre-check query failed", "error", err)
 		}
 
-		// QE status gate: QE-assigned items require linked test results before moving to Done.
-		if *body.Status == "done" && jobRole == "qe" {
-			var hasResults bool
+		// QE status gate: QE-assigned items require linked test results that all pass before moving to Done.
+		if *body.Status == "done" {
+			var totalResults, failedResults int
 			_ = h.db.QueryRow(r.Context(),
-				`SELECT EXISTS(
-					SELECT 1 FROM test_results
-					WHERE work_item_id = $1
-					   OR ($2::uuid IS NOT NULL AND work_item_id = $2)
-				)`, workItemID, parentID,
-			).Scan(&hasResults)
-			if !hasResults {
-				writeError(w, http.StatusUnprocessableEntity, "qe_gate_blocked",
-					"QE items require at least one linked test result before moving to Done")
+				`SELECT
+					COUNT(*),
+					COUNT(*) FILTER (WHERE status IN ('fail', 'error'))
+				 FROM test_results
+				 WHERE work_item_id = $1
+				    OR ($2::uuid IS NOT NULL AND work_item_id = $2)`,
+				workItemID, parentID,
+			).Scan(&totalResults, &failedResults)
+
+			if code, msg := qeGateCheck(jobRole, totalResults, failedResults); code != "" {
+				writeError(w, http.StatusUnprocessableEntity, code, msg)
 				return
 			}
 		}
@@ -409,7 +429,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		`UPDATE work_items SET %s WHERE id = $%d
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
 			status, priority, assignee_id, story_points, labels, order_index,
-			is_blocked, blocked_reason, created_by, created_at, updated_at`,
+			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		strings.Join(fields, ", "), argN,
 	)
 
@@ -417,7 +437,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {

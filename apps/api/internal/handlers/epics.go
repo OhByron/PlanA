@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
@@ -34,10 +33,10 @@ type Epic struct {
 
 // EpicHandlers handles CRUD for epics within a project.
 type EpicHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewEpicHandlers(db *pgxpool.Pool) *EpicHandlers { return &EpicHandlers{db: db} }
+func NewEpicHandlers(db DBPOOL) *EpicHandlers { return &EpicHandlers{db: db} }
 
 // List returns all epics for a given project.
 func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {

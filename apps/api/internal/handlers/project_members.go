@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 const projectMemberColumns = `id, project_id, user_id, name, email, phone, job_role, capacity, created_at, updated_at`
@@ -38,10 +37,10 @@ func (m *projectMemberResponse) scanFields() []any {
 
 // ProjectMemberHandlers handles CRUD for project members.
 type ProjectMemberHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewProjectMemberHandlers(db *pgxpool.Pool) *ProjectMemberHandlers {
+func NewProjectMemberHandlers(db DBPOOL) *ProjectMemberHandlers {
 	return &ProjectMemberHandlers{db: db}
 }
 

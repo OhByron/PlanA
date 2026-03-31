@@ -170,6 +170,7 @@ func New(deps *Dependencies) http.Handler {
 						r.Delete("/", wiH.Delete)
 						r.Post("/suggest-ac", aiH.SuggestAC)
 						r.Post("/suggest-desc", aiH.SuggestDescription)
+						r.Post("/suggest-from-test", aiH.SuggestFromTestFailure)
 					})
 				})
 				r.Route("/members", func(r chi.Router) {
@@ -204,6 +205,7 @@ func New(deps *Dependencies) http.Handler {
 				})
 				r.Route("/test-results", func(r chi.Router) {
 					r.Get("/", testH.List)
+					r.Get("/{resultID}", testH.Get)
 					r.Post("/junit", testH.ImportJUnit)
 					r.Post("/webhook", testH.Webhook)
 				})

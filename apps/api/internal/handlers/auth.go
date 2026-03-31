@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/crypto/bcrypt"
 
@@ -24,7 +23,7 @@ const sessionDuration = 7 * 24 * time.Hour
 
 // AuthHandlers handles OAuth login flows and session management.
 type AuthHandlers struct {
-	db     *pgxpool.Pool
+	db     DBPOOL
 	auth   *auth.Service
 	github *oauth.GitHubProvider
 	google *oauth.GoogleProvider
@@ -32,7 +31,7 @@ type AuthHandlers struct {
 	redis  *redis.Client
 }
 
-func NewAuthHandlers(db *pgxpool.Pool, authSvc *auth.Service, gh *oauth.GitHubProvider, goog *oauth.GoogleProvider, cfg *config.Config, rdb *redis.Client) *AuthHandlers {
+func NewAuthHandlers(db DBPOOL, authSvc *auth.Service, gh *oauth.GitHubProvider, goog *oauth.GoogleProvider, cfg *config.Config, rdb *redis.Client) *AuthHandlers {
 	return &AuthHandlers{db: db, auth: authSvc, github: gh, google: goog, cfg: cfg, redis: rdb}
 }
 
@@ -294,7 +293,7 @@ func (h *AuthHandlers) redirectError(w http.ResponseWriter, r *http.Request, rea
 
 // --- DB helpers ---
 
-func upsertGitHubUser(ctx context.Context, db *pgxpool.Pool, u *oauth.GitHubUser) (id, email string, err error) {
+func upsertGitHubUser(ctx context.Context, db DBPOOL, u *oauth.GitHubUser) (id, email string, err error) {
 	ghID := fmt.Sprintf("%d", u.ID)
 	name := u.Name
 	if name == "" {
@@ -328,7 +327,7 @@ func upsertGitHubUser(ctx context.Context, db *pgxpool.Pool, u *oauth.GitHubUser
 	return id, email, err
 }
 
-func upsertGoogleUser(ctx context.Context, db *pgxpool.Pool, u *oauth.GoogleUser) (id, email string, err error) {
+func upsertGoogleUser(ctx context.Context, db DBPOOL, u *oauth.GoogleUser) (id, email string, err error) {
 	err = db.QueryRow(ctx, `
 		INSERT INTO users (email, name, avatar_url, google_id)
 		VALUES ($1, $2, $3, $4)
@@ -356,7 +355,7 @@ func upsertGoogleUser(ctx context.Context, db *pgxpool.Pool, u *oauth.GoogleUser
 	return id, email, err
 }
 
-func storeSession(ctx context.Context, db *pgxpool.Pool, userID, token string) error {
+func storeSession(ctx context.Context, db DBPOOL, userID, token string) error {
 	_, err := db.Exec(ctx, `
 		INSERT INTO auth_sessions (user_id, token_hash, expires_at)
 		VALUES ($1, $2, $3)

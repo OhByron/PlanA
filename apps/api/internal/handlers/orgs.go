@@ -10,17 +10,16 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // OrgHandlers handles CRUD for organisations.
 type OrgHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewOrgHandlers(db *pgxpool.Pool) *OrgHandlers { return &OrgHandlers{db: db} }
+func NewOrgHandlers(db DBPOOL) *OrgHandlers { return &OrgHandlers{db: db} }
 
 // orgColumns is the canonical column list for RETURNING clauses (no table alias).
 const orgColumns = `id, name, slug, contact_name, contact_email, contact_phone,

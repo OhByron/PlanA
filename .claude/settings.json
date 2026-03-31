@@ -65,7 +65,12 @@
       "Bash(export PATH=\"$PATH:/c/Users/byron/AppData/Local/Microsoft/WinGet/Links\")",
       "Bash(jq --version)",
       "Bash(export PATH=\"$PATH:/c/Users/byron/AppData/Local/Microsoft/WinGet/Links\" docker exec projecta-postgres-1 psql -U plana -d plana -c \"\\\\dt\")",
-      "Bash(export PATH=\"$PATH:/c/Users/byron/AppData/Local/Microsoft/WinGet/Links\" docker exec projecta-postgres-1 psql -U plana -d plana -c \"\\\\d teams\")"
+      "Bash(export PATH=\"$PATH:/c/Users/byron/AppData/Local/Microsoft/WinGet/Links\" docker exec projecta-postgres-1 psql -U plana -d plana -c \"\\\\d teams\")",
+      "Bash(export PATH=\"$PATH:/c/Users/byron/AppData/Local/Microsoft/WinGet/Links\" curl -s http://localhost:8080/health)",
+      "Bash(find /d/Coding/ProjectA -name *.go -path *test* -o -name *_test.go)",
+      "Bash(grep -h \"^type.*Handlers struct\" /d/Coding/ProjectA/apps/api/internal/handlers/*.go)",
+      "Bash(go test:*)",
+      "Bash(grep -n \"source_test_result\" d:/Coding/ProjectA/apps/api/internal/migrations/sql/*.sql)"
     ]
   }
 }

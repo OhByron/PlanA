@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // Burndown returns daily burndown data for a sprint.
@@ -141,10 +140,10 @@ type Sprint struct {
 
 // SprintHandlers handles CRUD for sprints within a project.
 type SprintHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewSprintHandlers(db *pgxpool.Pool) *SprintHandlers { return &SprintHandlers{db: db} }
+func NewSprintHandlers(db DBPOOL) *SprintHandlers { return &SprintHandlers{db: db} }
 
 // List returns all sprints for a given project.
 func (h *SprintHandlers) List(w http.ResponseWriter, r *http.Request) {

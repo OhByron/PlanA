@@ -15,7 +15,7 @@ import { RichTextDisplay } from '../../components/rich-text-display';
 import { ContextHelp } from '../../components/context-help';
 import { useDependencies, useCreateDependency, useDeleteDependency } from '../../hooks/use-dependencies';
 import { useLinks, useCreateLink, useDeleteLink } from '../../hooks/use-links';
-import { useTestSummary } from '../../hooks/use-test-results';
+import { useTestSummary, useTestResult } from '../../hooks/use-test-results';
 import { TestStatusBadge } from '../../components/test-status-badge';
 import { useQueryClient } from '@tanstack/react-query';
 import { api, ApiError } from '../../lib/api-client';
@@ -69,6 +69,7 @@ export function WorkItemDetailPage() {
   const createLink = useCreateLink(workItemId);
   const deleteLink = useDeleteLink(workItemId);
   const { data: testSummary } = useTestSummary(workItemId);
+  const { data: sourceTestResult } = useTestResult(projectId, item?.sourceTestResultId ?? null);
   const [showLinkForm, setShowLinkForm] = useState(false);
   const [linkLabel, setLinkLabel] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
@@ -84,6 +85,7 @@ export function WorkItemDetailPage() {
 
   const [aiLoading, setAiLoading] = useState(false);
   const [aiDescLoading, setAiDescLoading] = useState(false);
+  const [aiDefectLoading, setAiDefectLoading] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<Array<{given: string; when: string; then: string}>>([]);
   const [aiQuestions, setAiQuestions] = useState<string[]>([]);
 
@@ -109,6 +111,38 @@ export function WorkItemDetailPage() {
       setAiQuestions([err.message ?? 'AI suggestion failed']);
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  const suggestFromTest = async () => {
+    if (!item?.sourceTestResultId) return;
+    setAiDefectLoading(true);
+    setAiSuggestions([]);
+    setAiQuestions([]);
+    try {
+      const result = await api.post<{
+        description: string;
+        acceptance_criteria: Array<{given: string; when: string; then: string}>;
+        questions: string[];
+      }>(`/projects/${projectId}/work-items/${workItemId}/suggest-from-test`, {});
+
+      // Auto-populate description
+      if (result.description) {
+        patchField({
+          description: {
+            type: 'doc',
+            content: [{ type: 'paragraph', content: [{ type: 'text', text: result.description }] }],
+          },
+        });
+      }
+
+      // Show AC suggestions for user to accept/edit
+      setAiSuggestions(result.acceptance_criteria ?? []);
+      setAiQuestions(result.questions ?? []);
+    } catch (err: any) {
+      setAiQuestions([err.message ?? 'AI generation failed']);
+    } finally {
+      setAiDefectLoading(false);
     }
   };
 
@@ -648,6 +682,49 @@ export function WorkItemDetailPage() {
                     Last run: {new Date(testSummary.lastRun).toLocaleString()}
                   </span>
                 )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Source Test Failure (for defects created from a failed test) */}
+        {sourceTestResult && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+              Source Test Failure
+            </h2>
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                  sourceTestResult.status === 'fail' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                }`}>
+                  {sourceTestResult.status}
+                </span>
+                <span className="text-sm font-medium text-gray-900">{sourceTestResult.testName}</span>
+              </div>
+              {sourceTestResult.suiteName && (
+                <p className="mb-1 text-xs text-gray-500">Suite: {sourceTestResult.suiteName}</p>
+              )}
+              {sourceTestResult.durationMs != null && (
+                <p className="mb-2 text-xs text-gray-500">Duration: {sourceTestResult.durationMs}ms</p>
+              )}
+              {sourceTestResult.errorMessage && (
+                <pre className="mt-2 max-h-48 overflow-auto rounded bg-gray-900 p-3 text-xs text-gray-100 whitespace-pre-wrap">
+                  {sourceTestResult.errorMessage}
+                </pre>
+              )}
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-xs text-gray-400">
+                  Source: {sourceTestResult.source} | Reported: {new Date(sourceTestResult.reportedAt).toLocaleString()}
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={suggestFromTest}
+                  disabled={aiDefectLoading}
+                >
+                  {aiDefectLoading ? 'Generating...' : 'Generate Description & ACs'}
+                </Button>
               </div>
             </div>
           </section>

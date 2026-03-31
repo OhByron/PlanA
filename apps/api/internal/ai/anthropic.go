@@ -138,6 +138,100 @@ Story: %s
 	return &result, nil
 }
 
+func (p *AnthropicProvider) SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error) {
+	systemPrompt := `You are a senior QA analyst creating defect reports from test failures in an Agile project.
+
+Rules:
+- Write a clear, technical defect description (2-3 paragraphs) explaining:
+  1. What was expected vs what actually happened
+  2. The likely root cause based on the error details
+  3. Impact and severity assessment
+- Generate 2-4 acceptance criteria in Given/When/Then format that define "fixed"
+- Be specific: reference the test name, error message, and stack trace details
+- The acceptance criteria should be testable — a QE can verify the fix with them
+- If the error is ambiguous, include clarifying questions
+
+Return JSON:
+{
+  "description": "The defect description...",
+  "acceptance_criteria": [{"given": "...", "when": "...", "then": "..."}],
+  "questions": []
+}
+
+Only include "questions" if genuinely needed. Otherwise return an empty array.`
+
+	userPrompt := fmt.Sprintf(`Project: %s
+Parent Story: %s
+Test Name: %s
+Suite: %s
+Status: %s
+
+Error Details:
+%s
+
+Generate a defect report with description and acceptance criteria for the fix.`,
+		req.ProjectName, req.ParentTitle, req.TestName, req.SuiteName, req.Status, req.ErrorMessage)
+
+	body := map[string]any{
+		"model":      p.model,
+		"max_tokens": 1500,
+		"system":     systemPrompt,
+		"messages":   []map[string]string{{"role": "user", "content": userPrompt}},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", "https://api.anthropic.com/v1/messages", bytes.NewReader(jsonBody))
+	if err != nil {
+		return nil, fmt.Errorf("building request: %w", err)
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("x-api-key", p.apiKey)
+	httpReq.Header.Set("anthropic-version", "2023-06-01")
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("calling Anthropic API: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Anthropic API returned %d: %s", resp.StatusCode, respBody)
+	}
+
+	var anthropicResp struct {
+		Content []struct{ Text string `json:"text"` } `json:"content"`
+	}
+	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
+		return nil, fmt.Errorf("parsing response: %w", err)
+	}
+	if len(anthropicResp.Content) == 0 {
+		return nil, fmt.Errorf("empty response")
+	}
+
+	text := anthropicResp.Content[0].Text
+	jsonStart, jsonEnd := -1, -1
+	for i, c := range text {
+		if c == '{' && jsonStart == -1 {
+			jsonStart = i
+		}
+		if c == '}' {
+			jsonEnd = i + 1
+		}
+	}
+
+	var result SuggestDefectResponse
+	if jsonStart >= 0 && jsonEnd > jsonStart {
+		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
+			return nil, fmt.Errorf("parsing defect suggestion: %w (raw: %s)", err, text)
+		}
+	} else {
+		return nil, fmt.Errorf("no JSON found in response: %s", text)
+	}
+
+	return &result, nil
+}
+
 func (p *AnthropicProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
 	systemPrompt := `You are an experienced Business Systems Analyst helping write clear, detailed descriptions for user stories in an Agile project.
 

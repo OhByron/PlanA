@@ -43,6 +43,7 @@ export interface WorkItem {
   orderIndex: number;
   isBlocked: boolean;
   blockedReason: string | null;
+  sourceTestResultId: string | null;
   createdBy: string;
   createdAt: string;
   updatedAt: string;

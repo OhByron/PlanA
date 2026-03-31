@@ -5,16 +5,15 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/ai"
 )
 
 type AIHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewAIHandlers(db *pgxpool.Pool) *AIHandlers {
+func NewAIHandlers(db DBPOOL) *AIHandlers {
 	return &AIHandlers{db: db}
 }
 
@@ -326,6 +325,87 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 		}
 		writeJSON(w, http.StatusOK, result)
 	}
+}
+
+// SuggestFromTestFailure generates a defect description and ACs from a linked test failure.
+// POST /api/projects/{projectID}/work-items/{workItemID}/suggest-from-test
+func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	workItemID := chi.URLParam(r, "workItemID")
+
+	// Get project AI settings
+	var providerType, model, apiKey, endpoint *string
+	var projectName string
+	err := h.db.QueryRow(r.Context(),
+		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
+		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Project not found")
+		return
+	}
+	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
+		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
+		return
+	}
+
+	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+		return
+	}
+
+	// Get the work item's source_test_result_id and parent story title
+	var sourceTestResultID, parentID *string
+	err = h.db.QueryRow(r.Context(),
+		`SELECT source_test_result_id, parent_id FROM work_items WHERE id = $1`, workItemID,
+	).Scan(&sourceTestResultID, &parentID)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if sourceTestResultID == nil {
+		writeError(w, http.StatusBadRequest, "no_test_result", "This work item has no linked test failure")
+		return
+	}
+
+	var parentTitle string
+	if parentID != nil {
+		_ = h.db.QueryRow(r.Context(),
+			`SELECT title FROM work_items WHERE id = $1`, *parentID,
+		).Scan(&parentTitle)
+	}
+
+	// Get the test result details
+	var testName, status string
+	var errorMsg, suiteName *string
+	err = h.db.QueryRow(r.Context(),
+		`SELECT test_name, status, error_message, suite_name FROM test_results WHERE id = $1`,
+		*sourceTestResultID,
+	).Scan(&testName, &status, &errorMsg, &suiteName)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Test result not found")
+		return
+	}
+
+	req := ai.SuggestDefectRequest{
+		TestName:     testName,
+		SuiteName:    deref(suiteName),
+		Status:       status,
+		ErrorMessage: deref(errorMsg),
+		ProjectName:  projectName,
+		ParentTitle:  parentTitle,
+	}
+
+	slog.Info("ai.SuggestFromTestFailure", "project", projectName, "test", testName, "provider", *providerType)
+
+	result, err := provider.SuggestDefect(r.Context(), req)
+	if err != nil {
+		slog.Error("ai.SuggestFromTestFailure failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "ai_error", "AI request failed: "+err.Error())
+		return
+	}
+
+	writeJSON(w, http.StatusOK, result)
 }
 
 func nilIfEmpty(s string) *string {

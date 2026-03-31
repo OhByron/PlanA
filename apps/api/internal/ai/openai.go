@@ -79,6 +79,56 @@ func (p *OpenAIProvider) SuggestAC(ctx context.Context, req SuggestACRequest) (*
 	return &result, nil
 }
 
+func (p *OpenAIProvider) SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error) {
+	systemPrompt := `You are a senior QA analyst creating defect reports from test failures. Write a clear description (expected vs actual, root cause, impact). Generate 2-4 acceptance criteria in Given/When/Then format for verifying the fix. Return JSON: {"description": "...", "acceptance_criteria": [{"given": "...", "when": "...", "then": "..."}], "questions": []}`
+
+	userPrompt := fmt.Sprintf("Project: %s\nParent Story: %s\nTest: %s\nSuite: %s\nStatus: %s\n\nError:\n%s\n\nGenerate defect report.",
+		req.ProjectName, req.ParentTitle, req.TestName, req.SuiteName, req.Status, req.ErrorMessage)
+
+	body := map[string]any{
+		"model": p.model, "max_tokens": 1500,
+		"messages":        []map[string]string{{"role": "system", "content": systemPrompt}, {"role": "user", "content": userPrompt}},
+		"response_format": map[string]string{"type": "json_object"},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
+	if err != nil {
+		return nil, err
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody)
+	}
+
+	var openaiResp struct {
+		Choices []struct {
+			Message struct{ Content string `json:"content"` } `json:"message"`
+		} `json:"choices"`
+	}
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
+		return nil, err
+	}
+	if len(openaiResp.Choices) == 0 {
+		return nil, fmt.Errorf("empty response")
+	}
+
+	var result SuggestDefectResponse
+	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 func (p *OpenAIProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
 	systemPrompt := `You are a BSA writing story descriptions. Write 2-4 concise paragraphs covering context, requirements, and edge cases. Return JSON: {"description": "...", "questions": []}`
 

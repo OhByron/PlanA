@@ -5,13 +5,11 @@ import (
 	"encoding/json"
 	"log/slog"
 	"strings"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // CreateNotification inserts a notification for a user. Skips silently if userID is empty.
 // Automatically looks up project_id from the work item for navigation links.
-func CreateNotification(ctx context.Context, db *pgxpool.Pool, userID, notifType string, workItemID, actorID *string, data map[string]string) {
+func CreateNotification(ctx context.Context, db DBPOOL, userID, notifType string, workItemID, actorID *string, data map[string]string) {
 	if userID == "" {
 		return
 	}
@@ -33,7 +31,7 @@ func CreateNotification(ctx context.Context, db *pgxpool.Pool, userID, notifType
 }
 
 // NotifyAssignee creates an 'assigned' notification. Looks up the project_member's user_id.
-func NotifyAssignee(ctx context.Context, db *pgxpool.Pool, memberID, workItemTitle, actorUserID string, workItemID string) {
+func NotifyAssignee(ctx context.Context, db DBPOOL, memberID, workItemTitle, actorUserID string, workItemID string) {
 	var userID *string
 	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, memberID).Scan(&userID)
 	if userID == nil {
@@ -50,7 +48,7 @@ func NotifyAssignee(ctx context.Context, db *pgxpool.Pool, memberID, workItemTit
 }
 
 // NotifyStatusChange notifies the assignee that the status of their work item changed.
-func NotifyStatusChange(ctx context.Context, db *pgxpool.Pool, assigneeMemberID, workItemTitle, newStatus, actorUserID, workItemID string) {
+func NotifyStatusChange(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTitle, newStatus, actorUserID, workItemID string) {
 	if assigneeMemberID == "" {
 		return
 	}
@@ -67,7 +65,7 @@ func NotifyStatusChange(ctx context.Context, db *pgxpool.Pool, assigneeMemberID,
 }
 
 // NotifyComment notifies the assignee that someone commented on their work item.
-func NotifyComment(ctx context.Context, db *pgxpool.Pool, assigneeMemberID, workItemTitle, actorUserID, workItemID string) {
+func NotifyComment(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTitle, actorUserID, workItemID string) {
 	if assigneeMemberID == "" {
 		return
 	}
@@ -83,7 +81,7 @@ func NotifyComment(ctx context.Context, db *pgxpool.Pool, assigneeMemberID, work
 }
 
 // NotifyMentions scans comment text for @name patterns and notifies matching project members.
-func NotifyMentions(ctx context.Context, db *pgxpool.Pool, projectID, workItemTitle, actorUserID, workItemID string, commentBody json.RawMessage) {
+func NotifyMentions(ctx context.Context, db DBPOOL, projectID, workItemTitle, actorUserID, workItemID string, commentBody json.RawMessage) {
 	// Extract plain text from Tiptap JSON
 	text := extractText(commentBody)
 	if !strings.Contains(text, "@") {

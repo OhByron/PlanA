@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // AcceptanceCriterion represents an acceptance_criteria row returned to clients.
@@ -27,10 +26,10 @@ type AcceptanceCriterion struct {
 
 // ACHandlers handles CRUD for BDD acceptance criteria on a work item.
 type ACHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewACHandlers(db *pgxpool.Pool) *ACHandlers { return &ACHandlers{db: db} }
+func NewACHandlers(db DBPOOL) *ACHandlers { return &ACHandlers{db: db} }
 
 // List returns all acceptance criteria for a given work item.
 func (h *ACHandlers) List(w http.ResponseWriter, r *http.Request) {

@@ -6,16 +6,15 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 type DependencyHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewDependencyHandlers(db *pgxpool.Pool) *DependencyHandlers {
+func NewDependencyHandlers(db DBPOOL) *DependencyHandlers {
 	return &DependencyHandlers{db: db}
 }
 

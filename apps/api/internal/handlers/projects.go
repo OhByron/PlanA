@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
@@ -50,10 +49,10 @@ func (p *Project) scanFields() []any {
 
 // ProjectHandlers handles CRUD for projects within a team.
 type ProjectHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewProjectHandlers(db *pgxpool.Pool) *ProjectHandlers { return &ProjectHandlers{db: db} }
+func NewProjectHandlers(db DBPOOL) *ProjectHandlers { return &ProjectHandlers{db: db} }
 
 // List returns all projects for a given team, scoped to the user's access.
 // Org admins see all projects; other users only see projects they're a member of.

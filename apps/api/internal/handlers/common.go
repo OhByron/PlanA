@@ -1,11 +1,24 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"regexp"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
+
+// DBPOOL abstracts the pgxpool.Pool methods used by handlers.
+// *pgxpool.Pool satisfies this interface implicitly.
+type DBPOOL interface {
+	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+	Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error)
+	Begin(ctx context.Context) (pgx.Tx, error)
+}
 
 func writeJSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")

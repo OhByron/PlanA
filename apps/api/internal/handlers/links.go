@@ -6,14 +6,13 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type LinkHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewLinkHandlers(db *pgxpool.Pool) *LinkHandlers {
+func NewLinkHandlers(db DBPOOL) *LinkHandlers {
 	return &LinkHandlers{db: db}
 }
 

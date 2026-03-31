@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
@@ -26,10 +25,10 @@ type Comment struct {
 
 // CommentHandlers handles threaded comments on work items.
 type CommentHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewCommentHandlers(db *pgxpool.Pool) *CommentHandlers { return &CommentHandlers{db: db} }
+func NewCommentHandlers(db DBPOOL) *CommentHandlers { return &CommentHandlers{db: db} }
 
 // List returns all comments for a given work item.
 func (h *CommentHandlers) List(w http.ResponseWriter, r *http.Request) {

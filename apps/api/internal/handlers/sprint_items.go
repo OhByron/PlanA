@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // SprintItem represents a sprint_items row returned to clients.
@@ -20,10 +19,10 @@ type SprintItem struct {
 
 // SprintItemHandlers handles adding and removing work items from a sprint.
 type SprintItemHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewSprintItemHandlers(db *pgxpool.Pool) *SprintItemHandlers {
+func NewSprintItemHandlers(db DBPOOL) *SprintItemHandlers {
 	return &SprintItemHandlers{db: db}
 }
 
@@ -83,7 +82,7 @@ func (h *SprintItemHandlers) ListItems(w http.ResponseWriter, r *http.Request) {
 	rows, err := h.db.Query(r.Context(), `
 		SELECT wi.id, wi.project_id, wi.epic_id, wi.parent_id, wi.type, wi.title, wi.description,
 		       wi.status, wi.priority, wi.assignee_id, wi.story_points, wi.labels, wi.order_index,
-		       wi.is_blocked, wi.blocked_reason, wi.created_by, wi.created_at, wi.updated_at
+		       wi.is_blocked, wi.blocked_reason, wi.source_test_result_id, wi.created_by, wi.created_at, wi.updated_at
 		  FROM sprint_items si
 		  JOIN work_items wi ON wi.id = si.work_item_id
 		 WHERE si.sprint_id = $1
@@ -101,7 +100,7 @@ func (h *SprintItemHandlers) ListItems(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
 			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-			&wi.IsBlocked, &wi.BlockedReason, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
 			slog.Error("sprint_items.ListItems: scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read sprint item row")

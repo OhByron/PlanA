@@ -15,15 +15,14 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // TestResultHandlers handles test result ingestion and querying.
 type TestResultHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewTestResultHandlers(db *pgxpool.Pool) *TestResultHandlers {
+func NewTestResultHandlers(db DBPOOL) *TestResultHandlers {
 	return &TestResultHandlers{db: db}
 }
 
@@ -407,7 +406,39 @@ func (h *TestResultHandlers) List(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, paginatedResponse{Items: items, Total: total, Page: pp.Page, PageSize: pp.PageSize})
 }
 
-// ---------- Method 4: Summary per work item ----------
+// ---------- Method 4: Get single test result by ID ----------
+
+// Get returns a single test result by its ID.
+func (h *TestResultHandlers) Get(w http.ResponseWriter, r *http.Request) {
+	resultID := chi.URLParam(r, "resultID")
+	if resultID == "" {
+		writeError(w, http.StatusBadRequest, "missing_param", "resultID is required")
+		return
+	}
+
+	var tr testResultRow
+	err := h.db.QueryRow(r.Context(),
+		`SELECT id, project_id, work_item_id, test_name, status, duration_ms,
+			error_message, source, suite_name, run_id, reported_at, created_at
+		 FROM test_results WHERE id = $1`, resultID,
+	).Scan(
+		&tr.ID, &tr.ProjectID, &tr.WorkItemID, &tr.TestName, &tr.Status, &tr.DurationMs,
+		&tr.ErrorMessage, &tr.Source, &tr.SuiteName, &tr.RunID, &tr.ReportedAt, &tr.CreatedAt,
+	)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			writeError(w, http.StatusNotFound, "not_found", "Test result not found")
+			return
+		}
+		slog.Error("test_results.Get: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to get test result")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, tr)
+}
+
+// ---------- Method 5: Summary per work item ----------
 
 type testSummary struct {
 	Total   int        `json:"total"`

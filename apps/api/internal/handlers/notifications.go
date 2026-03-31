@@ -5,16 +5,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 type NotificationHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewNotificationHandlers(db *pgxpool.Pool) *NotificationHandlers {
+func NewNotificationHandlers(db DBPOOL) *NotificationHandlers {
 	return &NotificationHandlers{db: db}
 }
 

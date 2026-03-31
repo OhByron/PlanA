@@ -10,17 +10,16 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // TeamHandlers handles CRUD for teams within an organisation.
 type TeamHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewTeamHandlers(db *pgxpool.Pool) *TeamHandlers { return &TeamHandlers{db: db} }
+func NewTeamHandlers(db DBPOOL) *TeamHandlers { return &TeamHandlers{db: db} }
 
 type teamResponse struct {
 	ID             string    `json:"id"`

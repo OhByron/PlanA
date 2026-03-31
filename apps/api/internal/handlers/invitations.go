@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/OhByron/ProjectA/internal/auth"
@@ -19,13 +18,13 @@ import (
 )
 
 type InvitationHandlers struct {
-	db    *pgxpool.Pool
+	db    DBPOOL
 	auth  *auth.Service
 	cfg   *config.Config
 	email *email.Sender
 }
 
-func NewInvitationHandlers(db *pgxpool.Pool, authSvc *auth.Service, cfg *config.Config, emailSender *email.Sender) *InvitationHandlers {
+func NewInvitationHandlers(db DBPOOL, authSvc *auth.Service, cfg *config.Config, emailSender *email.Sender) *InvitationHandlers {
 	return &InvitationHandlers{db: db, auth: authSvc, cfg: cfg, email: emailSender}
 }
 

@@ -104,6 +104,7 @@ export function toWorkItem(w: any): WorkItem & { itemNumber?: number | null } {
     orderIndex: w.order_index,
     isBlocked: w.is_blocked,
     blockedReason: w.blocked_reason,
+    sourceTestResultId: w.source_test_result_id ?? null,
     createdBy: w.created_by,
     createdAt: w.created_at,
     updatedAt: w.updated_at,

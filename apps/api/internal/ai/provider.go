@@ -11,6 +11,8 @@ type Provider interface {
 	SuggestAC(ctx context.Context, req SuggestACRequest) (*SuggestACResponse, error)
 	// SuggestDescription expands a story title into a full description.
 	SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error)
+	// SuggestDefect generates a defect description and ACs from a test failure.
+	SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error)
 }
 
 type SuggestACRequest struct {
@@ -47,6 +49,23 @@ type SuggestDescRequest struct {
 type SuggestDescResponse struct {
 	Description string   `json:"description"`
 	Questions   []string `json:"questions,omitempty"`
+}
+
+// SuggestDefectRequest provides test failure context for generating defect reports.
+type SuggestDefectRequest struct {
+	TestName     string
+	SuiteName    string
+	Status       string // 'fail' or 'error'
+	ErrorMessage string
+	ProjectName  string
+	ParentTitle  string // parent story title, if any
+}
+
+// SuggestDefectResponse contains an AI-generated defect description and acceptance criteria.
+type SuggestDefectResponse struct {
+	Description string         `json:"description"`
+	Criteria    []ACSuggestion `json:"acceptance_criteria"`
+	Questions   []string       `json:"questions,omitempty"`
 }
 
 // NewProvider creates an AI provider based on the provider type.

@@ -6,18 +6,17 @@ import (
 	"net/http"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // ElectricHandlers issues Electric SQL sync tokens for the authenticated user.
 type ElectricHandlers struct {
-	db   *pgxpool.Pool
+	db   DBPOOL
 	auth *auth.Service
 }
 
-func NewElectricHandlers(db *pgxpool.Pool, authSvc *auth.Service) *ElectricHandlers {
+func NewElectricHandlers(db DBPOOL, authSvc *auth.Service) *ElectricHandlers {
 	return &ElectricHandlers{db: db, auth: authSvc}
 }
 

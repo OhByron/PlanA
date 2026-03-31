@@ -10,17 +10,16 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // InitiativeHandlers handles CRUD for cross-team initiatives.
 type InitiativeHandlers struct {
-	db *pgxpool.Pool
+	db DBPOOL
 }
 
-func NewInitiativeHandlers(db *pgxpool.Pool) *InitiativeHandlers {
+func NewInitiativeHandlers(db DBPOOL) *InitiativeHandlers {
 	return &InitiativeHandlers{db: db}
 }
 
