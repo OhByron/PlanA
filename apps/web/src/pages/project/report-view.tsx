@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { Button } from '@projecta/ui';
 import { api } from '../../lib/api-client';
+import { buildReportHTML } from '../../lib/report-template';
 
 interface ReportData {
   type: string;
@@ -64,10 +65,19 @@ export function ReportViewPage() {
 
   return (
     <div className="mx-auto max-w-4xl p-8 print:p-0">
-      {/* Print button — hidden when printing */}
-      <div className="mb-6 flex items-center justify-between print:hidden">
+      {/* Controls */}
+      <div className="mb-6 flex items-center justify-between">
         <Button variant="ghost" onClick={() => setReport(null)}>Back</Button>
-        <Button onClick={() => window.print()}>Print / Export PDF</Button>
+        <Button onClick={() => {
+          const html = buildReportHTML(report);
+          const win = window.open('', '_blank');
+          if (win) {
+            win.document.write(html);
+            win.document.close();
+            // Auto-trigger print dialog after render
+            setTimeout(() => win.print(), 300);
+          }
+        }}>Export PDF</Button>
       </div>
 
       {/* Report header */}
