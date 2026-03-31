@@ -10,6 +10,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
+
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // AcceptanceCriterion represents an acceptance_criteria row returned to clients.
@@ -84,6 +86,16 @@ func (h *ACHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body createACRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -123,6 +135,16 @@ func (h *ACHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	acID := chi.URLParam(r, "acID")
 	if acID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "acID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveACProjectID(r.Context(), h.db, acID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -192,6 +214,16 @@ func (h *ACHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	acID := chi.URLParam(r, "acID")
 	if acID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "acID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveACProjectID(r.Context(), h.db, acID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 type LinkHandlers struct {
@@ -58,6 +60,17 @@ func (h *LinkHandlers) List(w http.ResponseWriter, r *http.Request) {
 // Create adds a link to a work item.
 func (h *LinkHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body struct {
 		Label string `json:"label"`
 		URL   string `json:"url"`
@@ -85,6 +98,17 @@ func (h *LinkHandlers) Create(w http.ResponseWriter, r *http.Request) {
 // Delete removes a link by ID.
 func (h *LinkHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	linkID := chi.URLParam(r, "linkID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveLinkProjectID(r.Context(), h.db, linkID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	tag, err := h.db.Exec(r.Context(), `DELETE FROM work_item_links WHERE id = $1`, linkID)
 	if err != nil {
 		slog.Error("links.Delete: exec failed", "error", err)

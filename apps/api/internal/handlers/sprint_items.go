@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // SprintItem represents a sprint_items row returned to clients.
@@ -41,6 +43,16 @@ func (h *SprintItemHandlers) Add(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
 	if workItemID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -130,6 +142,16 @@ func (h *SprintItemHandlers) Remove(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
 	if workItemID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

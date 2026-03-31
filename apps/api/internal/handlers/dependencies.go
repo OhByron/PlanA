@@ -87,6 +87,11 @@ func (h *DependencyHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	workItemID := chi.URLParam(r, "workItemID")
 
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body createDependencyRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -165,6 +170,16 @@ func (h *DependencyHandlers) ListByProject(w http.ResponseWriter, r *http.Reques
 // Delete removes a dependency by ID.
 func (h *DependencyHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	depID := chi.URLParam(r, "depID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveDependencyProjectID(r.Context(), h.db, depID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	tag, err := h.db.Exec(r.Context(), `DELETE FROM work_item_dependencies WHERE id = $1`, depID)
 	if err != nil {

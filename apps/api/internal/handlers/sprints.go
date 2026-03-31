@@ -10,6 +10,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
+
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 // Burndown returns daily burndown data for a sprint.
@@ -211,6 +213,15 @@ func (h *SprintHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body createSprintRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -276,6 +287,16 @@ func (h *SprintHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	sprintID := chi.URLParam(r, "sprintID")
 	if sprintID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "sprintID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -365,6 +386,16 @@ func (h *SprintHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	sprintID := chi.URLParam(r, "sprintID")
 	if sprintID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "sprintID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

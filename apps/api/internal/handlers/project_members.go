@@ -10,6 +10,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
+
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 const projectMemberColumns = `id, project_id, user_id, name, email, phone, job_role, capacity, created_at, updated_at`
@@ -108,6 +110,15 @@ func (h *ProjectMemberHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body createProjectMemberRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -181,6 +192,15 @@ func (h *ProjectMemberHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body updateProjectMemberRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -248,6 +268,15 @@ func (h *ProjectMemberHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	memberID := chi.URLParam(r, "memberID")
 	if memberID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "memberID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

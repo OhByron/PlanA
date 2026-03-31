@@ -175,6 +175,9 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
 		return
 	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	var body createWorkItemRequest
 	if !readJSON(w, r, &body) {
@@ -298,10 +301,18 @@ type updateWorkItemRequest struct {
 
 // Update patches a work item by ID using dynamic SET clause.
 func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 	workItemID := chi.URLParam(r, "workItemID")
 	if workItemID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -482,9 +493,18 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 // Delete removes a work item by ID.
 func (h *WorkItemHandlers) Delete(w http.ResponseWriter, r *http.Request) {
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 	workItemID := chi.URLParam(r, "workItemID")
 	if workItemID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "workItemID is required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

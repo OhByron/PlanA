@@ -33,7 +33,6 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD:-plana}@postgres:5432/${POSTGRES_DB:-plana}?sslmode=disable
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET}
-      ELECTRIC_JWT_SECRET: ${ELECTRIC_JWT_SECRET:-changeme-electric-32chars-min}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       APP_BASE_URL: ${PUBLIC_URL:-http://localhost}
       FRONTEND_URL: ${PUBLIC_URL:-http://localhost}
@@ -63,29 +62,11 @@ services:
       dockerfile: infra/docker/web.Dockerfile
       args:
         VITE_API_URL: ${PUBLIC_URL:-http://localhost}
-        VITE_ELECTRIC_URL: ${PUBLIC_ELECTRIC_URL:-http://localhost:3000}
     restart: unless-stopped
     expose:
       - "80"
     depends_on:
       - api
-
-  ai:
-    build:
-      context: .
-      dockerfile: infra/docker/ai.Dockerfile
-    restart: unless-stopped
-    environment:
-      PORT: "3001"
-      NODE_ENV: production
-      API_URL: http://api:8080
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-    expose:
-      - "3001"
-    depends_on:
-      api:
-        condition: service_healthy
 
   # Override dev-compose ports: in prod these services are only reached
   # via the internal Docker network — no need to expose them to the host.
@@ -93,19 +74,9 @@ services:
     ports: !override
       - "127.0.0.1:5432:5432"
 
-  electric:
-    ports: !override
-      - "127.0.0.1:3000:3000"
-    environment:
-      ELECTRIC_INSECURE: "false"
-
   redis:
     ports: !override
       - "127.0.0.1:6379:6379"
-
-  meilisearch:
-    ports: !override
-      - "127.0.0.1:7700:7700"
 
   backup:
     build:

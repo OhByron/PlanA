@@ -21,18 +21,15 @@ type SessionClaims struct {
 	Email  string `json:"email"`
 }
 
-// Service handles JWT issuance and validation for both session tokens and
-// Electric SQL sync tokens.
+// Service handles JWT issuance and validation for session tokens.
 type Service struct {
-	sessionSecret  []byte
-	electricSecret []byte
+	sessionSecret []byte
 }
 
 // NewService constructs a Service from application config.
 func NewService(cfg *config.Config) *Service {
 	return &Service{
-		sessionSecret:  []byte(cfg.JWTSecret),
-		electricSecret: []byte(cfg.ElectricJWTSecret),
+		sessionSecret: []byte(cfg.JWTSecret),
 	}
 }
 

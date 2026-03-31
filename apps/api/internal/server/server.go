@@ -40,7 +40,6 @@ func New(deps *Dependencies) http.Handler {
 	// Construct handler groups
 	authH    := handlers.NewAuthHandlers(deps.DB, deps.Auth, deps.GitHub, deps.Google, deps.Config, deps.Redis)
 	userH    := handlers.NewUserHandlers(deps.DB, deps.Auth)
-	elecH    := handlers.NewElectricHandlers(deps.DB, deps.Auth)
 	orgH     := handlers.NewOrgHandlers(deps.DB)
 	initH    := handlers.NewInitiativeHandlers(deps.DB)
 	teamH    := handlers.NewTeamHandlers(deps.DB)
@@ -100,8 +99,6 @@ func New(deps *Dependencies) http.Handler {
 
 			r.Get("/me", userH.Me)
 			r.Get("/me/work-items", userH.MyWorkItems)
-			r.Get("/electric/token", elecH.Token)
-
 			// Notifications
 			r.Route("/notifications", func(r chi.Router) {
 				r.Get("/", notifH.List)

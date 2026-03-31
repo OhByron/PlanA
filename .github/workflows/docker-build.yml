@@ -41,21 +41,3 @@ jobs:
           tags: ghcr.io/ohbyron/projecta/web:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  build-ai:
-    name: Build AI service image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: docker/setup-buildx-action@v3
-
-      - name: Build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: infra/docker/ai.Dockerfile
-          push: false
-          tags: ghcr.io/ohbyron/projecta/ai:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max

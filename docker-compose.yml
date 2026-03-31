@@ -1,7 +1,7 @@
 # PlanA — development infrastructure
 # Usage: docker compose up -d
 #
-# Starts: PostgreSQL 16, Electric SQL sync service, Redis 7, Meilisearch
+# Starts: PostgreSQL 16, Redis 7
 # The web app and API run outside Docker in development (pnpm dev / go run).
 #
 # Schema management: the Go API runs golang-migrate on startup and applies all
@@ -25,29 +25,11 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # wal_level=logical is required for Electric SQL sync
-    command: >
-      postgres
-        -c wal_level=logical
-        -c max_wal_senders=10
-        -c max_replication_slots=10
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U plana -d plana"]
       interval: 5s
       timeout: 5s
       retries: 5
-
-  electric:
-    image: electricsql/electric:latest
-    restart: unless-stopped
-    environment:
-      DATABASE_URL: postgresql://plana:plana@postgres:5432/plana
-      ELECTRIC_INSECURE: "true"   # dev only — removes auth requirement on sync API
-    ports:
-      - "127.0.0.1:3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   redis:
     image: redis:7-alpine
@@ -62,18 +44,6 @@ services:
       timeout: 5s
       retries: 5
 
-  meilisearch:
-    image: getmeili/meilisearch:v1.12
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:7700:7700"
-    environment:
-      MEILI_MASTER_KEY: masterkey
-      MEILI_ENV: development
-    volumes:
-      - meilisearch_data:/meili_data
-
 volumes:
   postgres_data:
   redis_data:
-  meilisearch_data:

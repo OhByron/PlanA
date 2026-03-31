@@ -14,10 +14,6 @@ type Config struct {
 	// Auth — session tokens
 	JWTSecret string
 
-	// Auth — Electric SQL sync tokens (separate secret so the Electric proxy can
-	// be configured independently from the session JWT secret)
-	ElectricJWTSecret string
-
 	// OAuth — GitHub
 	GitHubClientID     string
 	GitHubClientSecret string
@@ -46,8 +42,7 @@ func Load() (*Config, error) {
 		RedisURL:    getEnv("REDIS_URL", "redis://localhost:6379"),
 		Environment: getEnv("ENV", "development"),
 
-		JWTSecret:         os.Getenv("JWT_SECRET"),
-		ElectricJWTSecret: os.Getenv("ELECTRIC_JWT_SECRET"),
+		JWTSecret: os.Getenv("JWT_SECRET"),
 
 		GitHubClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		GitHubClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
@@ -68,12 +63,6 @@ func Load() (*Config, error) {
 	}
 	if len(cfg.JWTSecret) < 32 {
 		return nil, fmt.Errorf("JWT_SECRET must be at least 32 characters")
-	}
-	if cfg.ElectricJWTSecret == "" {
-		return nil, fmt.Errorf("ELECTRIC_JWT_SECRET environment variable is required")
-	}
-	if len(cfg.ElectricJWTSecret) < 32 {
-		return nil, fmt.Errorf("ELECTRIC_JWT_SECRET must be at least 32 characters")
 	}
 
 	return cfg, nil

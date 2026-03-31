@@ -111,6 +111,9 @@ func (h *EpicHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
 		return
 	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	var body createEpicRequest
 	if !readJSON(w, r, &body) {
@@ -206,6 +209,16 @@ func (h *EpicHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveEpicProjectID(r.Context(), h.db, epicID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body updateEpicRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -285,6 +298,16 @@ func (h *EpicHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	epicID := chi.URLParam(r, "epicID")
 	if epicID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "epicID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveEpicProjectID(r.Context(), h.db, epicID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

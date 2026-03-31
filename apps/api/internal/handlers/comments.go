@@ -97,6 +97,10 @@ func (h *CommentHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
 		return
 	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	var body createCommentRequest
 	if !readJSON(w, r, &body) {
@@ -122,10 +126,10 @@ func (h *CommentHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	// Notify the work item's assignee about the new comment
 	var assigneeID *string
-	var wiTitle, projectID string
+	var wiTitle string
 	_ = h.db.QueryRow(r.Context(),
-		`SELECT assignee_id, title, project_id FROM work_items WHERE id = $1`, workItemID,
-	).Scan(&assigneeID, &wiTitle, &projectID)
+		`SELECT assignee_id, title FROM work_items WHERE id = $1`, workItemID,
+	).Scan(&assigneeID, &wiTitle)
 	if assigneeID != nil {
 		NotifyComment(r.Context(), h.db, *assigneeID, wiTitle, claims.UserID, workItemID)
 	}
@@ -146,6 +150,16 @@ func (h *CommentHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	commentID := chi.URLParam(r, "commentID")
 	if commentID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "commentID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveCommentProjectID(r.Context(), h.db, commentID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -183,6 +197,16 @@ func (h *CommentHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	commentID := chi.URLParam(r, "commentID")
 	if commentID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "commentID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveCommentProjectID(r.Context(), h.db, commentID)
+	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
