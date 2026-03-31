@@ -129,6 +129,64 @@ func (p *OpenAIProvider) SuggestDefect(ctx context.Context, req SuggestDefectReq
 	return &result, nil
 }
 
+func (p *OpenAIProvider) SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error) {
+	systemPrompt := `You are a Scrum Master decomposing stories into tasks. Suggest 3-8 tasks for disciplines: dev, qe, ux, ba, bsa. Include at least one QE task. Points: 1-8 scale. Return JSON: {"tasks": [{"title": "...", "role": "dev|qe|ux|ba|bsa", "points": N, "rationale": "..."}], "questions": []}`
+
+	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nStory: %s\n%s\n",
+		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryTitle, req.StoryDescription)
+	if len(req.ExistingTasks) > 0 {
+		userPrompt += "Existing tasks: "
+		for _, t := range req.ExistingTasks {
+			userPrompt += t + "; "
+		}
+		userPrompt += "\n"
+	}
+	userPrompt += "Suggest task decomposition."
+
+	body := map[string]any{
+		"model": p.model, "max_tokens": 1500,
+		"messages":        []map[string]string{{"role": "system", "content": systemPrompt}, {"role": "user", "content": userPrompt}},
+		"response_format": map[string]string{"type": "json_object"},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
+	if err != nil {
+		return nil, err
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody)
+	}
+
+	var openaiResp struct {
+		Choices []struct {
+			Message struct{ Content string `json:"content"` } `json:"message"`
+		} `json:"choices"`
+	}
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
+		return nil, err
+	}
+	if len(openaiResp.Choices) == 0 {
+		return nil, fmt.Errorf("empty response")
+	}
+
+	var result SuggestDecompResponse
+	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
 func (p *OpenAIProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
 	systemPrompt := `You are a BSA writing story descriptions. Write 2-4 concise paragraphs covering context, requirements, and edge cases. Return JSON: {"description": "...", "questions": []}`
 

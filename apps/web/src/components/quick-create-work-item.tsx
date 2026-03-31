@@ -27,6 +27,7 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
         value={type}
         onChange={(e) => setType(e.target.value as WorkItemType)}
         className="w-24"
+        aria-label="Item type"
       >
         <option value="story">Story</option>
         <option value="bug">Bug</option>
@@ -42,6 +43,7 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
           if (e.key === 'Escape') onClose();
         }}
         className="flex-1"
+        aria-label="Item title"
       />
       <Button size="sm" onClick={submit} disabled={!title.trim() || create.isPending}>
         Create

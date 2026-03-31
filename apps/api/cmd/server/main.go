@@ -16,6 +16,7 @@ import (
 	"github.com/OhByron/ProjectA/internal/auth"
 	"github.com/OhByron/ProjectA/internal/config"
 	"github.com/OhByron/ProjectA/internal/db"
+	"github.com/OhByron/ProjectA/internal/email"
 	"github.com/OhByron/ProjectA/internal/migrations"
 	"github.com/OhByron/ProjectA/internal/oauth"
 	"github.com/OhByron/ProjectA/internal/server"
@@ -83,6 +84,11 @@ func main() {
 	}
 
 	handler := server.New(deps)
+
+	// Start daily digest email scheduler
+	emailSender := email.NewSender(cfg.ResendAPIKey, "PlanA <onboarding@resend.dev>")
+	digest := email.NewDigestRunner(pool, emailSender)
+	digest.Start(ctx)
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.Port),

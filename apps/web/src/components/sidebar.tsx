@@ -38,11 +38,12 @@ export function Sidebar() {
 
   if (collapsed) {
     return (
-      <aside className="flex w-12 flex-col items-center border-r border-gray-200 bg-white py-4">
+      <aside className="flex w-12 flex-col items-center border-r border-gray-200 bg-white py-4" role="navigation" aria-label="Sidebar">
         <button
           onClick={toggleCollapse}
           className="mb-6 text-lg font-bold text-brand-600"
           title="Expand sidebar"
+          aria-label="Expand sidebar"
         >
           P
         </button>
@@ -50,6 +51,7 @@ export function Sidebar() {
           to="/my-work"
           className="mb-4 rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           title="My Work"
+          aria-label="My Work"
         >
           <ClipboardIcon />
         </Link>
@@ -58,7 +60,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex w-64 flex-col border-r border-gray-200 bg-white">
+    <aside className="flex w-64 flex-col border-r border-gray-200 bg-white" role="navigation" aria-label="Sidebar">
       {/* Header */}
       <div className="flex h-14 items-center justify-between border-b border-gray-100 px-4">
         <span className="text-lg font-bold text-gray-900">
@@ -68,6 +70,7 @@ export function Sidebar() {
           onClick={toggleCollapse}
           className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           title="Collapse sidebar"
+          aria-label="Collapse sidebar"
         >
           <ChevronLeftIcon />
         </button>
@@ -111,6 +114,7 @@ export function Sidebar() {
               <button
                 onClick={() => toggle(safeExpandedOrgs, org.id, setExpandedOrgs)}
                 className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                aria-label={`Toggle ${org.name}`}
               >
                 <TriangleIcon expanded={safeExpandedOrgs.has(org.id)} />
               </button>

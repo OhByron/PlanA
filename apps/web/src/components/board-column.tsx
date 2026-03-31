@@ -48,6 +48,8 @@ export function BoardColumn({
 
   return (
     <div
+      role="region"
+      aria-label={`${columnLabels[status] ?? status} column`}
       className={cn(
         'flex w-72 flex-shrink-0 flex-col rounded-lg border-t-2 bg-gray-50',
         columnColors[status] ?? 'border-t-gray-300',

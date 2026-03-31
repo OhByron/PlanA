@@ -127,9 +127,11 @@ func (h *CommentHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	// Notify the work item's assignee about the new comment
 	var assigneeID *string
 	var wiTitle string
-	_ = h.db.QueryRow(r.Context(),
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT assignee_id, title FROM work_items WHERE id = $1`, workItemID,
-	).Scan(&assigneeID, &wiTitle)
+	).Scan(&assigneeID, &wiTitle); err != nil {
+		slog.Warn("comments.Create: work-item lookup for notification failed", "error", err)
+	}
 	if assigneeID != nil {
 		NotifyComment(r.Context(), h.db, *assigneeID, wiTitle, claims.UserID, workItemID)
 	}

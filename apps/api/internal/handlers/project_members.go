@@ -141,17 +141,21 @@ func (h *ProjectMemberHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		if lookupErr == nil {
 			linkedUserID = &uid
 			// Auto-add to org and team membership so sidebar works
-			_, _ = h.db.Exec(r.Context(), `
+			if _, err := h.db.Exec(r.Context(), `
 				INSERT INTO organization_members (organization_id, user_id, role)
 				SELECT t.organization_id, $1, 'member'
 				FROM projects p JOIN teams t ON t.id = p.team_id
 				WHERE p.id = $2
-				ON CONFLICT DO NOTHING`, uid, projectID)
-			_, _ = h.db.Exec(r.Context(), `
+				ON CONFLICT DO NOTHING`, uid, projectID); err != nil {
+				slog.Warn("project_members.Create: auto-add org member failed", "error", err)
+			}
+			if _, err := h.db.Exec(r.Context(), `
 				INSERT INTO team_members (team_id, user_id, role)
 				SELECT p.team_id, $1, 'member'
 				FROM projects p WHERE p.id = $2
-				ON CONFLICT DO NOTHING`, uid, projectID)
+				ON CONFLICT DO NOTHING`, uid, projectID); err != nil {
+				slog.Warn("project_members.Create: auto-add team member failed", "error", err)
+			}
 		}
 	}
 

@@ -13,6 +13,8 @@ type Provider interface {
 	SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error)
 	// SuggestDefect generates a defect description and ACs from a test failure.
 	SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error)
+	// SuggestDecomposition suggests child tasks for a story based on its context.
+	SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error)
 }
 
 type SuggestACRequest struct {
@@ -66,6 +68,31 @@ type SuggestDefectResponse struct {
 	Description string         `json:"description"`
 	Criteria    []ACSuggestion `json:"acceptance_criteria"`
 	Questions   []string       `json:"questions,omitempty"`
+}
+
+// SuggestDecompRequest provides story context for generating task decomposition suggestions.
+type SuggestDecompRequest struct {
+	StoryTitle       string
+	StoryDescription string
+	EpicTitle        string
+	EpicDescription  string
+	ExistingTasks    []string // titles of existing child tasks
+	ProjectName      string
+	TeamRoles        []string // available roles (dev, qe, ux, ba, etc.)
+}
+
+// TaskSuggestion is a single suggested child task.
+type TaskSuggestion struct {
+	Title    string `json:"title"`
+	Role     string `json:"role"`     // suggested job_role for assignee (dev, qe, ux, ba)
+	Points   int    `json:"points"`   // suggested story points
+	Rationale string `json:"rationale"` // brief explanation of why this task is needed
+}
+
+// SuggestDecompResponse contains AI-generated task decomposition for a story.
+type SuggestDecompResponse struct {
+	Tasks     []TaskSuggestion `json:"tasks"`
+	Questions []string         `json:"questions,omitempty"`
 }
 
 // NewProvider creates an AI provider based on the provider type.

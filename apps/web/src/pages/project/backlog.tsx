@@ -170,6 +170,7 @@ export function BacklogPage() {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="w-36"
+            aria-label="Status filter"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -179,6 +180,7 @@ export function BacklogPage() {
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             className="w-32"
+            aria-label="Type filter"
           >
             {TYPE_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>

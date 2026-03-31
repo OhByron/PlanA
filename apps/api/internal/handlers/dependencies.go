@@ -123,7 +123,9 @@ func (h *DependencyHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch target title for the response
-	_ = h.db.QueryRow(r.Context(), `SELECT title, type FROM work_items WHERE id = $1`, body.TargetID).Scan(&d.TargetTitle, &d.TargetType)
+	if err := h.db.QueryRow(r.Context(), `SELECT title, type FROM work_items WHERE id = $1`, body.TargetID).Scan(&d.TargetTitle, &d.TargetType); err != nil {
+		slog.Warn("dependencies.Create: target title lookup failed", "targetID", body.TargetID, "error", err)
+	}
 
 	writeJSON(w, http.StatusCreated, d)
 }

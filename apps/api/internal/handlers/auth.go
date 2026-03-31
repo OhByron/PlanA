@@ -147,8 +147,10 @@ func (h *AuthHandlers) GoogleCallback(w http.ResponseWriter, r *http.Request) {
 // server-side even though it hasn't expired yet.
 func (h *AuthHandlers) Logout(w http.ResponseWriter, r *http.Request) {
 	if token, ok := auth.RawTokenFromContext(r.Context()); ok {
-		_, _ = h.db.Exec(r.Context(),
-			`DELETE FROM auth_sessions WHERE token_hash = $1`, hashToken(token))
+		if _, err := h.db.Exec(r.Context(),
+			`DELETE FROM auth_sessions WHERE token_hash = $1`, hashToken(token)); err != nil {
+			slog.Warn("auth.Logout: session delete failed", "error", err)
+		}
 	}
 	w.WriteHeader(http.StatusNoContent)
 }

@@ -153,14 +153,18 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	// Auto-add creator as a project member (PM role)
 	var userName, userEmail string
-	_ = h.db.QueryRow(r.Context(),
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT name, email FROM users WHERE id = $1`, claims.UserID,
-	).Scan(&userName, &userEmail)
-	_, _ = h.db.Exec(r.Context(),
+	).Scan(&userName, &userEmail); err != nil {
+		slog.Warn("projects.Create: user lookup for auto-member failed", "userID", claims.UserID, "error", err)
+	}
+	if _, err := h.db.Exec(r.Context(),
 		`INSERT INTO project_members (project_id, user_id, name, email, job_role)
 		 VALUES ($1, $2, $3, $4, 'pm')
 		 ON CONFLICT DO NOTHING`,
-		p.ID, claims.UserID, userName, userEmail)
+		p.ID, claims.UserID, userName, userEmail); err != nil {
+		slog.Error("projects.Create: auto-add creator as member failed", "error", err)
+	}
 
 	writeJSON(w, http.StatusCreated, p)
 }

@@ -99,3 +99,29 @@ func (h *UserHandlers) MyWorkItems(w http.ResponseWriter, r *http.Request) {
 
 	writeJSON(w, http.StatusOK, items)
 }
+
+// UpdatePreferences updates the current user's preferences (e.g., daily digest opt-in).
+// PATCH /api/me/preferences
+func (h *UserHandlers) UpdatePreferences(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+
+	var body struct {
+		DailyDigest *bool `json:"daily_digest"`
+	}
+	if !readJSON(w, r, &body) {
+		return
+	}
+
+	if body.DailyDigest != nil {
+		_, err := h.db.Exec(r.Context(),
+			`UPDATE users SET daily_digest = $1 WHERE id = $2`,
+			*body.DailyDigest, claims.UserID)
+		if err != nil {
+			slog.Error("users.UpdatePreferences: update failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "db_error", "Failed to update preferences")
+			return
+		}
+	}
+
+	writeJSON(w, http.StatusOK, map[string]string{"status": "updated"})
+}

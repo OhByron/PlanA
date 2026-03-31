@@ -14,8 +14,9 @@ import (
 	"github.com/OhByron/ProjectA/internal/auth"
 )
 
-// Burndown returns daily burndown data for a sprint.
-// GET /api/projects/{projectID}/sprints/{sprintID}/burndown
+// Burndown returns daily burndown data for a sprint. It reconstructs the
+// remaining-work curve from status_changes rows rather than snapshotting,
+// so the chart stays accurate even when historical items are re-pointed.
 func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 	sprintID := chi.URLParam(r, "sprintID")
 
@@ -39,12 +40,14 @@ func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get total points committed to the sprint
+	// Total committed points is the starting Y-axis value for the burndown chart.
 	var totalPoints int
-	_ = h.db.QueryRow(r.Context(),
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT COALESCE(SUM(wi.story_points), 0)
 		 FROM sprint_items si JOIN work_items wi ON wi.id = si.work_item_id
-		 WHERE si.sprint_id = $1`, sprintID).Scan(&totalPoints)
+		 WHERE si.sprint_id = $1`, sprintID).Scan(&totalPoints); err != nil {
+		slog.Warn("burndown: total-points query failed", "sprintID", sprintID, "error", err)
+	}
 
 	// Get status changes for items in this sprint, grouped by day
 	rows, err := h.db.Query(r.Context(), `

@@ -97,12 +97,14 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	// Send invitation email
 	var projectName, orgName string
-	_ = h.db.QueryRow(r.Context(),
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT p.name, o.name
 		 FROM projects p
 		 JOIN teams t ON t.id = p.team_id
 		 JOIN organizations o ON o.id = t.organization_id
-		 WHERE p.id = $1`, projectID).Scan(&projectName, &orgName)
+		 WHERE p.id = $1`, projectID).Scan(&projectName, &orgName); err != nil {
+		slog.Warn("invitations.Create: project/org name lookup failed", "error", err)
+	}
 
 	roleNames := map[string]string{
 		"pm": "Project Manager", "po": "Product Owner", "bsa": "Business Systems Analyst",
@@ -277,16 +279,20 @@ func (h *InvitationHandlers) Accept(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add to org members (viewer role) — ignore conflict if already a member
-	_, _ = tx.Exec(r.Context(),
+	if _, err := tx.Exec(r.Context(),
 		`INSERT INTO organization_members (organization_id, user_id, role)
 		 VALUES ($1, $2, 'viewer')
-		 ON CONFLICT DO NOTHING`, orgID, userID)
+		 ON CONFLICT DO NOTHING`, orgID, userID); err != nil {
+		slog.Warn("invitations.Accept: auto-add org member failed", "error", err)
+	}
 
 	// Add to team members (member role)
-	_, _ = tx.Exec(r.Context(),
+	if _, err := tx.Exec(r.Context(),
 		`INSERT INTO team_members (team_id, user_id, role)
 		 VALUES ($1, $2, 'member')
-		 ON CONFLICT DO NOTHING`, teamID, userID)
+		 ON CONFLICT DO NOTHING`, teamID, userID); err != nil {
+		slog.Warn("invitations.Accept: auto-add team member failed", "error", err)
+	}
 
 	if err := tx.Commit(r.Context()); err != nil {
 		slog.Error("invitations.Accept: commit failed", "error", err)

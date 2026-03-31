@@ -3,8 +3,11 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
 )
 
 // CreateNotification inserts a notification for a user. Skips silently if userID is empty.
@@ -30,10 +33,14 @@ func CreateNotification(ctx context.Context, db DBPOOL, userID, notifType string
 	}
 }
 
-// NotifyAssignee creates an 'assigned' notification. Looks up the project_member's user_id.
+// NotifyAssignee creates an 'assigned' notification. Assignees are stored as
+// project_member IDs (not user IDs) because members can exist before registering;
+// we resolve to user_id here so the notification reaches the right account.
 func NotifyAssignee(ctx context.Context, db DBPOOL, memberID, workItemTitle, actorUserID string, workItemID string) {
 	var userID *string
-	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, memberID).Scan(&userID)
+	if err := db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, memberID).Scan(&userID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		slog.Warn("NotifyAssignee: member→user lookup failed", "memberID", memberID, "error", err)
+	}
 	if userID == nil {
 		return // unregistered member — can't notify
 	}
@@ -53,7 +60,9 @@ func NotifyStatusChange(ctx context.Context, db DBPOOL, assigneeMemberID, workIt
 		return
 	}
 	var userID *string
-	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID)
+	if err := db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		slog.Warn("NotifyStatusChange: member→user lookup failed", "memberID", assigneeMemberID, "error", err)
+	}
 	if userID == nil || *userID == actorUserID {
 		return
 	}
@@ -70,7 +79,9 @@ func NotifyComment(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTit
 		return
 	}
 	var userID *string
-	_ = db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID)
+	if err := db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, assigneeMemberID).Scan(&userID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		slog.Warn("NotifyComment: member→user lookup failed", "memberID", assigneeMemberID, "error", err)
+	}
 	if userID == nil || *userID == actorUserID {
 		return
 	}

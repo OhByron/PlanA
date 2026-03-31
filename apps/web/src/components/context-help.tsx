@@ -25,6 +25,8 @@ export function ContextHelp({ children }: ContextHelpProps) {
         onClick={() => setOpen(!open)}
         className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500 hover:bg-brand-100 hover:text-brand-600"
         title="What's this?"
+        aria-label="Help"
+        aria-expanded={open}
       >
         ?
       </button>

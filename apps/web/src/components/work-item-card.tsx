@@ -37,6 +37,7 @@ export function WorkItemCard({
           params: { projectId, workItemId: item.id },
         })
       }
+      aria-label={`Open ${item.title}`}
       className={cn(
         'w-full rounded-lg border border-gray-200 bg-white p-3 text-left shadow-sm transition-shadow hover:shadow-md',
         blocked && 'border-red-300 bg-red-50/50',

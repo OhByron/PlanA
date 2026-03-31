@@ -165,7 +165,7 @@ export function BoardPage() {
       {errorMessage && (
         <div className="mx-6 mt-2 flex items-center justify-between rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
           <span>{errorMessage}</span>
-          <button onClick={() => setErrorMessage(null)} className="ml-4 font-medium hover:text-red-900">
+          <button onClick={() => setErrorMessage(null)} className="ml-4 font-medium hover:text-red-900" aria-label="Dismiss">
             Dismiss
           </button>
         </div>

@@ -99,6 +99,7 @@ func New(deps *Dependencies) http.Handler {
 
 			r.Get("/me", userH.Me)
 			r.Get("/me/work-items", userH.MyWorkItems)
+			r.Patch("/me/preferences", userH.UpdatePreferences)
 			// Notifications
 			r.Route("/notifications", func(r chi.Router) {
 				r.Get("/", notifH.List)
@@ -168,6 +169,7 @@ func New(deps *Dependencies) http.Handler {
 						r.Post("/suggest-ac", aiH.SuggestAC)
 						r.Post("/suggest-desc", aiH.SuggestDescription)
 						r.Post("/suggest-from-test", aiH.SuggestFromTestFailure)
+						r.Post("/suggest-decompose", aiH.SuggestDecomposition)
 					})
 				})
 				r.Route("/members", func(r chi.Router) {

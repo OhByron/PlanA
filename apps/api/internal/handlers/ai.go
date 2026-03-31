@@ -408,6 +408,100 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 	writeJSON(w, http.StatusOK, result)
 }
 
+// SuggestDecomposition suggests child tasks for a story.
+// POST /api/projects/{projectID}/work-items/{workItemID}/suggest-decompose
+func (h *AIHandlers) SuggestDecomposition(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	workItemID := chi.URLParam(r, "workItemID")
+
+	var providerType, model, apiKey, endpoint *string
+	var projectName string
+	err := h.db.QueryRow(r.Context(),
+		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
+		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Project not found")
+		return
+	}
+	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
+		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
+		return
+	}
+
+	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+		return
+	}
+
+	// Get story context
+	var storyTitle, storyType string
+	var storyDesc, epicID *string
+	err = h.db.QueryRow(r.Context(),
+		`SELECT title, type, description::text, epic_id FROM work_items WHERE id = $1`, workItemID,
+	).Scan(&storyTitle, &storyType, &storyDesc, &epicID)
+	if err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+
+	var epicTitle, epicDesc string
+	if epicID != nil {
+		_ = h.db.QueryRow(r.Context(),
+			`SELECT title, COALESCE(description, '') FROM epics WHERE id = $1`, *epicID,
+		).Scan(&epicTitle, &epicDesc)
+	}
+
+	// Get existing child tasks
+	var existingTasks []string
+	taskRows, _ := h.db.Query(r.Context(),
+		`SELECT title FROM work_items WHERE parent_id = $1`, workItemID)
+	if taskRows != nil {
+		for taskRows.Next() {
+			var t string
+			if taskRows.Scan(&t) == nil {
+				existingTasks = append(existingTasks, t)
+			}
+		}
+		taskRows.Close()
+	}
+
+	// Get available team roles from project members
+	var teamRoles []string
+	roleRows, _ := h.db.Query(r.Context(),
+		`SELECT DISTINCT job_role FROM project_members WHERE project_id = $1`, projectID)
+	if roleRows != nil {
+		for roleRows.Next() {
+			var role string
+			if roleRows.Scan(&role) == nil {
+				teamRoles = append(teamRoles, role)
+			}
+		}
+		roleRows.Close()
+	}
+
+	req := ai.SuggestDecompRequest{
+		StoryTitle:       storyTitle,
+		StoryDescription: deref(storyDesc),
+		EpicTitle:        epicTitle,
+		EpicDescription:  epicDesc,
+		ExistingTasks:    existingTasks,
+		ProjectName:      projectName,
+		TeamRoles:        teamRoles,
+	}
+
+	slog.Info("ai.SuggestDecomposition", "project", projectName, "story", storyTitle, "provider", *providerType)
+
+	result, err := provider.SuggestDecomposition(r.Context(), req)
+	if err != nil {
+		slog.Error("ai.SuggestDecomposition failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "ai_error", "AI request failed: "+err.Error())
+		return
+	}
+
+	writeJSON(w, http.StatusOK, result)
+}
+
 func nilIfEmpty(s string) *string {
 	if s == "" {
 		return nil

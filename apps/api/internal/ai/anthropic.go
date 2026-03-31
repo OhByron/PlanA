@@ -232,6 +232,108 @@ Generate a defect report with description and acceptance criteria for the fix.`,
 	return &result, nil
 }
 
+func (p *AnthropicProvider) SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error) {
+	systemPrompt := `You are an experienced Scrum Master helping decompose user stories into actionable tasks for a cross-functional Agile team.
+
+Rules:
+- Suggest 3-8 tasks depending on story complexity
+- Each task should be assignable to a single discipline: dev, qe, ux, ba, or bsa
+- Include at least one QE task (testing is not optional)
+- Include UX/BA tasks only when the story involves user-facing changes or requirements analysis
+- Points should reflect relative effort (1=trivial, 2=small, 3=medium, 5=large, 8=complex)
+- Task titles should be specific and actionable, not generic ("Implement login API" not "Do backend work")
+- Don't duplicate existing tasks
+- If the story is too vague to decompose, ask clarifying questions
+
+Return JSON:
+{
+  "tasks": [{"title": "...", "role": "dev|qe|ux|ba|bsa", "points": N, "rationale": "..."}],
+  "questions": []
+}`
+
+	userPrompt := fmt.Sprintf(`Project: %s
+Epic: %s
+%s
+
+Story: %s
+%s
+
+`, req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryTitle, req.StoryDescription)
+
+	if len(req.ExistingTasks) > 0 {
+		userPrompt += "Existing tasks (don't duplicate):\n"
+		for _, t := range req.ExistingTasks {
+			userPrompt += "- " + t + "\n"
+		}
+		userPrompt += "\n"
+	}
+
+	if len(req.TeamRoles) > 0 {
+		userPrompt += "Available team roles: " + fmt.Sprintf("%v", req.TeamRoles) + "\n\n"
+	}
+
+	userPrompt += "Suggest tasks to decompose this story."
+
+	body := map[string]any{
+		"model":      p.model,
+		"max_tokens": 1500,
+		"system":     systemPrompt,
+		"messages":   []map[string]string{{"role": "user", "content": userPrompt}},
+	}
+
+	jsonBody, _ := json.Marshal(body)
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", "https://api.anthropic.com/v1/messages", bytes.NewReader(jsonBody))
+	if err != nil {
+		return nil, fmt.Errorf("building request: %w", err)
+	}
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("x-api-key", p.apiKey)
+	httpReq.Header.Set("anthropic-version", "2023-06-01")
+
+	resp, err := http.DefaultClient.Do(httpReq)
+	if err != nil {
+		return nil, fmt.Errorf("calling Anthropic API: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Anthropic API returned %d: %s", resp.StatusCode, respBody)
+	}
+
+	var anthropicResp struct {
+		Content []struct{ Text string `json:"text"` } `json:"content"`
+	}
+	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
+		return nil, fmt.Errorf("parsing response: %w", err)
+	}
+	if len(anthropicResp.Content) == 0 {
+		return nil, fmt.Errorf("empty response")
+	}
+
+	text := anthropicResp.Content[0].Text
+	jsonStart, jsonEnd := -1, -1
+	for i, c := range text {
+		if c == '{' && jsonStart == -1 {
+			jsonStart = i
+		}
+		if c == '}' {
+			jsonEnd = i + 1
+		}
+	}
+
+	var result SuggestDecompResponse
+	if jsonStart >= 0 && jsonEnd > jsonStart {
+		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
+			return nil, fmt.Errorf("parsing decomposition: %w (raw: %s)", err, text)
+		}
+	} else {
+		return nil, fmt.Errorf("no JSON found in response: %s", text)
+	}
+
+	return &result, nil
+}
+
 func (p *AnthropicProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
 	systemPrompt := `You are an experienced Business Systems Analyst helping write clear, detailed descriptions for user stories in an Agile project.
 

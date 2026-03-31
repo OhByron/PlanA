@@ -46,8 +46,9 @@ type WorkItemHandlers struct {
 
 func NewWorkItemHandlers(db DBPOOL) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
 
-// qeGateCheck validates whether a QE-assigned work item can move to Done.
-// Returns ("", "") if the gate passes, or (code, message) if blocked.
+// qeGateCheck enforces the QE workflow gate: items assigned to a QE role cannot
+// close unless test results exist and all pass. This prevents premature closure
+// before testing is complete.
 func qeGateCheck(jobRole string, totalResults, failedResults int) (code string, message string) {
 	if jobRole != "qe" {
 		return "", ""
@@ -207,7 +208,8 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		orderIndex = *body.OrderIndex
 	}
 
-	// Atomically increment the project's item counter to get a sequential number.
+	// Item numbers are incremented in a separate UPDATE (not a DB sequence) so each
+	// project has its own independent counter starting at 1 (e.g. PROJ-1, PROJ-2).
 	var itemNumber int
 	err := h.db.QueryRow(r.Context(),
 		`UPDATE projects SET item_counter = item_counter + 1 WHERE id = $1 RETURNING item_counter`,
@@ -415,7 +417,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		// QE status gate: QE-assigned items require linked test results that all pass before moving to Done.
 		if *body.Status == "done" {
 			var totalResults, failedResults int
-			_ = h.db.QueryRow(r.Context(),
+			if err := h.db.QueryRow(r.Context(),
 				`SELECT
 					COUNT(*),
 					COUNT(*) FILTER (WHERE status IN ('fail', 'error'))
@@ -423,7 +425,9 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 				 WHERE work_item_id = $1
 				    OR ($2::uuid IS NOT NULL AND work_item_id = $2)`,
 				workItemID, parentID,
-			).Scan(&totalResults, &failedResults)
+			).Scan(&totalResults, &failedResults); err != nil {
+				slog.Warn("workitems.Update: QE gate test-results query failed", "error", err)
+			}
 
 			if code, msg := qeGateCheck(jobRole, totalResults, failedResults); code != "" {
 				writeError(w, http.StatusUnprocessableEntity, code, msg)
@@ -464,12 +468,15 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		wi.Labels = []string{}
 	}
 
-	// Log status change for burndown tracking.
+	// Record each status transition with its point value so the burndown chart can
+	// reconstruct remaining work per day without scanning the full work-item history.
 	if body.Status != nil && *body.Status != oldStatus {
 		var sprintID *string
-		_ = h.db.QueryRow(r.Context(),
+		if err := h.db.QueryRow(r.Context(),
 			`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`,
-			workItemID).Scan(&sprintID)
+			workItemID).Scan(&sprintID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			slog.Warn("workitems.Update: sprint lookup for status-change log failed", "error", err)
+		}
 		_, err := h.db.Exec(r.Context(),
 			`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
 			 VALUES ($1, $2, $3, $4, $5)`,
