@@ -9,6 +9,46 @@ import (
 	"net/http"
 )
 
+// extractJSON finds the first top-level JSON object in text using brace-counting.
+// Handles nested objects, strings with escaped braces, and markdown code fences.
+func extractJSON(text string) (string, error) {
+	start := -1
+	depth := 0
+	inString := false
+	escaped := false
+
+	for i, c := range text {
+		if escaped {
+			escaped = false
+			continue
+		}
+		if c == '\\' && inString {
+			escaped = true
+			continue
+		}
+		if c == '"' {
+			inString = !inString
+			continue
+		}
+		if inString {
+			continue
+		}
+		if c == '{' {
+			if start == -1 {
+				start = i
+			}
+			depth++
+		}
+		if c == '}' {
+			depth--
+			if depth == 0 && start >= 0 {
+				return text[start : i+1], nil
+			}
+		}
+	}
+	return "", fmt.Errorf("no JSON object found in response")
+}
+
 type AnthropicProvider struct {
 	apiKey string
 	model  string
@@ -112,27 +152,15 @@ Story: %s
 		return nil, fmt.Errorf("empty response from Anthropic")
 	}
 
-	// Extract JSON from the response text (may be wrapped in markdown code blocks)
 	text := anthropicResp.Content[0].Text
-	// Try to find JSON in the text
-	jsonStart := -1
-	jsonEnd := -1
-	for i, c := range text {
-		if c == '{' && jsonStart == -1 {
-			jsonStart = i
-		}
-		if c == '}' {
-			jsonEnd = i + 1
-		}
+	jsonStr, err := extractJSON(text)
+	if err != nil {
+		return nil, fmt.Errorf("parsing AC suggestions: %w (raw: %s)", err, text)
 	}
 
 	var result SuggestACResponse
-	if jsonStart >= 0 && jsonEnd > jsonStart {
-		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
-			return nil, fmt.Errorf("parsing AC suggestions: %w (raw: %s)", err, text)
-		}
-	} else {
-		return nil, fmt.Errorf("no JSON found in response: %s", text)
+	if err := json.Unmarshal([]byte(jsonStr), &result); err != nil {
+		return nil, fmt.Errorf("parsing AC suggestions: %w (raw: %s)", err, text)
 	}
 
 	return &result, nil
@@ -210,23 +238,14 @@ Generate a defect report with description and acceptance criteria for the fix.`,
 	}
 
 	text := anthropicResp.Content[0].Text
-	jsonStart, jsonEnd := -1, -1
-	for i, c := range text {
-		if c == '{' && jsonStart == -1 {
-			jsonStart = i
-		}
-		if c == '}' {
-			jsonEnd = i + 1
-		}
+	jsonStr, err := extractJSON(text)
+	if err != nil {
+		return nil, fmt.Errorf("parsing defect suggestion: %w (raw: %s)", err, text)
 	}
 
 	var result SuggestDefectResponse
-	if jsonStart >= 0 && jsonEnd > jsonStart {
-		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
-			return nil, fmt.Errorf("parsing defect suggestion: %w (raw: %s)", err, text)
-		}
-	} else {
-		return nil, fmt.Errorf("no JSON found in response: %s", text)
+	if err := json.Unmarshal([]byte(jsonStr), &result); err != nil {
+		return nil, fmt.Errorf("parsing defect suggestion: %w (raw: %s)", err, text)
 	}
 
 	return &result, nil
@@ -312,23 +331,14 @@ Story: %s
 	}
 
 	text := anthropicResp.Content[0].Text
-	jsonStart, jsonEnd := -1, -1
-	for i, c := range text {
-		if c == '{' && jsonStart == -1 {
-			jsonStart = i
-		}
-		if c == '}' {
-			jsonEnd = i + 1
-		}
+	jsonStr, err := extractJSON(text)
+	if err != nil {
+		return nil, fmt.Errorf("parsing decomposition: %w (raw: %s)", err, text)
 	}
 
 	var result SuggestDecompResponse
-	if jsonStart >= 0 && jsonEnd > jsonStart {
-		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
-			return nil, fmt.Errorf("parsing decomposition: %w (raw: %s)", err, text)
-		}
-	} else {
-		return nil, fmt.Errorf("no JSON found in response: %s", text)
+	if err := json.Unmarshal([]byte(jsonStr), &result); err != nil {
+		return nil, fmt.Errorf("parsing decomposition: %w (raw: %s)", err, text)
 	}
 
 	return &result, nil
@@ -402,19 +412,12 @@ Only include "questions" if the title is genuinely too ambiguous. Otherwise retu
 	}
 
 	text := anthropicResp.Content[0].Text
-	jsonStart, jsonEnd := -1, -1
-	for i, c := range text {
-		if c == '{' && jsonStart == -1 { jsonStart = i }
-		if c == '}' { jsonEnd = i + 1 }
-	}
-
+	jsonStr, err := extractJSON(text)
 	var result SuggestDescResponse
-	if jsonStart >= 0 && jsonEnd > jsonStart {
-		if err := json.Unmarshal([]byte(text[jsonStart:jsonEnd]), &result); err != nil {
-			return nil, fmt.Errorf("parsing description: %w", err)
-		}
-	} else {
+	if err != nil {
 		// If no JSON, treat the whole text as the description
+		result.Description = text
+	} else if err := json.Unmarshal([]byte(jsonStr), &result); err != nil {
 		result.Description = text
 	}
 
