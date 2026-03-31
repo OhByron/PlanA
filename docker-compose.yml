@@ -22,7 +22,7 @@ services:
       POSTGRES_USER: plana
       POSTGRES_PASSWORD: plana
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     # wal_level=logical is required for Electric SQL sync
@@ -44,7 +44,7 @@ services:
       DATABASE_URL: postgresql://plana:plana@postgres:5432/plana
       ELECTRIC_INSECURE: "true"   # dev only — removes auth requirement on sync API
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -66,7 +66,7 @@ services:
     image: getmeili/meilisearch:v1.12
     restart: unless-stopped
     ports:
-      - "7700:7700"
+      - "127.0.0.1:7700:7700"
     environment:
       MEILI_MASTER_KEY: masterkey
       MEILI_ENV: development

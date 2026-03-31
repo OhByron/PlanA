@@ -87,6 +87,26 @@ services:
       api:
         condition: service_healthy
 
+  # Override dev-compose ports: in prod these services are only reached
+  # via the internal Docker network — no need to expose them to the host.
+  postgres:
+    ports: !override
+      - "127.0.0.1:5432:5432"
+
+  electric:
+    ports: !override
+      - "127.0.0.1:3000:3000"
+    environment:
+      ELECTRIC_INSECURE: "false"
+
+  redis:
+    ports: !override
+      - "127.0.0.1:6379:6379"
+
+  meilisearch:
+    ports: !override
+      - "127.0.0.1:7700:7700"
+
   backup:
     build:
       context: .
