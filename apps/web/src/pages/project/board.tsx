@@ -3,6 +3,7 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
   type DragStartEvent,
@@ -109,7 +110,17 @@ export function BoardPage() {
     const { active, over } = event;
     if (!over) return;
 
-    const newStatus = over.id as WorkItemStatus;
+    // over.id may be a column status OR a card id (when dropped onto a card)
+    let newStatus: WorkItemStatus;
+    if (COLUMNS.includes(over.id as WorkItemStatus)) {
+      newStatus = over.id as WorkItemStatus;
+    } else {
+      // Dropped on a card — find which column that card belongs to
+      const overItem = items.find((i) => i.id === over.id);
+      if (!overItem) return;
+      newStatus = overItem.status;
+    }
+
     const item = items.find((i) => i.id === active.id);
     if (!item || item.status === newStatus) return;
 
@@ -193,6 +204,7 @@ export function BoardPage() {
       <div className="flex flex-1 gap-4 overflow-x-auto px-6 pb-6">
         <DndContext
           sensors={sensors}
+          collisionDetection={closestCenter}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >

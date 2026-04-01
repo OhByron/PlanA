@@ -72,7 +72,7 @@ export function BoardColumn({
       {/* Cards */}
       <div
         ref={setNodeRef}
-        className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2"
+        className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-8"
         style={{ minHeight: 100 }}
       >
         <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
