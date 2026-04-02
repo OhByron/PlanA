@@ -116,7 +116,8 @@
       "Bash(sed -i 's/\\\\\\\\æ/æ/g; s/\\\\\\\\ð/ð/g; s/\\\\\\\\þ/þ/g; s/\\\\\\\\ö/ö/g; s/\\\\\\\\ú/ú/g; s/\\\\\\\\í/í/g; s/\\\\\\\\á/á/g; s/\\\\\\\\é/é/g; s/\\\\\\\\ý/ý/g; s/\\\\\\\\ó/ó/g; s/\\\\\\\\Í/Í/g; s/\\\\\\\\Á/Á/g; s/\\\\\\\\Ð/Ð/g; s/\\\\\\\\Þ/Þ/g; s/\\\\\\\\Ö/Ö/g; s/\\\\\\\\Ú/Ú/g; s/\\\\\\\\É/É/g' apps/web/src/i18n/locales/is.json)",
       "Bash(node -e \"try{JSON.parse\\(require\\('fs'\\).readFileSync\\('apps/web/src/i18n/locales/is.json','utf8'\\)\\);console.log\\('FIXED'\\)}catch\\(e\\){console.log\\('Still broken:',e.message.substring\\(0,60\\)\\)}\")",
       "Bash(cp apps/web/src/i18n/locales/da.json apps/web/src/i18n/locales/is.json.bak)",
-      "Bash(node -e \"try{const j=JSON.parse\\(require\\('fs'\\).readFileSync\\('apps/web/src/i18n/locales/is.json','utf8'\\)\\);console.log\\('is: VALID',Object.keys\\(j\\).length,'sections'\\)}catch\\(e\\){console.log\\('is: ERROR',e.message.substring\\(0,80\\)\\)}\")"
+      "Bash(node -e \"try{const j=JSON.parse\\(require\\('fs'\\).readFileSync\\('apps/web/src/i18n/locales/is.json','utf8'\\)\\);console.log\\('is: VALID',Object.keys\\(j\\).length,'sections'\\)}catch\\(e\\){console.log\\('is: ERROR',e.message.substring\\(0,80\\)\\)}\")",
+      "Bash(ssh root@plana.bignell.com \"cd /opt/plana && git pull origin main\")"
     ]
   }
 }
