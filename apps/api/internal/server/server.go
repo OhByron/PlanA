@@ -31,7 +31,7 @@ func New(deps *Dependencies) http.Handler {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Authorization", "Content-Type", "X-Request-ID"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type", "X-Request-ID", "X-Language"},
 		AllowCredentials: true,
 		MaxAge:           300,
 	})

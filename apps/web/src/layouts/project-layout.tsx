@@ -1,10 +1,12 @@
 import { Link, Outlet, useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@projecta/ui';
 import { api } from '../lib/api-client';
 import { toProject } from '../lib/api-transforms';
 
 export function ProjectLayout() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const { data: project, isLoading } = useQuery({
@@ -25,14 +27,14 @@ export function ProjectLayout() {
   }
 
   const tabs = [
-    { label: 'Board', to: '/p/$projectId/board' as const },
-    { label: 'Backlog', to: '/p/$projectId/backlog' as const },
-    { label: 'Epics', to: '/p/$projectId/epics' as const },
-    { label: 'Sprints', to: '/p/$projectId/sprints' as const },
-    { label: 'Reports', to: '/p/$projectId/reports' as const },
-    { label: 'Report', to: '/p/$projectId/report' as const },
-    { label: 'Team', to: '/p/$projectId/team' as const },
-    { label: 'Settings', to: '/p/$projectId/settings' as const },
+    { label: t('nav.board'), to: '/p/$projectId/board' as const },
+    { label: t('nav.backlog'), to: '/p/$projectId/backlog' as const },
+    { label: t('nav.epics'), to: '/p/$projectId/epics' as const },
+    { label: t('nav.sprints'), to: '/p/$projectId/sprints' as const },
+    { label: t('nav.reports'), to: '/p/$projectId/reports' as const },
+    { label: t('nav.report'), to: '/p/$projectId/report' as const },
+    { label: t('nav.team'), to: '/p/$projectId/team' as const },
+    { label: t('nav.settings'), to: '/p/$projectId/settings' as const },
   ];
 
   return (
@@ -41,11 +43,11 @@ export function ProjectLayout() {
       <div className="border-b border-gray-200 bg-white px-6">
         <div className="flex items-center gap-4 pt-4 pb-0">
           <h1 className="text-lg font-semibold text-gray-900">
-            {project?.name ?? 'Project'}
+            {project?.name ?? t('nav.project')}
           </h1>
           {project?.methodology && (
             <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
-              {project.methodology}
+              {t(`methodology.${project.methodology}`, project.methodology)}
             </span>
           )}
         </div>

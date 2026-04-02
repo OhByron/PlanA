@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './auth/auth-context';
+import './i18n';
 import { AuthenticatedLayout } from './layouts/authenticated-layout';
 import { ProjectLayout } from './layouts/project-layout';
 import { LoginPage } from './pages/login';

@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "create": "बनाएं",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "add": "जोड़ें",
+    "remove": "हटाएं",
+    "dismiss": "खारिज करें",
+    "close": "बंद करें",
+    "loading": "लोड हो रहा है...",
+    "send": "भेजें",
+    "open": "खोलें",
+    "archive": "संग्रहित करें",
+    "restore": "पुनर्स्थापित करें",
+    "report": "रिपोर्ट",
+    "settings": "सेटिंग्स",
+    "gotIt": "समझ गया",
+    "tryAgain": "पुनः प्रयास करें",
+    "signOut": "साइन आउट",
+    "signIn": "साइन इन",
+    "whatsThis": "यह क्या है?",
+    "help": "सहायता",
+    "error": "त्रुटि: {{message}}",
+    "thinking": "सोच रहा है...",
+    "generating": "जनरेट हो रहा है...",
+    "language": "भाषा"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "असली एजाइल।"
+  },
+
+  "nav": {
+    "board": "बोर्ड",
+    "backlog": "बैकलॉग",
+    "epics": "एपिक्स",
+    "sprints": "स्प्रिंट्स",
+    "reports": "रिपोर्ट्स",
+    "report": "रिपोर्ट",
+    "team": "टीम",
+    "settings": "सेटिंग्स",
+    "project": "प्रोजेक्ट"
+  },
+
+  "sidebar": {
+    "expandSidebar": "साइडबार विस्तृत करें",
+    "collapseSidebar": "साइडबार संक्षिप्त करें",
+    "myWork": "मेरा कार्य",
+    "organisations": "संगठन",
+    "noOrganisationsYet": "अभी तक कोई संगठन नहीं",
+    "toggle": "{{name}} टॉगल करें"
+  },
+
+  "topBar": {
+    "notifications": "सूचनाएं",
+    "markAllRead": "सभी पढ़ा हुआ चिह्नित करें",
+    "noNotificationsYet": "अभी तक कोई सूचना नहीं",
+    "justNow": "अभी",
+    "minutesAgo": "{{count}} मिनट पहले",
+    "hoursAgo": "{{count}} घंटे पहले",
+    "daysAgo": "{{count}} दिन पहले"
+  },
+
+  "notifications": {
+    "assigned": "आपको \"{{title}}\" पर असाइन किया गया",
+    "statusChanged": "\"{{title}}\" की स्थिति बदल गई",
+    "commentAdded": "\"{{title}}\" पर नई टिप्पणी",
+    "mentioned": "\"{{title}}\" में आपका उल्लेख किया गया",
+    "default": "सूचना: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "तैयार",
+    "in_progress": "प्रगति में",
+    "in_review": "समीक्षा में",
+    "done": "पूर्ण",
+    "cancelled": "रद्द"
+  },
+
+  "priority": {
+    "urgent": "अत्यावश्यक",
+    "high": "उच्च",
+    "medium": "मध्यम",
+    "low": "निम्न"
+  },
+
+  "type": {
+    "story": "स्टोरी",
+    "bug": "बग",
+    "task": "टास्क"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "सक्रिय",
+    "planned": "योजनाबद्ध",
+    "completed": "पूर्ण",
+    "cancelled": "रद्द"
+  },
+
+  "roles": {
+    "pm": "प्रोजेक्ट मैनेजर",
+    "po": "प्रोडक्ट ओनर",
+    "bsa": "बिजनेस सिस्टम एनालिस्ट",
+    "ba": "बिजनेस एनालिस्ट",
+    "qe": "क्वालिटी इंजीनियर",
+    "ux": "UX डिज़ाइनर",
+    "dev": "डेवलपर"
+  },
+
+  "login": {
+    "continueWithGitHub": "GitHub से जारी रखें",
+    "continueWithGoogle": "Google से जारी रखें",
+    "orSignInWithEmail": "या ईमेल से साइन इन करें",
+    "emailAddress": "ईमेल पता",
+    "password": "पासवर्ड",
+    "loginFailed": "लॉगिन विफल",
+    "devOnly": "केवल डेव",
+    "devLogin": "डेव लॉगिन (OAuth छोड़ें)"
+  },
+
+  "authError": {
+    "title": "लॉगिन विफल",
+    "badState": "लॉगिन सत्र समाप्त हो गया है। कृपया पुनः प्रयास करें।",
+    "csrf": "सुरक्षा जांच विफल हुई। कृपया पुनः प्रयास करें।",
+    "exchangeFailed": "प्रदाता के साथ लॉगिन पूरा नहीं हो सका। कृपया पुनः प्रयास करें।",
+    "dbError": "सर्वर त्रुटि हुई। कृपया बाद में पुनः प्रयास करें।",
+    "missingToken": "कोई प्रमाणीकरण टोकन प्राप्त नहीं हुआ।",
+    "default": "लॉगिन के दौरान एक अप्रत्याशित त्रुटि हुई।"
+  },
+
+  "myWork": {
+    "title": "मेरा कार्य",
+    "itemCount": "{{count}} आइटम आपको असाइन है",
+    "itemCount_other": "{{count}} आइटम आपको असाइन हैं",
+    "noItems": "आपको कोई आइटम असाइन नहीं है।",
+    "noItemsHelp": "जब आपको प्रोजेक्ट टीम सदस्य के रूप में जोड़ा जाता है और स्टोरी या टास्क असाइन होती हैं, तो वे यहां दिखाई देंगी। सुनिश्चित करें कि आपका अकाउंट ईमेल टीम सदस्य ईमेल से मेल खाता है, या आपने आमंत्रण स्वीकार किया है।"
+  },
+
+  "orgs": {
+    "title": "संगठन",
+    "orgCount": "{{count}} संगठन",
+    "orgCount_other": "{{count}} संगठन",
+    "showArchived": "संग्रहित दिखाएं",
+    "newOrganisation": "+ नया संगठन",
+    "noOrgsYet": "अभी तक कोई संगठन नहीं है। शुरू करने के लिए एक बनाएं।",
+    "archived": "संग्रहित",
+    "confirmDelete": "इस संगठन और इसके सभी डेटा को स्थायी रूप से हटाएं?",
+    "added": "जोड़ा गया {{date}}",
+    "newOrg": "नया संगठन",
+    "orgName": "संगठन का नाम",
+    "orgNameRequired": "संगठन का नाम *",
+    "contactName": "संपर्क नाम",
+    "contactEmail": "संपर्क ईमेल",
+    "contactPhone": "संपर्क फ़ोन",
+    "addressLine1": "पता पंक्ति 1",
+    "addressLine2": "पता पंक्ति 2",
+    "city": "शहर",
+    "state": "राज्य",
+    "postalCode": "पिन कोड",
+    "country": "देश"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "सभी संगठन",
+    "editDetails": "विवरण संपादित करें",
+    "noContactDetails": "अभी तक कोई संपर्क विवरण नहीं। जोड़ने के लिए \"विवरण संपादित करें\" पर क्लिक करें।",
+    "contact": "संपर्क:",
+    "email": "ईमेल:",
+    "phone": "फ़ोन:",
+    "location": "स्थान:",
+    "projects": "प्रोजेक्ट ({{count}})",
+    "newProject": "+ नया प्रोजेक्ट",
+    "noProjectsYet": "अभी तक कोई प्रोजेक्ट नहीं। शुरू करने के लिए एक बनाएं।",
+    "newProjectTitle": "नया प्रोजेक्ट",
+    "projectName": "प्रोजेक्ट का नाम",
+    "projectNameRequired": "प्रोजेक्ट का नाम *",
+    "description": "विवरण",
+    "methodology": "कार्यप्रणाली",
+    "dueDate": "नियत तिथि",
+    "customerContact": "ग्राहक संपर्क",
+    "createProject": "प्रोजेक्ट बनाएं",
+    "whatIsThisProjectAbout": "यह प्रोजेक्ट किस बारे में है?"
+  },
+
+  "invite": {
+    "invalidInvitation": "अमान्य आमंत्रण",
+    "invalidLink": "यह आमंत्रण लिंक मान्य नहीं है।",
+    "goToLogin": "लॉगिन पर जाएं",
+    "alreadyAccepted": "पहले से स्वीकृत",
+    "alreadyAcceptedMessage": "यह आमंत्रण पहले ही उपयोग किया जा चुका है। आप अपने क्रेडेंशियल से लॉगिन कर सकते हैं।",
+    "expired": "आमंत्रण समाप्त",
+    "expiredMessage": "यह आमंत्रण समाप्त हो गया है। कृपया अपनी टीम से नया आमंत्रण भेजने के लिए कहें।",
+    "invitedToJoin": "आपको एक प्रोजेक्ट में शामिल होने के लिए आमंत्रित किया गया है",
+    "emailLabel": "ईमेल",
+    "yourName": "आपका नाम",
+    "passwordLabel": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "minChars": "न्यूनतम 8 अक्षर",
+    "repeatPassword": "पासवर्ड दोहराएं",
+    "passwordTooShort": "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए",
+    "passwordsMismatch": "पासवर्ड मेल नहीं खाते",
+    "createAccountJoin": "अकाउंट बनाएं और शामिल हों",
+    "creatingAccount": "अकाउंट बनाया जा रहा है...",
+    "alreadyHaveAccount": "पहले से अकाउंट है?",
+    "logIn": "लॉगिन"
+  },
+
+  "board": {
+    "helpTitle": "आपका Kanban बोर्ड",
+    "helpBody1": "यह आपकी टीम के कार्य का प्रवाह के रूप में दृश्य है। प्रत्येक कॉलम आपके वर्कफ़्लो का एक चरण दर्शाता है।",
+    "helpBody2": "कार्ड को कॉलम के बीच ड्रैग करके स्थिति तुरंत अपडेट करें। जब आप एक स्टोरी को स्थानांतरित करते हैं, तो उसके चाइल्ड टास्क भी साथ में चलते हैं।",
+    "helpBody3": "\"प्रगति में\" कॉलम को छोटा रखें; कार्य-प्रगति को सीमित करने से आपकी टीम नई चीजें शुरू करने के बजाय मौजूदा कार्य पूरा करती है।",
+    "itemCount": "{{count}} आइटम",
+    "itemCount_other": "{{count}} आइटम",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} पॉइंट प्रगति में",
+    "overCapacity": "क्षमता से अधिक",
+    "noItems": "कोई आइटम नहीं",
+    "column": "{{status}} कॉलम"
+  },
+
+  "backlog": {
+    "helpTitle": "आपका Backlog",
+    "helpBody1": "Backlog आपकी प्राथमिकता के अनुसार क्रमबद्ध कार्य सूची है। शीर्ष पर मौजूद आइटम सर्वोच्च प्राथमिकता वाले हैं।",
+    "helpBody2": "ग्रिप हैंडल से आइटम ड्रैग करके प्राथमिकता बदलें। स्टोरी, बग या विशिष्ट स्थिति पर ध्यान केंद्रित करने के लिए फ़िल्टर का उपयोग करें।",
+    "helpBody3": "स्टोरी या टास्क तुरंत जोड़ने के लिए \"+ नया आइटम\" क्लिक करें।",
+    "allStatuses": "सभी स्थितियां",
+    "allTypes": "सभी प्रकार",
+    "stories": "स्टोरीज़",
+    "bugs": "बग्स",
+    "tasks": "टास्क",
+    "itemCount": "{{count}} आइटम",
+    "itemCount_other": "{{count}} आइटम",
+    "newItem": "+ नया आइटम",
+    "noItemsMatch": "आपके फ़िल्टर से कोई आइटम मेल नहीं खाता। समायोजित करने का प्रयास करें या एक नया आइटम बनाएं।"
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint योजना",
+    "helpBody1": "Sprint समय-बद्ध पुनरावृत्तियां हैं (आमतौर पर 2 सप्ताह)। अपनी टीम के कार्य की योजना बनाने के लिए Backlog से स्टोरी को Sprint में लाएं।",
+    "helpBody2": "टीम पर अत्यधिक भार से बचने के लिए क्षमता संकेतक पर नज़र रखें।",
+    "title": "Sprint",
+    "noSprintsYet": "अभी तक कोई Sprint नहीं। योजना शुरू करने के लिए एक बनाएं।",
+    "pts": "{{count}} पॉइंट"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "बोर्ड पर वापस",
+    "partOf": "का हिस्सा:",
+    "clickToEdit": "संपादित करने के लिए क्लिक करें",
+    "description": "विवरण",
+    "descPlaceholder": "आवश्यकता, लक्ष्य और संदर्भ का वर्णन करें...",
+    "suggest": "सुझाव",
+    "clickToAddDescription": "विवरण जोड़ने के लिए क्लिक करें...",
+    "details": "विवरण",
+    "statusLabel": "स्थिति",
+    "typeLabel": "प्रकार",
+    "priorityLabel": "प्राथमिकता",
+    "assigneeLabel": "असाइनी",
+    "unassigned": "असाइन नहीं",
+    "totalPoints": "कुल पॉइंट",
+    "storyPoints": "स्टोरी पॉइंट",
+    "storyPointsHelp": "स्टोरी के लिए, पॉइंट सभी टास्क पॉइंट का योग है। रिफाइनमेंट के दौरान व्यक्तिगत टास्क में पॉइंट जोड़ें।",
+    "taskPointsHelp": "सापेक्ष प्रयास का अनुमान लगाएं। सामान्य स्केल: 1, 2, 3, 5, 8, 13। \"1\" आपकी टीम द्वारा किया जाने वाला सबसे सरल कार्य है।",
+    "sumOfTasks": "{{count}} टास्क का योग",
+    "sumOfTasks_other": "{{count}} टास्क का योग",
+    "largeStoryWarning": "यह story {{points}} अंक की है। इसे छोटी stories में विभाजित करने पर विचार करें जो एक ही sprint में पूरी हो सकें।",
+    "blocked": "अवरुद्ध",
+    "blockedBy": "अवरुद्ध किया:",
+    "notBlocked": "अवरुद्ध नहीं",
+    "labels": "लेबल",
+    "convertToStory": "स्टोरी में बदलें",
+    "convertToStoryConfirm": "इस टास्क को स्टोरी में बदलें? यह मूल स्टोरी के साथ निर्भरता लिंक बनाए रखेगा।",
+    "convertToStoryHelp": "इस टास्क को निर्भरता लिंक के साथ एक स्वतंत्र स्टोरी में प्रमोट करता है",
+    "created": "बनाया गया {{date}}",
+    "updated": "अपडेट किया गया {{date}}"
+  },
+
+  "childTasks": {
+    "title": "टास्क ({{count}})",
+    "contextHelp": "टास्क एक स्टोरी को विषय-विशेषज्ञता के अनुसार कार्य में विभाजित करते हैं, UX डिज़ाइन, बैकएंड डेव, फ्रंटएंड डेव, QE टेस्टिंग, आदि। प्रत्येक टास्क किसी टीम सदस्य को असाइन किया जा सकता है।",
+    "suggestTasks": "टास्क सुझाएं",
+    "addTask": "+ टास्क जोड़ें",
+    "noTasksYet": "अभी तक कोई टास्क नहीं।",
+    "taskTitlePlaceholder": "टास्क शीर्षक (उदा. 'UX: लॉगिन स्क्रीन डिज़ाइन')",
+    "suggestedTasks": "सुझाए गए टास्क, जोड़ने के लिए क्लिक करें:",
+    "pts": "{{count}} पॉइंट",
+    "clarificationNeeded": "स्पष्टीकरण आवश्यक:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "स्वीकृति मानदंड",
+    "contextHelp": "स्वीकृति मानदंड परिभाषित करते हैं कि यह आइटम वास्तव में कब \"पूर्ण\" है। Given / When / Then प्रारूप (BDD) में लिखे गए, ये अपेक्षाओं को स्पष्ट और परीक्षण योग्य बनाते हैं। प्रत्येक मानदंड एक विशिष्ट, सत्यापन योग्य शर्त है, अस्पष्ट इच्छा नहीं।",
+    "addButton": "+ जोड़ें",
+    "suggestAC": "स्वीकृति मानदंड सुझाएं",
+    "noCriteriaYet": "अभी तक कोई स्वीकृति मानदंड नहीं। \"पूर्ण\" की शर्तें परिभाषित करें।",
+    "given": "दिया गया (Given)",
+    "when": "जब (When)",
+    "then": "तब (Then)",
+    "deleteAC": "स्वीकृति मानदंड हटाएं",
+    "givenPlaceholder": "दिया गया...",
+    "whenPlaceholder": "जब...",
+    "thenPlaceholder": "तब...",
+    "aiSuggestions": "AI सुझाव, जोड़ने के लिए क्लिक करें:",
+    "aiNeedsMoreInfo": "AI को अधिक जानकारी चाहिए:"
+  },
+
+  "comments": {
+    "title": "टिप्पणियां",
+    "noCommentsYet": "अभी तक कोई टिप्पणी नहीं।",
+    "addComment": "टिप्पणी जोड़ें..."
+  },
+
+  "dependencies": {
+    "title": "निर्भरताएं",
+    "contextHelp": "निर्भरताएं आइटम के बीच संबंधों को ट्रैक करती हैं। \"निर्भर है\" का अर्थ है कि लक्ष्य पूरा होने तक यह आइटम आगे नहीं बढ़ सकता। \"संबंधित\" एक सूचनात्मक लिंक है।",
+    "noDependencies": "कोई निर्भरता नहीं।",
+    "dependsOn": "निर्भर है",
+    "relatesTo": "संबंधित",
+    "dependedOnBy": "इस पर निर्भर",
+    "removeDependency": "निर्भरता हटाएं",
+    "selectItem": "एक आइटम चुनें..."
+  },
+
+  "links": {
+    "title": "लिंक",
+    "addLink": "+ लिंक जोड़ें",
+    "noLinksYet": "अभी तक कोई लिंक नहीं।",
+    "labelPlaceholder": "लेबल (उदा. GitHub PR, Figma, टेस्ट परिणाम, डॉक्स)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "लिंक हटाएं"
+  },
+
+  "testResults": {
+    "retestRequired": "पुनः परीक्षण आवश्यक",
+    "retestMessage": "इस दोष में {{count}} विफल परीक्षण हैं। QE गेट पास करने और इस आइटम को बंद करने के लिए फ़िक्स के डिप्लॉय होने के बाद नए परीक्षण परिणाम (JUnit XML या Webhook) अपलोड करें।",
+    "title": "परीक्षण परिणाम",
+    "passed": "पास",
+    "failed": "विफल",
+    "errors": "त्रुटियां",
+    "skipped": "छोड़ा गया",
+    "lastRun": "अंतिम रन: {{date}}",
+    "sourceTestFailure": "स्रोत परीक्षण विफलता",
+    "suite": "सुइट: {{name}}",
+    "duration": "अवधि: {{ms}}ms",
+    "source": "स्रोत: {{source}} | रिपोर्ट: {{date}}",
+    "generateDescAC": "विवरण और स्वीकृति मानदंड जनरेट करें"
+  },
+
+  "helpOverlay": {
+    "dismiss": "खारिज करें",
+    "close": "बंद करें"
+  },
+
+  "richTextEditor": {
+    "startTyping": "टाइप करना शुरू करें...",
+    "bold": "बोल्ड",
+    "italic": "इटैलिक",
+    "inlineCode": "इनलाइन कोड",
+    "heading": "शीर्षक",
+    "subheading": "उपशीर्षक",
+    "bulletList": "बुलेट सूची",
+    "numberedList": "क्रमांकित सूची",
+    "quote": "उद्धरण",
+    "codeBlock": "कोड ब्लॉक"
+  },
+
+  "createEpic": {
+    "button": "+ नया एपिक",
+    "title": "एपिक बनाएं",
+    "titleLabel": "शीर्षक",
+    "titlePlaceholder": "उदा. उपयोगकर्ता प्रमाणीकरण",
+    "descriptionLabel": "विवरण",
+    "descriptionPlaceholder": "इस एपिक का व्यावसायिक लक्ष्य और दायरा...",
+    "priorityLabel": "प्राथमिकता",
+    "assigneeLabel": "असाइनी"
+  },
+
+  "createProject": {
+    "button": "+ नया प्रोजेक्ट",
+    "title": "प्रोजेक्ट बनाएं",
+    "organisationLabel": "संगठन",
+    "selectOrg": "संगठन चुनें...",
+    "teamLabel": "टीम",
+    "selectTeam": "टीम चुनें...",
+    "projectNameLabel": "प्रोजेक्ट का नाम",
+    "projectNamePlaceholder": "उदा. PlanA MVP",
+    "descriptionLabel": "विवरण",
+    "descriptionPlaceholder": "यह प्रोजेक्ट किस बारे में है?",
+    "methodologyLabel": "कार्यप्रणाली"
+  },
+
+  "createSprint": {
+    "button": "+ नया Sprint",
+    "title": "Sprint बनाएं",
+    "nameLabel": "नाम",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "लक्ष्य",
+    "goalPlaceholder": "इस Sprint को क्या हासिल करना चाहिए?",
+    "startDateLabel": "आरंभ तिथि",
+    "endDateLabel": "समाप्ति तिथि"
+  },
+
+  "createTeam": {
+    "button": "+ नई टीम",
+    "title": "टीम बनाएं",
+    "organisationLabel": "संगठन",
+    "selectOrg": "संगठन चुनें...",
+    "teamNameLabel": "टीम का नाम",
+    "teamNamePlaceholder": "उदा. बैकएंड स्क्वाड"
+  },
+
+  "quickCreate": {
+    "placeholder": "क्या करना है?"
+  },
+
+  "workItemCard": {
+    "open": "{{title}} खोलें",
+    "taskCount": "{{count}} टास्क",
+    "taskCount_other": "{{count}} टास्क"
+  },
+
+  "reports": {
+    "helpTitle": "प्रोजेक्ट रिपोर्ट्स",
+    "helpBody1": "रिपोर्ट्स आपकी टीम की डिलीवरी की दृश्यता प्रदान करती हैं। Velocity दिखाता है कि आप प्रति Sprint कितने पॉइंट पूरे करते हैं; यह समय के साथ स्थिर होता है।",
+    "helpBody2": "बाधाओं को जल्दी पहचानने के लिए Sprint प्रगति और टीम वर्कलोड चार्ट का उपयोग करें।",
+    "title": "रिपोर्ट्स",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "प्रति Sprint पूर्ण किए गए स्टोरी पॉइंट",
+    "noCompletedSprints": "अभी तक कोई पूर्ण Sprint नहीं। आपके पहले Sprint के पूरा होने के बाद Velocity दिखाई देगा।",
+    "trend": "रुझान",
+    "threeSprintAvg": "3-Sprint औसत",
+    "avgVelocity": "औसत velocity:",
+    "pointsPerSprint": "पॉइंट/Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "पूर्ण: {{points}} पॉइंट",
+    "inProgress": "प्रगति में: {{points}} पॉइंट",
+    "inReview": "समीक्षा में: {{points}} पॉइंट",
+    "remaining": "शेष: {{points}} पॉइंट",
+    "daysLeft": "{{count}} दिन शेष",
+    "epicProgress": "एपिक प्रगति",
+    "epicProgressSubtitle": "प्रति एपिक पूर्ण स्टोरीज़",
+    "noEpics": "अभी तक कोई एपिक परिभाषित नहीं।",
+    "stories": "{{done}}/{{total}} स्टोरीज़, {{pct}}%",
+    "teamWorkload": "टीम वर्कलोड",
+    "teamWorkloadSubtitle": "सक्रिय Sprint में असाइन किए गए पॉइंट",
+    "noWorkload": "सक्रिय Sprint में कोई आइटम असाइन नहीं।",
+    "pts": "{{points}} पॉइंट ({{count}})",
+    "blockedItems": "अवरुद्ध आइटम",
+    "blockedSubtitle": "{{count}} आइटम वर्तमान में अवरुद्ध",
+    "blockedSubtitle_other": "{{count}} आइटम वर्तमान में अवरुद्ध",
+    "noBlocked": "कोई अवरुद्ध आइटम नहीं। बढ़िया काम!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "शेष स्टोरी पॉइंट बनाम आदर्श",
+    "noBurndownData": "अभी तक कोई burndown डेटा नहीं। Sprint के दौरान आइटम स्थिति बदलने पर डेटा दिखाई देगा।",
+    "ideal": "आदर्श",
+    "actual": "वास्तविक",
+    "onTrack": "सही रास्ते पर",
+    "behind": "पिछड़ रहा है"
+  },
+
+  "team": {
+    "title": "टीम",
+    "memberCount": "{{count}} सदस्य",
+    "memberCount_other": "{{count}} सदस्य",
+    "addMember": "+ सदस्य जोड़ें",
+    "noMembersYet": "अभी तक कोई टीम सदस्य नहीं। कार्य असाइन करने के लिए लोगों को जोड़ें।",
+    "confirmRemove": "{{name}} को टीम से हटाएं?",
+    "invite": "आमंत्रित करें",
+    "inviteLink": "आमंत्रण लिंक:",
+    "copy": "कॉपी",
+    "ptsPerSprint": "{{count}} पॉइंट/Sprint",
+    "addTeamMember": "टीम सदस्य जोड़ें",
+    "nameRequired": "नाम *",
+    "emailLabel": "ईमेल",
+    "phoneLabel": "फ़ोन",
+    "roleRequired": "भूमिका *",
+    "capacity": "क्षमता",
+    "capacityPlaceholder": "पॉइंट/Sprint",
+    "nameLabel": "नाम",
+    "roleLabel": "भूमिका"
+  },
+
+  "aiSettings": {
+    "title": "AI कॉन्फ़िगरेशन",
+    "description": "स्वीकृति मानदंड सुझाव, स्टोरी विभाजन और रिलीज़ नोट ड्राफ्टिंग सक्षम करने के लिए AI प्रदाता कॉन्फ़िगर करें। आप अपनी API कुंजी का उपयोग करते हैं; PlanA किसी साझा खाते में संग्रहीत या प्रॉक्सी नहीं करता।",
+    "provider": "प्रदाता",
+    "notConfigured": "कॉन्फ़िगर नहीं किया गया",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "कस्टम (OpenAI-संगत)",
+    "model": "मॉडल",
+    "selectModel": "मॉडल चुनें...",
+    "modelPlaceholder": "मॉडल ID (उदा. my-custom-model)",
+    "apiKey": "API कुंजी",
+    "currentKey": "वर्तमान: {{key}}",
+    "enterApiKey": "API कुंजी दर्ज करें",
+    "apiKeyHelp": "आपकी कुंजी प्रति-प्रोजेक्ट एन्क्रिप्टेड संग्रहीत की जाती है। वर्तमान कुंजी रखने के लिए खाली छोड़ें।",
+    "endpointUrl": "Endpoint URL",
+    "saving": "सहेजा जा रहा है...",
+    "settingsSaved": "सेटिंग्स सहेजी गईं",
+    "stakeholderSharing": "हितधारक साझाकरण",
+    "sharingDescription": "हितधारकों के लिए साझा करने योग्य लिंक बनाएं ताकि वे केवल-पढ़ने योग्य प्रोजेक्ट डैशबोर्ड देख सकें। लॉगिन आवश्यक नहीं; लिंक ही एक्सेस है।",
+    "label": "लेबल",
+    "labelPlaceholder": "उदा. क्लाइंट, स्टीयरिंग कमेटी",
+    "expiresIn": "समाप्ति अवधि",
+    "days30": "30 दिन",
+    "days90": "90 दिन",
+    "days180": "180 दिन",
+    "year1": "1 वर्ष",
+    "never": "कभी नहीं",
+    "createLink": "लिंक बनाएं",
+    "creating": "बनाया जा रहा है...",
+    "noActiveLinks": "कोई सक्रिय शेयर लिंक नहीं।",
+    "created": "बनाया गया {{date}}",
+    "expires": "समाप्ति {{date}}",
+    "copyLink": "लिंक कॉपी करें",
+    "copied": "कॉपी किया गया!",
+    "revoke": "रद्द करें",
+    "revoked": "रद्द किया गया",
+    "revokedDate": "रद्द किया गया {{date}}"
+  },
+
+  "reportView": {
+    "title": "रिपोर्ट्स",
+    "generateProject": "प्रोजेक्ट रिपोर्ट",
+    "generateSprint": "Sprint रिपोर्ट",
+    "generating": "जनरेट हो रहा है...",
+    "generateDescription": "अपने प्रोजेक्ट डेटा से एक व्यापक रिपोर्ट जनरेट करें।",
+    "exportPdf": "PDF निर्यात करें",
+    "back": "वापस",
+    "generated": "जनरेट किया गया {{date}}",
+    "executiveSummary": "कार्यकारी सारांश",
+    "metrics": "मेट्रिक्स",
+    "items": "आइटम",
+    "points": "पॉइंट",
+    "completion": "पूर्णता",
+    "testPassRate": "परीक्षण उत्तीर्ण दर",
+    "epicBreakdown": "एपिक विभाजन",
+    "epicColumn": "एपिक",
+    "storiesColumn": "स्टोरीज़",
+    "acceptanceCriteriaColumn": "स्वीकृति मानदंड",
+    "testCoverageColumn": "परीक्षण कवरेज",
+    "defects": "दोष",
+    "total": "कुल",
+    "open": "खुले",
+    "resolved": "हल किए गए",
+    "criticalOpen": "गंभीर (खुले)",
+    "testEvidence": "परीक्षण प्रमाण",
+    "totalTests": "कुल परीक्षण",
+    "passed": "उत्तीर्ण",
+    "failed": "विफल",
+    "errors": "त्रुटियां",
+    "skipped": "छोड़े गए",
+    "currentBlockers": "वर्तमान अवरोध",
+    "velocityHistory": "Velocity इतिहास",
+    "generatedBy": "PlanA द्वारा जनरेट किया गया"
+  },
+
+  "shareDashboard": {
+    "title": "हितधारक डैशबोर्ड",
+    "invalidLink": "अमान्य या समाप्त लिंक",
+    "poweredBy": "PlanA द्वारा संचालित",
+    "activeSprint": "सक्रिय Sprint",
+    "noActiveSprint": "कोई सक्रिय Sprint नहीं",
+    "goal": "लक्ष्य:",
+    "items": "आइटम",
+    "points": "पॉइंट",
+    "recentlyCompleted": "हाल ही में पूर्ण",
+    "noCompletedItems": "अभी तक कोई पूर्ण आइटम नहीं।",
+    "defects": "दोष",
+    "openDefects": "खुले",
+    "closedDefects": "बंद",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "स्टोरी प्रगति"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Sprint पर वापस",
+    "start": "शुरू:",
+    "end": "समाप्त:",
+    "capacity": "{{points}} / {{capacity}} क्षमता",
+    "storyPoints": "{{count}} स्टोरी पॉइंट",
+    "storiesAndItems": "{{stories}} स्टोरीज़, {{items}} कुल आइटम",
+    "done": "पूर्ण",
+    "addStories": "+ स्टोरीज़ जोड़ें",
+    "startSprint": "Sprint शुरू करें",
+    "completeSprint": "Sprint पूर्ण करें",
+    "addStoriesToSprint": "Sprint में स्टोरीज़ जोड़ें ({{count}} उपलब्ध)",
+    "allStoriesAssigned": "सभी स्टोरीज़ पहले से किसी Sprint में हैं या पूर्ण हो चुकी हैं।",
+    "noItemsYet": "इस Sprint में अभी तक कोई आइटम नहीं। Backlog से लाने के लिए \"+ स्टोरीज़ जोड़ें\" क्लिक करें।",
+    "removeStoryAndTasks": "Sprint से स्टोरी और टास्क हटाएं",
+    "removeFromSprint": "Sprint से हटाएं",
+    "standaloneTasks": "स्वतंत्र टास्क",
+    "adding": "जोड़ा जा रहा है...",
+    "tasks": "{{count}} टास्क"
+  },
+
+  "epicDetail": {
+    "backToEpics": "एपिक्स पर वापस",
+    "description": "विवरण",
+    "descPlaceholder": "व्यावसायिक लक्ष्य और दायरा वर्णित करें...",
+    "clickToAddDescription": "विवरण जोड़ने के लिए क्लिक करें...",
+    "stories": "स्टोरीज़ ({{count}})",
+    "storiesContextHelp": "स्टोरीज़ इस एपिक के वितरण योग्य लक्ष्य हैं। प्रत्येक स्टोरी एक विशिष्ट उपयोगकर्ता-केंद्रित परिणाम का प्रतिनिधित्व करती है जो एक Sprint में पूरा किया जा सकता है।",
+    "addStory": "+ स्टोरी जोड़ें",
+    "noStoriesYet": "इस एपिक में अभी तक कोई स्टोरी नहीं। लक्ष्य परिभाषित करने के लिए एक जोड़ें।",
+    "details": "विवरण",
+    "statusLabel": "स्थिति",
+    "priorityLabel": "प्राथमिकता",
+    "assigneeLabel": "असाइनी",
+    "addStoryToEpic": "एपिक में स्टोरी जोड़ें",
+    "titleRequired": "शीर्षक *",
+    "titleHint": "(\"एक [भूमिका] के रूप में, मैं [लक्ष्य] चाहता हूं, ताकि [लाभ]\")",
+    "titlePlaceholder": "एक [भूमिका] के रूप में, मैं [लक्ष्य] चाहता हूं, ताकि [लाभ]",
+    "descriptionLabel": "विवरण",
+    "descriptionPlaceholder": "संदर्भ, आवश्यकताएं और विवरण...",
+    "storyPointsLabel": "स्टोरी पॉइंट",
+    "autoTaskHint": "असाइनी के लिए {{points}} पॉइंट के साथ स्वचालित रूप से एक टास्क बनाया जाएगा। पॉइंट हमेशा टास्क पर होते हैं।",
+    "largeStoryWarning": "बड़ी स्टोरी ({{points}} पॉइंट)। इसे छोटी स्टोरीज़ में विभाजित करने पर विचार करें जो प्रत्येक एक Sprint में पूरी हो सकें। छोटी स्टोरीज़ का अनुमान लगाना, परीक्षण करना और वितरित करना आसान होता है।",
+    "acceptanceCriteria": "स्वीकृति मानदंड",
+    "acContextHelp": "परिभाषित करें कि यह स्टोरी कब 'पूर्ण' है। प्रत्येक मानदंड विशिष्ट और परीक्षण योग्य होना चाहिए।",
+    "addCriterion": "+ मानदंड जोड़ें",
+    "givenPlaceholder": "एक पूर्व शर्त या संदर्भ...",
+    "whenPlaceholder": "एक क्रिया या घटना...",
+    "thenPlaceholder": "अपेक्षित परिणाम...",
+    "createRelatedTasks": "संबंधित टास्क बनाएं?",
+    "autoAssignHint": "(भूमिका के आधार पर टीम सदस्यों को स्वचालित रूप से असाइन)",
+    "uxDesign": "UX डिज़ाइन",
+    "qeTesting": "QE परीक्षण",
+    "bsaAnalysis": "BSA विश्लेषण",
+    "creating": "बनाया जा रहा है...",
+    "createStory": "स्टोरी बनाएं"
+  },
+
+  "epics": {
+    "helpTitle": "एपिक्स",
+    "helpBody1": "एपिक्स फ़ीचर-स्तरीय समूह हैं। प्रत्येक एपिक में संबंधित स्टोरीज़ होती हैं जो मिलकर एक व्यावसायिक क्षमता प्रदान करती हैं।",
+    "helpBody2": "एपिक पर क्लिक करके उसकी स्टोरीज़ देखें, नई जोड़ें और प्रगति ट्रैक करें।",
+    "title": "एपिक्स",
+    "noEpicsYet": "अभी तक कोई एपिक नहीं। एपिक्स संबंधित स्टोरीज़ को फ़ीचर-स्तरीय डिलीवरेबल्स में समूहित करते हैं।",
+    "storyProgress": "{{done}}/{{total}} स्टोरीज़"
+  }
+}

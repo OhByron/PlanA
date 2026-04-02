@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { Button, Input, Select, Badge, Avatar } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
 import {
   useProjectMembers,
@@ -31,6 +32,7 @@ const roleColors: Record<string, 'default' | 'success' | 'warning' | 'secondary'
 };
 
 export function TeamPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: members = [], isLoading } = useProjectMembers(projectId);
   const createMember = useCreateProjectMember(projectId);
@@ -64,13 +66,13 @@ export function TeamPage() {
     <div className="p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Team</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('team.title')}</h2>
           <p className="mt-0.5 text-sm text-gray-500">
-            {members.length} member{members.length !== 1 ? 's' : ''}
+            {t('team.memberCount', { count: members.length })}
           </p>
         </div>
         <Button size="sm" onClick={() => setShowAdd(true)} disabled={showAdd}>
-          + Add Member
+          {t('team.addMember')}
         </Button>
       </div>
 
@@ -87,7 +89,7 @@ export function TeamPage() {
 
       {members.length === 0 && !showAdd && (
         <p className="py-12 text-center text-gray-400">
-          No team members yet. Add people to start assigning work.
+          {t('team.noMembersYet')}
         </p>
       )}
 
@@ -110,7 +112,7 @@ export function TeamPage() {
               member={m}
               onEdit={() => setEditingId(m.id)}
               onDelete={() => {
-                if (confirm(`Remove ${m.name} from the team?`)) {
+                if (confirm(t('team.confirmRemove', { name: m.name }))) {
                   deleteMember.mutate(m.id);
                 }
               }}
@@ -138,6 +140,7 @@ function MemberRow({
   inviteUrl: string | null;
   onInvite: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div>
       <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3">
@@ -153,21 +156,21 @@ function MemberRow({
           {m.jobRole.toUpperCase()}
         </Badge>
         {m.capacity != null && (
-          <span className="text-xs text-gray-500">{m.capacity} pts/sprint</span>
+          <span className="text-xs text-gray-500">{t('team.ptsPerSprint', { count: m.capacity })}</span>
         )}
         <div className="flex gap-1">
-          <Button size="xs" variant="ghost" onClick={onEdit}>Edit</Button>
+          <Button size="xs" variant="ghost" onClick={onEdit}>{t('common.edit')}</Button>
           <Button size="xs" variant="ghost" className="text-red-500 hover:text-red-700" onClick={onDelete}>
-            Remove
+            {t('common.remove')}
           </Button>
           {m.email && !inviteUrl && (
-            <Button size="xs" variant="outline" onClick={onInvite}>Invite</Button>
+            <Button size="xs" variant="outline" onClick={onInvite}>{t('team.invite')}</Button>
           )}
         </div>
       </div>
       {inviteUrl && (
         <div className="ml-12 mt-1 flex items-center gap-2 rounded bg-green-50 px-3 py-1.5 text-xs">
-          <span className="text-green-700">Invite link:</span>
+          <span className="text-green-700">{t('team.inviteLink')}</span>
           <input
             readOnly
             value={inviteUrl}
@@ -179,7 +182,7 @@ function MemberRow({
             variant="ghost"
             onClick={() => navigator.clipboard.writeText(inviteUrl)}
           >
-            Copy
+            {t('team.copy')}
           </Button>
         </div>
       )}
@@ -197,6 +200,7 @@ function AddMemberForm({
   onCancel: () => void;
   isPending: boolean;
 }) {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -205,31 +209,31 @@ function AddMemberForm({
 
   return (
     <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50/30 p-4">
-      <h3 className="mb-3 text-sm font-medium text-gray-900">Add Team Member</h3>
+      <h3 className="mb-3 text-sm font-medium text-gray-900">{t('team.addTeamMember')}</h3>
       <div className="grid grid-cols-5 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Name *</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.nameRequired')}</label>
           <Input autoFocus placeholder="Jane Smith" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Email</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.emailLabel')}</label>
           <Input placeholder="jane@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Phone</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.phoneLabel')}</label>
           <Input placeholder="+1 555-0100" value={phone} onChange={(e) => setPhone(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Role *</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.roleRequired')}</label>
           <Select value={jobRole} onChange={(e) => setJobRole(e.target.value)}>
             {JOB_ROLES.map((r) => (
-              <option key={r.value} value={r.value}>{r.label} — {roleName(r.value)}</option>
+              <option key={r.value} value={r.value}>{r.label} — {t(`roles.${r.value}`)}</option>
             ))}
           </Select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Capacity</label>
-          <Input type="number" placeholder="pts/sprint" value={capacity} onChange={(e) => setCapacity(e.target.value)} />
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.capacity')}</label>
+          <Input type="number" placeholder={t('team.capacityPlaceholder')} value={capacity} onChange={(e) => setCapacity(e.target.value)} />
         </div>
       </div>
       <div className="mt-3 flex gap-2">
@@ -248,9 +252,9 @@ function AddMemberForm({
           }}
           disabled={!name.trim() || isPending}
         >
-          Add
+          {t('common.add')}
         </Button>
-        <Button size="sm" variant="ghost" onClick={onCancel}>Cancel</Button>
+        <Button size="sm" variant="ghost" onClick={onCancel}>{t('common.cancel')}</Button>
       </div>
     </div>
   );
@@ -268,6 +272,7 @@ function EditMemberRow({
   onCancel: () => void;
   isPending: boolean;
 }) {
+  const { t } = useTranslation();
   const [name, setName] = useState(m.name);
   const [email, setEmail] = useState(m.email ?? '');
   const [phone, setPhone] = useState(m.phone ?? '');
@@ -290,19 +295,19 @@ function EditMemberRow({
     <div className="rounded-lg border border-brand-300 bg-brand-50/20 px-4 py-3">
       <div className="grid grid-cols-5 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Name</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.nameLabel')}</label>
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Email</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.emailLabel')}</label>
           <Input value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Phone</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.phoneLabel')}</label>
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Role</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.roleLabel')}</label>
           <Select value={jobRole} onChange={(e) => setJobRole(e.target.value)}>
             {JOB_ROLES.map((r) => (
               <option key={r.value} value={r.value}>{r.label}</option>
@@ -310,27 +315,14 @@ function EditMemberRow({
           </Select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Capacity</label>
-          <Input type="number" placeholder="pts/sprint" value={capacity} onChange={(e) => setCapacity(e.target.value)} />
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('team.capacity')}</label>
+          <Input type="number" placeholder={t('team.capacityPlaceholder')} value={capacity} onChange={(e) => setCapacity(e.target.value)} />
         </div>
       </div>
       <div className="mt-2 flex gap-2">
-        <Button size="xs" onClick={submit} disabled={!name.trim() || isPending}>Save</Button>
-        <Button size="xs" variant="ghost" onClick={onCancel}>Cancel</Button>
+        <Button size="xs" onClick={submit} disabled={!name.trim() || isPending}>{t('common.save')}</Button>
+        <Button size="xs" variant="ghost" onClick={onCancel}>{t('common.cancel')}</Button>
       </div>
     </div>
   );
-}
-
-function roleName(role: string): string {
-  const names: Record<string, string> = {
-    pm: 'Project Manager',
-    po: 'Product Owner',
-    bsa: 'Business Systems Analyst',
-    ba: 'Business Analyst',
-    qe: 'Quality Engineer',
-    ux: 'UX Designer',
-    dev: 'Developer',
-  };
-  return names[role] ?? role;
 }

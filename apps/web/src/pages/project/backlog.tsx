@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { Button, Select } from '@projecta/ui';
 import {
   DndContext,
@@ -16,27 +17,28 @@ import { SortableWorkItemRow } from '../../components/sortable-work-item-row';
 import { QuickCreateWorkItem } from '../../components/quick-create-work-item';
 import { HelpOverlay } from '../../components/help-overlay';
 
-const STATUS_OPTIONS: { value: string; label: string }[] = [
-  { value: '', label: 'All statuses' },
-  { value: 'backlog', label: 'Backlog' },
-  { value: 'ready', label: 'Ready' },
-  { value: 'in_progress', label: 'In Progress' },
-  { value: 'in_review', label: 'In Review' },
-  { value: 'done', label: 'Done' },
-];
-
-const TYPE_OPTIONS: { value: string; label: string }[] = [
-  { value: '', label: 'All types' },
-  { value: 'story', label: 'Stories' },
-  { value: 'bug', label: 'Bugs' },
-  { value: 'task', label: 'Tasks' },
-];
-
 export function BacklogPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [statusFilter, setStatusFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [showCreate, setShowCreate] = useState(false);
+
+  const STATUS_OPTIONS: { value: string; label: string }[] = [
+    { value: '', label: t('backlog.allStatuses') },
+    { value: 'backlog', label: t('status.backlog') },
+    { value: 'ready', label: t('status.ready') },
+    { value: 'in_progress', label: t('status.in_progress') },
+    { value: 'in_review', label: t('status.in_review') },
+    { value: 'done', label: t('status.done') },
+  ];
+
+  const TYPE_OPTIONS: { value: string; label: string }[] = [
+    { value: '', label: t('backlog.allTypes') },
+    { value: 'story', label: t('backlog.stories') },
+    { value: 'bug', label: t('backlog.bugs') },
+    { value: 'task', label: t('backlog.tasks') },
+  ];
 
   const filters: Record<string, string> = {};
   if (statusFilter) filters.status = statusFilter;
@@ -150,16 +152,15 @@ export function BacklogPage() {
 
   return (
     <div className="p-6">
-      <HelpOverlay id="backlog-intro" title="Your Backlog">
+      <HelpOverlay id="backlog-intro" title={t('backlog.helpTitle')}>
         <p className="mb-2">
-          The backlog is your prioritized list of work. Items at the top are highest priority.
+          {t('backlog.helpBody1')}
         </p>
         <p className="mb-2">
-          <strong>Drag items</strong> by the grip handle to reprioritize. Use the filters
-          to focus on stories, bugs, or specific statuses.
+          {t('backlog.helpBody2')}
         </p>
         <p>
-          Click <strong>+ New Item</strong> to quickly add stories or tasks.
+          {t('backlog.helpBody3')}
         </p>
       </HelpOverlay>
 
@@ -187,12 +188,12 @@ export function BacklogPage() {
             ))}
           </Select>
           <span className="text-sm text-gray-500">
-            {sorted.length} item{sorted.length !== 1 ? 's' : ''}
+            {t('backlog.itemCount', { count: sorted.length })}
           </span>
         </div>
 
         <Button size="sm" onClick={() => setShowCreate(true)} disabled={showCreate}>
-          + New Item
+          {t('backlog.newItem')}
         </Button>
       </div>
 
@@ -226,7 +227,7 @@ export function BacklogPage() {
 
       {grouped.length === 0 && (
         <p className="py-12 text-center text-gray-400">
-          No items match your filters. Try adjusting or create a new item.
+          {t('backlog.noItemsMatch')}
         </p>
       )}
     </div>

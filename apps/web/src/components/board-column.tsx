@@ -1,16 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { WorkItem, WorkItemStatus } from '@projecta/types';
 import { cn } from '@projecta/ui';
 import { SortableWorkItemCard } from './sortable-work-item-card';
-
-const columnLabels: Record<string, string> = {
-  backlog: 'Backlog',
-  ready: 'Ready',
-  in_progress: 'In Progress',
-  in_review: 'In Review',
-  done: 'Done',
-};
 
 const columnColors: Record<string, string> = {
   backlog: 'border-t-gray-300',
@@ -43,13 +36,14 @@ export function BoardColumn({
   wipWarning,
   memberNames,
 }: BoardColumnProps) {
+  const { t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: status });
   const itemIds = items.map((i) => i.id);
 
   return (
     <div
       role="region"
-      aria-label={`${columnLabels[status] ?? status} column`}
+      aria-label={t('board.column', { status: t(`status.${status}`) })}
       className={cn(
         'flex w-72 flex-shrink-0 flex-col rounded-lg border-t-2 bg-gray-50',
         columnColors[status] ?? 'border-t-gray-300',
@@ -59,7 +53,7 @@ export function BoardColumn({
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2">
         <h3 className="text-sm font-semibold text-gray-700">
-          {columnLabels[status] ?? status}
+          {t(`status.${status}`)}
         </h3>
         <span className={cn(
           'rounded-full px-2 py-0.5 text-xs font-medium',
@@ -91,7 +85,7 @@ export function BoardColumn({
         </SortableContext>
 
         {items.length === 0 && (
-          <p className="py-8 text-center text-xs text-gray-400">No items</p>
+          <p className="py-8 text-center text-xs text-gray-400">{t('board.noItems')}</p>
         )}
       </div>
     </div>

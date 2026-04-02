@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ContextHelpProps {
   children: React.ReactNode;
 }
 
 export function ContextHelp({ children }: ContextHelpProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -24,8 +26,8 @@ export function ContextHelp({ children }: ContextHelpProps) {
       <button
         onClick={() => setOpen(!open)}
         className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500 hover:bg-brand-100 hover:text-brand-600"
-        title="What's this?"
-        aria-label="Help"
+        title={t('common.whatsThis')}
+        aria-label={t('common.help')}
         aria-expanded={open}
       >
         ?

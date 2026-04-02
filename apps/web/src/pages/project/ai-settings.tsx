@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { Button, Input, Select } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
 
 interface ShareToken {
@@ -20,6 +21,7 @@ interface AISettings {
 }
 
 export function AISettingsPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [settings, setSettings] = useState<AISettings | null>(null);
   const [loading, setLoading] = useState(true);
@@ -74,32 +76,30 @@ export function AISettingsPage() {
 
   return (
     <div className="p-6 max-w-2xl">
-      <h2 className="text-lg font-semibold text-gray-900 mb-1">AI Configuration</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('aiSettings.title')}</h2>
       <p className="text-sm text-gray-500 mb-6">
-        Configure an AI provider to enable acceptance criteria suggestions, story decomposition,
-        and release note drafting. You provide your own API key — PlanA doesn't store or proxy
-        through any shared account.
+        {t('aiSettings.description')}
       </p>
 
       <div className="space-y-4">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Provider</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.provider')}</label>
           <Select value={provider} onChange={(e) => { setProvider(e.target.value); setModel(''); }}>
-            <option value="">Not configured</option>
-            <option value="anthropic">Anthropic (Claude)</option>
-            <option value="openai">OpenAI (GPT-4)</option>
-            <option value="azure_openai">Azure OpenAI</option>
-            <option value="custom">Custom (OpenAI-compatible)</option>
+            <option value="">{t('aiSettings.notConfigured')}</option>
+            <option value="anthropic">{t('aiSettings.anthropic')}</option>
+            <option value="openai">{t('aiSettings.openai')}</option>
+            <option value="azure_openai">{t('aiSettings.azureOpenai')}</option>
+            <option value="custom">{t('aiSettings.custom')}</option>
           </Select>
         </div>
 
         {provider && (
           <>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-500">Model</label>
+              <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.model')}</label>
               {modelSuggestions[provider]?.length ? (
                 <Select value={model} onChange={(e) => setModel(e.target.value)}>
-                  <option value="">Select model...</option>
+                  <option value="">{t('aiSettings.selectModel')}</option>
                   {modelSuggestions[provider]!.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
@@ -108,27 +108,27 @@ export function AISettingsPage() {
                 <Input
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
-                  placeholder="Model ID (e.g. my-custom-model)"
+                  placeholder={t('aiSettings.modelPlaceholder')}
                 />
               )}
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-500">API Key</label>
+              <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.apiKey')}</label>
               <Input
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder={settings?.api_key ? `Current: ${settings.api_key}` : 'Enter API key'}
+                placeholder={settings?.api_key ? t('aiSettings.currentKey', { key: settings.api_key }) : t('aiSettings.enterApiKey')}
               />
               <p className="mt-1 text-xs text-gray-400">
-                Your key is stored encrypted per-project. Leave blank to keep the current key.
+                {t('aiSettings.apiKeyHelp')}
               </p>
             </div>
 
             {(provider === 'azure_openai' || provider === 'custom') && (
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-500">Endpoint URL</label>
+                <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.endpointUrl')}</label>
                 <Input
                   value={endpoint}
                   onChange={(e) => setEndpoint(e.target.value)}
@@ -141,9 +141,9 @@ export function AISettingsPage() {
 
         <div className="flex items-center gap-3 pt-2">
           <Button onClick={save} disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? t('aiSettings.saving') : t('common.save')}
           </Button>
-          {saved && <span className="text-sm text-green-600">Settings saved</span>}
+          {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
         </div>
       </div>
 
@@ -154,6 +154,7 @@ export function AISettingsPage() {
 }
 
 function ShareTokensSection({ projectId }: { projectId: string }) {
+  const { t } = useTranslation();
   const [tokens, setTokens] = useState<ShareToken[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -207,57 +208,56 @@ function ShareTokensSection({ projectId }: { projectId: string }) {
 
   return (
     <div className="mt-10 border-t border-gray-200 pt-8">
-      <h2 className="text-lg font-semibold text-gray-900 mb-1">Stakeholder Sharing</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('aiSettings.stakeholderSharing')}</h2>
       <p className="text-sm text-gray-500 mb-6">
-        Create shareable links for stakeholders to view a read-only project dashboard.
-        No login required — the link is the access.
+        {t('aiSettings.sharingDescription')}
       </p>
 
       {/* Create new token */}
       <div className="mb-6 flex items-end gap-3">
         <div className="flex-1">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Label</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.label')}</label>
           <Input
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
-            placeholder="e.g. Client, Steering Committee"
+            placeholder={t('aiSettings.labelPlaceholder')}
             aria-label="Share link label"
           />
         </div>
         <div className="w-32">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Expires in</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.expiresIn')}</label>
           <Select value={newExpiry} onChange={(e) => setNewExpiry(e.target.value)} aria-label="Expiry period">
-            <option value="30">30 days</option>
-            <option value="90">90 days</option>
-            <option value="180">180 days</option>
-            <option value="365">1 year</option>
-            <option value="">Never</option>
+            <option value="30">{t('aiSettings.days30')}</option>
+            <option value="90">{t('aiSettings.days90')}</option>
+            <option value="180">{t('aiSettings.days180')}</option>
+            <option value="365">{t('aiSettings.year1')}</option>
+            <option value="">{t('aiSettings.never')}</option>
           </Select>
         </div>
         <Button onClick={createToken} disabled={creating || !newLabel.trim()}>
-          {creating ? 'Creating...' : 'Create Link'}
+          {creating ? t('aiSettings.creating') : t('aiSettings.createLink')}
         </Button>
       </div>
 
-      {loading && <p className="text-sm text-gray-400">Loading...</p>}
+      {loading && <p className="text-sm text-gray-400">{t('common.loading')}</p>}
 
       {/* Active tokens */}
       {activeTokens.length > 0 && (
         <div className="space-y-3">
-          {activeTokens.map((t) => (
-            <div key={t.id} className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+          {activeTokens.map((tk) => (
+            <div key={tk.id} className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900">{t.label}</p>
+                <p className="text-sm font-medium text-gray-900">{tk.label}</p>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Created {new Date(t.created_at).toLocaleDateString()}
-                  {t.expires_at && ` · Expires ${new Date(t.expires_at).toLocaleDateString()}`}
+                  {t('aiSettings.created', { date: new Date(tk.created_at).toLocaleDateString() })}
+                  {tk.expires_at && ` · ${t('aiSettings.expires', { date: new Date(tk.expires_at).toLocaleDateString() })}`}
                 </p>
               </div>
-              <Button size="sm" variant="ghost" onClick={() => copyLink(t.token)}>
-                {copied === t.token ? 'Copied!' : 'Copy Link'}
+              <Button size="sm" variant="ghost" onClick={() => copyLink(tk.token)}>
+                {copied === tk.token ? t('aiSettings.copied') : t('aiSettings.copyLink')}
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => revokeToken(t.id)}>
-                Revoke
+              <Button size="sm" variant="ghost" onClick={() => revokeToken(tk.id)}>
+                {t('aiSettings.revoke')}
               </Button>
             </div>
           ))}
@@ -265,18 +265,18 @@ function ShareTokensSection({ projectId }: { projectId: string }) {
       )}
 
       {activeTokens.length === 0 && !loading && (
-        <p className="text-sm text-gray-400">No active share links.</p>
+        <p className="text-sm text-gray-400">{t('aiSettings.noActiveLinks')}</p>
       )}
 
       {/* Revoked tokens */}
       {revokedTokens.length > 0 && (
         <div className="mt-4">
-          <p className="text-xs font-medium text-gray-400 uppercase mb-2">Revoked</p>
-          {revokedTokens.map((t) => (
-            <div key={t.id} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-2 mb-2 opacity-60">
+          <p className="text-xs font-medium text-gray-400 uppercase mb-2">{t('aiSettings.revoked')}</p>
+          {revokedTokens.map((tk) => (
+            <div key={tk.id} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-2 mb-2 opacity-60">
               <div className="flex-1">
-                <p className="text-sm text-gray-500 line-through">{t.label}</p>
-                <p className="text-xs text-gray-400">Revoked {new Date(t.revoked_at!).toLocaleDateString()}</p>
+                <p className="text-sm text-gray-500 line-through">{tk.label}</p>
+                <p className="text-xs text-gray-400">{t('aiSettings.revokedDate', { date: new Date(tk.revoked_at!).toLocaleDateString() })}</p>
               </div>
             </div>
           ))}

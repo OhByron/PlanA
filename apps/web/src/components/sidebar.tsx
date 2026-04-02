@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import { cn } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import { useNavigationTree } from '../hooks/use-orgs';
 
 export function Sidebar() {
+  const { t } = useTranslation();
   const { data: tree = [], isLoading, error } = useNavigationTree();
   const params = useParams({ strict: false }) as { projectId?: string };
   const [collapsed, setCollapsed] = useState(() =>
@@ -42,16 +44,16 @@ export function Sidebar() {
         <button
           onClick={toggleCollapse}
           className="mb-6 text-lg font-bold text-brand-600"
-          title="Expand sidebar"
-          aria-label="Expand sidebar"
+          title={t('sidebar.expandSidebar')}
+          aria-label={t('sidebar.expandSidebar')}
         >
           P
         </button>
         <Link
           to="/my-work"
           className="mb-4 rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          title="My Work"
-          aria-label="My Work"
+          title={t('sidebar.myWork')}
+          aria-label={t('sidebar.myWork')}
         >
           <ClipboardIcon />
         </Link>
@@ -69,8 +71,8 @@ export function Sidebar() {
         <button
           onClick={toggleCollapse}
           className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-          title="Collapse sidebar"
-          aria-label="Collapse sidebar"
+          title={t('sidebar.collapseSidebar')}
+          aria-label={t('sidebar.collapseSidebar')}
         >
           <ChevronLeftIcon />
         </button>
@@ -84,7 +86,7 @@ export function Sidebar() {
           activeProps={{ className: 'bg-brand-50 text-brand-700' }}
         >
           <ClipboardIcon />
-          My Work
+          {t('sidebar.myWork')}
         </Link>
         <Link
           to="/orgs"
@@ -92,20 +94,20 @@ export function Sidebar() {
           activeProps={{ className: 'bg-brand-50 text-brand-700' }}
         >
           <OrgIcon />
-          Organizations
+          {t('sidebar.organisations')}
         </Link>
       </div>
 
       {/* Nav tree */}
       <nav className="flex-1 overflow-y-auto px-3 py-3">
         {isLoading && (
-          <p className="px-2 text-xs text-gray-400">Loading...</p>
+          <p className="px-2 text-xs text-gray-400">{t('common.loading')}</p>
         )}
         {error && (
-          <p className="px-2 text-xs text-red-500">Error: {error.message}</p>
+          <p className="px-2 text-xs text-red-500">{t('common.error', { message: error.message })}</p>
         )}
         {!isLoading && !error && tree.length === 0 && (
-          <p className="px-2 text-xs text-gray-400">No organizations yet</p>
+          <p className="px-2 text-xs text-gray-400">{t('sidebar.noOrganisationsYet')}</p>
         )}
 
         {tree.map((org) => (
@@ -114,7 +116,7 @@ export function Sidebar() {
               <button
                 onClick={() => toggle(safeExpandedOrgs, org.id, setExpandedOrgs)}
                 className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                aria-label={`Toggle ${org.name}`}
+                aria-label={t('sidebar.toggle', { name: org.name })}
               >
                 <TriangleIcon expanded={safeExpandedOrgs.has(org.id)} />
               </button>

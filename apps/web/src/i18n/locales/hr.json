@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Spremi",
+    "cancel": "Odustani",
+    "create": "Kreiraj",
+    "delete": "Obriši",
+    "edit": "Uredi",
+    "add": "Dodaj",
+    "remove": "Ukloni",
+    "dismiss": "Odbaci",
+    "close": "Zatvori",
+    "loading": "Učitavanje...",
+    "send": "Pošalji",
+    "open": "Otvori",
+    "archive": "Arhiviraj",
+    "restore": "Vrati",
+    "report": "Izvještaj",
+    "settings": "Postavke",
+    "gotIt": "Razumijem",
+    "tryAgain": "Pokušaj ponovo",
+    "signOut": "Odjavi se",
+    "signIn": "Prijavi se",
+    "whatsThis": "Što je ovo?",
+    "help": "Pomoć",
+    "error": "Greška: {{message}}",
+    "thinking": "Razmišljam...",
+    "generating": "Generiram...",
+    "language": "Jezik"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, stvarno."
+  },
+
+  "nav": {
+    "board": "Ploča",
+    "backlog": "Backlog",
+    "epics": "Epovi",
+    "sprints": "Sprintovi",
+    "reports": "Izvještaji",
+    "report": "Izvještaj",
+    "team": "Tim",
+    "settings": "Postavke",
+    "project": "Projekt"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Proširi bočnu traku",
+    "collapseSidebar": "Skupi bočnu traku",
+    "myWork": "Moj rad",
+    "organisations": "Organizacije",
+    "noOrganisationsYet": "Još nema organizacija",
+    "toggle": "Prebaci {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Obavijesti",
+    "markAllRead": "Označi sve kao pročitano",
+    "noNotificationsYet": "Još nema obavijesti",
+    "justNow": "upravo sada",
+    "minutesAgo": "prije {{count}}m",
+    "hoursAgo": "prije {{count}}h",
+    "daysAgo": "prije {{count}}d"
+  },
+
+  "notifications": {
+    "assigned": "Dodijeljeni ste na \"{{title}}\"",
+    "statusChanged": "Status promijenjen na \"{{title}}\"",
+    "commentAdded": "Novi komentar na \"{{title}}\"",
+    "mentioned": "Spomenuti ste u \"{{title}}\"",
+    "default": "Obavijest: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Spremno",
+    "in_progress": "U tijeku",
+    "in_review": "Na pregledu",
+    "done": "Završeno",
+    "cancelled": "Otkazano"
+  },
+
+  "priority": {
+    "urgent": "Hitno",
+    "high": "Visok",
+    "medium": "Srednji",
+    "low": "Nizak"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Zadatak"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktivan",
+    "planned": "Planiran",
+    "completed": "Završen",
+    "cancelled": "Otkazan"
+  },
+
+  "roles": {
+    "pm": "Projektni menadžer",
+    "po": "Vlasnik proizvoda",
+    "bsa": "Poslovni sistemski analitičar",
+    "ba": "Poslovni analitičar",
+    "qe": "Inženjer kvalitete",
+    "ux": "UX dizajner",
+    "dev": "Programer"
+  },
+
+  "login": {
+    "continueWithGitHub": "Nastavi s GitHub-om",
+    "continueWithGoogle": "Nastavi s Google-om",
+    "orSignInWithEmail": "ili se prijavi putem e-pošte",
+    "emailAddress": "E-adresa",
+    "password": "Lozinka",
+    "loginFailed": "Prijava neuspješna",
+    "devOnly": "samo za razvoj",
+    "devLogin": "Dev prijava (preskoči OAuth)"
+  },
+
+  "authError": {
+    "title": "Prijava neuspješna",
+    "badState": "Sesija za prijavu je istekla. Pokušajte ponovo.",
+    "csrf": "Sigurnosna provjera neuspješna. Pokušajte ponovo.",
+    "exchangeFailed": "Prijava preko pružatelja nije uspjela. Pokušajte ponovo.",
+    "dbError": "Došlo je do greške na poslužitelju. Pokušajte ponovo kasnije.",
+    "missingToken": "Nije primljen token za autentifikaciju.",
+    "default": "Došlo je do neočekivane greške tijekom prijave."
+  },
+
+  "myWork": {
+    "title": "Moj rad",
+    "itemCount": "{{count}} stavka dodijeljena vama",
+    "itemCount_other": "{{count}} stavki dodijeljeno vama",
+    "noItems": "Nemate dodijeljene stavke.",
+    "noItemsHelp": "Stavke se ovdje pojavljuju kada ste dodani kao član projektnog tima i kada su vam dodijeljene priče ili zadaci. Provjerite da vaša e-adresa odgovara e-adresi člana tima, ili da ste prihvatili pozivnicu."
+  },
+
+  "orgs": {
+    "title": "Organizacije",
+    "orgCount": "{{count}} organizacija",
+    "orgCount_other": "{{count}} organizacija",
+    "showArchived": "Prikaži arhivirane",
+    "newOrganisation": "+ Nova organizacija",
+    "noOrgsYet": "Još nema organizacija. Kreirajte jednu da biste započeli.",
+    "archived": "Arhivirano",
+    "confirmDelete": "Trajno obrisati ovu organizaciju i sve njezine podatke?",
+    "added": "Dodano {{date}}",
+    "newOrg": "Nova organizacija",
+    "orgName": "Naziv organizacije",
+    "orgNameRequired": "Naziv organizacije *",
+    "contactName": "Ime kontakta",
+    "contactEmail": "E-adresa kontakta",
+    "contactPhone": "Telefon kontakta",
+    "addressLine1": "Adresa, red 1",
+    "addressLine2": "Adresa, red 2",
+    "city": "Grad",
+    "state": "Županija",
+    "postalCode": "Poštanski broj",
+    "country": "Država"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Sve organizacije",
+    "editDetails": "Uredi detalje",
+    "noContactDetails": "Još nema kontakt podataka. Kliknite \"Uredi detalje\" da ih dodate.",
+    "contact": "Kontakt:",
+    "email": "E-adresa:",
+    "phone": "Telefon:",
+    "location": "Lokacija:",
+    "projects": "Projekti ({{count}})",
+    "newProject": "+ Novi projekt",
+    "noProjectsYet": "Još nema projekata. Kreirajte jedan da biste započeli.",
+    "newProjectTitle": "Novi projekt",
+    "projectName": "Naziv projekta",
+    "projectNameRequired": "Naziv projekta *",
+    "description": "Opis",
+    "methodology": "Metodologija",
+    "dueDate": "Rok",
+    "customerContact": "Kontakt klijenta",
+    "createProject": "Kreiraj projekt",
+    "whatIsThisProjectAbout": "O čemu se radi u ovom projektu?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Nevažeća pozivnica",
+    "invalidLink": "Ova poveznica pozivnice nije važeća.",
+    "goToLogin": "Idi na prijavu",
+    "alreadyAccepted": "Već prihvaćeno",
+    "alreadyAcceptedMessage": "Ova pozivnica je već iskorištena. Možete se prijaviti sa svojim vjerodajnicama.",
+    "expired": "Pozivnica istekla",
+    "expiredMessage": "Ova pozivnica je istekla. Zamolite tim da pošalje novu.",
+    "invitedToJoin": "Pozvani ste da se pridružite projektu",
+    "emailLabel": "E-adresa",
+    "yourName": "Vaše ime",
+    "passwordLabel": "Lozinka",
+    "confirmPassword": "Potvrdite lozinku",
+    "minChars": "Najmanje 8 znakova",
+    "repeatPassword": "Ponovite lozinku",
+    "passwordTooShort": "Lozinka mora imati najmanje 8 znakova",
+    "passwordsMismatch": "Lozinke se ne podudaraju",
+    "createAccountJoin": "Kreiraj račun i pridruži se",
+    "creatingAccount": "Kreiranje računa...",
+    "alreadyHaveAccount": "Već imate račun?",
+    "logIn": "Prijavite se"
+  },
+
+  "board": {
+    "helpTitle": "Vaša Kanban ploča",
+    "helpBody1": "Ovo je rad vašeg tima prikazan kao tijek. Svaki stupac predstavlja fazu u vašem radnom procesu.",
+    "helpBody2": "Povucite kartice između stupaca da biste odmah ažurirali njihov status. Kada pomaknete priču, njezini zadaci se pomiču s njom.",
+    "helpBody3": "Držite stupac \"U tijeku\" malim; ograničavanje rada u tijeku pomaže timu da završava stvari umjesto da započinje nove.",
+    "itemCount": "{{count}} stavka",
+    "itemCount_other": "{{count}} stavki",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} bodova u tijeku",
+    "overCapacity": "Preko kapaciteta",
+    "noItems": "Nema stavki",
+    "column": "Stupac {{status}}"
+  },
+
+  "backlog": {
+    "helpTitle": "Vaš Backlog",
+    "helpBody1": "Backlog je vaš prioritizirani popis poslova. Stavke na vrhu imaju najviši prioritet.",
+    "helpBody2": "Povucite stavke za ručku da biste promijenili prioritet. Koristite filtre da se usredotočite na priče, defekte ili određene statuse.",
+    "helpBody3": "Kliknite + Nova stavka da brzo dodate priče ili zadatke.",
+    "allStatuses": "Svi statusi",
+    "allTypes": "Svi tipovi",
+    "stories": "Priče",
+    "bugs": "Defekti",
+    "tasks": "Zadaci",
+    "itemCount": "{{count}} stavka",
+    "itemCount_other": "{{count}} stavki",
+    "newItem": "+ Nova stavka",
+    "noItemsMatch": "Nijedna stavka ne odgovara vašim filtrima. Pokušajte prilagoditi filtre ili kreirajte novu stavku."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint planiranje",
+    "helpBody1": "Sprintovi su vremenski ograničene iteracije (obično 2 tjedna). Povucite priče iz Backlog-a u Sprint da biste planirali rad tima.",
+    "helpBody2": "Pratite indikator kapaciteta da ne biste preopteretili tim.",
+    "title": "Sprintovi",
+    "noSprintsYet": "Još nema Sprintova. Kreirajte jedan da biste započeli s planiranjem.",
+    "pts": "{{count}} bodova"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Natrag na ploču",
+    "partOf": "Dio:",
+    "clickToEdit": "Kliknite za uređivanje",
+    "description": "Opis",
+    "descPlaceholder": "Opišite zahtjev, cilj i kontekst...",
+    "suggest": "Predloži",
+    "clickToAddDescription": "Kliknite da dodate opis...",
+    "details": "Detalji",
+    "statusLabel": "Status",
+    "typeLabel": "Tip",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Zadužen",
+    "unassigned": "Nedodijeljeno",
+    "totalPoints": "Ukupno bodova",
+    "storyPoints": "Bodovi priče",
+    "storyPointsHelp": "Za priče, bodovi su zbroj svih bodova zadataka. Dodajte bodove pojedinačnim zadacima tijekom rafiniranja.",
+    "taskPointsHelp": "Procijenite relativan napor. Uobičajene skale: 1, 2, 3, 5, 8, 13. \"1\" je najjednostavnija stvar koju vaš tim radi.",
+    "sumOfTasks": "Zbroj od {{count}} zadatka",
+    "sumOfTasks_other": "Zbroj od {{count}} zadataka",
+    "largeStoryWarning": "Ova story ima {{points}} bodova. Razmotrite podjelu na manje stories koje se mogu završiti u jednom sprintu.",
+    "blocked": "Blokirano",
+    "blockedBy": "Blokirano od:",
+    "notBlocked": "Nije blokirano",
+    "labels": "Oznake",
+    "convertToStory": "Pretvori u priču",
+    "convertToStoryConfirm": "Pretvoriti ovaj zadatak u priču? Zadržat će vezu ovisnosti s originalnom pričom.",
+    "convertToStoryHelp": "Promovira ovaj zadatak u samostalnu priču s vezom ovisnosti",
+    "created": "Kreirano {{date}}",
+    "updated": "Ažurirano {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Zadaci ({{count}})",
+    "contextHelp": "Zadaci raščlanjuju priču na posao po disciplini, kao što su UX dizajn, backend razvoj, frontend razvoj i QE testiranje. Svaki zadatak se može dodijeliti članu tima.",
+    "suggestTasks": "Predloži zadatke",
+    "addTask": "+ Dodaj zadatak",
+    "noTasksYet": "Još nema zadataka.",
+    "taskTitlePlaceholder": "Naziv zadatka (npr. 'UX: Dizajn zaslona za prijavu')",
+    "suggestedTasks": "Predloženi zadaci, kliknite da dodate:",
+    "pts": "{{count}} bodova",
+    "clarificationNeeded": "Potrebno pojašnjenje:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Kriteriji prihvaćanja",
+    "contextHelp": "Kriteriji prihvaćanja definiraju kada je ova stavka stvarno \"završena\". Napisani u formatu Zadano / Kada / Tada (BDD), oni čine očekivanja eksplicitnima i provjerljivima. Svaki kriterij je specifičan, provjerljiv uvjet, ne nejasna želja.",
+    "addButton": "+ Dodaj",
+    "suggestAC": "Predloži kriterije",
+    "noCriteriaYet": "Još nema kriterija prihvaćanja. Definirajte uvjete za \"završeno\".",
+    "given": "Zadano",
+    "when": "Kada",
+    "then": "Tada",
+    "deleteAC": "Obriši kriterij prihvaćanja",
+    "givenPlaceholder": "Zadano...",
+    "whenPlaceholder": "Kada...",
+    "thenPlaceholder": "Tada...",
+    "aiSuggestions": "AI prijedlozi, kliknite da dodate:",
+    "aiNeedsMoreInfo": "AI treba više informacija:"
+  },
+
+  "comments": {
+    "title": "Komentari",
+    "noCommentsYet": "Još nema komentara.",
+    "addComment": "Dodajte komentar..."
+  },
+
+  "dependencies": {
+    "title": "Ovisnosti",
+    "contextHelp": "Ovisnosti prate odnose između stavki. \"Ovisi o\" znači da ova stavka ne može napredovati dok ciljna stavka nije završena. \"Povezano s\" je informativna veza.",
+    "noDependencies": "Nema ovisnosti.",
+    "dependsOn": "Ovisi o",
+    "relatesTo": "Povezano s",
+    "dependedOnBy": "O ovome ovisi",
+    "removeDependency": "Ukloni ovisnost",
+    "selectItem": "Odaberite stavku..."
+  },
+
+  "links": {
+    "title": "Poveznice",
+    "addLink": "+ Dodaj poveznicu",
+    "noLinksYet": "Još nema poveznica.",
+    "labelPlaceholder": "Oznaka (npr. GitHub PR, Figma, Rezultati testova, Dokumentacija)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Ukloni poveznicu"
+  },
+
+  "testResults": {
+    "retestRequired": "Potrebno ponovno testiranje",
+    "retestMessage": "Ovaj defekt ima {{count}} neuspjelih testova. Učitajte nove rezultate testova (JUnit XML ili webhook) nakon što je ispravak postavljen da biste otvorili QE prolaz i zatvorili ovu stavku.",
+    "title": "Rezultati testova",
+    "passed": "uspješno",
+    "failed": "neuspješno",
+    "errors": "greške",
+    "skipped": "preskočeno",
+    "lastRun": "Posljednje pokretanje: {{date}}",
+    "sourceTestFailure": "Izvorni neuspjeh testa",
+    "suite": "Paket: {{name}}",
+    "duration": "Trajanje: {{ms}}ms",
+    "source": "Izvor: {{source}} | Prijavljeno: {{date}}",
+    "generateDescAC": "Generiraj opis i kriterije"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Odbaci",
+    "close": "Zatvori"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Počnite tipkati...",
+    "bold": "Podebljano",
+    "italic": "Kurziv",
+    "inlineCode": "Kod u retku",
+    "heading": "Naslov",
+    "subheading": "Podnaslov",
+    "bulletList": "Popis s oznakama",
+    "numberedList": "Numerirani popis",
+    "quote": "Citat",
+    "codeBlock": "Blok koda"
+  },
+
+  "createEpic": {
+    "button": "+ Novi ep",
+    "title": "Kreiraj ep",
+    "titleLabel": "Naslov",
+    "titlePlaceholder": "npr. Autentifikacija korisnika",
+    "descriptionLabel": "Opis",
+    "descriptionPlaceholder": "Poslovni cilj i opseg ovog epa...",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Zadužen"
+  },
+
+  "createProject": {
+    "button": "+ Novi projekt",
+    "title": "Kreiraj projekt",
+    "organisationLabel": "Organizacija",
+    "selectOrg": "Odaberite organizaciju...",
+    "teamLabel": "Tim",
+    "selectTeam": "Odaberite tim...",
+    "projectNameLabel": "Naziv projekta",
+    "projectNamePlaceholder": "npr. PlanA MVP",
+    "descriptionLabel": "Opis",
+    "descriptionPlaceholder": "O čemu se radi u ovom projektu?",
+    "methodologyLabel": "Metodologija"
+  },
+
+  "createSprint": {
+    "button": "+ Novi Sprint",
+    "title": "Kreiraj Sprint",
+    "nameLabel": "Naziv",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Cilj",
+    "goalPlaceholder": "Što ovaj Sprint treba postići?",
+    "startDateLabel": "Datum početka",
+    "endDateLabel": "Datum završetka"
+  },
+
+  "createTeam": {
+    "button": "+ Novi tim",
+    "title": "Kreiraj tim",
+    "organisationLabel": "Organizacija",
+    "selectOrg": "Odaberite organizaciju...",
+    "teamNameLabel": "Naziv tima",
+    "teamNamePlaceholder": "npr. Backend tim"
+  },
+
+  "quickCreate": {
+    "placeholder": "Što treba napraviti?"
+  },
+
+  "workItemCard": {
+    "open": "Otvori {{title}}",
+    "taskCount": "{{count}} zadatak",
+    "taskCount_other": "{{count}} zadataka"
+  },
+
+  "team": {
+    "title": "Tim",
+    "memberCount": "{{count}} član",
+    "memberCount_other": "{{count}} članova",
+    "addMember": "+ Dodaj člana",
+    "noMembersYet": "Još nema članova tima. Dodajte ljude da biste započeli s dodjelom posla.",
+    "confirmRemove": "Ukloniti {{name}} iz tima?",
+    "invite": "Pozovi",
+    "inviteLink": "Poveznica za pozivnicu:",
+    "copy": "Kopiraj",
+    "ptsPerSprint": "{{count}} bodova/sprint",
+    "addTeamMember": "Dodaj člana tima",
+    "nameRequired": "Ime *",
+    "emailLabel": "E-adresa",
+    "phoneLabel": "Telefon",
+    "roleRequired": "Uloga *",
+    "capacity": "Kapacitet",
+    "capacityPlaceholder": "bodova/sprint",
+    "nameLabel": "Ime",
+    "roleLabel": "Uloga"
+  },
+
+  "epics": {
+    "helpTitle": "Epovi",
+    "helpBody1": "Epovi su grupiranja na razini funkcionalnosti. Svaki ep sadrži povezane priče koje zajedno isporučuju poslovnu sposobnost.",
+    "helpBody2": "Kliknite na ep da vidite njegove priče, dodate nove i pratite napredak.",
+    "title": "Epovi",
+    "noEpicsYet": "Još nema epova. Epovi grupiraju povezane priče u isporuke na razini funkcionalnosti.",
+    "storyProgress": "{{done}}/{{total}} priča"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Natrag na epove",
+    "description": "Opis",
+    "descPlaceholder": "Opišite poslovni cilj i opseg...",
+    "clickToAddDescription": "Kliknite da dodate opis...",
+    "stories": "Priče ({{count}})",
+    "storiesContextHelp": "Priče su isporučivi ciljevi ovog epa. Svaka priča predstavlja specifičan ishod za korisnika koji se može završiti unutar jednog Sprinta.",
+    "addStory": "+ Dodaj priču",
+    "noStoriesYet": "Još nema priča u ovom epu. Dodajte jednu da definirate ciljeve.",
+    "details": "Detalji",
+    "statusLabel": "Status",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Zadužen",
+    "addStoryToEpic": "Dodaj priču u ep",
+    "titleRequired": "Naslov *",
+    "titleHint": "(\"Kao [uloga], želim [cilj], kako bih [korist]\")",
+    "titlePlaceholder": "Kao [uloga], želim [cilj], kako bih [korist]",
+    "descriptionLabel": "Opis",
+    "descriptionPlaceholder": "Kontekst, zahtjevi i detalji...",
+    "storyPointsLabel": "Bodovi priče",
+    "autoTaskHint": "Zadatak će biti automatski kreiran za zaduženoga s {{points}} bodova. Bodovi uvijek žive na zadacima.",
+    "largeStoryWarning": "Velika priča ({{points}} bodova). Razmislite o razbijanju na manje priče koje se mogu završiti u jednom Sprintu. Manje priče se lakše procjenjuju, testiraju i isporučuju.",
+    "acceptanceCriteria": "Kriteriji prihvaćanja",
+    "acContextHelp": "Definirajte kada je ova priča \"završena\". Svaki kriterij treba biti specifičan i provjerljiv.",
+    "addCriterion": "+ Dodaj kriterij",
+    "givenPlaceholder": "preduvjet ili kontekst...",
+    "whenPlaceholder": "radnja ili događaj...",
+    "thenPlaceholder": "očekivani ishod...",
+    "createRelatedTasks": "Kreirati povezane zadatke?",
+    "autoAssignHint": "(automatski dodijeljeno članovima tima po ulozi)",
+    "uxDesign": "UX dizajn",
+    "qeTesting": "QE testiranje",
+    "bsaAnalysis": "BSA analiza",
+    "creating": "Kreiranje...",
+    "createStory": "Kreiraj priču"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Natrag na Sprintove",
+    "start": "Početak:",
+    "end": "Kraj:",
+    "capacity": "{{points}} / {{capacity}} kapaciteta",
+    "storyPoints": "{{count}} bodova priče",
+    "storiesAndItems": "{{stories}} priča, {{items}} ukupno stavki",
+    "done": "Završeno",
+    "addStories": "+ Dodaj priče",
+    "startSprint": "Započni Sprint",
+    "completeSprint": "Završi Sprint",
+    "addStoriesToSprint": "Dodaj priče u Sprint ({{count}} dostupno)",
+    "allStoriesAssigned": "Sve priče su već u Sprintu ili završene.",
+    "noItemsYet": "Još nema stavki u ovom Sprintu. Kliknite \"+ Dodaj priče\" da povučete iz Backlog-a.",
+    "removeStoryAndTasks": "Ukloni priču i zadatke iz Sprinta",
+    "removeFromSprint": "Ukloni iz Sprinta",
+    "standaloneTasks": "Samostalni zadaci",
+    "adding": "Dodavanje...",
+    "tasks": "{{count}} zadataka"
+  },
+
+  "reports": {
+    "helpTitle": "Izvještaji projekta",
+    "helpBody1": "Izvještaji vam daju uvid u isporuku tima. Brzina pokazuje koliko bodova završite po Sprintu; stabilizira se tijekom vremena.",
+    "helpBody2": "Koristite grafikone napretka Sprinta i opterećenja tima da rano uočite uska grla.",
+    "title": "Izvještaji",
+    "sprint": "Sprint:",
+    "velocity": "Brzina",
+    "velocitySubtitle": "Bodovi priča završeni po Sprintu",
+    "noCompletedSprints": "Još nema završenih Sprintova. Brzina će se pojaviti nakon što se prvi Sprint završi.",
+    "trend": "Trend",
+    "threeSprintAvg": "Prosjek 3 Sprinta",
+    "avgVelocity": "Prosječna brzina:",
+    "pointsPerSprint": "bodova/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Završeno: {{points}} bodova",
+    "inProgress": "U tijeku: {{points}} bodova",
+    "inReview": "Na pregledu: {{points}} bodova",
+    "remaining": "Preostalo: {{points}} bodova",
+    "daysLeft": "{{count}} dana preostalo",
+    "epicProgress": "Napredak epova",
+    "epicProgressSubtitle": "Završene priče po epu",
+    "noEpics": "Još nema definiranih epova.",
+    "stories": "{{done}}/{{total}} priča, {{pct}}%",
+    "teamWorkload": "Opterećenje tima",
+    "teamWorkloadSubtitle": "Bodovi dodijeljeni u aktivnom Sprintu",
+    "noWorkload": "Nema dodijeljenih stavki u aktivnom Sprintu.",
+    "pts": "{{points}} bodova ({{count}})",
+    "blockedItems": "Blokirane stavke",
+    "blockedSubtitle": "{{count}} stavka trenutno blokirana",
+    "blockedSubtitle_other": "{{count}} stavki trenutno blokirano",
+    "noBlocked": "Nema blokiranih stavki. Odlično!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Preostali bodovi priča u odnosu na idealno",
+    "noBurndownData": "Još nema podataka za burndown. Podaci se pojavljuju kako stavke mijenjaju status tijekom Sprinta.",
+    "ideal": "Idealno",
+    "actual": "Stvarno",
+    "onTrack": "U planu",
+    "behind": "Zaostaje"
+  },
+
+  "aiSettings": {
+    "title": "AI konfiguracija",
+    "description": "Konfigurirajte AI pružatelja da omogućite prijedloge kriterija prihvaćanja, dekompoziciju priča i izradu napomena o izdanju. Vi osiguravate vlastiti API ključ; PlanA ne pohranjuje niti prosljeđuje preko dijeljenog računa.",
+    "provider": "Pružatelj",
+    "notConfigured": "Nije konfigurirano",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Prilagođeno (OpenAI-kompatibilno)",
+    "model": "Model",
+    "selectModel": "Odaberite model...",
+    "modelPlaceholder": "ID modela (npr. my-custom-model)",
+    "apiKey": "API ključ",
+    "currentKey": "Trenutni: {{key}}",
+    "enterApiKey": "Unesite API ključ",
+    "apiKeyHelp": "Vaš ključ se pohranjuje enkriptiran po projektu. Ostavite prazno da zadržite trenutni ključ.",
+    "endpointUrl": "URL krajnje točke",
+    "saving": "Spremanje...",
+    "settingsSaved": "Postavke spremljene",
+    "stakeholderSharing": "Dijeljenje s dionicima",
+    "sharingDescription": "Kreirajte djeljive poveznice za dionike da vide projektnu ploču samo za čitanje. Prijava nije potrebna; poveznica je pristup.",
+    "label": "Oznaka",
+    "labelPlaceholder": "npr. Klijent, Upravni odbor",
+    "expiresIn": "Istječe za",
+    "days30": "30 dana",
+    "days90": "90 dana",
+    "days180": "180 dana",
+    "year1": "1 godinu",
+    "never": "Nikada",
+    "createLink": "Kreiraj poveznicu",
+    "creating": "Kreiranje...",
+    "noActiveLinks": "Nema aktivnih poveznica za dijeljenje.",
+    "created": "Kreirano {{date}}",
+    "expires": "Istječe {{date}}",
+    "copyLink": "Kopiraj poveznicu",
+    "copied": "Kopirano!",
+    "revoke": "Opozovi",
+    "revoked": "Opozvano",
+    "revokedDate": "Opozvano {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Ploča za dionike",
+    "invalidLink": "Nevažeća ili istekla poveznica",
+    "poweredBy": "Pokreće PlanA",
+    "activeSprint": "Aktivni Sprint",
+    "noActiveSprint": "Nema aktivnog Sprinta",
+    "goal": "Cilj:",
+    "items": "Stavke",
+    "points": "Bodovi",
+    "recentlyCompleted": "Nedavno završeno",
+    "noCompletedItems": "Još nema završenih stavki.",
+    "defects": "Defekti",
+    "openDefects": "Otvoreni",
+    "closedDefects": "Zatvoreni",
+    "sprintVelocity": "Brzina Sprinta",
+    "storyProgress": "Napredak priča"
+  },
+
+  "reportView": {
+    "title": "Izvještaji",
+    "generateProject": "Izvještaj projekta",
+    "generateSprint": "Izvještaj Sprinta",
+    "generating": "Generiranje...",
+    "generateDescription": "Generirajte sveobuhvatan izvještaj iz podataka vašeg projekta.",
+    "exportPdf": "Izvezi PDF",
+    "back": "Natrag",
+    "generated": "Generirano {{date}}",
+    "executiveSummary": "Izvršni sažetak",
+    "metrics": "Metrike",
+    "items": "Stavke",
+    "points": "Bodovi",
+    "completion": "Dovršenost",
+    "testPassRate": "Stopa prolaznosti testova",
+    "epicBreakdown": "Raščlamba epova",
+    "epicColumn": "Ep",
+    "storiesColumn": "Priče",
+    "acceptanceCriteriaColumn": "Kriteriji prihvaćanja",
+    "testCoverageColumn": "Pokrivenost testovima",
+    "defects": "Defekti",
+    "total": "Ukupno",
+    "open": "Otvoreno",
+    "resolved": "Riješeno",
+    "criticalOpen": "Kritično (otvoreno)",
+    "testEvidence": "Dokazi testiranja",
+    "totalTests": "Ukupno testova",
+    "passed": "Uspješno",
+    "failed": "Neuspješno",
+    "errors": "Greške",
+    "skipped": "Preskočeno",
+    "currentBlockers": "Trenutni blokeri",
+    "velocityHistory": "Povijest brzine",
+    "generatedBy": "Generirao PlanA"
+  }
+}

@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "create": "作成",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "remove": "削除",
+    "dismiss": "閉じる",
+    "close": "閉じる",
+    "loading": "読み込み中...",
+    "send": "送信",
+    "open": "開く",
+    "archive": "アーカイブ",
+    "restore": "復元",
+    "report": "レポート",
+    "settings": "設定",
+    "gotIt": "了解",
+    "tryAgain": "再試行",
+    "signOut": "サインアウト",
+    "signIn": "サインイン",
+    "whatsThis": "これは何ですか？",
+    "help": "ヘルプ",
+    "error": "エラー: {{message}}",
+    "thinking": "考え中...",
+    "generating": "生成中...",
+    "language": "言語"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "本物のアジャイルを。"
+  },
+
+  "nav": {
+    "board": "ボード",
+    "backlog": "バックログ",
+    "epics": "エピック",
+    "sprints": "スプリント",
+    "reports": "レポート",
+    "report": "レポート",
+    "team": "チーム",
+    "settings": "設定",
+    "project": "プロジェクト"
+  },
+
+  "sidebar": {
+    "expandSidebar": "サイドバーを展開",
+    "collapseSidebar": "サイドバーを折りたたむ",
+    "myWork": "マイワーク",
+    "organisations": "組織",
+    "noOrganisationsYet": "組織がまだありません",
+    "toggle": "{{name}} を切り替え"
+  },
+
+  "topBar": {
+    "notifications": "通知",
+    "markAllRead": "すべて既読にする",
+    "noNotificationsYet": "通知はまだありません",
+    "justNow": "たった今",
+    "minutesAgo": "{{count}}分前",
+    "hoursAgo": "{{count}}時間前",
+    "daysAgo": "{{count}}日前"
+  },
+
+  "notifications": {
+    "assigned": "「{{title}}」に割り当てられました",
+    "statusChanged": "「{{title}}」のステータスが変更されました",
+    "commentAdded": "「{{title}}」に新しいコメントがあります",
+    "mentioned": "「{{title}}」であなたがメンションされました",
+    "default": "通知: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "準備完了",
+    "in_progress": "進行中",
+    "in_review": "レビュー中",
+    "done": "完了",
+    "cancelled": "キャンセル済み"
+  },
+
+  "priority": {
+    "urgent": "緊急",
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  },
+
+  "type": {
+    "story": "ストーリー",
+    "bug": "バグ",
+    "task": "タスク"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "アクティブ",
+    "planned": "計画済み",
+    "completed": "完了",
+    "cancelled": "キャンセル済み"
+  },
+
+  "roles": {
+    "pm": "プロジェクトマネージャー",
+    "po": "プロダクトオーナー",
+    "bsa": "ビジネスシステムアナリスト",
+    "ba": "ビジネスアナリスト",
+    "qe": "QEエンジニア",
+    "ux": "UXデザイナー",
+    "dev": "開発者"
+  },
+
+  "login": {
+    "continueWithGitHub": "GitHubで続行",
+    "continueWithGoogle": "Googleで続行",
+    "orSignInWithEmail": "またはメールでサインイン",
+    "emailAddress": "メールアドレス",
+    "password": "パスワード",
+    "loginFailed": "ログインに失敗しました",
+    "devOnly": "開発用",
+    "devLogin": "開発ログイン（OAuth省略）"
+  },
+
+  "authError": {
+    "title": "ログインに失敗しました",
+    "badState": "ログインセッションが期限切れです。もう一度お試しください。",
+    "csrf": "セキュリティチェックに失敗しました。もう一度お試しください。",
+    "exchangeFailed": "プロバイダーとのログインを完了できませんでした。もう一度お試しください。",
+    "dbError": "サーバーエラーが発生しました。しばらくしてからもう一度お試しください。",
+    "missingToken": "認証トークンが受信されませんでした。",
+    "default": "ログイン中に予期しないエラーが発生しました。"
+  },
+
+  "myWork": {
+    "title": "マイワーク",
+    "itemCount": "{{count}} 件があなたに割り当てられています",
+    "itemCount_other": "{{count}} 件があなたに割り当てられています",
+    "noItems": "あなたに割り当てられたアイテムはありません。",
+    "noItemsHelp": "プロジェクトチームのメンバーとして追加され、ストーリーやタスクが割り当てられるとここに表示されます。アカウントのメールアドレスがチームメンバーのメールアドレスと一致しているか、招待を承認済みであることを確認してください。"
+  },
+
+  "orgs": {
+    "title": "組織",
+    "orgCount": "{{count}} 組織",
+    "orgCount_other": "{{count}} 組織",
+    "showArchived": "アーカイブ済みを表示",
+    "newOrganisation": "+ 新しい組織",
+    "noOrgsYet": "組織がまだありません。作成して始めましょう。",
+    "archived": "アーカイブ済み",
+    "confirmDelete": "この組織とすべてのデータを完全に削除しますか？",
+    "added": "追加日: {{date}}",
+    "newOrg": "新しい組織",
+    "orgName": "組織名",
+    "orgNameRequired": "組織名 *",
+    "contactName": "担当者名",
+    "contactEmail": "連絡先メール",
+    "contactPhone": "連絡先電話番号",
+    "addressLine1": "住所1",
+    "addressLine2": "住所2",
+    "city": "市区町村",
+    "state": "都道府県",
+    "postalCode": "郵便番号",
+    "country": "国"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "すべての組織",
+    "editDetails": "詳細を編集",
+    "noContactDetails": "連絡先情報がまだありません。「詳細を編集」をクリックして追加してください。",
+    "contact": "担当者:",
+    "email": "メール:",
+    "phone": "電話:",
+    "location": "所在地:",
+    "projects": "プロジェクト ({{count}})",
+    "newProject": "+ 新しいプロジェクト",
+    "noProjectsYet": "プロジェクトがまだありません。作成して始めましょう。",
+    "newProjectTitle": "新しいプロジェクト",
+    "projectName": "プロジェクト名",
+    "projectNameRequired": "プロジェクト名 *",
+    "description": "説明",
+    "methodology": "手法",
+    "dueDate": "期日",
+    "customerContact": "顧客連絡先",
+    "createProject": "プロジェクトを作成",
+    "whatIsThisProjectAbout": "このプロジェクトの概要は？"
+  },
+
+  "invite": {
+    "invalidInvitation": "無効な招待",
+    "invalidLink": "この招待リンクは無効です。",
+    "goToLogin": "ログインへ",
+    "alreadyAccepted": "承認済み",
+    "alreadyAcceptedMessage": "この招待は既に使用されています。資格情報でログインできます。",
+    "expired": "招待が期限切れです",
+    "expiredMessage": "この招待は期限切れです。チームに新しい招待の送信を依頼してください。",
+    "invitedToJoin": "プロジェクトへの参加に招待されました",
+    "emailLabel": "メール",
+    "yourName": "お名前",
+    "passwordLabel": "パスワード",
+    "confirmPassword": "パスワードの確認",
+    "minChars": "8文字以上",
+    "repeatPassword": "パスワードを再入力",
+    "passwordTooShort": "パスワードは8文字以上である必要があります",
+    "passwordsMismatch": "パスワードが一致しません",
+    "createAccountJoin": "アカウントを作成して参加",
+    "creatingAccount": "アカウントを作成中...",
+    "alreadyHaveAccount": "既にアカウントをお持ちですか？",
+    "logIn": "ログイン"
+  },
+
+  "board": {
+    "helpTitle": "Kanbanボード",
+    "helpBody1": "チームの作業をフローとして可視化したものです。各列はワークフローのステージを表します。",
+    "helpBody2": "カードを列間でドラッグしてステータスを即座に更新できます。ストーリーを移動すると、子タスクも一緒に移動します。",
+    "helpBody3": "「進行中」の列は小さく保ちましょう; 仕掛かり作業を制限することで、チームが新しいことを始めるのではなく、作業を完了させるのに役立ちます。",
+    "itemCount": "{{count}} 件",
+    "itemCount_other": "{{count}} 件",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} ポイント進行中",
+    "overCapacity": "キャパシティ超過",
+    "noItems": "アイテムなし",
+    "column": "{{status}} 列"
+  },
+
+  "backlog": {
+    "helpTitle": "Backlog",
+    "helpBody1": "Backlogは優先順位付けされた作業リストです。上にあるアイテムほど優先度が高くなっています。",
+    "helpBody2": "グリップハンドルでアイテムをドラッグして優先順位を変更できます。フィルターを使ってストーリー、バグ、特定のステータスに絞り込めます。",
+    "helpBody3": "「+ 新しいアイテム」をクリックしてストーリーやタスクをすばやく追加できます。",
+    "allStatuses": "すべてのステータス",
+    "allTypes": "すべての種類",
+    "stories": "ストーリー",
+    "bugs": "バグ",
+    "tasks": "タスク",
+    "itemCount": "{{count}} 件",
+    "itemCount_other": "{{count}} 件",
+    "newItem": "+ 新しいアイテム",
+    "noItemsMatch": "フィルターに一致するアイテムがありません。条件を調整するか、新しいアイテムを作成してください。"
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint 計画",
+    "helpBody1": "Sprintはタイムボックス化されたイテレーション（通常2週間）です。BacklogからストーリーをSprintに取り込んでチームの作業を計画します。",
+    "helpBody2": "キャパシティインジケーターを確認して、チームに過剰な負荷がかからないようにしましょう。",
+    "title": "Sprint",
+    "noSprintsYet": "Sprintがまだありません。作成して計画を始めましょう。",
+    "pts": "{{count}} ポイント"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "ボードに戻る",
+    "partOf": "所属:",
+    "clickToEdit": "クリックして編集",
+    "description": "説明",
+    "descPlaceholder": "要件、目標、コンテキストを記述してください...",
+    "suggest": "提案",
+    "clickToAddDescription": "クリックして説明を追加...",
+    "details": "詳細",
+    "statusLabel": "ステータス",
+    "typeLabel": "種類",
+    "priorityLabel": "優先度",
+    "assigneeLabel": "担当者",
+    "unassigned": "未割り当て",
+    "totalPoints": "合計ポイント",
+    "storyPoints": "ストーリーポイント",
+    "storyPointsHelp": "ストーリーのポイントは全タスクポイントの合計です。リファインメント時に個々のタスクにポイントを追加してください。",
+    "taskPointsHelp": "相対的な工数を見積もります。一般的なスケール: 1, 2, 3, 5, 8, 13。「1」はチームが行う最も簡単な作業です。",
+    "sumOfTasks": "{{count}} タスクの合計",
+    "sumOfTasks_other": "{{count}} タスクの合計",
+    "largeStoryWarning": "このstoryは{{points}}ポイントです。1つのsprintで完了できる小さなstoryに分割することを検討してください。",
+    "blocked": "ブロック中",
+    "blockedBy": "ブロック元:",
+    "notBlocked": "ブロックなし",
+    "labels": "ラベル",
+    "convertToStory": "ストーリーに変換",
+    "convertToStoryConfirm": "このタスクをストーリーに変換しますか？元のストーリーとの依存関係リンクは維持されます。",
+    "convertToStoryHelp": "このタスクを依存関係リンク付きの独立したストーリーに昇格させます",
+    "created": "作成日: {{date}}",
+    "updated": "更新日: {{date}}"
+  },
+
+  "childTasks": {
+    "title": "タスク ({{count}})",
+    "contextHelp": "タスクはストーリーを専門分野ごとの作業に分割します, UXデザイン、バックエンド開発、フロントエンド開発、QEテストなど。各タスクはチームメンバーに割り当て可能です。",
+    "suggestTasks": "タスクを提案",
+    "addTask": "+ タスクを追加",
+    "noTasksYet": "タスクがまだありません。",
+    "taskTitlePlaceholder": "タスクのタイトル（例: 'UX: ログイン画面のデザイン'）",
+    "suggestedTasks": "提案されたタスク, クリックして追加:",
+    "pts": "{{count}} ポイント",
+    "clarificationNeeded": "確認が必要:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "受け入れ基準",
+    "contextHelp": "受け入れ基準は、このアイテムが本当に「完了」であることを定義します。Given / When / Then 形式（BDD）で記述され、期待事項を明確かつテスト可能にします。各基準は具体的で検証可能な条件であり、曖昧な希望ではありません。",
+    "addButton": "+ 追加",
+    "suggestAC": "受け入れ基準を提案",
+    "noCriteriaYet": "受け入れ基準がまだありません。「完了」の条件を定義してください。",
+    "given": "前提条件 (Given)",
+    "when": "操作 (When)",
+    "then": "期待結果 (Then)",
+    "deleteAC": "受け入れ基準を削除",
+    "givenPlaceholder": "前提条件...",
+    "whenPlaceholder": "操作...",
+    "thenPlaceholder": "期待結果...",
+    "aiSuggestions": "AIの提案, クリックして追加:",
+    "aiNeedsMoreInfo": "AIにはより多くの情報が必要です:"
+  },
+
+  "comments": {
+    "title": "コメント",
+    "noCommentsYet": "コメントはまだありません。",
+    "addComment": "コメントを追加..."
+  },
+
+  "dependencies": {
+    "title": "依存関係",
+    "contextHelp": "依存関係はアイテム間の関係を追跡します。「依存先」はターゲットが完了するまでこのアイテムを進められないことを意味します。「関連」は情報としてのリンクです。",
+    "noDependencies": "依存関係はありません。",
+    "dependsOn": "依存先",
+    "relatesTo": "関連",
+    "dependedOnBy": "被依存",
+    "removeDependency": "依存関係を削除",
+    "selectItem": "アイテムを選択..."
+  },
+
+  "links": {
+    "title": "リンク",
+    "addLink": "+ リンクを追加",
+    "noLinksYet": "リンクはまだありません。",
+    "labelPlaceholder": "ラベル（例: GitHub PR、Figma、テスト結果、ドキュメント）",
+    "urlPlaceholder": "https://...",
+    "removeLink": "リンクを削除"
+  },
+
+  "testResults": {
+    "retestRequired": "再テストが必要です",
+    "retestMessage": "この不具合には {{count}} 件の失敗テストがあります。修正のデプロイ後に新しいテスト結果（JUnit XMLまたはWebhook）をアップロードして、QEゲートをクリアし、このアイテムをクローズしてください。",
+    "title": "テスト結果",
+    "passed": "合格",
+    "failed": "失敗",
+    "errors": "エラー",
+    "skipped": "スキップ",
+    "lastRun": "最終実行: {{date}}",
+    "sourceTestFailure": "ソーステスト失敗",
+    "suite": "スイート: {{name}}",
+    "duration": "所要時間: {{ms}}ms",
+    "source": "ソース: {{source}} | 報告日: {{date}}",
+    "generateDescAC": "説明と受け入れ基準を生成"
+  },
+
+  "helpOverlay": {
+    "dismiss": "閉じる",
+    "close": "閉じる"
+  },
+
+  "richTextEditor": {
+    "startTyping": "入力を開始...",
+    "bold": "太字",
+    "italic": "斜体",
+    "inlineCode": "インラインコード",
+    "heading": "見出し",
+    "subheading": "小見出し",
+    "bulletList": "箇条書き",
+    "numberedList": "番号付きリスト",
+    "quote": "引用",
+    "codeBlock": "コードブロック"
+  },
+
+  "createEpic": {
+    "button": "+ 新しいエピック",
+    "title": "エピックを作成",
+    "titleLabel": "タイトル",
+    "titlePlaceholder": "例: ユーザー認証",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "このエピックのビジネス目標とスコープ...",
+    "priorityLabel": "優先度",
+    "assigneeLabel": "担当者"
+  },
+
+  "createProject": {
+    "button": "+ 新しいプロジェクト",
+    "title": "プロジェクトを作成",
+    "organisationLabel": "組織",
+    "selectOrg": "組織を選択...",
+    "teamLabel": "チーム",
+    "selectTeam": "チームを選択...",
+    "projectNameLabel": "プロジェクト名",
+    "projectNamePlaceholder": "例: PlanA MVP",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "このプロジェクトの概要は？",
+    "methodologyLabel": "手法"
+  },
+
+  "createSprint": {
+    "button": "+ 新しいSprint",
+    "title": "Sprintを作成",
+    "nameLabel": "名前",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "目標",
+    "goalPlaceholder": "このSprintで何を達成しますか？",
+    "startDateLabel": "開始日",
+    "endDateLabel": "終了日"
+  },
+
+  "createTeam": {
+    "button": "+ 新しいチーム",
+    "title": "チームを作成",
+    "organisationLabel": "組織",
+    "selectOrg": "組織を選択...",
+    "teamNameLabel": "チーム名",
+    "teamNamePlaceholder": "例: バックエンドチーム"
+  },
+
+  "quickCreate": {
+    "placeholder": "何をする必要がありますか？"
+  },
+
+  "workItemCard": {
+    "open": "{{title}} を開く",
+    "taskCount": "{{count}} タスク",
+    "taskCount_other": "{{count}} タスク"
+  },
+
+  "team": {
+    "title": "チーム",
+    "memberCount": "{{count}} 名のメンバー",
+    "memberCount_other": "{{count}} 名のメンバー",
+    "addMember": "+ メンバーを追加",
+    "noMembersYet": "チームメンバーがまだいません。メンバーを追加して作業の割り当てを始めましょう。",
+    "confirmRemove": "{{name}} をチームから削除しますか？",
+    "invite": "招待",
+    "inviteLink": "招待リンク:",
+    "copy": "コピー",
+    "ptsPerSprint": "{{count}} ポイント/Sprint",
+    "addTeamMember": "チームメンバーを追加",
+    "nameRequired": "名前 *",
+    "emailLabel": "メール",
+    "phoneLabel": "電話",
+    "roleRequired": "役割 *",
+    "capacity": "キャパシティ",
+    "capacityPlaceholder": "ポイント/Sprint",
+    "nameLabel": "名前",
+    "roleLabel": "役割"
+  },
+
+  "epics": {
+    "helpTitle": "エピック",
+    "helpBody1": "エピックは機能レベルのグループです。各エピックには関連するストーリーが含まれ、それらが合わさってビジネス機能を提供します。",
+    "helpBody2": "エピックをクリックしてストーリーの確認、新規追加、進捗の追跡ができます。",
+    "title": "エピック",
+    "noEpicsYet": "エピックがまだありません。エピックは関連するストーリーを機能レベルの成果物にまとめます。",
+    "storyProgress": "{{done}}/{{total}} ストーリー"
+  },
+
+  "epicDetail": {
+    "backToEpics": "エピック一覧に戻る",
+    "description": "説明",
+    "descPlaceholder": "ビジネス目標とスコープを記述してください...",
+    "clickToAddDescription": "クリックして説明を追加...",
+    "stories": "ストーリー ({{count}})",
+    "storiesContextHelp": "ストーリーはこのエピックの達成目標です。各ストーリーは1つのSprintで完了できるユーザー向けの具体的な成果を表します。",
+    "addStory": "+ ストーリーを追加",
+    "noStoriesYet": "このエピックにはまだストーリーがありません。目標を定義するために追加してください。",
+    "details": "詳細",
+    "statusLabel": "ステータス",
+    "priorityLabel": "優先度",
+    "assigneeLabel": "担当者",
+    "addStoryToEpic": "エピックにストーリーを追加",
+    "titleRequired": "タイトル *",
+    "titleHint": "(\"[役割]として、[目標]したい。それは[利益]のため。\")",
+    "titlePlaceholder": "[役割]として、[目標]したい。それは[利益]のため。",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "コンテキスト、要件、詳細...",
+    "storyPointsLabel": "ストーリーポイント",
+    "autoTaskHint": "担当者に {{points}} ポイントのタスクが自動作成されます。ポイントは常にタスクに付与されます。",
+    "largeStoryWarning": "大きなストーリーです（{{points}} ポイント）。1つのSprintで完了できる小さなストーリーに分割することを検討してください。小さなストーリーは見積もり、テスト、デリバリーが容易です。",
+    "acceptanceCriteria": "受け入れ基準",
+    "acContextHelp": "このストーリーの「完了」条件を定義してください。各基準は具体的でテスト可能であるべきです。",
+    "addCriterion": "+ 基準を追加",
+    "givenPlaceholder": "前提条件またはコンテキスト...",
+    "whenPlaceholder": "アクションまたはイベント...",
+    "thenPlaceholder": "期待される結果...",
+    "createRelatedTasks": "関連タスクを作成しますか？",
+    "autoAssignHint": "(役割に基づいてチームメンバーに自動割り当て)",
+    "uxDesign": "UXデザイン",
+    "qeTesting": "QEテスト",
+    "bsaAnalysis": "BSA分析",
+    "creating": "作成中...",
+    "createStory": "ストーリーを作成"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Sprint一覧に戻る",
+    "start": "開始:",
+    "end": "終了:",
+    "capacity": "{{points}} / {{capacity}} キャパシティ",
+    "storyPoints": "{{count}} ストーリーポイント",
+    "storiesAndItems": "{{stories}} ストーリー、{{items}} アイテム合計",
+    "done": "完了",
+    "addStories": "+ ストーリーを追加",
+    "startSprint": "Sprintを開始",
+    "completeSprint": "Sprintを完了",
+    "addStoriesToSprint": "Sprintにストーリーを追加 ({{count}} 件利用可能)",
+    "allStoriesAssigned": "すべてのストーリーは既にSprintに含まれているか完了しています。",
+    "noItemsYet": "このSprintにはまだアイテムがありません。\"+ ストーリーを追加\"をクリックしてBacklogから取り込んでください。",
+    "removeStoryAndTasks": "ストーリーとタスクをSprintから削除",
+    "removeFromSprint": "Sprintから削除",
+    "standaloneTasks": "独立タスク",
+    "adding": "追加中...",
+    "tasks": "{{count}} タスク"
+  },
+
+  "reports": {
+    "helpTitle": "プロジェクトレポート",
+    "helpBody1": "レポートはチームのデリバリー状況を可視化します。ベロシティはSprintごとに完了したポイント数を示し、時間とともに安定します。",
+    "helpBody2": "Sprint進捗とチームワークロードのチャートを使用して、ボトルネックを早期に発見しましょう。",
+    "title": "レポート",
+    "sprint": "Sprint:",
+    "velocity": "ベロシティ",
+    "velocitySubtitle": "Sprintごとの完了ストーリーポイント",
+    "noCompletedSprints": "完了したSprintがまだありません。最初のSprintが完了するとベロシティが表示されます。",
+    "trend": "トレンド",
+    "threeSprintAvg": "3Sprint平均",
+    "avgVelocity": "平均ベロシティ:",
+    "pointsPerSprint": "ポイント/Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "完了: {{points}} ポイント",
+    "inProgress": "進行中: {{points}} ポイント",
+    "inReview": "レビュー中: {{points}} ポイント",
+    "remaining": "残り: {{points}} ポイント",
+    "daysLeft": "残り {{count}} 日",
+    "epicProgress": "エピック進捗",
+    "epicProgressSubtitle": "エピックごとの完了ストーリー数",
+    "noEpics": "エピックがまだ定義されていません。",
+    "stories": "{{done}}/{{total}} ストーリー、{{pct}}%",
+    "teamWorkload": "チームワークロード",
+    "teamWorkloadSubtitle": "アクティブなSprintで割り当てられたポイント",
+    "noWorkload": "アクティブなSprintに割り当てられたアイテムがありません。",
+    "pts": "{{points}} ポイント ({{count}})",
+    "blockedItems": "ブロック中のアイテム",
+    "blockedSubtitle": "{{count}} 件のアイテムが現在ブロック中",
+    "blockedSubtitle_other": "{{count}} 件のアイテムが現在ブロック中",
+    "noBlocked": "ブロック中のアイテムはありません。素晴らしい!",
+    "burndown": "バーンダウン: {{name}}",
+    "burndownSubtitle": "残りストーリーポイント vs 理想線",
+    "noBurndownData": "バーンダウンデータがまだありません。Sprint中にアイテムがステータスを移動するとデータが表示されます。",
+    "ideal": "理想",
+    "actual": "実績",
+    "onTrack": "順調",
+    "behind": "遅延"
+  },
+
+  "aiSettings": {
+    "title": "AI設定",
+    "description": "AIプロバイダーを設定して、受け入れ基準の提案、ストーリー分解、リリースノート作成を有効にします。APIキーはご自身で提供してください。PlanAは共有アカウントを通じた保存やプロキシは行いません。",
+    "provider": "プロバイダー",
+    "notConfigured": "未設定",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "カスタム (OpenAI互換)",
+    "model": "モデル",
+    "selectModel": "モデルを選択...",
+    "modelPlaceholder": "モデルID（例: my-custom-model）",
+    "apiKey": "APIキー",
+    "currentKey": "現在: {{key}}",
+    "enterApiKey": "APIキーを入力",
+    "apiKeyHelp": "キーはプロジェクトごとに暗号化して保存されます。現在のキーを維持する場合は空白のままにしてください。",
+    "endpointUrl": "エンドポイントURL",
+    "saving": "保存中...",
+    "settingsSaved": "設定を保存しました",
+    "stakeholderSharing": "ステークホルダー共有",
+    "sharingDescription": "ステークホルダーが読み取り専用のプロジェクトダッシュボードを閲覧できる共有リンクを作成します。ログイン不要で、リンクがアクセス手段となります。",
+    "label": "ラベル",
+    "labelPlaceholder": "例: クライアント、運営委員会",
+    "expiresIn": "有効期限",
+    "days30": "30日",
+    "days90": "90日",
+    "days180": "180日",
+    "year1": "1年",
+    "never": "無期限",
+    "createLink": "リンクを作成",
+    "creating": "作成中...",
+    "noActiveLinks": "アクティブな共有リンクはありません。",
+    "created": "作成日: {{date}}",
+    "expires": "有効期限: {{date}}",
+    "copyLink": "リンクをコピー",
+    "copied": "コピーしました!",
+    "revoke": "取り消し",
+    "revoked": "取り消し済み",
+    "revokedDate": "取り消し日: {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "ステークホルダーダッシュボード",
+    "invalidLink": "無効または期限切れのリンクです",
+    "poweredBy": "Powered by PlanA",
+    "activeSprint": "アクティブなSprint",
+    "noActiveSprint": "アクティブなSprintはありません",
+    "goal": "目標:",
+    "items": "アイテム",
+    "points": "ポイント",
+    "recentlyCompleted": "最近完了したアイテム",
+    "noCompletedItems": "完了したアイテムはまだありません。",
+    "defects": "不具合",
+    "openDefects": "未対応",
+    "closedDefects": "対応済み",
+    "sprintVelocity": "Sprintベロシティ",
+    "storyProgress": "ストーリー進捗"
+  },
+
+  "reportView": {
+    "title": "レポート",
+    "generateProject": "プロジェクトレポート",
+    "generateSprint": "Sprintレポート",
+    "generating": "生成中...",
+    "generateDescription": "プロジェクトデータから包括的なレポートを生成します。",
+    "exportPdf": "PDFエクスポート",
+    "back": "戻る",
+    "generated": "生成日: {{date}}",
+    "executiveSummary": "エグゼクティブサマリー",
+    "metrics": "メトリクス",
+    "items": "アイテム",
+    "points": "ポイント",
+    "completion": "完了率",
+    "testPassRate": "テスト合格率",
+    "epicBreakdown": "エピック別内訳",
+    "epicColumn": "エピック",
+    "storiesColumn": "ストーリー",
+    "acceptanceCriteriaColumn": "受け入れ基準",
+    "testCoverageColumn": "テストカバレッジ",
+    "defects": "不具合",
+    "total": "合計",
+    "open": "未対応",
+    "resolved": "解決済み",
+    "criticalOpen": "重大 (未対応)",
+    "testEvidence": "テストエビデンス",
+    "totalTests": "テスト総数",
+    "passed": "合格",
+    "failed": "失敗",
+    "errors": "エラー",
+    "skipped": "スキップ",
+    "currentBlockers": "現在のブロッカー",
+    "velocityHistory": "ベロシティ履歴",
+    "generatedBy": "PlanAにより生成"
+  }
+}

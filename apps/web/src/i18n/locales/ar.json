@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "create": "إنشاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "remove": "إزالة",
+    "dismiss": "تجاهل",
+    "close": "إغلاق",
+    "loading": "جارٍ التحميل...",
+    "send": "إرسال",
+    "open": "فتح",
+    "archive": "أرشفة",
+    "restore": "استعادة",
+    "report": "تقرير",
+    "settings": "الإعدادات",
+    "gotIt": "فهمت",
+    "tryAgain": "حاول مجدداً",
+    "signOut": "تسجيل الخروج",
+    "signIn": "تسجيل الدخول",
+    "whatsThis": "ما هذا؟",
+    "help": "مساعدة",
+    "error": "خطأ: {{message}}",
+    "thinking": "جارٍ التفكير...",
+    "generating": "جارٍ التوليد...",
+    "language": "اللغة"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "أجايل، فعلاً."
+  },
+
+  "nav": {
+    "board": "اللوحة",
+    "backlog": "قائمة الانتظار",
+    "epics": "الملاحم",
+    "sprints": "السبرنتات",
+    "reports": "التقارير",
+    "report": "التقرير",
+    "team": "الفريق",
+    "settings": "الإعدادات",
+    "project": "المشروع"
+  },
+
+  "sidebar": {
+    "expandSidebar": "توسيع الشريط الجانبي",
+    "collapseSidebar": "طي الشريط الجانبي",
+    "myWork": "أعمالي",
+    "organisations": "المؤسسات",
+    "noOrganisationsYet": "لا توجد مؤسسات بعد",
+    "toggle": "تبديل {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "الإشعارات",
+    "markAllRead": "تعيين الكل كمقروء",
+    "noNotificationsYet": "لا توجد إشعارات بعد",
+    "justNow": "الآن",
+    "minutesAgo": "منذ {{count}} د",
+    "hoursAgo": "منذ {{count}} س",
+    "daysAgo": "منذ {{count}} ي"
+  },
+
+  "notifications": {
+    "assigned": "تم تعيينك على \"{{title}}\"",
+    "statusChanged": "تم تغيير الحالة على \"{{title}}\"",
+    "commentAdded": "تعليق جديد على \"{{title}}\"",
+    "mentioned": "تمت الإشارة إليك في \"{{title}}\"",
+    "default": "إشعار: {{type}}"
+  },
+
+  "status": {
+    "backlog": "قائمة الانتظار",
+    "ready": "جاهز",
+    "in_progress": "قيد التنفيذ",
+    "in_review": "قيد المراجعة",
+    "done": "مكتمل",
+    "cancelled": "ملغى"
+  },
+
+  "priority": {
+    "urgent": "عاجل",
+    "high": "عالي",
+    "medium": "متوسط",
+    "low": "منخفض"
+  },
+
+  "type": {
+    "story": "قصة مستخدم",
+    "bug": "خلل",
+    "task": "مهمة"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "نشط",
+    "planned": "مخطط",
+    "completed": "مكتمل",
+    "cancelled": "ملغى"
+  },
+
+  "roles": {
+    "pm": "مدير المشروع",
+    "po": "مالك المنتج",
+    "bsa": "محلل نظم الأعمال",
+    "ba": "محلل أعمال",
+    "qe": "مهندس جودة",
+    "ux": "مصمم تجربة المستخدم",
+    "dev": "مطوّر"
+  },
+
+  "login": {
+    "continueWithGitHub": "المتابعة عبر GitHub",
+    "continueWithGoogle": "المتابعة عبر Google",
+    "orSignInWithEmail": "أو تسجيل الدخول بالبريد الإلكتروني",
+    "emailAddress": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "loginFailed": "فشل تسجيل الدخول",
+    "devOnly": "للتطوير فقط",
+    "devLogin": "دخول المطوّر (تخطي OAuth)"
+  },
+
+  "authError": {
+    "title": "فشل تسجيل الدخول",
+    "badState": "انتهت صلاحية جلسة تسجيل الدخول. يرجى المحاولة مجدداً.",
+    "csrf": "فشل التحقق الأمني. يرجى المحاولة مجدداً.",
+    "exchangeFailed": "تعذر إكمال تسجيل الدخول عبر المزود. يرجى المحاولة مجدداً.",
+    "dbError": "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.",
+    "missingToken": "لم يتم استلام رمز المصادقة.",
+    "default": "حدث خطأ غير متوقع أثناء تسجيل الدخول."
+  },
+
+  "myWork": {
+    "title": "أعمالي",
+    "itemCount": "{{count}} عنصر مسند إليك",
+    "itemCount_other": "{{count}} عناصر مسندة إليك",
+    "noItems": "لا توجد عناصر مسندة إليك.",
+    "noItemsHelp": "تظهر العناصر هنا عندما تُضاف كعضو في فريق المشروع ويتم إسناد قصص أو مهام إليك. تأكد من أن بريدك الإلكتروني يطابق بريد عضو الفريق، أو أنك قبلت الدعوة."
+  },
+
+  "orgs": {
+    "title": "المؤسسات",
+    "orgCount": "{{count}} مؤسسة",
+    "orgCount_other": "{{count}} مؤسسات",
+    "showArchived": "إظهار المؤرشفة",
+    "newOrganisation": "+ مؤسسة جديدة",
+    "noOrgsYet": "لا توجد مؤسسات بعد. أنشئ واحدة للبدء.",
+    "archived": "مؤرشفة",
+    "confirmDelete": "هل تريد حذف هذه المؤسسة وجميع بياناتها نهائياً؟",
+    "added": "أُضيفت {{date}}",
+    "newOrg": "مؤسسة جديدة",
+    "orgName": "اسم المؤسسة",
+    "orgNameRequired": "اسم المؤسسة *",
+    "contactName": "اسم جهة الاتصال",
+    "contactEmail": "البريد الإلكتروني للتواصل",
+    "contactPhone": "هاتف التواصل",
+    "addressLine1": "سطر العنوان 1",
+    "addressLine2": "سطر العنوان 2",
+    "city": "المدينة",
+    "state": "الولاية / المنطقة",
+    "postalCode": "الرمز البريدي",
+    "country": "البلد"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "جميع المؤسسات",
+    "editDetails": "تعديل التفاصيل",
+    "noContactDetails": "لا توجد بيانات اتصال بعد. انقر على \"تعديل التفاصيل\" لإضافتها.",
+    "contact": "جهة الاتصال:",
+    "email": "البريد الإلكتروني:",
+    "phone": "الهاتف:",
+    "location": "الموقع:",
+    "projects": "المشاريع ({{count}})",
+    "newProject": "+ مشروع جديد",
+    "noProjectsYet": "لا توجد مشاريع بعد. أنشئ واحداً للبدء.",
+    "newProjectTitle": "مشروع جديد",
+    "projectName": "اسم المشروع",
+    "projectNameRequired": "اسم المشروع *",
+    "description": "الوصف",
+    "methodology": "المنهجية",
+    "dueDate": "تاريخ الاستحقاق",
+    "customerContact": "جهة اتصال العميل",
+    "createProject": "إنشاء المشروع",
+    "whatIsThisProjectAbout": "ما موضوع هذا المشروع؟"
+  },
+
+  "invite": {
+    "invalidInvitation": "دعوة غير صالحة",
+    "invalidLink": "رابط الدعوة هذا غير صالح.",
+    "goToLogin": "الذهاب لتسجيل الدخول",
+    "alreadyAccepted": "تم القبول مسبقاً",
+    "alreadyAcceptedMessage": "تم استخدام هذه الدعوة مسبقاً. يمكنك تسجيل الدخول ببيانات الاعتماد الخاصة بك.",
+    "expired": "انتهت صلاحية الدعوة",
+    "expiredMessage": "انتهت صلاحية هذه الدعوة. يرجى الطلب من فريقك إرسال دعوة جديدة.",
+    "invitedToJoin": "تمت دعوتك للانضمام إلى مشروع",
+    "emailLabel": "البريد الإلكتروني",
+    "yourName": "اسمك",
+    "passwordLabel": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "minChars": "8 أحرف كحد أدنى",
+    "repeatPassword": "أعد إدخال كلمة المرور",
+    "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "passwordsMismatch": "كلمتا المرور غير متطابقتين",
+    "createAccountJoin": "إنشاء حساب والانضمام",
+    "creatingAccount": "جارٍ إنشاء الحساب...",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "logIn": "تسجيل الدخول"
+  },
+
+  "board": {
+    "helpTitle": "لوحة كانبان",
+    "helpBody1": "هذه لوحة عمل فريقك مُصوَّرة كتدفق. يمثل كل عمود مرحلة في سير العمل.",
+    "helpBody2": "اسحب البطاقات بين الأعمدة لتحديث حالتها فوراً. عند نقل قصة، تنتقل مهامها الفرعية معها.",
+    "helpBody3": "حافظ على عمود \"قيد التنفيذ\" صغيراً; تحديد العمل الجاري يساعد فريقك على إنهاء المهام بدلاً من بدء مهام جديدة.",
+    "itemCount": "{{count}} عنصر",
+    "itemCount_other": "{{count}} عناصر",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} نقطة قيد التنفيذ",
+    "overCapacity": "تجاوز السعة",
+    "noItems": "لا توجد عناصر",
+    "column": "عمود {{status}}"
+  },
+
+  "backlog": {
+    "helpTitle": "قائمة الانتظار",
+    "helpBody1": "قائمة الانتظار هي قائمتك المرتبة حسب الأولوية. العناصر في الأعلى هي الأعلى أولوية.",
+    "helpBody2": "اسحب العناصر من مقبض السحب لإعادة ترتيب الأولويات. استخدم المرشحات للتركيز على القصص أو الأخطاء أو حالات محددة.",
+    "helpBody3": "انقر على + عنصر جديد لإضافة قصص أو مهام بسرعة.",
+    "allStatuses": "جميع الحالات",
+    "allTypes": "جميع الأنواع",
+    "stories": "قصص المستخدم",
+    "bugs": "الأخطاء",
+    "tasks": "المهام",
+    "itemCount": "{{count}} عنصر",
+    "itemCount_other": "{{count}} عناصر",
+    "newItem": "+ عنصر جديد",
+    "noItemsMatch": "لا توجد عناصر مطابقة للمرشحات. حاول تعديلها أو أنشئ عنصراً جديداً."
+  },
+
+  "sprints": {
+    "helpTitle": "تخطيط السبرنت",
+    "helpBody1": "السبرنتات هي دورات محددة زمنياً (عادةً أسبوعان). اسحب القصص من قائمة الانتظار إلى السبرنت لتخطيط عمل فريقك.",
+    "helpBody2": "راقب مؤشر السعة لتجنب إثقال الفريق.",
+    "title": "السبرنتات",
+    "noSprintsYet": "لا توجد سبرنتات بعد. أنشئ واحداً لبدء التخطيط.",
+    "pts": "{{count}} نقطة"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "العودة إلى اللوحة",
+    "partOf": "جزء من:",
+    "clickToEdit": "انقر للتعديل",
+    "description": "الوصف",
+    "descPlaceholder": "صِف المتطلب والهدف والسياق...",
+    "suggest": "اقتراح",
+    "clickToAddDescription": "انقر لإضافة وصف...",
+    "details": "التفاصيل",
+    "statusLabel": "الحالة",
+    "typeLabel": "النوع",
+    "priorityLabel": "الأولوية",
+    "assigneeLabel": "المسند إليه",
+    "unassigned": "غير مسند",
+    "totalPoints": "إجمالي النقاط",
+    "storyPoints": "نقاط القصة",
+    "storyPointsHelp": "بالنسبة للقصص، النقاط هي مجموع نقاط جميع المهام. أضف النقاط للمهام الفردية أثناء التنقيح.",
+    "taskPointsHelp": "قدّر الجهد النسبي. المقاييس الشائعة: 1، 2، 3، 5، 8، 13. الرقم \"1\" هو أبسط شيء يقوم به فريقك.",
+    "sumOfTasks": "مجموع {{count}} مهمة",
+    "sumOfTasks_other": "مجموع {{count}} مهام",
+    "largeStoryWarning": "هذه الـ story تبلغ {{points}} نقطة. فكر في تقسيمها إلى stories أصغر يمكن إكمال كل منها في sprint واحد.",
+    "blocked": "محظور",
+    "blockedBy": "محظور بواسطة:",
+    "notBlocked": "غير محظور",
+    "labels": "التسميات",
+    "convertToStory": "تحويل إلى قصة",
+    "convertToStoryConfirm": "هل تريد تحويل هذه المهمة إلى قصة؟ سيتم الاحتفاظ برابط تبعية مع القصة الأصلية.",
+    "convertToStoryHelp": "يرقّي هذه المهمة إلى قصة مستقلة مع رابط تبعية",
+    "created": "أُنشئ {{date}}",
+    "updated": "آخر تحديث {{date}}"
+  },
+
+  "childTasks": {
+    "title": "المهام ({{count}})",
+    "contextHelp": "المهام تقسّم القصة إلى أعمال حسب التخصص, تصميم تجربة المستخدم، تطوير الواجهة الخلفية، تطوير الواجهة الأمامية، اختبار الجودة، إلخ. كل مهمة يمكن إسنادها لعضو في الفريق.",
+    "suggestTasks": "اقتراح مهام",
+    "addTask": "+ إضافة مهمة",
+    "noTasksYet": "لا توجد مهام بعد.",
+    "taskTitlePlaceholder": "عنوان المهمة (مثال: 'تصميم UX: شاشة تسجيل الدخول')",
+    "suggestedTasks": "مهام مقترحة, انقر للإضافة:",
+    "pts": "{{count}} نقطة",
+    "clarificationNeeded": "يلزم توضيح:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "معايير القبول",
+    "contextHelp": "معايير القبول تحدد متى يكون هذا العنصر \"مكتملاً\" فعلاً. تُكتب بصيغة بافتراض / عندما / فإن (BDD)، وتجعل التوقعات واضحة وقابلة للاختبار. كل معيار هو شرط محدد وقابل للتحقق, وليس أمنية غامضة.",
+    "addButton": "+ إضافة",
+    "suggestAC": "اقتراح معايير",
+    "noCriteriaYet": "لا توجد معايير قبول بعد. حدد شروط \"الاكتمال\".",
+    "given": "بافتراض",
+    "when": "عندما",
+    "then": "فإن",
+    "deleteAC": "حذف معيار القبول",
+    "givenPlaceholder": "بافتراض...",
+    "whenPlaceholder": "عندما...",
+    "thenPlaceholder": "فإن...",
+    "aiSuggestions": "اقتراحات الذكاء الاصطناعي, انقر للإضافة:",
+    "aiNeedsMoreInfo": "يحتاج الذكاء الاصطناعي إلى مزيد من المعلومات:"
+  },
+
+  "comments": {
+    "title": "التعليقات",
+    "noCommentsYet": "لا توجد تعليقات بعد.",
+    "addComment": "أضف تعليقاً..."
+  },
+
+  "dependencies": {
+    "title": "التبعيات",
+    "contextHelp": "التبعيات تتبع العلاقات بين العناصر. \"يعتمد على\" تعني أن هذا العنصر لا يمكنه المضي قدماً حتى يكتمل الهدف. \"مرتبط بـ\" هو رابط معلوماتي.",
+    "noDependencies": "لا توجد تبعيات.",
+    "dependsOn": "يعتمد على",
+    "relatesTo": "مرتبط بـ",
+    "dependedOnBy": "يعتمد عليه",
+    "removeDependency": "إزالة التبعية",
+    "selectItem": "اختر عنصراً..."
+  },
+
+  "links": {
+    "title": "الروابط",
+    "addLink": "+ إضافة رابط",
+    "noLinksYet": "لا توجد روابط بعد.",
+    "labelPlaceholder": "التسمية (مثال: طلب سحب GitHub، Figma، نتائج الاختبار، المستندات)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "إزالة الرابط"
+  },
+
+  "testResults": {
+    "retestRequired": "يلزم إعادة الاختبار",
+    "retestMessage": "يحتوي هذا الخلل على {{count}} اختبار(ات) فاشلة. ارفع نتائج اختبار جديدة (JUnit XML أو webhook) بعد نشر الإصلاح لإزالة بوابة الجودة وإغلاق هذا العنصر.",
+    "title": "نتائج الاختبار",
+    "passed": "ناجح",
+    "failed": "فاشل",
+    "errors": "أخطاء",
+    "skipped": "تم تخطيه",
+    "lastRun": "آخر تشغيل: {{date}}",
+    "sourceTestFailure": "مصدر فشل الاختبار",
+    "suite": "مجموعة الاختبار: {{name}}",
+    "duration": "المدة: {{ms}} مللي ثانية",
+    "source": "المصدر: {{source}} | التاريخ: {{date}}",
+    "generateDescAC": "توليد الوصف ومعايير القبول"
+  },
+
+  "helpOverlay": {
+    "dismiss": "تجاهل",
+    "close": "إغلاق"
+  },
+
+  "richTextEditor": {
+    "startTyping": "ابدأ الكتابة...",
+    "bold": "عريض",
+    "italic": "مائل",
+    "inlineCode": "رمز مضمّن",
+    "heading": "عنوان رئيسي",
+    "subheading": "عنوان فرعي",
+    "bulletList": "قائمة نقطية",
+    "numberedList": "قائمة مرقمة",
+    "quote": "اقتباس",
+    "codeBlock": "كتلة رمز برمجي"
+  },
+
+  "createEpic": {
+    "button": "+ ملحمة جديدة",
+    "title": "إنشاء ملحمة",
+    "titleLabel": "العنوان",
+    "titlePlaceholder": "مثال: مصادقة المستخدم",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "الهدف التجاري ونطاق هذه الملحمة...",
+    "priorityLabel": "الأولوية",
+    "assigneeLabel": "المسند إليه"
+  },
+
+  "createProject": {
+    "button": "+ مشروع جديد",
+    "title": "إنشاء مشروع",
+    "organisationLabel": "المؤسسة",
+    "selectOrg": "اختر المؤسسة...",
+    "teamLabel": "الفريق",
+    "selectTeam": "اختر الفريق...",
+    "projectNameLabel": "اسم المشروع",
+    "projectNamePlaceholder": "مثال: PlanA MVP",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "ما موضوع هذا المشروع؟",
+    "methodologyLabel": "المنهجية"
+  },
+
+  "createSprint": {
+    "button": "+ سبرنت جديد",
+    "title": "إنشاء سبرنت",
+    "nameLabel": "الاسم",
+    "namePlaceholder": "سبرنت 1",
+    "goalLabel": "الهدف",
+    "goalPlaceholder": "ما الذي يجب أن يحققه هذا السبرنت؟",
+    "startDateLabel": "تاريخ البدء",
+    "endDateLabel": "تاريخ الانتهاء"
+  },
+
+  "createTeam": {
+    "button": "+ فريق جديد",
+    "title": "إنشاء فريق",
+    "organisationLabel": "المؤسسة",
+    "selectOrg": "اختر المؤسسة...",
+    "teamNameLabel": "اسم الفريق",
+    "teamNamePlaceholder": "مثال: فريق الواجهة الخلفية"
+  },
+
+  "quickCreate": {
+    "placeholder": "ما الذي يجب إنجازه؟"
+  },
+
+  "workItemCard": {
+    "open": "فتح {{title}}",
+    "taskCount": "{{count}} مهمة",
+    "taskCount_other": "{{count}} مهام"
+  },
+
+  "team": {
+    "title": "الفريق",
+    "memberCount": "{{count}} عضو",
+    "memberCount_other": "{{count}} أعضاء",
+    "addMember": "+ إضافة عضو",
+    "noMembersYet": "لا يوجد أعضاء في الفريق بعد. أضف أشخاصاً لبدء إسناد العمل.",
+    "confirmRemove": "هل تريد إزالة {{name}} من الفريق؟",
+    "invite": "دعوة",
+    "inviteLink": "رابط الدعوة:",
+    "copy": "نسخ",
+    "ptsPerSprint": "{{count}} نقطة/سبرنت",
+    "addTeamMember": "إضافة عضو للفريق",
+    "nameRequired": "الاسم *",
+    "emailLabel": "البريد الإلكتروني",
+    "phoneLabel": "الهاتف",
+    "roleRequired": "الدور *",
+    "capacity": "السعة",
+    "capacityPlaceholder": "نقطة/سبرنت",
+    "nameLabel": "الاسم",
+    "roleLabel": "الدور"
+  },
+
+  "epics": {
+    "helpTitle": "الملاحم",
+    "helpBody1": "الملاحم هي تجميعات على مستوى الميزة. تحتوي كل ملحمة على قصص مترابطة تقدم معاً قدرة تجارية.",
+    "helpBody2": "انقر على ملحمة لعرض قصصها وإضافة قصص جديدة وتتبع التقدم.",
+    "title": "الملاحم",
+    "noEpicsYet": "لا توجد ملاحم بعد. الملاحم تجمع القصص المترابطة في مخرجات على مستوى الميزة.",
+    "storyProgress": "{{done}}/{{total}} قصة"
+  },
+
+  "epicDetail": {
+    "backToEpics": "العودة إلى الملاحم",
+    "description": "الوصف",
+    "descPlaceholder": "صِف الهدف التجاري والنطاق...",
+    "clickToAddDescription": "انقر لإضافة وصف...",
+    "stories": "القصص ({{count}})",
+    "storiesContextHelp": "القصص هي الأهداف القابلة للتسليم في هذه الملحمة. تمثل كل قصة نتيجة محددة للمستخدم يمكن إكمالها في سبرنت واحد.",
+    "addStory": "+ إضافة قصة",
+    "noStoriesYet": "لا توجد قصص في هذه الملحمة بعد. أضف واحدة لتحديد الأهداف.",
+    "details": "التفاصيل",
+    "statusLabel": "الحالة",
+    "priorityLabel": "الأولوية",
+    "assigneeLabel": "المسند إليه",
+    "addStoryToEpic": "إضافة قصة إلى الملحمة",
+    "titleRequired": "العنوان *",
+    "titleHint": "(\"بصفتي [دور]، أريد [هدف]، حتى [فائدة]\")",
+    "titlePlaceholder": "بصفتي [دور]، أريد [هدف]، حتى [فائدة]",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "السياق والمتطلبات والتفاصيل...",
+    "storyPointsLabel": "نقاط القصة",
+    "autoTaskHint": "سيتم إنشاء مهمة تلقائياً للمسند إليه بـ {{points}} نقطة. النقاط دائماً على المهام.",
+    "largeStoryWarning": "قصة كبيرة ({{points}} نقطة). فكّر في تقسيمها إلى قصص أصغر يمكن إكمال كل منها في سبرنت واحد. القصص الأصغر أسهل في التقدير والاختبار والتسليم.",
+    "acceptanceCriteria": "معايير القبول",
+    "acContextHelp": "حدد متى تكون هذه القصة \"مكتملة\". يجب أن يكون كل معيار محدداً وقابلاً للاختبار.",
+    "addCriterion": "+ إضافة معيار",
+    "givenPlaceholder": "شرط مسبق أو سياق...",
+    "whenPlaceholder": "إجراء أو حدث...",
+    "thenPlaceholder": "النتيجة المتوقعة...",
+    "createRelatedTasks": "إنشاء مهام مرتبطة؟",
+    "autoAssignHint": "(يتم الإسناد تلقائياً لأعضاء الفريق حسب الدور)",
+    "uxDesign": "تصميم UX",
+    "qeTesting": "اختبار QE",
+    "bsaAnalysis": "تحليل BSA",
+    "creating": "جارٍ الإنشاء...",
+    "createStory": "إنشاء قصة"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "العودة إلى السبرنتات",
+    "start": "البدء:",
+    "end": "الانتهاء:",
+    "capacity": "{{points}} / {{capacity}} سعة",
+    "storyPoints": "{{count}} نقطة قصة",
+    "storiesAndItems": "{{stories}} قصة، {{items}} عنصر إجمالي",
+    "done": "مكتمل",
+    "addStories": "+ إضافة قصص",
+    "startSprint": "بدء السبرنت",
+    "completeSprint": "إكمال السبرنت",
+    "addStoriesToSprint": "إضافة قصص إلى السبرنت ({{count}} متاحة)",
+    "allStoriesAssigned": "جميع القصص موجودة بالفعل في سبرنت أو مكتملة.",
+    "noItemsYet": "لا توجد عناصر في هذا السبرنت بعد. انقر \"+ إضافة قصص\" للسحب من قائمة الانتظار.",
+    "removeStoryAndTasks": "إزالة القصة والمهام من السبرنت",
+    "removeFromSprint": "إزالة من السبرنت",
+    "standaloneTasks": "مهام مستقلة",
+    "adding": "جارٍ الإضافة...",
+    "tasks": "{{count}} مهمة"
+  },
+
+  "reports": {
+    "helpTitle": "تقارير المشروع",
+    "helpBody1": "التقارير تمنحك رؤية واضحة لتسليم فريقك. السرعة تُظهر عدد النقاط المكتملة في كل سبرنت وتستقر مع الوقت.",
+    "helpBody2": "استخدم مخططات تقدم السبرنت وعبء عمل الفريق لاكتشاف الاختناقات مبكراً.",
+    "title": "التقارير",
+    "sprint": "السبرنت:",
+    "velocity": "السرعة",
+    "velocitySubtitle": "نقاط القصص المكتملة لكل سبرنت",
+    "noCompletedSprints": "لا توجد سبرنتات مكتملة بعد. ستظهر السرعة بعد إكمال أول سبرنت.",
+    "trend": "الاتجاه",
+    "threeSprintAvg": "متوسط 3 سبرنتات",
+    "avgVelocity": "متوسط السرعة:",
+    "pointsPerSprint": "نقطة/سبرنت",
+    "sprintProgress": "السبرنت: {{name}}",
+    "done": "مكتمل: {{points}} نقطة",
+    "inProgress": "قيد التنفيذ: {{points}} نقطة",
+    "inReview": "قيد المراجعة: {{points}} نقطة",
+    "remaining": "المتبقي: {{points}} نقطة",
+    "daysLeft": "{{count}} يوم متبقٍ",
+    "epicProgress": "تقدم الملاحم",
+    "epicProgressSubtitle": "القصص المكتملة لكل ملحمة",
+    "noEpics": "لا توجد ملاحم محددة بعد.",
+    "stories": "{{done}}/{{total}} قصة، {{pct}}%",
+    "teamWorkload": "عبء عمل الفريق",
+    "teamWorkloadSubtitle": "النقاط المسندة في السبرنت النشط",
+    "noWorkload": "لا توجد عناصر مسندة في السبرنت النشط.",
+    "pts": "{{points}} نقطة ({{count}})",
+    "blockedItems": "العناصر المحظورة",
+    "blockedSubtitle": "{{count}} عنصر محظور حالياً",
+    "blockedSubtitle_other": "{{count}} عناصر محظورة حالياً",
+    "noBlocked": "لا توجد عناصر محظورة. عمل رائع!",
+    "burndown": "الاحتراق: {{name}}",
+    "burndownSubtitle": "نقاط القصص المتبقية مقابل المثالي",
+    "noBurndownData": "لا توجد بيانات احتراق بعد. تظهر البيانات عندما تنتقل العناصر عبر الحالات أثناء السبرنت.",
+    "ideal": "المثالي",
+    "actual": "الفعلي",
+    "onTrack": "على المسار",
+    "behind": "متأخر"
+  },
+
+  "aiSettings": {
+    "title": "إعدادات الذكاء الاصطناعي",
+    "description": "قم بإعداد مزود ذكاء اصطناعي لتفعيل اقتراحات معايير القبول وتفكيك القصص وصياغة ملاحظات الإصدار. أنت تقدم مفتاح API الخاص بك؛ PlanA لا يخزن أو يمرر عبر أي حساب مشترك.",
+    "provider": "المزود",
+    "notConfigured": "غير مُعدّ",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "مخصص (متوافق مع OpenAI)",
+    "model": "النموذج",
+    "selectModel": "اختر النموذج...",
+    "modelPlaceholder": "معرّف النموذج (مثال: my-custom-model)",
+    "apiKey": "مفتاح API",
+    "currentKey": "الحالي: {{key}}",
+    "enterApiKey": "أدخل مفتاح API",
+    "apiKeyHelp": "يتم تخزين مفتاحك مشفراً لكل مشروع. اتركه فارغاً للاحتفاظ بالمفتاح الحالي.",
+    "endpointUrl": "عنوان URL لنقطة الوصول",
+    "saving": "جارٍ الحفظ...",
+    "settingsSaved": "تم حفظ الإعدادات",
+    "stakeholderSharing": "مشاركة أصحاب المصلحة",
+    "sharingDescription": "أنشئ روابط قابلة للمشاركة لأصحاب المصلحة لعرض لوحة معلومات المشروع للقراءة فقط. لا يلزم تسجيل الدخول؛ الرابط هو وسيلة الوصول.",
+    "label": "التسمية",
+    "labelPlaceholder": "مثال: العميل، لجنة التوجيه",
+    "expiresIn": "تنتهي الصلاحية خلال",
+    "days30": "30 يوماً",
+    "days90": "90 يوماً",
+    "days180": "180 يوماً",
+    "year1": "سنة واحدة",
+    "never": "أبداً",
+    "createLink": "إنشاء رابط",
+    "creating": "جارٍ الإنشاء...",
+    "noActiveLinks": "لا توجد روابط مشاركة نشطة.",
+    "created": "أُنشئ {{date}}",
+    "expires": "تنتهي الصلاحية {{date}}",
+    "copyLink": "نسخ الرابط",
+    "copied": "تم النسخ!",
+    "revoke": "إلغاء",
+    "revoked": "تم الإلغاء",
+    "revokedDate": "أُلغي {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "لوحة معلومات أصحاب المصلحة",
+    "invalidLink": "رابط غير صالح أو منتهي الصلاحية",
+    "poweredBy": "مدعوم من PlanA",
+    "activeSprint": "السبرنت النشط",
+    "noActiveSprint": "لا يوجد سبرنت نشط",
+    "goal": "الهدف:",
+    "items": "العناصر",
+    "points": "النقاط",
+    "recentlyCompleted": "المكتملة مؤخراً",
+    "noCompletedItems": "لا توجد عناصر مكتملة بعد.",
+    "defects": "العيوب",
+    "openDefects": "مفتوحة",
+    "closedDefects": "مغلقة",
+    "sprintVelocity": "سرعة السبرنت",
+    "storyProgress": "تقدم القصص"
+  },
+
+  "reportView": {
+    "title": "التقارير",
+    "generateProject": "تقرير المشروع",
+    "generateSprint": "تقرير السبرنت",
+    "generating": "جارٍ التوليد...",
+    "generateDescription": "توليد تقرير شامل من بيانات مشروعك.",
+    "exportPdf": "تصدير PDF",
+    "back": "رجوع",
+    "generated": "تم التوليد {{date}}",
+    "executiveSummary": "الملخص التنفيذي",
+    "metrics": "المقاييس",
+    "items": "العناصر",
+    "points": "النقاط",
+    "completion": "الإنجاز",
+    "testPassRate": "معدل نجاح الاختبارات",
+    "epicBreakdown": "تفصيل الملاحم",
+    "epicColumn": "الملحمة",
+    "storiesColumn": "القصص",
+    "acceptanceCriteriaColumn": "معايير القبول",
+    "testCoverageColumn": "تغطية الاختبار",
+    "defects": "العيوب",
+    "total": "الإجمالي",
+    "open": "مفتوحة",
+    "resolved": "تم الحل",
+    "criticalOpen": "حرجة (مفتوحة)",
+    "testEvidence": "أدلة الاختبار",
+    "totalTests": "إجمالي الاختبارات",
+    "passed": "ناجحة",
+    "failed": "فاشلة",
+    "errors": "أخطاء",
+    "skipped": "تم تخطيها",
+    "currentBlockers": "العوائق الحالية",
+    "velocityHistory": "سجل السرعة",
+    "generatedBy": "تم التوليد بواسطة PlanA"
+  }
+}

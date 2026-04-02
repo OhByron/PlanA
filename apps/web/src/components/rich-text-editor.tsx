@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
+import { useTranslation } from 'react-i18next';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import { cn } from '@projecta/ui';
@@ -15,18 +16,21 @@ interface RichTextEditorProps {
 
 export function RichTextEditor({
   content,
-  placeholder = 'Start typing...',
+  placeholder,
   onChange,
   editable = true,
   className,
   autoFocus = false,
 }: RichTextEditorProps) {
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t('richTextEditor.startTyping');
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
       }),
-      Placeholder.configure({ placeholder }),
+      Placeholder.configure({ placeholder: resolvedPlaceholder }),
     ],
     content: (content as Record<string, unknown>) ?? null,
     editable,
@@ -58,21 +62,21 @@ export function RichTextEditor({
           <ToolbarButton
             active={editor.isActive('bold')}
             onClick={() => editor.chain().focus().toggleBold().run()}
-            title="Bold"
+            title={t('richTextEditor.bold')}
           >
             <strong>B</strong>
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('italic')}
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            title="Italic"
+            title={t('richTextEditor.italic')}
           >
             <em>I</em>
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('code')}
             onClick={() => editor.chain().focus().toggleCode().run()}
-            title="Inline code"
+            title={t('richTextEditor.inlineCode')}
           >
             <span className="font-mono text-xs">&lt;/&gt;</span>
           </ToolbarButton>
@@ -80,14 +84,14 @@ export function RichTextEditor({
           <ToolbarButton
             active={editor.isActive('heading', { level: 2 })}
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            title="Heading"
+            title={t('richTextEditor.heading')}
           >
             H2
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('heading', { level: 3 })}
             onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            title="Subheading"
+            title={t('richTextEditor.subheading')}
           >
             H3
           </ToolbarButton>
@@ -95,28 +99,28 @@ export function RichTextEditor({
           <ToolbarButton
             active={editor.isActive('bulletList')}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            title="Bullet list"
+            title={t('richTextEditor.bulletList')}
           >
             •
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('orderedList')}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            title="Numbered list"
+            title={t('richTextEditor.numberedList')}
           >
             1.
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('blockquote')}
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            title="Quote"
+            title={t('richTextEditor.quote')}
           >
             &ldquo;
           </ToolbarButton>
           <ToolbarButton
             active={editor.isActive('codeBlock')}
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            title="Code block"
+            title={t('richTextEditor.codeBlock')}
           >
             <span className="font-mono text-xs">{'{}'}</span>
           </ToolbarButton>

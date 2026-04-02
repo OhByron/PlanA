@@ -17,6 +17,28 @@ type Provider interface {
 	SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error)
 }
 
+// LanguageInstruction returns a prompt instruction for the AI to respond in the
+// user's preferred language. Returns empty string for English or unset.
+func LanguageInstruction(lang string) string {
+	if lang == "" || lang == "en" {
+		return ""
+	}
+	names := map[string]string{
+		"fr": "French", "de": "German", "es": "Spanish", "it": "Italian",
+		"pt": "Portuguese", "nl": "Dutch", "pl": "Polish", "da": "Danish",
+		"sv": "Swedish", "nb": "Norwegian", "is": "Icelandic", "ru": "Russian",
+		"el": "Greek", "tr": "Turkish", "lv": "Latvian", "lt": "Lithuanian",
+		"et": "Estonian", "hu": "Hungarian", "sr": "Serbian", "hr": "Croatian",
+		"hi": "Hindi", "ar": "Arabic", "ja": "Japanese", "zh": "Chinese",
+		"ko": "Korean",
+	}
+	name, ok := names[lang]
+	if !ok {
+		return ""
+	}
+	return "\n\nCRITICAL LANGUAGE REQUIREMENT: You MUST write ALL text content in " + name + ". This includes every string value in the JSON response: descriptions, questions, suggestions (given/when/then clauses), rationale, task titles, and any other human-readable text. The only things that stay in English are the JSON keys themselves. Every single string value the user will read must be in " + name + ". Do not mix languages."
+}
+
 type SuggestACRequest struct {
 	StoryTitle       string
 	StoryDescription string
@@ -25,6 +47,7 @@ type SuggestACRequest struct {
 	ExistingAC       []string // existing AC on this story (Given/When/Then strings)
 	SiblingStories   []string // titles of other stories in the same epic
 	ProjectName      string
+	Language         string   // user's language preference (e.g. "fr", "de", "ja")
 }
 
 type SuggestACResponse struct {
@@ -46,6 +69,7 @@ type SuggestDescRequest struct {
 	SiblingStories []string
 	ProjectName    string
 	StoryType      string // story, bug, task
+	Language       string
 }
 
 type SuggestDescResponse struct {
@@ -61,6 +85,7 @@ type SuggestDefectRequest struct {
 	ErrorMessage string
 	ProjectName  string
 	ParentTitle  string // parent story title, if any
+	Language     string
 }
 
 // SuggestDefectResponse contains an AI-generated defect description and acceptance criteria.
@@ -78,6 +103,7 @@ type SuggestDecompRequest struct {
 	EpicDescription  string
 	ExistingTasks    []string // titles of existing child tasks
 	ProjectName      string
+	Language         string
 	TeamRoles        []string // available roles (dev, qe, ux, ba, etc.)
 }
 

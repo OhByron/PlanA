@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { UserMenu } from './user-menu';
 import {
   useNotifications,
@@ -8,32 +9,34 @@ import {
   type Notification,
 } from '../hooks/use-notifications';
 
-function timeAgo(dateStr: string): string {
+type TFunction = ReturnType<typeof useTranslation>['t'];
+
+function timeAgo(dateStr: string, t: TFunction): string {
   const now = Date.now();
   const then = new Date(dateStr).getTime();
   const seconds = Math.floor((now - then) / 1000);
-  if (seconds < 60) return 'just now';
+  if (seconds < 60) return t('topBar.justNow');
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return t('topBar.minutesAgo', { count: minutes });
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return t('topBar.hoursAgo', { count: hours });
   const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  return t('topBar.daysAgo', { count: days });
 }
 
-function notificationMessage(n: Notification): string {
+function notificationMessage(n: Notification, t: TFunction): string {
   const title = (n.data.title as string) ?? 'a work item';
   switch (n.type) {
     case 'assigned':
-      return `You were assigned to "${title}"`;
+      return t('notifications.assigned', { title });
     case 'status_changed':
-      return `Status changed on "${title}"`;
+      return t('notifications.statusChanged', { title });
     case 'comment_added':
-      return `New comment on "${title}"`;
+      return t('notifications.commentAdded', { title });
     case 'mentioned':
-      return `You were mentioned in "${title}"`;
+      return t('notifications.mentioned', { title });
     default:
-      return `Notification: ${n.type}`;
+      return t('notifications.default', { type: n.type });
   }
 }
 
@@ -74,6 +77,7 @@ function NotificationIcon({ type }: { type: string }) {
 
 export function TopBar() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -109,7 +113,7 @@ export function TopBar() {
             ref={buttonRef}
             onClick={() => setOpen((prev) => !prev)}
             className="relative rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            title="Notifications"
+            title={t('topBar.notifications')}
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -127,14 +131,14 @@ export function TopBar() {
               className="absolute right-0 top-full z-50 mt-1 w-80 rounded-lg border border-gray-200 bg-white shadow-lg"
             >
               <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
-                <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
+                <h3 className="text-sm font-semibold text-gray-900">{t('topBar.notifications')}</h3>
                 {unreadCount > 0 && (
                   <button
                     onClick={() => markAllRead.mutate()}
                     disabled={markAllRead.isPending}
                     className="text-xs font-medium text-blue-600 hover:text-blue-800 disabled:opacity-50"
                   >
-                    Mark all read
+                    {t('topBar.markAllRead')}
                   </button>
                 )}
               </div>
@@ -142,7 +146,7 @@ export function TopBar() {
               <div className="max-h-80 overflow-y-auto">
                 {notifications.length === 0 ? (
                   <div className="px-4 py-8 text-center text-sm text-gray-400">
-                    No notifications yet
+                    {t('topBar.noNotificationsYet')}
                   </div>
                 ) : (
                   notifications.map((n) => {
@@ -166,10 +170,10 @@ export function TopBar() {
                       <NotificationIcon type={n.type} />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm text-gray-800">
-                          {notificationMessage(n)}
+                          {notificationMessage(n, t)}
                         </p>
                         <p className="mt-0.5 text-xs text-gray-400">
-                          {timeAgo(n.createdAt)}
+                          {timeAgo(n.createdAt, t)}
                         </p>
                       </div>
                       {!n.readAt && (

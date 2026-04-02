@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { Button, Input } from '@projecta/ui';
 import { api } from '../lib/api-client';
 import { useAuth } from '../auth/auth-context';
@@ -26,17 +27,8 @@ function toInviteInfo(w: Record<string, unknown>): InviteInfo {
   };
 }
 
-const roleNames: Record<string, string> = {
-  pm: 'Project Manager',
-  po: 'Product Owner',
-  bsa: 'Business Systems Analyst',
-  ba: 'Business Analyst',
-  qe: 'Quality Engineer',
-  ux: 'UX Designer',
-  dev: 'Developer',
-};
-
 export function InvitePage() {
+  const { t } = useTranslation();
   const { token } = useParams({ strict: false }) as { token: string };
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -61,11 +53,11 @@ export function InvitePage() {
   const submit = async () => {
     setSubmitError('');
     if (password.length < 8) {
-      setSubmitError('Password must be at least 8 characters');
+      setSubmitError(t('invite.passwordTooShort'));
       return;
     }
     if (password !== confirmPassword) {
-      setSubmitError('Passwords do not match');
+      setSubmitError(t('invite.passwordsMismatch'));
       return;
     }
 
@@ -96,10 +88,10 @@ export function InvitePage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
         <div className="max-w-sm space-y-4 px-4 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Invalid Invitation</h1>
-          <p className="text-gray-600">{error || 'This invitation link is not valid.'}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('invite.invalidInvitation')}</h1>
+          <p className="text-gray-600">{error || t('invite.invalidLink')}</p>
           <Link to="/login">
-            <Button className="mt-4">Go to Login</Button>
+            <Button className="mt-4">{t('invite.goToLogin')}</Button>
           </Link>
         </div>
       </div>
@@ -110,10 +102,10 @@ export function InvitePage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
         <div className="max-w-sm space-y-4 px-4 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Already Accepted</h1>
-          <p className="text-gray-600">This invitation has already been used. You can log in with your credentials.</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('invite.alreadyAccepted')}</h1>
+          <p className="text-gray-600">{t('invite.alreadyAcceptedMessage')}</p>
           <Link to="/login">
-            <Button className="mt-4">Go to Login</Button>
+            <Button className="mt-4">{t('invite.goToLogin')}</Button>
           </Link>
         </div>
       </div>
@@ -125,8 +117,8 @@ export function InvitePage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
         <div className="max-w-sm space-y-4 px-4 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Invitation Expired</h1>
-          <p className="text-gray-600">This invitation has expired. Please ask your team to send a new one.</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('invite.expired')}</h1>
+          <p className="text-gray-600">{t('invite.expiredMessage')}</p>
         </div>
       </div>
     );
@@ -139,24 +131,24 @@ export function InvitePage() {
           <h1 className="text-3xl font-bold text-gray-900">
             Plan<span className="text-brand-600">A</span>
           </h1>
-          <p className="mt-2 text-sm text-gray-500">You've been invited to join a project</p>
+          <p className="mt-2 text-sm text-gray-500">{t('invite.invitedToJoin')}</p>
         </div>
 
         <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
           <p className="text-sm text-gray-500">{info.orgName}</p>
           <p className="text-lg font-semibold text-gray-900">{info.projectName}</p>
           <p className="mt-1 text-sm text-brand-600">
-            {roleNames[info.jobRole] ?? info.jobRole.toUpperCase()}
+            {t(`roles.${info.jobRole}`, { defaultValue: info.jobRole.toUpperCase() })}
           </p>
         </div>
 
         <div className="space-y-3">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{t('invite.emailLabel')}</label>
             <Input value={info.email} disabled className="bg-gray-50" />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Your Name</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{t('invite.yourName')}</label>
             <Input
               autoFocus
               placeholder="Jane Smith"
@@ -165,19 +157,19 @@ export function InvitePage() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{t('invite.passwordLabel')}</label>
             <Input
               type="password"
-              placeholder="Minimum 8 characters"
+              placeholder={t('invite.minChars')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{t('invite.confirmPassword')}</label>
             <Input
               type="password"
-              placeholder="Repeat your password"
+              placeholder={t('invite.repeatPassword')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') submit(); }}
@@ -193,12 +185,12 @@ export function InvitePage() {
             onClick={submit}
             disabled={!name.trim() || !password || !confirmPassword || submitting}
           >
-            {submitting ? 'Creating account...' : 'Create Account & Join'}
+            {submitting ? t('invite.creatingAccount') : t('invite.createAccountJoin')}
           </Button>
         </div>
 
         <p className="text-center text-xs text-gray-400">
-          Already have an account? <Link to="/login" className="text-brand-600 hover:underline">Log in</Link>
+          {t('invite.alreadyHaveAccount')} <Link to="/login" className="text-brand-600 hover:underline">{t('invite.logIn')}</Link>
         </p>
       </div>
     </div>

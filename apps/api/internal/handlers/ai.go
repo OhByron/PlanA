@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.com/OhByron/ProjectA/internal/ai"
+	"github.com/OhByron/ProjectA/internal/auth"
 )
 
 type AIHandlers struct {
@@ -15,6 +16,27 @@ type AIHandlers struct {
 
 func NewAIHandlers(db DBPOOL) *AIHandlers {
 	return &AIHandlers{db: db}
+}
+
+// userLanguage returns the user's language preference. It checks the
+// X-Language header first (set by the frontend from i18next), then
+// falls back to the stored DB preference.
+func (h *AIHandlers) userLanguage(r *http.Request) string {
+	// Prefer explicit header from frontend
+	if lang := r.Header.Get("X-Language"); lang != "" {
+		return lang
+	}
+	// Fall back to stored preference
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		return ""
+	}
+	var lang *string
+	_ = h.db.QueryRow(r.Context(), `SELECT language FROM users WHERE id = $1`, claims.UserID).Scan(&lang)
+	if lang != nil {
+		return *lang
+	}
+	return ""
 }
 
 // SuggestAC generates acceptance criteria suggestions for a work item.
@@ -102,6 +124,7 @@ func (h *AIHandlers) SuggestAC(w http.ResponseWriter, r *http.Request) {
 		ExistingAC:       existingAC,
 		SiblingStories:   siblings,
 		ProjectName:      projectName,
+		Language:         h.userLanguage(r),
 	}
 
 	slog.Info("ai.SuggestAC", "project", projectName, "story", storyTitle, "provider", *providerType)
@@ -241,6 +264,7 @@ func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) 
 		SiblingStories:  siblings,
 		ProjectName:     projectName,
 		StoryType:       storyType,
+		Language:        h.userLanguage(r),
 	}
 
 	slog.Info("ai.SuggestDescription", "project", projectName, "story", storyTitle)
@@ -293,6 +317,8 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	lang := h.userLanguage(r)
+
 	if body.Type == "ac" {
 		req := ai.SuggestACRequest{
 			StoryTitle:       body.Title,
@@ -300,6 +326,7 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 			EpicTitle:        body.EpicTitle,
 			EpicDescription:  body.EpicDesc,
 			ProjectName:      projectName,
+			Language:         lang,
 		}
 		result, err := provider.SuggestAC(r.Context(), req)
 		if err != nil {
@@ -316,6 +343,7 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 			EpicDescription: body.EpicDesc,
 			ProjectName:     projectName,
 			StoryType:       body.StoryType,
+			Language:        lang,
 		}
 		result, err := provider.SuggestDescription(r.Context(), req)
 		if err != nil {
@@ -394,6 +422,7 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 		ErrorMessage: deref(errorMsg),
 		ProjectName:  projectName,
 		ParentTitle:  parentTitle,
+		Language:     h.userLanguage(r),
 	}
 
 	slog.Info("ai.SuggestFromTestFailure", "project", projectName, "test", testName, "provider", *providerType)
@@ -488,6 +517,7 @@ func (h *AIHandlers) SuggestDecomposition(w http.ResponseWriter, r *http.Request
 		ExistingTasks:    existingTasks,
 		ProjectName:      projectName,
 		TeamRoles:        teamRoles,
+		Language:         h.userLanguage(r),
 	}
 
 	slog.Info("ai.SuggestDecomposition", "project", projectName, "story", storyTitle, "provider", *providerType)

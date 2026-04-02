@@ -10,6 +10,7 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { WorkItem, WorkItemStatus } from '@projecta/types';
 import { cn } from '@projecta/ui';
 import { ApiError } from '../../lib/api-client';
@@ -23,6 +24,7 @@ import { HelpOverlay } from '../../components/help-overlay';
 const COLUMNS: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review', 'done'];
 
 export function BoardPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: items = [], isLoading } = useWorkItems(projectId);
   const { data: members = [] } = useProjectMembers(projectId);
@@ -51,8 +53,8 @@ export function BoardPage() {
   // Auto-dismiss error after 5 seconds
   useEffect(() => {
     if (!errorMessage) return;
-    const t = setTimeout(() => setErrorMessage(null), 5000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setErrorMessage(null), 5000);
+    return () => clearTimeout(timer);
   }, [errorMessage]);
 
   const sensors = useSensors(
@@ -158,33 +160,30 @@ export function BoardPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <HelpOverlay id="board-intro" title="Your Kanban Board">
+      <HelpOverlay id="board-intro" title={t('board.helpTitle')}>
         <p className="mb-2">
-          This is your team's work visualized as a flow. Each column represents a stage
-          in your workflow.
+          {t('board.helpBody1')}
         </p>
         <p className="mb-2">
-          <strong>Drag cards</strong> between columns to update their status instantly.
-          When you move a story, its child tasks move with it.
+          {t('board.helpBody2')}
         </p>
         <p>
-          Keep the "In Progress" column small — limiting work-in-progress helps your
-          team finish things instead of starting new ones.
+          {t('board.helpBody3')}
         </p>
       </HelpOverlay>
 
       {errorMessage && (
         <div className="mx-6 mt-2 flex items-center justify-between rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
           <span>{errorMessage}</span>
-          <button onClick={() => setErrorMessage(null)} className="ml-4 font-medium hover:text-red-900" aria-label="Dismiss">
-            Dismiss
+          <button onClick={() => setErrorMessage(null)} className="ml-4 font-medium hover:text-red-900" aria-label={t('common.dismiss')}>
+            {t('common.dismiss')}
           </button>
         </div>
       )}
 
       <div className="flex items-center justify-between px-6 py-3">
         <p className="text-sm text-gray-500">
-          {items.length} item{items.length !== 1 ? 's' : ''}
+          {t('board.itemCount', { count: items.length })}
         </p>
         {totalCapacity > 0 && (
           <div className="flex items-center gap-2 text-sm">
@@ -192,10 +191,10 @@ export function BoardPage() {
               'font-medium',
               totalInProgress > totalCapacity ? 'text-red-600' : 'text-gray-500'
             )}>
-              {totalInProgress} / {totalCapacity} pts in flight
+              {t('board.ptsInFlight', { inProgress: totalInProgress, capacity: totalCapacity })}
             </span>
             {totalInProgress > totalCapacity && (
-              <span className="text-xs text-red-500">&#x26A0; Over capacity</span>
+              <span className="text-xs text-red-500">&#x26A0; {t('board.overCapacity')}</span>
             )}
           </div>
         )}

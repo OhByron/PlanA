@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "create": "Aanmaken",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "add": "Toevoegen",
+    "remove": "Verwijderen",
+    "dismiss": "Sluiten",
+    "close": "Sluiten",
+    "loading": "Laden...",
+    "send": "Verzenden",
+    "open": "Openen",
+    "archive": "Archiveren",
+    "restore": "Herstellen",
+    "report": "Rapport",
+    "settings": "Instellingen",
+    "gotIt": "Begrepen",
+    "tryAgain": "Opnieuw proberen",
+    "signOut": "Uitloggen",
+    "signIn": "Inloggen",
+    "whatsThis": "Wat is dit?",
+    "help": "Help",
+    "error": "Fout: {{message}}",
+    "thinking": "Bezig...",
+    "generating": "Genereren...",
+    "language": "Taal"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, echt waar."
+  },
+
+  "nav": {
+    "board": "Bord",
+    "backlog": "Backlog",
+    "epics": "Epics",
+    "sprints": "Sprints",
+    "reports": "Rapporten",
+    "report": "Rapport",
+    "team": "Team",
+    "settings": "Instellingen",
+    "project": "Project"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Zijbalk uitvouwen",
+    "collapseSidebar": "Zijbalk invouwen",
+    "myWork": "Mijn Werk",
+    "organisations": "Organisaties",
+    "noOrganisationsYet": "Nog geen organisaties",
+    "toggle": "Schakel {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Meldingen",
+    "markAllRead": "Alles als gelezen markeren",
+    "noNotificationsYet": "Nog geen meldingen",
+    "justNow": "zojuist",
+    "minutesAgo": "{{count}}m geleden",
+    "hoursAgo": "{{count}}u geleden",
+    "daysAgo": "{{count}}d geleden"
+  },
+
+  "notifications": {
+    "assigned": "Je bent toegewezen aan \"{{title}}\"",
+    "statusChanged": "Status gewijzigd voor \"{{title}}\"",
+    "commentAdded": "Nieuw commentaar op \"{{title}}\"",
+    "mentioned": "Je bent genoemd in \"{{title}}\"",
+    "default": "Melding: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Gereed",
+    "in_progress": "In Uitvoering",
+    "in_review": "In Review",
+    "done": "Afgerond",
+    "cancelled": "Geannuleerd"
+  },
+
+  "priority": {
+    "urgent": "Urgent",
+    "high": "Hoog",
+    "medium": "Gemiddeld",
+    "low": "Laag"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Task"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Actief",
+    "planned": "Gepland",
+    "completed": "Afgerond",
+    "cancelled": "Geannuleerd"
+  },
+
+  "roles": {
+    "pm": "Projectmanager",
+    "po": "Product Owner",
+    "bsa": "Business Systems Analyst",
+    "ba": "Business Analyst",
+    "qe": "Quality Engineer",
+    "ux": "UX-ontwerper",
+    "dev": "Ontwikkelaar"
+  },
+
+  "login": {
+    "continueWithGitHub": "Doorgaan met GitHub",
+    "continueWithGoogle": "Doorgaan met Google",
+    "orSignInWithEmail": "of inloggen met email",
+    "emailAddress": "E-mailadres",
+    "password": "Wachtwoord",
+    "loginFailed": "Inloggen mislukt",
+    "devOnly": "alleen dev",
+    "devLogin": "Dev Login (OAuth overslaan)"
+  },
+
+  "authError": {
+    "title": "Inloggen mislukt",
+    "badState": "De inlogsessie is verlopen. Probeer het opnieuw.",
+    "csrf": "Beveiligingscontrole mislukt. Probeer het opnieuw.",
+    "exchangeFailed": "Kon het inloggen bij de provider niet voltooien. Probeer het opnieuw.",
+    "dbError": "Er is een serverfout opgetreden. Probeer het later opnieuw.",
+    "missingToken": "Er is geen authenticatietoken ontvangen.",
+    "default": "Er is een onverwachte fout opgetreden tijdens het inloggen."
+  },
+
+  "myWork": {
+    "title": "Mijn Werk",
+    "itemCount": "{{count}} item aan jou toegewezen",
+    "itemCount_other": "{{count}} items aan jou toegewezen",
+    "noItems": "Geen items aan jou toegewezen.",
+    "noItemsHelp": "Items verschijnen hier wanneer je bent toegevoegd als projectteamlid en stories of tasks aan je zijn toegewezen. Zorg ervoor dat je account-e-mail overeenkomt met je teamlid-e-mail, of dat je een uitnodiging hebt geaccepteerd."
+  },
+
+  "orgs": {
+    "title": "Organisaties",
+    "orgCount": "{{count}} organisatie",
+    "orgCount_other": "{{count}} organisaties",
+    "showArchived": "Gearchiveerde tonen",
+    "newOrganisation": "+ Nieuwe Organisatie",
+    "noOrgsYet": "Nog geen organisaties. Maak er een aan om te beginnen.",
+    "archived": "Gearchiveerd",
+    "confirmDelete": "Deze organisatie en al haar gegevens permanent verwijderen?",
+    "added": "Toegevoegd op {{date}}",
+    "newOrg": "Nieuwe Organisatie",
+    "orgName": "Organisatienaam",
+    "orgNameRequired": "Organisatienaam *",
+    "contactName": "Contactpersoon",
+    "contactEmail": "Contact-e-mail",
+    "contactPhone": "Contacttelefoon",
+    "addressLine1": "Adresregel 1",
+    "addressLine2": "Adresregel 2",
+    "city": "Stad",
+    "state": "Provincie",
+    "postalCode": "Postcode",
+    "country": "Land"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Alle organisaties",
+    "editDetails": "Details Bewerken",
+    "noContactDetails": "Nog geen contactgegevens. Klik op \"Details Bewerken\" om ze toe te voegen.",
+    "contact": "Contact:",
+    "email": "E-mail:",
+    "phone": "Telefoon:",
+    "location": "Locatie:",
+    "projects": "Projecten ({{count}})",
+    "newProject": "+ Nieuw Project",
+    "noProjectsYet": "Nog geen projecten. Maak er een aan om te beginnen.",
+    "newProjectTitle": "Nieuw Project",
+    "projectName": "Projectnaam",
+    "projectNameRequired": "Projectnaam *",
+    "description": "Beschrijving",
+    "methodology": "Methodologie",
+    "dueDate": "Deadline",
+    "customerContact": "Klantcontact",
+    "createProject": "Project Aanmaken",
+    "whatIsThisProjectAbout": "Waar gaat dit project over?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Ongeldige Uitnodiging",
+    "invalidLink": "Deze uitnodigingslink is niet geldig.",
+    "goToLogin": "Ga naar Login",
+    "alreadyAccepted": "Reeds Geaccepteerd",
+    "alreadyAcceptedMessage": "Deze uitnodiging is al gebruikt. Je kunt inloggen met je inloggegevens.",
+    "expired": "Uitnodiging Verlopen",
+    "expiredMessage": "Deze uitnodiging is verlopen. Vraag je team om een nieuwe te sturen.",
+    "invitedToJoin": "Je bent uitgenodigd om deel te nemen aan een project",
+    "emailLabel": "E-mail",
+    "yourName": "Je Naam",
+    "passwordLabel": "Wachtwoord",
+    "confirmPassword": "Wachtwoord Bevestigen",
+    "minChars": "Minimaal 8 tekens",
+    "repeatPassword": "Herhaal je wachtwoord",
+    "passwordTooShort": "Wachtwoord moet minimaal 8 tekens bevatten",
+    "passwordsMismatch": "Wachtwoorden komen niet overeen",
+    "createAccountJoin": "Account Aanmaken en Deelnemen",
+    "creatingAccount": "Account aanmaken...",
+    "alreadyHaveAccount": "Heb je al een account?",
+    "logIn": "Inloggen"
+  },
+
+  "board": {
+    "helpTitle": "Jouw Kanban Board",
+    "helpBody1": "Dit is het werk van je team gevisualiseerd als een stroom. Elke kolom vertegenwoordigt een fase in je workflow.",
+    "helpBody2": "Sleep kaarten tussen kolommen om hun status direct bij te werken. Wanneer je een story verplaatst, verplaatsen de onderliggende tasks mee.",
+    "helpBody3": "Houd de kolom \"In Uitvoering\" klein; het beperken van werk-in-uitvoering helpt je team dingen af te maken in plaats van nieuwe te beginnen.",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} pts in uitvoering",
+    "overCapacity": "Boven capaciteit",
+    "noItems": "Geen items",
+    "column": "{{status}} kolom"
+  },
+
+  "backlog": {
+    "helpTitle": "Jouw Backlog",
+    "helpBody1": "De backlog is je geprioriteerde lijst met werk. Items bovenaan hebben de hoogste prioriteit.",
+    "helpBody2": "Sleep items via de greep om te herprioriteren. Gebruik de filters om te focussen op stories, bugs of specifieke statussen.",
+    "helpBody3": "Klik op + Nieuw Item om snel stories of tasks toe te voegen.",
+    "allStatuses": "Alle statussen",
+    "allTypes": "Alle typen",
+    "stories": "Stories",
+    "bugs": "Bugs",
+    "tasks": "Tasks",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "newItem": "+ Nieuw Item",
+    "noItemsMatch": "Geen items komen overeen met je filters. Probeer ze aan te passen of maak een nieuw item aan."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint Planning",
+    "helpBody1": "Sprints zijn tijdsgebonden iteraties (meestal 2 weken). Trek stories uit de backlog naar een sprint om het werk van je team te plannen.",
+    "helpBody2": "Houd de capaciteitsindicator in de gaten om het team niet te overbelasten.",
+    "title": "Sprints",
+    "noSprintsYet": "Nog geen sprints. Maak er een aan om te beginnen met plannen.",
+    "pts": "{{count}} pts"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Terug naar board",
+    "partOf": "Onderdeel van:",
+    "clickToEdit": "Klik om te bewerken",
+    "description": "Beschrijving",
+    "descPlaceholder": "Beschrijf de vereiste, het doel en de context...",
+    "suggest": "Voorstellen",
+    "clickToAddDescription": "Klik om een beschrijving toe te voegen...",
+    "details": "Details",
+    "statusLabel": "Status",
+    "typeLabel": "Type",
+    "priorityLabel": "Prioriteit",
+    "assigneeLabel": "Toegewezen aan",
+    "unassigned": "Niet toegewezen",
+    "totalPoints": "Totaal Punten",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Voor stories zijn punten de som van alle taskpunten. Voeg punten toe aan individuele tasks tijdens het refinement.",
+    "taskPointsHelp": "Schat de relatieve inspanning. Veelgebruikte schalen: 1, 2, 3, 5, 8, 13. Een \"1\" is het eenvoudigste dat je team doet.",
+    "sumOfTasks": "Som van {{count}} task",
+    "sumOfTasks_other": "Som van {{count}} tasks",
+    "largeStoryWarning": "Deze story heeft {{points}} punten. Overweeg om deze op te splitsen in kleinere stories die elk in één sprint afgerond kunnen worden.",
+    "blocked": "Geblokkeerd",
+    "blockedBy": "Geblokkeerd door:",
+    "notBlocked": "Niet geblokkeerd",
+    "labels": "Labels",
+    "convertToStory": "Omzetten naar Story",
+    "convertToStoryConfirm": "Deze task omzetten naar een story? Er blijft een afhankelijkheidslink naar de oorspronkelijke story bestaan.",
+    "convertToStoryHelp": "Promoveert deze task naar een onafhankelijke story met een afhankelijkheidslink",
+    "created": "Aangemaakt op {{date}}",
+    "updated": "Bijgewerkt op {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Tasks ({{count}})",
+    "contextHelp": "Tasks splitsen een story op in werk per discipline, UX-ontwerp, backend-dev, frontend-dev, QE-testen, enz. Elke task kan worden toegewezen aan een teamlid.",
+    "suggestTasks": "Tasks Voorstellen",
+    "addTask": "+ Task Toevoegen",
+    "noTasksYet": "Nog geen tasks.",
+    "taskTitlePlaceholder": "Tasktitel (bijv. 'UX: Ontwerp loginscherm')",
+    "suggestedTasks": "Voorgestelde tasks, klik om toe te voegen:",
+    "pts": "{{count}} pts",
+    "clarificationNeeded": "Verduidelijking nodig:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Acceptatiecriteria",
+    "contextHelp": "Acceptatiecriteria definiëren wanneer dit item echt \"afgerond\" is. Geschreven in Given / When / Then formaat (BDD), maken ze verwachtingen expliciet en testbaar. Elk criterium is een specifieke, verifieerbare voorwaarde, geen vaag verlangen.",
+    "addButton": "+ Toevoegen",
+    "suggestAC": "AC Voorstellen",
+    "noCriteriaYet": "Nog geen acceptatiecriteria. Definieer de voorwaarden voor \"afgerond\".",
+    "given": "Gegeven",
+    "when": "Wanneer",
+    "then": "Dan",
+    "deleteAC": "Acceptatiecriterium verwijderen",
+    "givenPlaceholder": "Gegeven...",
+    "whenPlaceholder": "Wanneer...",
+    "thenPlaceholder": "Dan...",
+    "aiSuggestions": "AI-suggesties, klik om toe te voegen:",
+    "aiNeedsMoreInfo": "De AI heeft meer informatie nodig:"
+  },
+
+  "comments": {
+    "title": "Opmerkingen",
+    "noCommentsYet": "Nog geen opmerkingen.",
+    "addComment": "Opmerking toevoegen..."
+  },
+
+  "dependencies": {
+    "title": "Afhankelijkheden",
+    "contextHelp": "Afhankelijkheden volgen relaties tussen items. \"Hangt af van\" betekent dat dit item niet kan doorgaan totdat het doel is afgerond. \"Gerelateerd aan\" is een informatieve link.",
+    "noDependencies": "Geen afhankelijkheden.",
+    "dependsOn": "Hangt af van",
+    "relatesTo": "Gerelateerd aan",
+    "dependedOnBy": "Afhankelijkheid van",
+    "removeDependency": "Afhankelijkheid verwijderen",
+    "selectItem": "Selecteer een item..."
+  },
+
+  "links": {
+    "title": "Links",
+    "addLink": "+ Link Toevoegen",
+    "noLinksYet": "Nog geen links.",
+    "labelPlaceholder": "Label (bijv. GitHub PR, Figma, Testresultaten, Docs)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Link verwijderen"
+  },
+
+  "testResults": {
+    "retestRequired": "Hertest vereist",
+    "retestMessage": "Dit defect heeft {{count}} falende test(s). Upload nieuwe testresultaten (JUnit XML of webhook) nadat de fix is uitgerold om de QE-controle te passeren en dit item te sluiten.",
+    "title": "Testresultaten",
+    "passed": "geslaagd",
+    "failed": "gefaald",
+    "errors": "fouten",
+    "skipped": "overgeslagen",
+    "lastRun": "Laatste uitvoering: {{date}}",
+    "sourceTestFailure": "Bron Testfout",
+    "suite": "Suite: {{name}}",
+    "duration": "Duur: {{ms}}ms",
+    "source": "Bron: {{source}} | Gemeld: {{date}}",
+    "generateDescAC": "Beschrijving en ACs Genereren"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Sluiten",
+    "close": "Sluiten"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Begin met typen...",
+    "bold": "Vetgedrukt",
+    "italic": "Cursief",
+    "inlineCode": "Inline code",
+    "heading": "Koptekst",
+    "subheading": "Subkoptekst",
+    "bulletList": "Opsommingslijst",
+    "numberedList": "Genummerde lijst",
+    "quote": "Citaat",
+    "codeBlock": "Codeblok"
+  },
+
+  "createEpic": {
+    "button": "+ Nieuwe Epic",
+    "title": "Epic Aanmaken",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "bijv. Gebruikersauthenticatie",
+    "descriptionLabel": "Beschrijving",
+    "descriptionPlaceholder": "Bedrijfsdoel en omvang van deze epic...",
+    "priorityLabel": "Prioriteit",
+    "assigneeLabel": "Toegewezen aan"
+  },
+
+  "createProject": {
+    "button": "+ Nieuw Project",
+    "title": "Project Aanmaken",
+    "organisationLabel": "Organisatie",
+    "selectOrg": "Selecteer organisatie...",
+    "teamLabel": "Team",
+    "selectTeam": "Selecteer team...",
+    "projectNameLabel": "Projectnaam",
+    "projectNamePlaceholder": "bijv. PlanA MVP",
+    "descriptionLabel": "Beschrijving",
+    "descriptionPlaceholder": "Waar gaat dit project over?",
+    "methodologyLabel": "Methodologie"
+  },
+
+  "createSprint": {
+    "button": "+ Nieuwe Sprint",
+    "title": "Sprint Aanmaken",
+    "nameLabel": "Naam",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Doel",
+    "goalPlaceholder": "Wat moet deze sprint bereiken?",
+    "startDateLabel": "Startdatum",
+    "endDateLabel": "Einddatum"
+  },
+
+  "createTeam": {
+    "button": "+ Nieuw Team",
+    "title": "Team Aanmaken",
+    "organisationLabel": "Organisatie",
+    "selectOrg": "Selecteer organisatie...",
+    "teamNameLabel": "Teamnaam",
+    "teamNamePlaceholder": "bijv. Backend Squad"
+  },
+
+  "quickCreate": {
+    "placeholder": "Wat moet er gedaan worden?"
+  },
+
+  "workItemCard": {
+    "open": "Open {{title}}",
+    "taskCount": "{{count}} task",
+    "taskCount_other": "{{count}} tasks"
+  },
+
+  "reports": {
+    "helpTitle": "Projectrapporten",
+    "helpBody1": "Rapporten geven je inzicht in de levering van je team. Velocity toont hoeveel punten je per sprint afrond; dit stabiliseert na verloop van tijd.",
+    "helpBody2": "Gebruik de sprintvoortgangs- en teambelastingsgrafieken om knelpunten vroegtijdig op te sporen.",
+    "title": "Rapporten",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story points afgerond per sprint",
+    "noCompletedSprints": "Nog geen afgeronde sprints. Velocity verschijnt na je eerste afgeronde sprint.",
+    "trend": "Trend",
+    "threeSprintAvg": "Gemiddelde over 3 sprints",
+    "avgVelocity": "Gemiddelde velocity:",
+    "pointsPerSprint": "punten/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Afgerond: {{points}} pts",
+    "inProgress": "In Uitvoering: {{points}} pts",
+    "inReview": "In Review: {{points}} pts",
+    "remaining": "Resterend: {{points}} pts",
+    "daysLeft": "{{count}} dagen over",
+    "epicProgress": "Epic Voortgang",
+    "epicProgressSubtitle": "Afgeronde stories per epic",
+    "noEpics": "Nog geen epics gedefinieerd.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Teambelasting",
+    "teamWorkloadSubtitle": "Toegewezen punten in de actieve sprint",
+    "noWorkload": "Geen items toegewezen in de actieve sprint.",
+    "pts": "{{points}} pts ({{count}})",
+    "blockedItems": "Geblokkeerde Items",
+    "blockedSubtitle": "{{count}} item momenteel geblokkeerd",
+    "blockedSubtitle_other": "{{count}} items momenteel geblokkeerd",
+    "noBlocked": "Geen geblokkeerde items. Goed werk!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Resterende story points vs ideaal",
+    "noBurndownData": "Nog geen burndown-gegevens. Gegevens verschijnen wanneer items van status veranderen tijdens de sprint.",
+    "ideal": "Ideaal",
+    "actual": "Werkelijk",
+    "onTrack": "Op schema",
+    "behind": "Achter"
+  },
+
+  "team": {
+    "title": "Team",
+    "memberCount": "{{count}} lid",
+    "memberCount_other": "{{count}} leden",
+    "addMember": "+ Lid Toevoegen",
+    "noMembersYet": "Nog geen teamleden. Voeg mensen toe om werk toe te wijzen.",
+    "confirmRemove": "{{name}} uit het team verwijderen?",
+    "invite": "Uitnodigen",
+    "inviteLink": "Uitnodigingslink:",
+    "copy": "Kopieer",
+    "ptsPerSprint": "{{count}} pts/sprint",
+    "addTeamMember": "Teamlid Toevoegen",
+    "nameRequired": "Naam *",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefoon",
+    "roleRequired": "Rol *",
+    "capacity": "Capaciteit",
+    "capacityPlaceholder": "pts/sprint",
+    "nameLabel": "Naam",
+    "roleLabel": "Rol"
+  },
+
+  "aiSettings": {
+    "title": "AI-configuratie",
+    "description": "Configureer een AI-provider om suggesties voor acceptatiecriteria, story-decompositie en release-notes in te schakelen. Je gebruikt je eigen API-sleutel; PlanA slaat niets op en routeert niet via een gedeeld account.",
+    "provider": "Provider",
+    "notConfigured": "Niet geconfigureerd",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Aangepast (OpenAI-compatibel)",
+    "model": "Model",
+    "selectModel": "Selecteer model...",
+    "modelPlaceholder": "Model-ID (bijv. my-custom-model)",
+    "apiKey": "API-sleutel",
+    "currentKey": "Huidig: {{key}}",
+    "enterApiKey": "Voer API-sleutel in",
+    "apiKeyHelp": "Je sleutel wordt versleuteld opgeslagen per project. Laat leeg om de huidige sleutel te behouden.",
+    "endpointUrl": "Endpoint-URL",
+    "saving": "Opslaan...",
+    "settingsSaved": "Instellingen opgeslagen",
+    "stakeholderSharing": "Stakeholder Delen",
+    "sharingDescription": "Maak deelbare links aan waarmee stakeholders een alleen-lezen projectdashboard kunnen bekijken. Geen login vereist; de link is de toegang.",
+    "label": "Label",
+    "labelPlaceholder": "bijv. Klant, Stuurgroep",
+    "expiresIn": "Verloopt over",
+    "days30": "30 dagen",
+    "days90": "90 dagen",
+    "days180": "180 dagen",
+    "year1": "1 jaar",
+    "never": "Nooit",
+    "createLink": "Link Aanmaken",
+    "creating": "Aanmaken...",
+    "noActiveLinks": "Geen actieve deellinks.",
+    "created": "Aangemaakt op {{date}}",
+    "expires": "Verloopt op {{date}}",
+    "copyLink": "Link Kopieer",
+    "copied": "Gekopieerd!",
+    "revoke": "Intrekken",
+    "revoked": "Ingetrokken",
+    "revokedDate": "Ingetrokken op {{date}}"
+  },
+
+  "reportView": {
+    "title": "Rapporten",
+    "generateProject": "Projectrapport",
+    "generateSprint": "Sprintrapport",
+    "generating": "Genereren...",
+    "generateDescription": "Genereer een uitgebreid rapport op basis van je projectgegevens.",
+    "exportPdf": "Exporteer PDF",
+    "back": "Terug",
+    "generated": "Gegenereerd op {{date}}",
+    "executiveSummary": "Samenvatting",
+    "metrics": "Kengetallen",
+    "items": "Items",
+    "points": "Punten",
+    "completion": "Voltooiing",
+    "testPassRate": "Testslaagpercentage",
+    "epicBreakdown": "Uitsplitsing per Epic",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Acceptatiecriteria",
+    "testCoverageColumn": "Testdekking",
+    "defects": "Defecten",
+    "total": "Totaal",
+    "open": "Open",
+    "resolved": "Opgelost",
+    "criticalOpen": "Kritiek (open)",
+    "testEvidence": "Testbewijzen",
+    "totalTests": "Totaal tests",
+    "passed": "Geslaagd",
+    "failed": "Gefaald",
+    "errors": "Fouten",
+    "skipped": "Overgeslagen",
+    "currentBlockers": "Huidige blokkades",
+    "velocityHistory": "Velocity-geschiedenis",
+    "generatedBy": "Gegenereerd door PlanA"
+  },
+
+  "shareDashboard": {
+    "title": "Stakeholder Dashboard",
+    "invalidLink": "Ongeldige of verlopen link",
+    "poweredBy": "Mogelijk gemaakt door PlanA",
+    "activeSprint": "Actieve Sprint",
+    "noActiveSprint": "Geen actieve sprint",
+    "goal": "Doel:",
+    "items": "Items",
+    "points": "Punten",
+    "recentlyCompleted": "Recentelijk Afgerond",
+    "noCompletedItems": "Nog geen afgeronde items.",
+    "defects": "Defecten",
+    "openDefects": "Open",
+    "closedDefects": "Gesloten",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Story Voortgang"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Terug naar sprints",
+    "start": "Start:",
+    "end": "Einde:",
+    "capacity": "{{points}} / {{capacity}} capaciteit",
+    "storyPoints": "{{count}} story points",
+    "storiesAndItems": "{{stories}} stories, {{items}} items totaal",
+    "done": "Afgerond",
+    "addStories": "+ Stories Toevoegen",
+    "startSprint": "Sprint Starten",
+    "completeSprint": "Sprint Afronden",
+    "addStoriesToSprint": "Stories toevoegen aan sprint ({{count}} beschikbaar)",
+    "allStoriesAssigned": "Alle stories zitten al in een sprint of zijn afgerond.",
+    "noItemsYet": "Nog geen items in deze sprint. Klik op '+ Stories Toevoegen' om uit de backlog te halen.",
+    "removeStoryAndTasks": "Story en tasks uit sprint verwijderen",
+    "removeFromSprint": "Uit sprint verwijderen",
+    "standaloneTasks": "Losstaande Tasks",
+    "adding": "Toevoegen...",
+    "tasks": "{{count}} tasks"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Terug naar epics",
+    "description": "Beschrijving",
+    "descPlaceholder": "Beschrijf het bedrijfsdoel en de omvang...",
+    "clickToAddDescription": "Klik om een beschrijving toe te voegen...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories zijn de leverbare doelen van deze epic. Elke story vertegenwoordigt een specifiek gebruikersresultaat dat binnen een enkele sprint kan worden afgerond.",
+    "addStory": "+ Story Toevoegen",
+    "noStoriesYet": "Nog geen stories in deze epic. Voeg er een toe om de doelen te bepalen.",
+    "details": "Details",
+    "statusLabel": "Status",
+    "priorityLabel": "Prioriteit",
+    "assigneeLabel": "Toegewezen aan",
+    "addStoryToEpic": "Story Toevoegen aan Epic",
+    "titleRequired": "Titel *",
+    "titleHint": "(Als [rol] wil ik [doel], zodat [voordeel])",
+    "titlePlaceholder": "Als [rol] wil ik [doel], zodat [voordeel]",
+    "descriptionLabel": "Beschrijving",
+    "descriptionPlaceholder": "Context, vereisten en details...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Er wordt automatisch een task aangemaakt voor de toegewezene met {{points}} punt(en). Punten zitten altijd op tasks.",
+    "largeStoryWarning": "Grote story ({{points}} punten). Overweeg deze op te splitsen in kleinere stories die elk in een enkele sprint kunnen worden afgerond. Kleinere stories zijn makkelijker te schatten, testen en leveren.",
+    "acceptanceCriteria": "Acceptatiecriteria",
+    "acContextHelp": "Definieer wanneer deze story 'afgerond' is. Elk criterium moet specifiek en testbaar zijn.",
+    "addCriterion": "+ Criterium toevoegen",
+    "givenPlaceholder": "een voorwaarde of context...",
+    "whenPlaceholder": "een actie of gebeurtenis...",
+    "thenPlaceholder": "het verwachte resultaat...",
+    "createRelatedTasks": "Gerelateerde tasks aanmaken?",
+    "autoAssignHint": "(automatisch toegewezen aan teamleden op basis van rol)",
+    "uxDesign": "UX-ontwerp",
+    "qeTesting": "QE-testen",
+    "bsaAnalysis": "BSA-analyse",
+    "creating": "Aanmaken...",
+    "createStory": "Story Aanmaken"
+  },
+
+  "epics": {
+    "helpTitle": "Epics",
+    "helpBody1": "Epics zijn groepen op functieniveau. Elke epic bevat gerelateerde stories die samen een bedrijfscapabiliteit opleveren.",
+    "helpBody2": "Klik op een epic om de stories te zien, nieuwe toe te voegen en de voortgang te volgen.",
+    "title": "Epics",
+    "noEpicsYet": "Nog geen epics. Epics groeperen gerelateerde stories in functionele leveringen.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  }
+}

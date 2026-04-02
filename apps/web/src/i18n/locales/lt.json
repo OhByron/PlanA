@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atsisakyti",
+    "create": "Sukurti",
+    "delete": "Ištrinti",
+    "edit": "Redaguoti",
+    "add": "Pridėti",
+    "remove": "Pašalinti",
+    "dismiss": "Atmesti",
+    "close": "Uždaryti",
+    "loading": "Kraunama...",
+    "send": "Siųsti",
+    "open": "Atidaryti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "report": "Ataskaita",
+    "settings": "Nustatymai",
+    "gotIt": "Supratau",
+    "tryAgain": "Bandyti dar kartą",
+    "signOut": "Atsijungti",
+    "signIn": "Prisijungti",
+    "whatsThis": "Kas tai?",
+    "help": "Pagalba",
+    "error": "Klaida: {{message}}",
+    "thinking": "Galvoju...",
+    "generating": "Generuojama...",
+    "language": "Kalba"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile iš tikrųjų."
+  },
+
+  "nav": {
+    "board": "Lenta",
+    "backlog": "Backlog",
+    "epics": "Epic'ai",
+    "sprints": "Sprint'ai",
+    "reports": "Ataskaitos",
+    "report": "Ataskaita",
+    "team": "Komanda",
+    "settings": "Nustatymai",
+    "project": "Projektas"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Išplėsti šoninę juostą",
+    "collapseSidebar": "Sutraukti šoninę juostą",
+    "myWork": "Mano darbai",
+    "organisations": "Organizacijos",
+    "noOrganisationsYet": "Kol kas nėra organizacijų",
+    "toggle": "Perjungti {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Pranešimai",
+    "markAllRead": "Pažymėti visus skaitytais",
+    "noNotificationsYet": "Kol kas nėra pranešimų",
+    "justNow": "ką tik",
+    "minutesAgo": "prieš {{count}} min",
+    "hoursAgo": "prieš {{count}} val",
+    "daysAgo": "prieš {{count}} d"
+  },
+
+  "notifications": {
+    "assigned": "Jums priskirta \"{{title}}\"",
+    "statusChanged": "Būsena pakeista \"{{title}}\"",
+    "commentAdded": "Naujas komentaras \"{{title}}\"",
+    "mentioned": "Jūs paminėtas \"{{title}}\"",
+    "default": "Pranešimas: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Paruošta",
+    "in_progress": "Vykdoma",
+    "in_review": "Peržiūrima",
+    "done": "Atlikta",
+    "cancelled": "Atšaukta"
+  },
+
+  "priority": {
+    "urgent": "Skubus",
+    "high": "Aukštas",
+    "medium": "Vidutinis",
+    "low": "Žemas"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Užduotis"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktyvus",
+    "planned": "Suplanuotas",
+    "completed": "Baigtas",
+    "cancelled": "Atšauktas"
+  },
+
+  "roles": {
+    "pm": "Projekto vadovas",
+    "po": "Produkto savininkas",
+    "bsa": "Verslo sistemų analitikas",
+    "ba": "Verslo analitikas",
+    "qe": "Kokybės inžinierius",
+    "ux": "UX dizaineris",
+    "dev": "Programuotojas"
+  },
+
+  "login": {
+    "continueWithGitHub": "Tęsti su GitHub",
+    "continueWithGoogle": "Tęsti su Google",
+    "orSignInWithEmail": "arba prisijunkite el. paštu",
+    "emailAddress": "El. pašto adresas",
+    "password": "Slaptažodis",
+    "loginFailed": "Prisijungti nepavyko",
+    "devOnly": "tik kūrimo aplinkai",
+    "devLogin": "Kūrimui skirtas prisijungimas (be OAuth)"
+  },
+
+  "authError": {
+    "title": "Prisijungti nepavyko",
+    "badState": "Prisijungimo sesija pasibaigė. Bandykite dar kartą.",
+    "csrf": "Saugumo patikra nepavyko. Bandykite dar kartą.",
+    "exchangeFailed": "Nepavyko užbaigti prisijungimo per tiekėją. Bandykite dar kartą.",
+    "dbError": "Įvyko serverio klaida. Bandykite vėliau.",
+    "missingToken": "Negautas autentifikacijos žymeklis.",
+    "default": "Prisijungimo metu įvyko netikėta klaida."
+  },
+
+  "myWork": {
+    "title": "Mano darbai",
+    "itemCount": "Jums priskirtas {{count}} elementas",
+    "itemCount_other": "Jums priskirta {{count}} elementų",
+    "noItems": "Nėra priskirtų elementų.",
+    "noItemsHelp": "Elementai čia pasirodys, kai būsite pridėtas kaip projekto komandos narys ir jums bus priskirtos stories arba užduotys. Įsitikinkite, kad jūsų paskyros el. paštas sutampa su komandos nario el. paštu arba kad priėmėte kvietimą."
+  },
+
+  "orgs": {
+    "title": "Organizacijos",
+    "orgCount": "{{count}} organizacija",
+    "orgCount_other": "{{count}} organizacijos",
+    "showArchived": "Rodyti archyvuotas",
+    "newOrganisation": "+ Nauja organizacija",
+    "noOrgsYet": "Kol kas nėra organizacijų. Sukurkite vieną, kad pradėtumėte.",
+    "archived": "Archyvuota",
+    "confirmDelete": "Neatstatomai ištrinti šią organizaciją ir visus jos duomenis?",
+    "added": "Pridėta {{date}}",
+    "newOrg": "Nauja organizacija",
+    "orgName": "Organizacijos pavadinimas",
+    "orgNameRequired": "Organizacijos pavadinimas *",
+    "contactName": "Kontaktinis asmuo",
+    "contactEmail": "Kontaktinis el. paštas",
+    "contactPhone": "Kontaktinis telefonas",
+    "addressLine1": "Adreso 1 eilutė",
+    "addressLine2": "Adreso 2 eilutė",
+    "city": "Miestas",
+    "state": "Apskritis",
+    "postalCode": "Pašto kodas",
+    "country": "Šalis"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Visos organizacijos",
+    "editDetails": "Redaguoti detales",
+    "noContactDetails": "Kol kas nėra kontaktinių duomenų. Spauskite \"Redaguoti detales\", kad pridėtumėte.",
+    "contact": "Kontaktas:",
+    "email": "El. paštas:",
+    "phone": "Telefonas:",
+    "location": "Vieta:",
+    "projects": "Projektai ({{count}})",
+    "newProject": "+ Naujas projektas",
+    "noProjectsYet": "Kol kas nėra projektų. Sukurkite vieną, kad pradėtumėte.",
+    "newProjectTitle": "Naujas projektas",
+    "projectName": "Projekto pavadinimas",
+    "projectNameRequired": "Projekto pavadinimas *",
+    "description": "Aprašymas",
+    "methodology": "Metodologija",
+    "dueDate": "Terminas",
+    "customerContact": "Kliento kontaktas",
+    "createProject": "Sukurti projektą",
+    "whatIsThisProjectAbout": "Apie ką šis projektas?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Negaliojantis kvietimas",
+    "invalidLink": "Ši kvietimo nuoroda negalioja.",
+    "goToLogin": "Eiti į prisijungimą",
+    "alreadyAccepted": "Jau priimtas",
+    "alreadyAcceptedMessage": "Šis kvietimas jau panaudotas. Galite prisijungti su savo duomenimis.",
+    "expired": "Kvietimas pasibaigė",
+    "expiredMessage": "Šio kvietimo galiojimas pasibaigė. Paprašykite komandos atsiųsti naują.",
+    "invitedToJoin": "Jūs pakviesti prisijungti prie projekto",
+    "emailLabel": "El. paštas",
+    "yourName": "Jūsų vardas",
+    "passwordLabel": "Slaptažodis",
+    "confirmPassword": "Patvirtinkite slaptažodį",
+    "minChars": "Mažiausiai 8 simboliai",
+    "repeatPassword": "Pakartokite slaptažodį",
+    "passwordTooShort": "Slaptažodis turi būti bent 8 simbolių",
+    "passwordsMismatch": "Slaptažodžiai nesutampa",
+    "createAccountJoin": "Sukurti paskyrą ir prisijungti",
+    "creatingAccount": "Kuriama paskyra...",
+    "alreadyHaveAccount": "Jau turite paskyrą?",
+    "logIn": "Prisijungti"
+  },
+
+  "board": {
+    "helpTitle": "Jūsų Kanban lenta",
+    "helpBody1": "Tai jūsų komandos darbas, atvaizduotas kaip srautų diagrama. Kiekvienas stulpelis atitinka darbo eigos etapą.",
+    "helpBody2": "Vilkite korteles tarp stulpelių, kad iškart atnaujintumėte būseną. Kai perkeliate story, vaikiniu užduotys persikelia kartu.",
+    "helpBody3": "Stulpelį \"Vykdoma\" laikykite mažą; nebaigtų darbų ribojimas padeda komandai baigti dalykus, o ne pradėti naujus.",
+    "itemCount": "{{count}} elementas",
+    "itemCount_other": "{{count}} elementų",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} tašk. vykdoma",
+    "overCapacity": "Viršytas pajėgumas",
+    "noItems": "Nėra elementų",
+    "column": "{{status}} stulpelis"
+  },
+
+  "backlog": {
+    "helpTitle": "Jūsų Backlog",
+    "helpBody1": "Backlog yra jūsų prioritetizuotas darbų sąrašas. Elementai viršuje turi aukščiausią prioritetą.",
+    "helpBody2": "Vilkite elementus už rankenų, kad pakeistumėte prioritetą. Naudokite filtrus, kad susitelktumėte į stories, klaidas arba konkrečias būsenas.",
+    "helpBody3": "Spauskite \"+ Naujas elementas\", kad greitai pridėtumėte stories arba užduotis.",
+    "allStatuses": "Visos būsenos",
+    "allTypes": "Visi tipai",
+    "stories": "Stories",
+    "bugs": "Bug'ai",
+    "tasks": "Užduotys",
+    "itemCount": "{{count}} elementas",
+    "itemCount_other": "{{count}} elementų",
+    "newItem": "+ Naujas elementas",
+    "noItemsMatch": "Jokie elementai neatitinka jūsų filtrų. Pabandykite juos pakoreguoti arba sukurkite naują elementą."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint'o planavimas",
+    "helpBody1": "Sprint'ai yra laiko ribojamos iteracijos (paprastai 2 savaitės). Ištraukite stories iš Backlog į Sprint'ą, kad suplanuotumėte komandos darbą.",
+    "helpBody2": "Stebėkite pajėgumo rodiklį, kad neapkrautumėte komandos.",
+    "title": "Sprint'ai",
+    "noSprintsYet": "Kol kas nėra Sprint'ų. Sukurkite vieną, kad pradėtumėte planuoti.",
+    "pts": "{{count}} tašk."
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Grįžti į lentą",
+    "partOf": "Dalis:",
+    "clickToEdit": "Spauskite, kad redaguotumėte",
+    "description": "Aprašymas",
+    "descPlaceholder": "Aprašykite reikalavimą, tikslą ir kontekstą...",
+    "suggest": "Pasiūlyti",
+    "clickToAddDescription": "Spauskite, kad pridėtumėte aprašymą...",
+    "details": "Detalės",
+    "statusLabel": "Būsena",
+    "typeLabel": "Tipas",
+    "priorityLabel": "Prioritetas",
+    "assigneeLabel": "Priskirtas",
+    "unassigned": "Nepriskirtas",
+    "totalPoints": "Iš viso taškų",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Story atveju taškai yra visų užduočių taškų suma. Pridėkite taškus prie atskirų užduočių detalizavimo metu.",
+    "taskPointsHelp": "Įvertinkite santykines pastangas. Įprastos skalės: 1, 2, 3, 5, 8, 13. \"1\" yra paprasčiausias dalykas, kurį jūsų komanda daro.",
+    "sumOfTasks": "{{count}} užduoties suma",
+    "sumOfTasks_other": "{{count}} užduočių suma",
+    "largeStoryWarning": "Ši story yra {{points}} taškų. Apsvarstykite galimybę ją suskaidyti į mažesnes stories, kurias galima užbaigti per vieną Sprint'ą.",
+    "blocked": "Užblokuota",
+    "blockedBy": "Blokuoja:",
+    "notBlocked": "Neužblokuota",
+    "labels": "Žymės",
+    "convertToStory": "Paversti į Story",
+    "convertToStoryConfirm": "Paversti šią užduotį į story? Priklausomybės saitas su originalia story bus išlaikytas.",
+    "convertToStoryHelp": "Pakelia šią užduotį į nepriklausomą story su priklausomybės saitu",
+    "created": "Sukurta {{date}}",
+    "updated": "Atnaujinta {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Užduotys ({{count}})",
+    "contextHelp": "Užduotys skaido story į darbus pagal discipliną: UX dizainas, backend kūrimas, frontend kūrimas ir QE testavimas. Kiekviena užduotis gali būti priskirta komandos nariui.",
+    "suggestTasks": "Pasiūlyti užduotis",
+    "addTask": "+ Pridėti užduotį",
+    "noTasksYet": "Kol kas nėra užduočių.",
+    "taskTitlePlaceholder": "Užduoties pavadinimas (pvz. 'UX: Prisijungimo ekrano dizainas')",
+    "suggestedTasks": "Pasiūlytos užduotys, spauskite, kad pridėtumėte:",
+    "pts": "{{count}} tašk.",
+    "clarificationNeeded": "Reikia patikslinimo:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Priėmimo kriterijai",
+    "contextHelp": "Priėmimo kriterijai apibrėžia, kada elementas tikrai \"baigtas\". Rašomi Given / When / Then formatu (BDD), jie padaro lūkesčius aiškius ir patikrinamus. Kiekvienas kriterijus yra konkretus, patikrinamas reikalavimas, o ne neaiškus pageidavimas.",
+    "addButton": "+ Pridėti",
+    "suggestAC": "Pasiūlyti PK",
+    "noCriteriaYet": "Kol kas nėra priėmimo kriterijų. Apibrėžkite sąlygas, kad elementas būtų \"baigtas\".",
+    "given": "Duota",
+    "when": "Kai",
+    "then": "Tada",
+    "deleteAC": "Ištrinti priėmimo kriterijų",
+    "givenPlaceholder": "Duota...",
+    "whenPlaceholder": "Kai...",
+    "thenPlaceholder": "Tada...",
+    "aiSuggestions": "AI pasiūlymai, spauskite, kad pridėtumėte:",
+    "aiNeedsMoreInfo": "AI reikia daugiau informacijos:"
+  },
+
+  "comments": {
+    "title": "Komentarai",
+    "noCommentsYet": "Kol kas nėra komentarų.",
+    "addComment": "Pridėti komentarą..."
+  },
+
+  "dependencies": {
+    "title": "Priklausomybės",
+    "contextHelp": "Priklausomybės seka ryšius tarp elementų. \"Priklauso nuo\" reiškia, kad šis elementas negali judėti pirmyn, kol tikslas nebaigtas. \"Susiję su\" yra informacinė nuoroda.",
+    "noDependencies": "Nėra priklausomybių.",
+    "dependsOn": "Priklauso nuo",
+    "relatesTo": "Susiję su",
+    "dependedOnBy": "Nuo jo priklauso",
+    "removeDependency": "Pašalinti priklausomybę",
+    "selectItem": "Pasirinkite elementą..."
+  },
+
+  "links": {
+    "title": "Nuorodos",
+    "addLink": "+ Pridėti nuorodą",
+    "noLinksYet": "Kol kas nėra nuorodų.",
+    "labelPlaceholder": "Etiketė (pvz. GitHub PR, Figma, Testų rezultatai, Dokumentai)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Pašalinti nuorodą"
+  },
+
+  "testResults": {
+    "retestRequired": "Reikalingas pakartotinis testavimas",
+    "retestMessage": "Šis defektas turi {{count}} nepavykusių testų. Įkelkite naujus testų rezultatus (JUnit XML arba webhook) po pataisymo diegimo, kad panaikintumėte QE vartus ir uždarytumėte šį elementą.",
+    "title": "Testų rezultatai",
+    "passed": "pavyko",
+    "failed": "nepavyko",
+    "errors": "klaidos",
+    "skipped": "praleista",
+    "lastRun": "Paskutinis paleidimas: {{date}}",
+    "sourceTestFailure": "Šaltinio testo gedimas",
+    "suite": "Rinkinys: {{name}}",
+    "duration": "Trukmė: {{ms}}ms",
+    "source": "Šaltinis: {{source}} | Pranešta: {{date}}",
+    "generateDescAC": "Generuoti aprašymą ir PK"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Atmesti",
+    "close": "Uždaryti"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Pradėkite rašyti...",
+    "bold": "Paryškinta",
+    "italic": "Kursyvas",
+    "inlineCode": "Eilutinis kodas",
+    "heading": "Antraštė",
+    "subheading": "Poantraštė",
+    "bulletList": "Ženklelių sąrašas",
+    "numberedList": "Numeruotas sąrašas",
+    "quote": "Citata",
+    "codeBlock": "Kodo blokas"
+  },
+
+  "createEpic": {
+    "button": "+ Naujas Epic",
+    "title": "Sukurti Epic",
+    "titleLabel": "Pavadinimas",
+    "titlePlaceholder": "pvz. Naudotojų autentifikacija",
+    "descriptionLabel": "Aprašymas",
+    "descriptionPlaceholder": "Verslo tikslas ir šio Epic'o apimtis...",
+    "priorityLabel": "Prioritetas",
+    "assigneeLabel": "Priskirtas"
+  },
+
+  "createProject": {
+    "button": "+ Naujas projektas",
+    "title": "Sukurti projektą",
+    "organisationLabel": "Organizacija",
+    "selectOrg": "Pasirinkite organizaciją...",
+    "teamLabel": "Komanda",
+    "selectTeam": "Pasirinkite komandą...",
+    "projectNameLabel": "Projekto pavadinimas",
+    "projectNamePlaceholder": "pvz. PlanA MVP",
+    "descriptionLabel": "Aprašymas",
+    "descriptionPlaceholder": "Apie ką šis projektas?",
+    "methodologyLabel": "Metodologija"
+  },
+
+  "createSprint": {
+    "button": "+ Naujas Sprint",
+    "title": "Sukurti Sprint'ą",
+    "nameLabel": "Pavadinimas",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Tikslas",
+    "goalPlaceholder": "Ką šis Sprint'as turi pasiekti?",
+    "startDateLabel": "Pradžios data",
+    "endDateLabel": "Pabaigos data"
+  },
+
+  "createTeam": {
+    "button": "+ Nauja komanda",
+    "title": "Sukurti komandą",
+    "organisationLabel": "Organizacija",
+    "selectOrg": "Pasirinkite organizaciją...",
+    "teamNameLabel": "Komandos pavadinimas",
+    "teamNamePlaceholder": "pvz. Backend komanda"
+  },
+
+  "quickCreate": {
+    "placeholder": "Ką reikia padaryti?"
+  },
+
+  "workItemCard": {
+    "open": "Atidaryti {{title}}",
+    "taskCount": "{{count}} užduotis",
+    "taskCount_other": "{{count}} užduočių"
+  },
+
+  "team": {
+    "title": "Komanda",
+    "memberCount": "{{count}} narys",
+    "memberCount_other": "{{count}} narių",
+    "addMember": "+ Pridėti narį",
+    "noMembersYet": "Kol kas nėra komandos narių. Pridėkite žmonių, kad pradėtumėte skirti darbus.",
+    "confirmRemove": "Pašalinti {{name}} iš komandos?",
+    "invite": "Pakviesti",
+    "inviteLink": "Kvietimo nuoroda:",
+    "copy": "Kopijuoti",
+    "ptsPerSprint": "{{count}} tašk./Sprint",
+    "addTeamMember": "Pridėti komandos narį",
+    "nameRequired": "Vardas *",
+    "emailLabel": "El. paštas",
+    "phoneLabel": "Telefonas",
+    "roleRequired": "Rolė *",
+    "capacity": "Pajėgumas",
+    "capacityPlaceholder": "tašk./Sprint",
+    "nameLabel": "Vardas",
+    "roleLabel": "Rolė"
+  },
+
+  "epics": {
+    "helpTitle": "Epic'ai",
+    "helpBody1": "Epic'ai yra funkcionalumo lygio grupavimai. Kiekvienas Epic apima susijusias stories, kurios kartu pristato verslo galimybę.",
+    "helpBody2": "Spauskite ant Epic'o, kad matytumėte jo stories, pridėtumėte naujų ir sektumėte progresą.",
+    "title": "Epic'ai",
+    "noEpicsYet": "Kol kas nėra Epic'ų. Epic'ai grupuoja susijusias stories į funkcionalumo lygio pateikinius.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Grįžti į Epic'us",
+    "description": "Aprašymas",
+    "descPlaceholder": "Aprašykite verslo tikslą ir apimtį...",
+    "clickToAddDescription": "Spauskite, kad pridėtumėte aprašymą...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories yra šio Epic'o pateikiami tikslai. Kiekviena story atspindi konkretų naudotojo rezultatą, kurį galima užbaigti per vieną Sprint'ą.",
+    "addStory": "+ Pridėti Story",
+    "noStoriesYet": "Šiame Epic'e kol kas nėra stories. Pridėkite vieną, kad apibrėžtumėte tikslus.",
+    "details": "Detalės",
+    "statusLabel": "Būsena",
+    "priorityLabel": "Prioritetas",
+    "assigneeLabel": "Priskirtas",
+    "addStoryToEpic": "Pridėti Story prie Epic'o",
+    "titleRequired": "Pavadinimas *",
+    "titleHint": "(\"Kaip [rolė], noriu [tikslas], kad [nauda]\")",
+    "titlePlaceholder": "Kaip [rolė], noriu [tikslas], kad [nauda]",
+    "descriptionLabel": "Aprašymas",
+    "descriptionPlaceholder": "Kontekstas, reikalavimai ir detalės...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Priskirtam asmeniui bus automatiškai sukurta užduotis su {{points}} tašku(-ais). Taškai visada priskirti užduotims.",
+    "largeStoryWarning": "Didelis story ({{points}} taškų). Apsvarstykite galimybę jį suskaidyti į mažesnius stories, kurių kiekvieną galima užbaigti per vieną Sprint'ą. Mažesnius stories lengviau įvertinti, testuoti ir pristatyti.",
+    "acceptanceCriteria": "Priėmimo kriterijai",
+    "acContextHelp": "Apibrėžkite, kada šis story yra \"baigtas\". Kiekvienas kriterijus turi būti konkretus ir patikrinamas.",
+    "addCriterion": "+ Pridėti kriterijų",
+    "givenPlaceholder": "išankstinė sąlyga arba kontekstas...",
+    "whenPlaceholder": "veiksmas arba įvykis...",
+    "thenPlaceholder": "tikėtinas rezultatas...",
+    "createRelatedTasks": "Sukurti susijusias užduotis?",
+    "autoAssignHint": "(automatiškai priskiriama komandos nariams pagal rolę)",
+    "uxDesign": "UX dizainas",
+    "qeTesting": "QE testavimas",
+    "bsaAnalysis": "BSA analizė",
+    "creating": "Kuriama...",
+    "createStory": "Sukurti Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Grįžti į Sprint'us",
+    "start": "Pradžia:",
+    "end": "Pabaiga:",
+    "capacity": "{{points}} / {{capacity}} pajėgumo",
+    "storyPoints": "{{count}} Story Points",
+    "storiesAndItems": "{{stories}} stories, {{items}} iš viso elementų",
+    "done": "Baigta",
+    "addStories": "+ Pridėti Stories",
+    "startSprint": "Pradėti Sprint'ą",
+    "completeSprint": "Užbaigti Sprint'ą",
+    "addStoriesToSprint": "Pridėti stories į Sprint'ą ({{count}} prieinamų)",
+    "allStoriesAssigned": "Visos stories jau yra Sprint'e arba baigtos.",
+    "noItemsYet": "Šiame Sprint'e kol kas nėra elementų. Spauskite \"+ Pridėti Stories\", kad imtumėte iš Backlog.",
+    "removeStoryAndTasks": "Pašalinti story ir užduotis iš Sprint'o",
+    "removeFromSprint": "Pašalinti iš Sprint'o",
+    "standaloneTasks": "Atskiros užduotys",
+    "adding": "Pridedama...",
+    "tasks": "{{count}} užduočių"
+  },
+
+  "reports": {
+    "helpTitle": "Projekto ataskaitos",
+    "helpBody1": "Ataskaitos suteikia matomumą į jūsų komandos pristatymą. Velocity rodo, kiek taškų užbaigiate per Sprint'ą; laikui bėgant ji stabilizuojasi.",
+    "helpBody2": "Naudokite Sprint'o progreso ir komandos apkrovos diagramas, kad anksti pastebėtumėte kliūtis.",
+    "title": "Ataskaitos",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story Points, užbaigtų per Sprint'ą",
+    "noCompletedSprints": "Kol kas nėra baigtų Sprint'ų. Velocity pasirodys, kai bus baigtas pirmas Sprint'as.",
+    "trend": "Tendencija",
+    "threeSprintAvg": "3 Sprint'ų vidurkis",
+    "avgVelocity": "Vidutinis Velocity:",
+    "pointsPerSprint": "tašk./Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Baigta: {{points}} tašk.",
+    "inProgress": "Vykdoma: {{points}} tašk.",
+    "inReview": "Peržiūrima: {{points}} tašk.",
+    "remaining": "Liko: {{points}} tašk.",
+    "daysLeft": "Liko {{count}} dienų",
+    "epicProgress": "Epic'ų progresas",
+    "epicProgressSubtitle": "Baigtų stories kiekvienam Epic'ui",
+    "noEpics": "Kol kas neapibrėžti Epic'ai.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Komandos apkrova",
+    "teamWorkloadSubtitle": "Aktyviame Sprint'e priskirti taškai",
+    "noWorkload": "Aktyviame Sprint'e nėra priskirtų elementų.",
+    "pts": "{{points}} tašk. ({{count}})",
+    "blockedItems": "Užblokuoti elementai",
+    "blockedSubtitle": "{{count}} elementas šiuo metu užblokuotas",
+    "blockedSubtitle_other": "{{count}} elementų šiuo metu užblokuota",
+    "noBlocked": "Nėra užblokuotų elementų. Puiku!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Likę Story Points prieš idealą",
+    "noBurndownData": "Kol kas nėra Burndown duomenų. Duomenys pasirodys, kai elementai pradės judėti per būsenas Sprint'o metu.",
+    "ideal": "Idealus",
+    "actual": "Faktinis",
+    "onTrack": "Pagal planą",
+    "behind": "Atsilieka"
+  },
+
+  "aiSettings": {
+    "title": "AI konfigūracija",
+    "description": "Sukonfigūruokite AI tiekėją, kad įgalintumėte priėmimo kriterijų pasiūlymus, story dekompoziciją ir laidos pastabų juodraščius. Naudojate savo API raktą; PlanA nesaugo ir netarpininkauja per bendrintą paskyrą.",
+    "provider": "Tiekėjas",
+    "notConfigured": "Nesukonfigūruota",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Pasirinktinis (suderinamas su OpenAI)",
+    "model": "Modelis",
+    "selectModel": "Pasirinkite modelį...",
+    "modelPlaceholder": "Modelio ID (pvz. my-custom-model)",
+    "apiKey": "API raktas",
+    "currentKey": "Dabartinis: {{key}}",
+    "enterApiKey": "Įveskite API raktą",
+    "apiKeyHelp": "Jūsų raktas saugomas užšifruotas kiekvienam projektui. Palikite tuščią, kad išsaugotumėte dabartinį raktą.",
+    "endpointUrl": "Galinio taško URL",
+    "saving": "Išsaugoma...",
+    "settingsSaved": "Nustatymai išsaugoti",
+    "stakeholderSharing": "Dalinimasis su suinteresuotomis šalimis",
+    "sharingDescription": "Sukurkite bendrinamas nuorodas suinteresuotoms šalims, kad jos galėtų peržiūrėti projekto informacinę lentą tik skaitymo režimu. Prisijungti nereikia; nuoroda yra prieiga.",
+    "label": "Etiketė",
+    "labelPlaceholder": "pvz. Klientas, Valdymo komitetas",
+    "expiresIn": "Galioja",
+    "days30": "30 dienų",
+    "days90": "90 dienų",
+    "days180": "180 dienų",
+    "year1": "1 metus",
+    "never": "Niekada",
+    "createLink": "Sukurti nuorodą",
+    "creating": "Kuriama...",
+    "noActiveLinks": "Nėra aktyvių bendrinimo nuorodų.",
+    "created": "Sukurta {{date}}",
+    "expires": "Galioja iki {{date}}",
+    "copyLink": "Kopijuoti nuorodą",
+    "copied": "Nukopijuota!",
+    "revoke": "Atšaukti",
+    "revoked": "Atšaukta",
+    "revokedDate": "Atšaukta {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Suinteresuotų šalių informacinė lenta",
+    "invalidLink": "Negaliojanti arba pasibaigusi nuoroda",
+    "poweredBy": "Veikia su PlanA",
+    "activeSprint": "Aktyvus Sprint",
+    "noActiveSprint": "Nėra aktyvaus Sprint'o",
+    "goal": "Tikslas:",
+    "items": "Elementai",
+    "points": "Taškai",
+    "recentlyCompleted": "Neseniai baigti",
+    "noCompletedItems": "Kol kas nėra baigtų elementų.",
+    "defects": "Defektai",
+    "openDefects": "Atidaryti",
+    "closedDefects": "Uždaryti",
+    "sprintVelocity": "Sprint'o Velocity",
+    "storyProgress": "Story progresas"
+  },
+
+  "reportView": {
+    "title": "Ataskaitos",
+    "generateProject": "Projekto ataskaita",
+    "generateSprint": "Sprint'o ataskaita",
+    "generating": "Generuojama...",
+    "generateDescription": "Sugeneruokite išsamią ataskaitą iš jūsų projekto duomenų.",
+    "exportPdf": "Eksportuoti PDF",
+    "back": "Atgal",
+    "generated": "Sugeneruota {{date}}",
+    "executiveSummary": "Vykdomoji santrauka",
+    "metrics": "Metrikos",
+    "items": "Elementai",
+    "points": "Taškai",
+    "completion": "Užbaigimas",
+    "testPassRate": "Testų sėkmingumo rodiklis",
+    "epicBreakdown": "Epic'ų suskaidymas",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Priėmimo kriterijai",
+    "testCoverageColumn": "Testų aprėptis",
+    "defects": "Defektai",
+    "total": "Iš viso",
+    "open": "Atidaryti",
+    "resolved": "Išspręsti",
+    "criticalOpen": "Kritiniai (atidaryti)",
+    "testEvidence": "Testų įrodymai",
+    "totalTests": "Testų iš viso",
+    "passed": "Sėkminga",
+    "failed": "Nesėkminga",
+    "errors": "Klaidos",
+    "skipped": "Praleista",
+    "currentBlockers": "Dabartiniai blokatoriai",
+    "velocityHistory": "Velocity istorija",
+    "generatedBy": "Sugeneruota PlanA"
+  }
+}

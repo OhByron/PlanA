@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { Button, Select, Input } from '@projecta/ui';
 import type { WorkItem } from '@projecta/types';
@@ -30,6 +31,7 @@ export function DependenciesSection({
   deleteLink,
   allItems,
 }: DependenciesSectionProps) {
+  const { t } = useTranslation();
   const [showDepForm, setShowDepForm] = useState(false);
   const [depTargetId, setDepTargetId] = useState('');
   const [depType, setDepType] = useState<'depends_on' | 'relates_to'>('depends_on');
@@ -52,7 +54,7 @@ export function DependenciesSection({
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-              Dependencies
+              {t('dependencies.title')}
             </h2>
             <ContextHelp>
               Dependencies track relationships between items.
@@ -61,20 +63,20 @@ export function DependenciesSection({
             </ContextHelp>
           </div>
           <Button variant="ghost" size="sm" onClick={() => setShowDepForm(!showDepForm)}>
-            + Add
+            {t('acceptanceCriteria.addButton')}
           </Button>
         </div>
 
         {dependencies.length === 0 && !showDepForm && (
-          <p className="text-sm text-gray-400">No dependencies.</p>
+          <p className="text-sm text-gray-400">{t('dependencies.noDependencies')}</p>
         )}
 
         {dependencies.map((dep) => {
           const isSource = dep.sourceId === workItemId;
           const linkedId = isSource ? dep.targetId : dep.sourceId;
           const label = isSource
-            ? dep.type === 'depends_on' ? 'Depends on' : 'Relates to'
-            : dep.type === 'depends_on' ? 'Depended on by' : 'Relates to';
+            ? dep.type === 'depends_on' ? t('dependencies.dependsOn') : t('dependencies.relatesTo')
+            : dep.type === 'depends_on' ? t('dependencies.dependedOnBy') : t('dependencies.relatesTo');
 
           return (
             <div key={dep.id} className="mb-2 flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
@@ -89,8 +91,8 @@ export function DependenciesSection({
               <button
                 onClick={() => deleteDep.mutate(dep.id)}
                 className="text-gray-400 hover:text-red-500"
-                title="Remove"
-                aria-label="Remove dependency"
+                title={t('common.remove')}
+                aria-label={t('dependencies.removeDependency')}
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -109,8 +111,8 @@ export function DependenciesSection({
                 className="w-36"
                 aria-label="Dependency type"
               >
-                <option value="depends_on">Depends on</option>
-                <option value="relates_to">Relates to</option>
+                <option value="depends_on">{t('dependencies.dependsOn')}</option>
+                <option value="relates_to">{t('dependencies.relatesTo')}</option>
               </Select>
               <Select
                 value={depTargetId}
@@ -118,7 +120,7 @@ export function DependenciesSection({
                 className="flex-1"
                 aria-label="Target work item"
               >
-                <option value="">Select an item...</option>
+                <option value="">{t('dependencies.selectItem')}</option>
                 {allItems
                   .filter((i) => i.id !== workItemId)
                   .map((i) => (
@@ -139,10 +141,10 @@ export function DependenciesSection({
                   );
                 }}
               >
-                Add
+                {t('common.add')}
               </Button>
               <Button size="sm" variant="ghost" onClick={() => setShowDepForm(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
             </div>
           </div>
@@ -152,14 +154,14 @@ export function DependenciesSection({
       {/* Links */}
       <section className="mb-8">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Links</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{t('links.title')}</h2>
           <Button variant="ghost" size="sm" onClick={() => setShowLinkForm(!showLinkForm)}>
-            + Add Link
+            {t('links.addLink')}
           </Button>
         </div>
 
         {links.length === 0 && !showLinkForm && (
-          <p className="text-sm text-gray-400">No links yet.</p>
+          <p className="text-sm text-gray-400">{t('links.noLinksYet')}</p>
         )}
 
         {links.map((link) => (
@@ -179,8 +181,8 @@ export function DependenciesSection({
             <button
               onClick={() => deleteLink.mutate(link.id)}
               className="text-gray-400 hover:text-red-500"
-              title="Remove"
-              aria-label="Remove link"
+              title={t('common.remove')}
+              aria-label={t('links.removeLink')}
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -194,14 +196,14 @@ export function DependenciesSection({
             <div className="flex gap-2">
               <Input
                 autoFocus
-                placeholder="Label (e.g. GitHub PR, Figma, Test results, Docs)"
+                placeholder={t('links.labelPlaceholder')}
                 value={linkLabel}
                 onChange={(e) => setLinkLabel(e.target.value)}
                 className="flex-1"
                 aria-label="Link label"
               />
               <Input
-                placeholder="https://..."
+                placeholder={t('links.urlPlaceholder')}
                 value={linkUrl}
                 onChange={(e) => setLinkUrl(e.target.value)}
                 className="flex-1"
@@ -210,8 +212,8 @@ export function DependenciesSection({
               />
             </div>
             <div className="flex gap-2">
-              <Button size="sm" onClick={submitLink} disabled={!linkLabel.trim() || !linkUrl.trim()}>Add</Button>
-              <Button size="sm" variant="ghost" onClick={() => setShowLinkForm(false)}>Cancel</Button>
+              <Button size="sm" onClick={submitLink} disabled={!linkLabel.trim() || !linkUrl.trim()}>{t('common.add')}</Button>
+              <Button size="sm" variant="ghost" onClick={() => setShowLinkForm(false)}>{t('common.cancel')}</Button>
             </div>
           </div>
         )}

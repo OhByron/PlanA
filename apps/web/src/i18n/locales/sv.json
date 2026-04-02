@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "create": "Skapa",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "add": "L\u00e4gg till",
+    "remove": "Ta bort",
+    "dismiss": "Avf\u00e4rda",
+    "close": "St\u00e4ng",
+    "loading": "Laddar...",
+    "send": "Skicka",
+    "open": "\u00d6ppna",
+    "archive": "Arkivera",
+    "restore": "\u00c5terst\u00e4ll",
+    "report": "Rapport",
+    "settings": "Inst\u00e4llningar",
+    "gotIt": "Uppfattat",
+    "tryAgain": "F\u00f6rs\u00f6k igen",
+    "signOut": "Logga ut",
+    "signIn": "Logga in",
+    "whatsThis": "Vad \u00e4r det h\u00e4r?",
+    "help": "Hj\u00e4lp",
+    "error": "Fel: {{message}}",
+    "thinking": "T\u00e4nker...",
+    "generating": "Genererar...",
+    "language": "Spr\u00e5k"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, p\u00e5 riktigt."
+  },
+
+  "nav": {
+    "board": "Board",
+    "backlog": "Backlog",
+    "epics": "Epics",
+    "sprints": "Sprints",
+    "reports": "Rapporter",
+    "report": "Rapport",
+    "team": "Team",
+    "settings": "Inst\u00e4llningar",
+    "project": "Projekt"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Expandera sidof\u00e4ltet",
+    "collapseSidebar": "Minimera sidof\u00e4ltet",
+    "myWork": "Mitt arbete",
+    "organisations": "Organisationer",
+    "noOrganisationsYet": "Inga organisationer \u00e4nnu",
+    "toggle": "V\u00e4xla {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Aviseringar",
+    "markAllRead": "Markera alla som l\u00e4sta",
+    "noNotificationsYet": "Inga aviseringar \u00e4nnu",
+    "justNow": "just nu",
+    "minutesAgo": "{{count}}m sedan",
+    "hoursAgo": "{{count}}h sedan",
+    "daysAgo": "{{count}}d sedan"
+  },
+
+  "notifications": {
+    "assigned": "Du tilldelades \"{{title}}\"",
+    "statusChanged": "Status \u00e4ndrad p\u00e5 \"{{title}}\"",
+    "commentAdded": "Ny kommentar p\u00e5 \"{{title}}\"",
+    "mentioned": "Du n\u00e4mndes i \"{{title}}\"",
+    "default": "Avisering: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Redo",
+    "in_progress": "P\u00e5g\u00e5ende",
+    "in_review": "Granskning",
+    "done": "Klar",
+    "cancelled": "Avbruten"
+  },
+
+  "priority": {
+    "urgent": "Akut",
+    "high": "H\u00f6g",
+    "medium": "Medel",
+    "low": "L\u00e5g"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bugg",
+    "task": "Uppgift"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktiv",
+    "planned": "Planerad",
+    "completed": "Avslutad",
+    "cancelled": "Avbruten"
+  },
+
+  "roles": {
+    "pm": "Projektledare",
+    "po": "Product Owner",
+    "bsa": "Verksamhetsanalytiker",
+    "ba": "Aff\u00e4rsanalytiker",
+    "qe": "Testkonsult",
+    "ux": "UX-designer",
+    "dev": "Utvecklare"
+  },
+
+  "login": {
+    "continueWithGitHub": "Forts\u00e4tt med GitHub",
+    "continueWithGoogle": "Forts\u00e4tt med Google",
+    "orSignInWithEmail": "eller logga in med e-post",
+    "emailAddress": "E-postadress",
+    "password": "L\u00f6senord",
+    "loginFailed": "Inloggningen misslyckades",
+    "devOnly": "enbart utveckling",
+    "devLogin": "Dev-inloggning (hoppa \u00f6ver OAuth)"
+  },
+
+  "authError": {
+    "title": "Inloggningen misslyckades",
+    "badState": "Inloggningssessionen har l\u00f6pt ut. F\u00f6rs\u00f6k igen.",
+    "csrf": "S\u00e4kerhetskontrollen misslyckades. F\u00f6rs\u00f6k igen.",
+    "exchangeFailed": "Kunde inte slutf\u00f6ra inloggningen hos leverant\u00f6ren. F\u00f6rs\u00f6k igen.",
+    "dbError": "Ett serverfel uppstod. F\u00f6rs\u00f6k igen senare.",
+    "missingToken": "Ingen autentiseringstoken mottogs.",
+    "default": "Ett ov\u00e4ntat fel uppstod vid inloggning."
+  },
+
+  "myWork": {
+    "title": "Mitt arbete",
+    "itemCount": "{{count}} objekt tilldelat dig",
+    "itemCount_other": "{{count}} objekt tilldelade dig",
+    "noItems": "Inga objekt tilldelade dig.",
+    "noItemsHelp": "Objekt visas h\u00e4r n\u00e4r du \u00e4r tillagd som teammedlem i ett projekt och har stories eller uppgifter tilldelade. Se till att din kontos e-postadress matchar din teammedlems e-post, eller att du har accepterat en inbjudan."
+  },
+
+  "orgs": {
+    "title": "Organisationer",
+    "orgCount": "{{count}} organisation",
+    "orgCount_other": "{{count}} organisationer",
+    "showArchived": "Visa arkiverade",
+    "newOrganisation": "+ Ny organisation",
+    "noOrgsYet": "Inga organisationer \u00e4nnu. Skapa en f\u00f6r att komma ig\u00e5ng.",
+    "archived": "Arkiverad",
+    "confirmDelete": "Ta bort denna organisation och all dess data permanent?",
+    "added": "Tillagd {{date}}",
+    "newOrg": "Ny organisation",
+    "orgName": "Organisationsnamn",
+    "orgNameRequired": "Organisationsnamn *",
+    "contactName": "Kontaktperson",
+    "contactEmail": "Kontakt-e-post",
+    "contactPhone": "Kontakttelefon",
+    "addressLine1": "Adressrad 1",
+    "addressLine2": "Adressrad 2",
+    "city": "Stad",
+    "state": "L\u00e4n",
+    "postalCode": "Postnummer",
+    "country": "Land"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Alla organisationer",
+    "editDetails": "Redigera detaljer",
+    "noContactDetails": "Inga kontaktuppgifter \u00e4nnu. Klicka p\u00e5 \"Redigera detaljer\" f\u00f6r att l\u00e4gga till dem.",
+    "contact": "Kontakt:",
+    "email": "E-post:",
+    "phone": "Telefon:",
+    "location": "Plats:",
+    "projects": "Projekt ({{count}})",
+    "newProject": "+ Nytt projekt",
+    "noProjectsYet": "Inga projekt \u00e4nnu. Skapa ett f\u00f6r att komma ig\u00e5ng.",
+    "newProjectTitle": "Nytt projekt",
+    "projectName": "Projektnamn",
+    "projectNameRequired": "Projektnamn *",
+    "description": "Beskrivning",
+    "methodology": "Metodik",
+    "dueDate": "F\u00f6rfallodatum",
+    "customerContact": "Kundkontakt",
+    "createProject": "Skapa projekt",
+    "whatIsThisProjectAbout": "Vad handlar detta projekt om?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Ogiltig inbjudan",
+    "invalidLink": "Denna inbjudningsl\u00e4nk \u00e4r inte giltig.",
+    "goToLogin": "G\u00e5 till inloggning",
+    "alreadyAccepted": "Redan accepterad",
+    "alreadyAcceptedMessage": "Denna inbjudan har redan anv\u00e4nts. Du kan logga in med dina uppgifter.",
+    "expired": "Inbjudan har l\u00f6pt ut",
+    "expiredMessage": "Denna inbjudan har l\u00f6pt ut. Be ditt team att skicka en ny.",
+    "invitedToJoin": "Du har bjudits in att g\u00e5 med i ett projekt",
+    "emailLabel": "E-post",
+    "yourName": "Ditt namn",
+    "passwordLabel": "L\u00f6senord",
+    "confirmPassword": "Bekr\u00e4fta l\u00f6senord",
+    "minChars": "Minst 8 tecken",
+    "repeatPassword": "Upprepa ditt l\u00f6senord",
+    "passwordTooShort": "L\u00f6senordet m\u00e5ste vara minst 8 tecken",
+    "passwordsMismatch": "L\u00f6senorden matchar inte",
+    "createAccountJoin": "Skapa konto och g\u00e5 med",
+    "creatingAccount": "Skapar konto...",
+    "alreadyHaveAccount": "Har du redan ett konto?",
+    "logIn": "Logga in"
+  },
+
+  "board": {
+    "helpTitle": "Ditt Kanban-board",
+    "helpBody1": "H\u00e4r ser du ditt teams arbete visualiserat som ett fl\u00f6de. Varje kolumn representerar ett steg i ert arbetsfl\u00f6de.",
+    "helpBody2": "Dra kort mellan kolumner f\u00f6r att uppdatera deras status direkt. N\u00e4r du flyttar en story f\u00f6ljer dess underuppgifter med.",
+    "helpBody3": "H\u00e5ll kolumnen \"P\u00e5g\u00e5ende\" liten; att begr\u00e4nsa p\u00e5g\u00e5ende arbete hj\u00e4lper teamet att avsluta saker ist\u00e4llet f\u00f6r att p\u00e5b\u00f6rja nya.",
+    "itemCount": "{{count}} objekt",
+    "itemCount_other": "{{count}} objekt",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} pts p\u00e5g\u00e5ende",
+    "overCapacity": "\u00d6ver kapacitet",
+    "noItems": "Inga objekt",
+    "column": "{{status}}-kolumn"
+  },
+
+  "backlog": {
+    "helpTitle": "Din Backlog",
+    "helpBody1": "Backlogen \u00e4r din prioriterade lista \u00f6ver arbete. Objekt h\u00f6gst upp har h\u00f6gst prioritet.",
+    "helpBody2": "Dra objekt i grepphandtaget f\u00f6r att \u00e4ndra prioritet. Anv\u00e4nd filtren f\u00f6r att fokusera p\u00e5 stories, buggar eller specifika statusar.",
+    "helpBody3": "Klicka p\u00e5 + Nytt objekt f\u00f6r att snabbt l\u00e4gga till stories eller uppgifter.",
+    "allStatuses": "Alla statusar",
+    "allTypes": "Alla typer",
+    "stories": "Stories",
+    "bugs": "Buggar",
+    "tasks": "Uppgifter",
+    "itemCount": "{{count}} objekt",
+    "itemCount_other": "{{count}} objekt",
+    "newItem": "+ Nytt objekt",
+    "noItemsMatch": "Inga objekt matchar dina filter. F\u00f6rs\u00f6k justera eller skapa ett nytt objekt."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprintplanering",
+    "helpBody1": "Sprints \u00e4r tidsbegr\u00e4nsade iterationer (vanligtvis 2 veckor). Dra stories fr\u00e5n backlogen till en sprint f\u00f6r att planera teamets arbete.",
+    "helpBody2": "H\u00e5ll koll p\u00e5 kapacitetsindikatorn f\u00f6r att undvika att \u00f6verbelasta teamet.",
+    "title": "Sprints",
+    "noSprintsYet": "Inga sprints \u00e4nnu. Skapa en f\u00f6r att b\u00f6rja planera.",
+    "pts": "{{count}} pts"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Tillbaka till board",
+    "partOf": "Del av:",
+    "clickToEdit": "Klicka f\u00f6r att redigera",
+    "description": "Beskrivning",
+    "descPlaceholder": "Beskriv krav, m\u00e5l och kontext...",
+    "suggest": "F\u00f6resl\u00e5",
+    "clickToAddDescription": "Klicka f\u00f6r att l\u00e4gga till en beskrivning...",
+    "details": "Detaljer",
+    "statusLabel": "Status",
+    "typeLabel": "Typ",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Tilldelad",
+    "unassigned": "Ej tilldelad",
+    "totalPoints": "Totala po\u00e4ng",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "F\u00f6r stories \u00e4r po\u00e4ngen summan av alla uppgiftspo\u00e4ng. L\u00e4gg till po\u00e4ng p\u00e5 enskilda uppgifter under refinement.",
+    "taskPointsHelp": "Uppskatta den relativa insatsen. Vanliga skalor: 1, 2, 3, 5, 8, 13. En '1' \u00e4r det enklaste ert team g\u00f6r.",
+    "sumOfTasks": "Summa av {{count}} uppgift",
+    "sumOfTasks_other": "Summa av {{count}} uppgifter",
+    "largeStoryWarning": "Denna story är {{points}} poäng. Överväg att dela upp den i mindre stories som var och en kan slutföras i en enda sprint.",
+    "blocked": "Blockerad",
+    "blockedBy": "Blockerad av:",
+    "notBlocked": "Inte blockerad",
+    "labels": "Etiketter",
+    "convertToStory": "Konvertera till Story",
+    "convertToStoryConfirm": "Konvertera denna uppgift till en story? Den beh\u00e5ller en beroendel\u00e4nk till den ursprungliga storyn.",
+    "convertToStoryHelp": "Befordrar denna uppgift till en sj\u00e4lvst\u00e4ndig story med en beroendel\u00e4nk",
+    "created": "Skapad {{date}}",
+    "updated": "Uppdaterad {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Uppgifter ({{count}})",
+    "contextHelp": "Uppgifter bryter ner en story i arbete per disciplin, t.ex. UX-design, backend-utveckling, frontend-utveckling och QE-testning. Varje uppgift kan tilldelas en teammedlem.",
+    "suggestTasks": "F\u00f6resl\u00e5 uppgifter",
+    "addTask": "+ L\u00e4gg till uppgift",
+    "noTasksYet": "Inga uppgifter \u00e4nnu.",
+    "taskTitlePlaceholder": "Uppgiftstitel (t.ex. 'UX: Designa inloggningssk\u00e4rm')",
+    "suggestedTasks": "F\u00f6reslagna uppgifter, klicka f\u00f6r att l\u00e4gga till:",
+    "pts": "{{count}} pts",
+    "clarificationNeeded": "F\u00f6rtydligande beh\u00f6vs:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Acceptanskriterier",
+    "contextHelp": "Acceptanskriterier definierar n\u00e4r detta objekt verkligen \u00e4r 'klart'. Skrivna i Given / When / Then-format (BDD) g\u00f6r de f\u00f6rv\u00e4ntningar explicita och testbara. Varje kriterium \u00e4r ett specifikt, verifierbart villkor, inte en vag \u00f6nskan.",
+    "addButton": "+ L\u00e4gg till",
+    "suggestAC": "F\u00f6resl\u00e5 AC",
+    "noCriteriaYet": "Inga acceptanskriterier \u00e4nnu. Definiera villkoren f\u00f6r 'klar'.",
+    "given": "Givet",
+    "when": "N\u00e4r",
+    "then": "D\u00e5",
+    "deleteAC": "Ta bort acceptanskriterium",
+    "givenPlaceholder": "Givet...",
+    "whenPlaceholder": "N\u00e4r...",
+    "thenPlaceholder": "D\u00e5...",
+    "aiSuggestions": "AI-f\u00f6rslag, klicka f\u00f6r att l\u00e4gga till:",
+    "aiNeedsMoreInfo": "AI:n beh\u00f6ver mer information:"
+  },
+
+  "comments": {
+    "title": "Kommentarer",
+    "noCommentsYet": "Inga kommentarer \u00e4nnu.",
+    "addComment": "L\u00e4gg till en kommentar..."
+  },
+
+  "dependencies": {
+    "title": "Beroenden",
+    "contextHelp": "Beroenden sp\u00e5rar relationer mellan objekt. 'Beror p\u00e5' inneb\u00e4r att detta objekt inte kan forts\u00e4tta f\u00f6rr\u00e4n m\u00e5let \u00e4r klart. 'Relaterar till' \u00e4r en informationsl\u00e4nk.",
+    "noDependencies": "Inga beroenden.",
+    "dependsOn": "Beror p\u00e5",
+    "relatesTo": "Relaterar till",
+    "dependedOnBy": "Beroende av",
+    "removeDependency": "Ta bort beroende",
+    "selectItem": "V\u00e4lj ett objekt..."
+  },
+
+  "links": {
+    "title": "L\u00e4nkar",
+    "addLink": "+ L\u00e4gg till l\u00e4nk",
+    "noLinksYet": "Inga l\u00e4nkar \u00e4nnu.",
+    "labelPlaceholder": "Etikett (t.ex. GitHub PR, Figma, Testresultat, Docs)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Ta bort l\u00e4nk"
+  },
+
+  "testResults": {
+    "retestRequired": "Omtest kr\u00e4vs",
+    "retestMessage": "Denna defekt har {{count}} underk\u00e4nda test. Ladda upp nya testresultat (JUnit XML eller webhook) efter att fixet \u00e4r driftsatt f\u00f6r att \u00f6ppna QE-grinden och st\u00e4nga detta objekt.",
+    "title": "Testresultat",
+    "passed": "godk\u00e4nda",
+    "failed": "underk\u00e4nda",
+    "errors": "fel",
+    "skipped": "\u00f6verhoppade",
+    "lastRun": "Senaste k\u00f6rning: {{date}}",
+    "sourceTestFailure": "Ursprungligt testfel",
+    "suite": "Suite: {{name}}",
+    "duration": "Varaktighet: {{ms}}ms",
+    "source": "K\u00e4lla: {{source}} | Rapporterad: {{date}}",
+    "generateDescAC": "Generera beskrivning och AC:er"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Avf\u00e4rda",
+    "close": "St\u00e4ng"
+  },
+
+  "richTextEditor": {
+    "startTyping": "B\u00f6rja skriva...",
+    "bold": "Fet",
+    "italic": "Kursiv",
+    "inlineCode": "Inline-kod",
+    "heading": "Rubrik",
+    "subheading": "Underrubrik",
+    "bulletList": "Punktlista",
+    "numberedList": "Numrerad lista",
+    "quote": "Citat",
+    "codeBlock": "Kodblock"
+  },
+
+  "createEpic": {
+    "button": "+ Ny Epic",
+    "title": "Skapa Epic",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "t.ex. Anv\u00e4ndarautentisering",
+    "descriptionLabel": "Beskrivning",
+    "descriptionPlaceholder": "Aff\u00e4rsm\u00e5l och omfattning f\u00f6r denna epic...",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Tilldelad"
+  },
+
+  "createProject": {
+    "button": "+ Nytt projekt",
+    "title": "Skapa projekt",
+    "organisationLabel": "Organisation",
+    "selectOrg": "V\u00e4lj organisation...",
+    "teamLabel": "Team",
+    "selectTeam": "V\u00e4lj team...",
+    "projectNameLabel": "Projektnamn",
+    "projectNamePlaceholder": "t.ex. PlanA MVP",
+    "descriptionLabel": "Beskrivning",
+    "descriptionPlaceholder": "Vad handlar detta projekt om?",
+    "methodologyLabel": "Metodik"
+  },
+
+  "createSprint": {
+    "button": "+ Ny Sprint",
+    "title": "Skapa Sprint",
+    "nameLabel": "Namn",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "M\u00e5l",
+    "goalPlaceholder": "Vad ska denna sprint uppn\u00e5?",
+    "startDateLabel": "Startdatum",
+    "endDateLabel": "Slutdatum"
+  },
+
+  "createTeam": {
+    "button": "+ Nytt team",
+    "title": "Skapa team",
+    "organisationLabel": "Organisation",
+    "selectOrg": "V\u00e4lj organisation...",
+    "teamNameLabel": "Teamnamn",
+    "teamNamePlaceholder": "t.ex. Backend-teamet"
+  },
+
+  "quickCreate": {
+    "placeholder": "Vad beh\u00f6ver g\u00f6ras?"
+  },
+
+  "workItemCard": {
+    "open": "\u00d6ppna {{title}}",
+    "taskCount": "{{count}} uppgift",
+    "taskCount_other": "{{count}} uppgifter"
+  },
+
+  "team": {
+    "title": "Team",
+    "memberCount": "{{count}} medlem",
+    "memberCount_other": "{{count}} medlemmar",
+    "addMember": "+ L\u00e4gg till medlem",
+    "noMembersYet": "Inga teammedlemmar \u00e4nnu. L\u00e4gg till personer f\u00f6r att b\u00f6rja tilldela arbete.",
+    "confirmRemove": "Ta bort {{name}} fr\u00e5n teamet?",
+    "invite": "Bjud in",
+    "inviteLink": "Inbjudningsl\u00e4nk:",
+    "copy": "Kopiera",
+    "ptsPerSprint": "{{count}} pts/sprint",
+    "addTeamMember": "L\u00e4gg till teammedlem",
+    "nameRequired": "Namn *",
+    "emailLabel": "E-post",
+    "phoneLabel": "Telefon",
+    "roleRequired": "Roll *",
+    "capacity": "Kapacitet",
+    "capacityPlaceholder": "pts/sprint",
+    "nameLabel": "Namn",
+    "roleLabel": "Roll"
+  },
+
+  "epics": {
+    "helpTitle": "Epics",
+    "helpBody1": "Epics \u00e4r grupperingar p\u00e5 funktionsniv\u00e5. Varje epic inneh\u00e5ller relaterade stories som tillsammans levererar en aff\u00e4rskapacitet.",
+    "helpBody2": "Klicka p\u00e5 en epic f\u00f6r att se dess stories, l\u00e4gga till nya och f\u00f6lja framsteg.",
+    "title": "Epics",
+    "noEpicsYet": "Inga epics \u00e4nnu. Epics grupperar relaterade stories i leveranser p\u00e5 funktionsniv\u00e5.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Tillbaka till epics",
+    "description": "Beskrivning",
+    "descPlaceholder": "Beskriv aff\u00e4rsm\u00e5l och omfattning...",
+    "clickToAddDescription": "Klicka f\u00f6r att l\u00e4gga till en beskrivning...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories \u00e4r de levererbara m\u00e5len f\u00f6r denna epic. Varje story representerar ett specifikt anv\u00e4ndarv\u00e4nt resultat som kan slutf\u00f6ras inom en sprint.",
+    "addStory": "+ L\u00e4gg till Story",
+    "noStoriesYet": "Inga stories i denna epic \u00e4nnu. L\u00e4gg till en f\u00f6r att definiera m\u00e5len.",
+    "details": "Detaljer",
+    "statusLabel": "Status",
+    "priorityLabel": "Prioritet",
+    "assigneeLabel": "Tilldelad",
+    "addStoryToEpic": "L\u00e4gg till Story i Epic",
+    "titleRequired": "Titel *",
+    "titleHint": "(\"Som [roll] vill jag [m\u00e5l], s\u00e5 att [nytta]\")",
+    "titlePlaceholder": "Som [roll] vill jag [m\u00e5l], s\u00e5 att [nytta]",
+    "descriptionLabel": "Beskrivning",
+    "descriptionPlaceholder": "Kontext, krav och detaljer...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "En uppgift skapas automatiskt f\u00f6r den tilldelade med {{points}} po\u00e4ng. Po\u00e4ng h\u00f6r alltid till uppgifter.",
+    "largeStoryWarning": "Stor story ({{points}} po\u00e4ng). \u00d6verv\u00e4g att bryta ner den i mindre stories som var och en kan slutf\u00f6ras i en sprint. Mindre stories \u00e4r l\u00e4ttare att uppskatta, testa och leverera.",
+    "acceptanceCriteria": "Acceptanskriterier",
+    "acContextHelp": "Definiera n\u00e4r denna story \u00e4r 'klar'. Varje kriterium ska vara specifikt och testbart.",
+    "addCriterion": "+ L\u00e4gg till kriterium",
+    "givenPlaceholder": "en f\u00f6ruts\u00e4ttning eller kontext...",
+    "whenPlaceholder": "en h\u00e4ndelse eller handling...",
+    "thenPlaceholder": "det f\u00f6rv\u00e4ntade resultatet...",
+    "createRelatedTasks": "Skapa relaterade uppgifter?",
+    "autoAssignHint": "(tilldelas automatiskt till teammedlemmar efter roll)",
+    "uxDesign": "UX-design",
+    "qeTesting": "QE-testning",
+    "bsaAnalysis": "BSA-analys",
+    "creating": "Skapar...",
+    "createStory": "Skapa Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Tillbaka till sprints",
+    "start": "Start:",
+    "end": "Slut:",
+    "capacity": "{{points}} / {{capacity}} kapacitet",
+    "storyPoints": "{{count}} story points",
+    "storiesAndItems": "{{stories}} stories, {{items}} objekt totalt",
+    "done": "Klar",
+    "addStories": "+ L\u00e4gg till Stories",
+    "startSprint": "Starta Sprint",
+    "completeSprint": "Avsluta Sprint",
+    "addStoriesToSprint": "L\u00e4gg till stories i sprint ({{count}} tillg\u00e4ngliga)",
+    "allStoriesAssigned": "Alla stories \u00e4r redan i en sprint eller avslutade.",
+    "noItemsYet": "Inga objekt i denna sprint \u00e4nnu. Klicka p\u00e5 \"+ L\u00e4gg till Stories\" f\u00f6r att dra fr\u00e5n backlogen.",
+    "removeStoryAndTasks": "Ta bort story och uppgifter fr\u00e5n sprint",
+    "removeFromSprint": "Ta bort fr\u00e5n sprint",
+    "standaloneTasks": "Frist\u00e5ende uppgifter",
+    "adding": "L\u00e4gger till...",
+    "tasks": "{{count}} uppgifter"
+  },
+
+  "reports": {
+    "helpTitle": "Projektrapporter",
+    "helpBody1": "Rapporter ger dig insyn i teamets leveranser. Velocity visar hur m\u00e5nga po\u00e4ng ni slutf\u00f6r per sprint; den stabiliseras \u00f6ver tid.",
+    "helpBody2": "Anv\u00e4nd sprintframsteg och teambelastningsdiagram f\u00f6r att uppt\u00e4cka flaskhalsar tidigt.",
+    "title": "Rapporter",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story points slutf\u00f6rda per sprint",
+    "noCompletedSprints": "Inga avslutade sprints \u00e4nnu. Velocity visas efter att er f\u00f6rsta sprint \u00e4r avslutad.",
+    "trend": "Trend",
+    "threeSprintAvg": "3-sprintsnitt",
+    "avgVelocity": "Genomsnittlig velocity:",
+    "pointsPerSprint": "po\u00e4ng/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Klar: {{points}} pts",
+    "inProgress": "P\u00e5g\u00e5ende: {{points}} pts",
+    "inReview": "Granskning: {{points}} pts",
+    "remaining": "\u00c5terst\u00e5ende: {{points}} pts",
+    "daysLeft": "{{count}} dagar kvar",
+    "epicProgress": "Epic-framsteg",
+    "epicProgressSubtitle": "Stories slutf\u00f6rda per epic",
+    "noEpics": "Inga epics definierade \u00e4nnu.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Teambelastning",
+    "teamWorkloadSubtitle": "Po\u00e4ng tilldelade i aktiv sprint",
+    "noWorkload": "Inga objekt tilldelade i den aktiva sprinten.",
+    "pts": "{{points}} pts ({{count}})",
+    "blockedItems": "Blockerade objekt",
+    "blockedSubtitle": "{{count}} objekt \u00e4r blockerat",
+    "blockedSubtitle_other": "{{count}} objekt \u00e4r blockerade",
+    "noBlocked": "Inga blockerade objekt. Bra jobbat!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "\u00c5terst\u00e5ende story points vs idealt",
+    "noBurndownData": "Ingen burndown-data \u00e4nnu. Data visas n\u00e4r objekt r\u00f6r sig genom statusar under sprinten.",
+    "ideal": "Idealt",
+    "actual": "Faktiskt",
+    "onTrack": "I fas",
+    "behind": "Efter"
+  },
+
+  "aiSettings": {
+    "title": "AI-konfiguration",
+    "description": "Konfigurera en AI-leverant\u00f6r f\u00f6r att aktivera f\u00f6rslag p\u00e5 acceptanskriterier, story-nedbrytning och utkast till release notes. Du anv\u00e4nder din egen API-nyckel; PlanA lagrar eller proxar inte via ett delat konto.",
+    "provider": "Leverant\u00f6r",
+    "notConfigured": "Ej konfigurerad",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Anpassad (OpenAI-kompatibel)",
+    "model": "Modell",
+    "selectModel": "V\u00e4lj modell...",
+    "modelPlaceholder": "Modell-ID (t.ex. my-custom-model)",
+    "apiKey": "API-nyckel",
+    "currentKey": "Nuvarande: {{key}}",
+    "enterApiKey": "Ange API-nyckel",
+    "apiKeyHelp": "Din nyckel lagras krypterad per projekt. L\u00e4mna tomt f\u00f6r att beh\u00e5lla nuvarande nyckel.",
+    "endpointUrl": "Endpoint-URL",
+    "saving": "Sparar...",
+    "settingsSaved": "Inst\u00e4llningar sparade",
+    "stakeholderSharing": "Intressentdelning",
+    "sharingDescription": "Skapa delbara l\u00e4nkar s\u00e5 intressenter kan se en skrivskyddad projektpanel. Ingen inloggning kr\u00e4vs; l\u00e4nken \u00e4r \u00e5tkomsten.",
+    "label": "Etikett",
+    "labelPlaceholder": "t.ex. Kund, Styrgrupp",
+    "expiresIn": "G\u00e5r ut om",
+    "days30": "30 dagar",
+    "days90": "90 dagar",
+    "days180": "180 dagar",
+    "year1": "1 \u00e5r",
+    "never": "Aldrig",
+    "createLink": "Skapa l\u00e4nk",
+    "creating": "Skapar...",
+    "noActiveLinks": "Inga aktiva delningsl\u00e4nkar.",
+    "created": "Skapad {{date}}",
+    "expires": "G\u00e5r ut {{date}}",
+    "copyLink": "Kopiera l\u00e4nk",
+    "copied": "Kopierad!",
+    "revoke": "\u00c5terkalla",
+    "revoked": "\u00c5terkallad",
+    "revokedDate": "\u00c5terkallad {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Intressentpanel",
+    "invalidLink": "Ogiltig eller utg\u00e5ngen l\u00e4nk",
+    "poweredBy": "Drivs av PlanA",
+    "activeSprint": "Aktiv Sprint",
+    "noActiveSprint": "Ingen aktiv sprint",
+    "goal": "M\u00e5l:",
+    "items": "Objekt",
+    "points": "Po\u00e4ng",
+    "recentlyCompleted": "Nyligen avslutade",
+    "noCompletedItems": "Inga avslutade objekt \u00e4nnu.",
+    "defects": "Defekter",
+    "openDefects": "\u00d6ppna",
+    "closedDefects": "St\u00e4ngda",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Story-framsteg"
+  },
+
+  "reportView": {
+    "title": "Rapporter",
+    "generateProject": "Projektrapport",
+    "generateSprint": "Sprintrapport",
+    "generating": "Genererar...",
+    "generateDescription": "Generera en omfattande rapport fr\u00e5n dina projektdata.",
+    "exportPdf": "Exportera PDF",
+    "back": "Tillbaka",
+    "generated": "Genererad {{date}}",
+    "executiveSummary": "Sammanfattning",
+    "metrics": "Nyckeltal",
+    "items": "Objekt",
+    "points": "Po\u00e4ng",
+    "completion": "Slutf\u00f6rande",
+    "testPassRate": "Godk\u00e4nnandegrad f\u00f6r test",
+    "epicBreakdown": "Epic-uppdelning",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Acceptanskriterier",
+    "testCoverageColumn": "Testt\u00e4ckning",
+    "defects": "Defekter",
+    "total": "Totalt",
+    "open": "\u00d6ppna",
+    "resolved": "L\u00f6sta",
+    "criticalOpen": "Kritiska (\u00f6ppna)",
+    "testEvidence": "Testunderlag",
+    "totalTests": "Totalt antal test",
+    "passed": "Godk\u00e4nda",
+    "failed": "Underk\u00e4nda",
+    "errors": "Fel",
+    "skipped": "\u00d6verhoppade",
+    "currentBlockers": "Aktuella blockerare",
+    "velocityHistory": "Velocity-historik",
+    "generatedBy": "Genererad av PlanA"
+  }
+}

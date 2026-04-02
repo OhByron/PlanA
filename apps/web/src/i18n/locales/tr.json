@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "create": "Oluştur",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle",
+    "remove": "Kaldır",
+    "dismiss": "Kapat",
+    "close": "Kapat",
+    "loading": "Yükleniyor...",
+    "send": "Gönder",
+    "open": "Aç",
+    "archive": "Arşivle",
+    "restore": "Geri yükle",
+    "report": "Rapor",
+    "settings": "Ayarlar",
+    "gotIt": "Anladım",
+    "tryAgain": "Tekrar dene",
+    "signOut": "Çıkış yap",
+    "signIn": "Giriş Yap",
+    "whatsThis": "Bu nedir?",
+    "help": "Yardım",
+    "error": "Hata: {{message}}",
+    "thinking": "Düşünüyor...",
+    "generating": "Oluşturuluyor...",
+    "language": "Dil"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Gerçekten Agile."
+  },
+
+  "nav": {
+    "board": "Pano",
+    "backlog": "Backlog",
+    "epics": "Epic'ler",
+    "sprints": "Sprint'ler",
+    "reports": "Raporlar",
+    "report": "Rapor",
+    "team": "Takım",
+    "settings": "Ayarlar",
+    "project": "Proje"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Kenar çubuğunu genişlet",
+    "collapseSidebar": "Kenar çubuğunu daralt",
+    "myWork": "İşlerim",
+    "organisations": "Kuruluşlar",
+    "noOrganisationsYet": "Henüz kuruluş yok",
+    "toggle": "{{name}} değiştir"
+  },
+
+  "topBar": {
+    "notifications": "Bildirimler",
+    "markAllRead": "Tümünü okundu işaretle",
+    "noNotificationsYet": "Henüz bildirim yok",
+    "justNow": "az önce",
+    "minutesAgo": "{{count}} dk önce",
+    "hoursAgo": "{{count}} sa önce",
+    "daysAgo": "{{count}} gün önce"
+  },
+
+  "notifications": {
+    "assigned": "\"{{title}}\" size atandı",
+    "statusChanged": "\"{{title}}\" durumu değişti",
+    "commentAdded": "\"{{title}}\" için yeni yorum",
+    "mentioned": "\"{{title}}\" içerisinde anıldınız",
+    "default": "Bildirim: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Hazır",
+    "in_progress": "Devam Ediyor",
+    "in_review": "İncelemede",
+    "done": "Tamamlandı",
+    "cancelled": "İptal Edildi"
+  },
+
+  "priority": {
+    "urgent": "Acil",
+    "high": "Yüksek",
+    "medium": "Orta",
+    "low": "Düşük"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Görev"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktif",
+    "planned": "Planlandı",
+    "completed": "Tamamlandı",
+    "cancelled": "İptal Edildi"
+  },
+
+  "roles": {
+    "pm": "Proje Yöneticisi",
+    "po": "Ürün Sahibi",
+    "bsa": "İş Sistemleri Analisti",
+    "ba": "İş Analisti",
+    "qe": "Kalite Mühendisi",
+    "ux": "UX Tasarımcısı",
+    "dev": "Geliştirici"
+  },
+
+  "login": {
+    "continueWithGitHub": "GitHub ile devam et",
+    "continueWithGoogle": "Google ile devam et",
+    "orSignInWithEmail": "veya e-posta ile giriş yap",
+    "emailAddress": "E-posta adresi",
+    "password": "Şifre",
+    "loginFailed": "Giriş başarısız",
+    "devOnly": "sadece geliştirme",
+    "devLogin": "Geliştirici Girişi (OAuth'suz)"
+  },
+
+  "authError": {
+    "title": "Giriş başarısız",
+    "badState": "Giriş oturumu süresi doldu. Lütfen tekrar deneyin.",
+    "csrf": "Güvenlik kontrolü başarısız. Lütfen tekrar deneyin.",
+    "exchangeFailed": "Sağlayıcı ile giriş tamamlanamadı. Lütfen tekrar deneyin.",
+    "dbError": "Sunucu hatası oluştu. Lütfen daha sonra tekrar deneyin.",
+    "missingToken": "Kimlik doğrulama jetonu alınamadı.",
+    "default": "Giriş sırasında beklenmeyen bir hata oluştu."
+  },
+
+  "myWork": {
+    "title": "İşlerim",
+    "itemCount": "Size atanmış {{count}} öge",
+    "itemCount_other": "Size atanmış {{count}} öge",
+    "noItems": "Size atanmış öge yok.",
+    "noItemsHelp": "Bir proje takımına eklendikten ve size story veya görev atandıktan sonra ögeler burada görünür. Hesap e-postanızın takım üyesi e-postanızla eşleştiğinden veya bir daveti kabul ettiğinizden emin olun."
+  },
+
+  "orgs": {
+    "title": "Kuruluşlar",
+    "orgCount": "{{count}} kuruluş",
+    "orgCount_other": "{{count}} kuruluş",
+    "showArchived": "Arşivlenenleri göster",
+    "newOrganisation": "+ Yeni Kuruluş",
+    "noOrgsYet": "Henüz kuruluş yok. Başlamak için bir tane oluşturun.",
+    "archived": "Arşivlendi",
+    "confirmDelete": "Bu kuruluş ve tüm verileri kalıcı olarak silinsin mi?",
+    "added": "Eklendi: {{date}}",
+    "newOrg": "Yeni Kuruluş",
+    "orgName": "Kuruluş Adı",
+    "orgNameRequired": "Kuruluş Adı *",
+    "contactName": "İlgili Kişi",
+    "contactEmail": "İletişim E-postası",
+    "contactPhone": "İletişim Telefonu",
+    "addressLine1": "Adres Satırı 1",
+    "addressLine2": "Adres Satırı 2",
+    "city": "Şehir",
+    "state": "İl",
+    "postalCode": "Posta Kodu",
+    "country": "Ülke"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Tüm kuruluşlar",
+    "editDetails": "Detayları Düzenle",
+    "noContactDetails": "Henüz iletişim bilgisi yok. Eklemek için \"Detayları Düzenle\" seçeneğini tıklayın.",
+    "contact": "İlgili Kişi:",
+    "email": "E-posta:",
+    "phone": "Telefon:",
+    "location": "Konum:",
+    "projects": "Projeler ({{count}})",
+    "newProject": "+ Yeni Proje",
+    "noProjectsYet": "Henüz proje yok. Başlamak için bir tane oluşturun.",
+    "newProjectTitle": "Yeni Proje",
+    "projectName": "Proje Adı",
+    "projectNameRequired": "Proje Adı *",
+    "description": "Açıklama",
+    "methodology": "Metodoloji",
+    "dueDate": "Bitiş Tarihi",
+    "customerContact": "Müşteri İletişimi",
+    "createProject": "Proje Oluştur",
+    "whatIsThisProjectAbout": "Bu proje ne hakkında?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Geçersiz Davet",
+    "invalidLink": "Bu davet bağlantısı geçerli değil.",
+    "goToLogin": "Girişe Git",
+    "alreadyAccepted": "Zaten Kabul Edildi",
+    "alreadyAcceptedMessage": "Bu davet zaten kullanıldı. Kimlik bilgilerinizle giriş yapabilirsiniz.",
+    "expired": "Davet Süresi Doldu",
+    "expiredMessage": "Bu davetin süresi doldu. Lütfen takımınızdan yeni bir tane göndermesini isteyin.",
+    "invitedToJoin": "Bir projeye katılmaya davet edildiniz",
+    "emailLabel": "E-posta",
+    "yourName": "Adınız",
+    "passwordLabel": "Şifre",
+    "confirmPassword": "Şifre Onayı",
+    "minChars": "En az 8 karakter",
+    "repeatPassword": "Şifrenizi tekrarlayın",
+    "passwordTooShort": "Şifre en az 8 karakter olmalıdır",
+    "passwordsMismatch": "Şifreler eşleşmiyor",
+    "createAccountJoin": "Hesap Oluştur ve Katıl",
+    "creatingAccount": "Hesap oluşturuluyor...",
+    "alreadyHaveAccount": "Zaten hesabınız var mı?",
+    "logIn": "Giriş yap"
+  },
+
+  "board": {
+    "helpTitle": "Kanban Panonuz",
+    "helpBody1": "Bu, takımınızın işinin akış olarak görselleştirilmesidir. Her sütun, iş akışınızdaki bir aşamayı temsil eder.",
+    "helpBody2": "Durumu anında güncellemek için kartları sütunlar arasında sürükleyin. Bir story taşıdığınızda, alt görevleri de birlikte taşınır.",
+    "helpBody3": "\"Devam Ediyor\" sütununu küçük tutun; devam eden işi sınırlamak, takımınızın yeni şeyler başlatmak yerine mevcut işleri bitirmesine yardımcı olur.",
+    "itemCount": "{{count}} öge",
+    "itemCount_other": "{{count}} öge",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} puan devam ediyor",
+    "overCapacity": "Kapasite aşımı",
+    "noItems": "Öge yok",
+    "column": "{{status}} sütunu"
+  },
+
+  "backlog": {
+    "helpTitle": "Backlog'unuz",
+    "helpBody1": "Backlog, önceliklendirilmiş iş listenizdir. Üstteki ögeler en yüksek önceliklidir.",
+    "helpBody2": "Önceliği değiştirmek için ögeleri tutma noktasından sürükleyin. Story'lere, Bug'lara veya belirli durumlara odaklanmak için filtreleri kullanın.",
+    "helpBody3": "Hızlıca story veya görev eklemek için \"+ Yeni Öge\" tıklayın.",
+    "allStatuses": "Tüm durumlar",
+    "allTypes": "Tüm tipler",
+    "stories": "Story'ler",
+    "bugs": "Bug'lar",
+    "tasks": "Görevler",
+    "itemCount": "{{count}} öge",
+    "itemCount_other": "{{count}} öge",
+    "newItem": "+ Yeni Öge",
+    "noItemsMatch": "Filtrelerinizle eşleşen öge yok. Filtreleri değiştirmeyi deneyin veya yeni bir öge oluşturun."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint Planlaması",
+    "helpBody1": "Sprint'ler zaman sınırlı yinelemelerdir (genellikle 2 hafta). Takımınızın işini planlamak için Backlog'dan story'leri Sprint'e çekin.",
+    "helpBody2": "Takımı aşırı yüklememek için kapasite göstergesini izleyin.",
+    "title": "Sprint'ler",
+    "noSprintsYet": "Henüz sprint yok. Planlamaya başlamak için bir tane oluşturun.",
+    "pts": "{{count}} puan"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Panoya dön",
+    "partOf": "Parçası:",
+    "clickToEdit": "Düzenlemek için tıklayın",
+    "description": "Açıklama",
+    "descPlaceholder": "Gereksinimi, hedefi ve bağlamı açıklayın...",
+    "suggest": "Öner",
+    "clickToAddDescription": "Açıklama eklemek için tıklayın...",
+    "details": "Detaylar",
+    "statusLabel": "Durum",
+    "typeLabel": "Tip",
+    "priorityLabel": "Öncelik",
+    "assigneeLabel": "Atanan",
+    "unassigned": "Atanmamış",
+    "totalPoints": "Toplam Puan",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Story'ler için puanlar, tüm görev puanlarının toplamıdır. İyileştirme sırasında bireysel görevlere puan ekleyin.",
+    "taskPointsHelp": "Göreli eforu tahmin edin. Yaygın ölçekler: 1, 2, 3, 5, 8, 13. \"1\", takımınızın yaptığı en basit iştir.",
+    "sumOfTasks": "{{count}} görev toplamı",
+    "sumOfTasks_other": "{{count}} görev toplamı",
+    "largeStoryWarning": "Bu story {{points}} puan. Tek bir Sprint'te tamamlanabilecek daha küçük story'lere bölmeyi düşünün.",
+    "blocked": "Engellendi",
+    "blockedBy": "Engelleyen:",
+    "notBlocked": "Engellenmemiş",
+    "labels": "Etiketler",
+    "convertToStory": "Story'ye Dönüştür",
+    "convertToStoryConfirm": "Bu görev Story'ye dönüştürülsün mü? Orijinal story ile bağımlılık bağlantısı korunacak.",
+    "convertToStoryHelp": "Bu görevi bağımlılık bağlantısıyla bağımsız bir Story'ye yükseltir",
+    "created": "Oluşturuldu: {{date}}",
+    "updated": "Güncellendi: {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Görevler ({{count}})",
+    "contextHelp": "Görevler bir story'yi UX tasarımı, backend geliştirme, frontend geliştirme ve QE testi gibi disiplinlere göre işe ayırır. Her görev bir takım üyesine atanabilir.",
+    "suggestTasks": "Görev Öner",
+    "addTask": "+ Görev Ekle",
+    "noTasksYet": "Henüz görev yok.",
+    "taskTitlePlaceholder": "Görev başlığı (örn. 'UX: Giriş ekranı tasarımı')",
+    "suggestedTasks": "Önerilen görevler, eklemek için tıklayın:",
+    "pts": "{{count}} puan",
+    "clarificationNeeded": "Açıklama gerekli:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Kabul Kriterleri",
+    "contextHelp": "Kabul Kriterleri, bir ögenin gerçekten ne zaman \"tamamlandı\" sayılacağını tanımlar. Given / When / Then formatında (BDD) yazılarak beklentiler açık ve test edilebilir hale gelir. Her kriter belirli, doğrulanabilir bir koşuldur, belirsiz bir dilek değil.",
+    "addButton": "+ Ekle",
+    "suggestAC": "KK Öner",
+    "noCriteriaYet": "Henüz kabul kriteri yok. \"Tamamlandı\" koşullarını tanımlayın.",
+    "given": "Given",
+    "when": "When",
+    "then": "Then",
+    "deleteAC": "Kabul kriterini sil",
+    "givenPlaceholder": "Given...",
+    "whenPlaceholder": "When...",
+    "thenPlaceholder": "Then...",
+    "aiSuggestions": "AI önerileri, eklemek için tıklayın:",
+    "aiNeedsMoreInfo": "AI daha fazla bilgiye ihtiyaç duyuyor:"
+  },
+
+  "comments": {
+    "title": "Yorumlar",
+    "noCommentsYet": "Henüz yorum yok.",
+    "addComment": "Yorum ekleyin..."
+  },
+
+  "dependencies": {
+    "title": "Bağımlılıklar",
+    "contextHelp": "Bağımlılıklar ögeler arasındaki ilişkileri izler. \"Bağımlı\" hedef tamamlanana kadar bu ögenin ilerleyemeyeceği anlamına gelir. \"İlişkili\" bilgilendirme amaçlıdır.",
+    "noDependencies": "Bağımlılık yok.",
+    "dependsOn": "Bağımlı",
+    "relatesTo": "İlişkili",
+    "dependedOnBy": "Buna bağımlı",
+    "removeDependency": "Bağımlılığı kaldır",
+    "selectItem": "Bir öge seçin..."
+  },
+
+  "links": {
+    "title": "Bağlantılar",
+    "addLink": "+ Bağlantı Ekle",
+    "noLinksYet": "Henüz bağlantı yok.",
+    "labelPlaceholder": "Etiket (örn. GitHub PR, Figma, Test sonuçları, Belgeler)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Bağlantıyı kaldır"
+  },
+
+  "testResults": {
+    "retestRequired": "Yeniden test gerekli",
+    "retestMessage": "Bu hatanın {{count}} başarısız testi var. Düzeltme dağıtıldıktan sonra QE kapısını kaldırmak ve bu ögeyi kapatmak için yeni test sonuçları yükleyin (JUnit XML veya webhook).",
+    "title": "Test Sonuçları",
+    "passed": "başarılı",
+    "failed": "başarısız",
+    "errors": "hatalar",
+    "skipped": "atlandı",
+    "lastRun": "Son çalıştırma: {{date}}",
+    "sourceTestFailure": "Kaynak Test Hatası",
+    "suite": "Suite: {{name}}",
+    "duration": "Süre: {{ms}}ms",
+    "source": "Kaynak: {{source}} | Raporlandı: {{date}}",
+    "generateDescAC": "Açıklama ve KK Oluştur"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Kapat",
+    "close": "Kapat"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Yazmaya başlayın...",
+    "bold": "Kalın",
+    "italic": "İtalik",
+    "inlineCode": "Satır içi kod",
+    "heading": "Başlık",
+    "subheading": "Alt başlık",
+    "bulletList": "Madde işaretli liste",
+    "numberedList": "Numaralı liste",
+    "quote": "Alıntı",
+    "codeBlock": "Kod bloğu"
+  },
+
+  "createEpic": {
+    "button": "+ Yeni Epic",
+    "title": "Epic Oluştur",
+    "titleLabel": "Başlık",
+    "titlePlaceholder": "örn. Kullanıcı Kimlik Doğrulama",
+    "descriptionLabel": "Açıklama",
+    "descriptionPlaceholder": "Bu Epic'in iş hedefi ve kapsamı...",
+    "priorityLabel": "Öncelik",
+    "assigneeLabel": "Atanan"
+  },
+
+  "createProject": {
+    "button": "+ Yeni Proje",
+    "title": "Proje Oluştur",
+    "organisationLabel": "Kuruluş",
+    "selectOrg": "Kuruluş seçin...",
+    "teamLabel": "Takım",
+    "selectTeam": "Takım seçin...",
+    "projectNameLabel": "Proje Adı",
+    "projectNamePlaceholder": "örn. PlanA MVP",
+    "descriptionLabel": "Açıklama",
+    "descriptionPlaceholder": "Bu proje ne hakkında?",
+    "methodologyLabel": "Metodoloji"
+  },
+
+  "createSprint": {
+    "button": "+ Yeni Sprint",
+    "title": "Sprint Oluştur",
+    "nameLabel": "Ad",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Hedef",
+    "goalPlaceholder": "Bu sprint ne başarmalı?",
+    "startDateLabel": "Başlangıç Tarihi",
+    "endDateLabel": "Bitiş Tarihi"
+  },
+
+  "createTeam": {
+    "button": "+ Yeni Takım",
+    "title": "Takım Oluştur",
+    "organisationLabel": "Kuruluş",
+    "selectOrg": "Kuruluş seçin...",
+    "teamNameLabel": "Takım Adı",
+    "teamNamePlaceholder": "örn. Backend Ekibi"
+  },
+
+  "quickCreate": {
+    "placeholder": "Ne yapılması gerekiyor?"
+  },
+
+  "workItemCard": {
+    "open": "{{title}} aç",
+    "taskCount": "{{count}} görev",
+    "taskCount_other": "{{count}} görev"
+  },
+
+  "team": {
+    "title": "Takım",
+    "memberCount": "{{count}} üye",
+    "memberCount_other": "{{count}} üye",
+    "addMember": "+ Üye Ekle",
+    "noMembersYet": "Henüz takım üyesi yok. İş atamaya başlamak için kişi ekleyin.",
+    "confirmRemove": "{{name}} takımdan çıkarılsın mı?",
+    "invite": "Davet Et",
+    "inviteLink": "Davet bağlantısı:",
+    "copy": "Kopyala",
+    "ptsPerSprint": "{{count}} puan/sprint",
+    "addTeamMember": "Takım Üyesi Ekle",
+    "nameRequired": "Ad *",
+    "emailLabel": "E-posta",
+    "phoneLabel": "Telefon",
+    "roleRequired": "Rol *",
+    "capacity": "Kapasite",
+    "capacityPlaceholder": "puan/sprint",
+    "nameLabel": "Ad",
+    "roleLabel": "Rol"
+  },
+
+  "epics": {
+    "helpTitle": "Epic'ler",
+    "helpBody1": "Epic'ler özellik düzeyinde gruplamalardır. Her Epic, birlikte bir iş yetkinliği sunan ilişkili story'leri içerir.",
+    "helpBody2": "Story'lerini görmek, yenilerini eklemek ve ilerlemeyi takip etmek için bir Epic'e tıklayın.",
+    "title": "Epic'ler",
+    "noEpicsYet": "Henüz Epic yok. Epic'ler ilişkili story'leri özellik düzeyinde teslimat paketlerine gruplar.",
+    "storyProgress": "{{done}}/{{total}} story"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Epic'lere dön",
+    "description": "Açıklama",
+    "descPlaceholder": "İş hedefini ve kapsamı açıklayın...",
+    "clickToAddDescription": "Açıklama eklemek için tıklayın...",
+    "stories": "Story'ler ({{count}})",
+    "storiesContextHelp": "Story'ler bu Epic'in teslim edilebilir hedefleridir. Her story, tek bir sprint içinde tamamlanabilecek belirli bir kullanıcı odaklı sonucu temsil eder.",
+    "addStory": "+ Story Ekle",
+    "noStoriesYet": "Bu Epic'te henüz story yok. Hedefleri tanımlamak için bir tane ekleyin.",
+    "details": "Detaylar",
+    "statusLabel": "Durum",
+    "priorityLabel": "Öncelik",
+    "assigneeLabel": "Atanan",
+    "addStoryToEpic": "Epic'e Story Ekle",
+    "titleRequired": "Başlık *",
+    "titleHint": "(\"[Rol] olarak, [hedef] istiyorum, böylece [fayda]\")",
+    "titlePlaceholder": "[Rol] olarak, [hedef] istiyorum, böylece [fayda]",
+    "descriptionLabel": "Açıklama",
+    "descriptionPlaceholder": "Bağlam, gereksinimler ve detaylar...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Atanan için {{points}} puanlık bir görev otomatik oluşturulacak. Puanlar her zaman görevlerde bulunur.",
+    "largeStoryWarning": "Büyük story ({{points}} puan). Her biri tek bir sprint içinde tamamlanabilecek daha küçük story'lere bölmeyi düşünün. Küçük story'lerin tahmini, testi ve teslimi daha kolaydır.",
+    "acceptanceCriteria": "Kabul Kriterleri",
+    "acContextHelp": "Bu story'nin ne zaman \"tamamlandı\" olduğunu tanımlayın. Her kriter belirli ve test edilebilir olmalıdır.",
+    "addCriterion": "+ Kriter ekle",
+    "givenPlaceholder": "bir ön koşul veya bağlam...",
+    "whenPlaceholder": "bir eylem veya olay...",
+    "thenPlaceholder": "beklenen sonuç...",
+    "createRelatedTasks": "İlişkili görevler oluşturulsun mu?",
+    "autoAssignHint": "(role göre takım üyelerine otomatik atanır)",
+    "uxDesign": "UX Tasarım",
+    "qeTesting": "QE Test",
+    "bsaAnalysis": "BSA Analiz",
+    "creating": "Oluşturuluyor...",
+    "createStory": "Story Oluştur"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Sprint'lere dön",
+    "start": "Başlangıç:",
+    "end": "Bitiş:",
+    "capacity": "{{points}} / {{capacity}} kapasite",
+    "storyPoints": "{{count}} story point",
+    "storiesAndItems": "{{stories}} story, {{items}} toplam öge",
+    "done": "Tamamlandı",
+    "addStories": "+ Story Ekle",
+    "startSprint": "Sprint'i Başlat",
+    "completeSprint": "Sprint'i Tamamla",
+    "addStoriesToSprint": "Sprint'e story ekle ({{count}} mevcut)",
+    "allStoriesAssigned": "Tüm story'ler zaten bir Sprint'te veya tamamlanmış.",
+    "noItemsYet": "Bu Sprint'te henüz öge yok. Backlog'dan çekmek için \"+ Story Ekle\" tıklayın.",
+    "removeStoryAndTasks": "Story ve görevleri Sprint'ten çıkar",
+    "removeFromSprint": "Sprint'ten çıkar",
+    "standaloneTasks": "Bağımsız Görevler",
+    "adding": "Ekleniyor...",
+    "tasks": "{{count}} görev"
+  },
+
+  "reports": {
+    "helpTitle": "Proje Raporları",
+    "helpBody1": "Raporlar takımınızın teslimatı hakkında görünürlük sağlar. Velocity, sprint başına kaç puan tamamladığınızı gösterir; zamanla stabilize olur.",
+    "helpBody2": "Darboğazları erken tespit etmek için sprint ilerlemesi ve takım iş yükü grafiklerini kullanın.",
+    "title": "Raporlar",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Sprint başına tamamlanan story point",
+    "noCompletedSprints": "Henüz tamamlanmış sprint yok. Velocity, ilk sprint tamamlandıktan sonra görünecek.",
+    "trend": "Trend",
+    "threeSprintAvg": "3 sprint ortalaması",
+    "avgVelocity": "Ortalama Velocity:",
+    "pointsPerSprint": "puan/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Tamamlandı: {{points}} puan",
+    "inProgress": "Devam Ediyor: {{points}} puan",
+    "inReview": "İncelemede: {{points}} puan",
+    "remaining": "Kalan: {{points}} puan",
+    "daysLeft": "{{count}} gün kaldı",
+    "epicProgress": "Epic İlerlemesi",
+    "epicProgressSubtitle": "Epic başına tamamlanan story",
+    "noEpics": "Henüz Epic tanımlanmamış.",
+    "stories": "{{done}}/{{total}} story, {{pct}}%",
+    "teamWorkload": "Takım İş Yükü",
+    "teamWorkloadSubtitle": "Aktif Sprint'te atanmış puanlar",
+    "noWorkload": "Aktif Sprint'te atanmış öge yok.",
+    "pts": "{{points}} puan ({{count}})",
+    "blockedItems": "Engellenmiş Ögeler",
+    "blockedSubtitle": "{{count}} öge engellenmiş",
+    "blockedSubtitle_other": "{{count}} öge engellenmiş",
+    "noBlocked": "Engellenmiş öge yok. Harika iş!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Kalan story point, ideale karşı",
+    "noBurndownData": "Henüz burndown verisi yok. Sprint sırasında ögeler durumlar arasında hareket ettikçe veriler görünür.",
+    "ideal": "İdeal",
+    "actual": "Gerçek",
+    "onTrack": "Yolunda",
+    "behind": "Geride"
+  },
+
+  "aiSettings": {
+    "title": "AI Yapılandırması",
+    "description": "Kabul kriteri önerileri, story ayrıştırma ve sürüm notu taslağı oluşturmayı etkinleştirmek için bir AI sağlayıcısı yapılandırın. Kendi API anahtarınızı kullanırsınız; PlanA ortak bir hesap üzerinden depolamaz veya yönlendirmez.",
+    "provider": "Sağlayıcı",
+    "notConfigured": "Yapılandırılmamış",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Özel (OpenAI uyumlu)",
+    "model": "Model",
+    "selectModel": "Model seçin...",
+    "modelPlaceholder": "Model ID (örn. my-custom-model)",
+    "apiKey": "API Anahtarı",
+    "currentKey": "Mevcut: {{key}}",
+    "enterApiKey": "API anahtarı girin",
+    "apiKeyHelp": "Anahtarınız proje başına şifrelenmiş olarak saklanır. Mevcut anahtarı korumak için boş bırakın.",
+    "endpointUrl": "Endpoint URL",
+    "saving": "Kaydediliyor...",
+    "settingsSaved": "Ayarlar kaydedildi",
+    "stakeholderSharing": "Paydaş Paylaşımı",
+    "sharingDescription": "Paydaşların salt okunur proje panosunu görüntülemesi için paylaşılabilir bağlantılar oluşturun. Giriş gerekli değil; bağlantı erişimin kendisidir.",
+    "label": "Etiket",
+    "labelPlaceholder": "örn. Müşteri, Yönetim Kurulu",
+    "expiresIn": "Süre",
+    "days30": "30 gün",
+    "days90": "90 gün",
+    "days180": "180 gün",
+    "year1": "1 yıl",
+    "never": "Hiçbir zaman",
+    "createLink": "Bağlantı Oluştur",
+    "creating": "Oluşturuluyor...",
+    "noActiveLinks": "Aktif paylaşım bağlantısı yok.",
+    "created": "Oluşturuldu: {{date}}",
+    "expires": "Sona eriyor: {{date}}",
+    "copyLink": "Bağlantı Kopyala",
+    "copied": "Kopyalandı!",
+    "revoke": "İptal Et",
+    "revoked": "İptal Edildi",
+    "revokedDate": "İptal edildi: {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Paydaş Panosu",
+    "invalidLink": "Geçersiz veya süresi dolmuş bağlantı",
+    "poweredBy": "PlanA tarafından desteklenmektedir",
+    "activeSprint": "Aktif Sprint",
+    "noActiveSprint": "Aktif sprint yok",
+    "goal": "Hedef:",
+    "items": "Ögeler",
+    "points": "Puanlar",
+    "recentlyCompleted": "Son Tamamlananlar",
+    "noCompletedItems": "Henüz tamamlanmış öge yok.",
+    "defects": "Hatalar",
+    "openDefects": "Açık",
+    "closedDefects": "Kapalı",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Story İlerlemesi"
+  },
+
+  "reportView": {
+    "title": "Raporlar",
+    "generateProject": "Proje Raporu",
+    "generateSprint": "Sprint Raporu",
+    "generating": "Oluşturuluyor...",
+    "generateDescription": "Proje verilerinizden kapsamlı bir rapor oluşturun.",
+    "exportPdf": "PDF Dışa Aktar",
+    "back": "Geri",
+    "generated": "Oluşturuldu: {{date}}",
+    "executiveSummary": "Yönetici Özeti",
+    "metrics": "Metrikler",
+    "items": "Ögeler",
+    "points": "Puanlar",
+    "completion": "Tamamlanma",
+    "testPassRate": "Test Başarı Oranı",
+    "epicBreakdown": "Epic Dağılımı",
+    "epicColumn": "Epic",
+    "storiesColumn": "Story'ler",
+    "acceptanceCriteriaColumn": "Kabul Kriterleri",
+    "testCoverageColumn": "Test Kapsamı",
+    "defects": "Hatalar",
+    "total": "Toplam",
+    "open": "Açık",
+    "resolved": "Çözüldü",
+    "criticalOpen": "Kritik (Açık)",
+    "testEvidence": "Test Kanıtı",
+    "totalTests": "Toplam Test",
+    "passed": "Başarılı",
+    "failed": "Başarısız",
+    "errors": "Hatalar",
+    "skipped": "Atlandı",
+    "currentBlockers": "Mevcut Engelleyiciler",
+    "velocityHistory": "Velocity Geçmişi",
+    "generatedBy": "PlanA tarafından oluşturuldu"
+  }
+}

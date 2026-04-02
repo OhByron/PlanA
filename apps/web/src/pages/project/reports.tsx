@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
 import { Badge, Select } from '@projecta/ui';
 import type { WorkItem } from '@projecta/types';
+import { useTranslation } from 'react-i18next';
 import { useWorkItems } from '../../hooks/use-work-items';
 import { useSprints, useSprintItems } from '../../hooks/use-sprints';
 import { useEpics } from '../../hooks/use-epics';
@@ -13,6 +14,7 @@ import { TypeIcon } from '../../components/type-icon';
 import { HelpOverlay } from '../../components/help-overlay';
 
 export function ReportsPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: items = [] } = useWorkItems(projectId);
   const { data: sprints = [] } = useSprints(projectId);
@@ -39,22 +41,20 @@ export function ReportsPage() {
 
   return (
     <div className="p-6 space-y-8 max-w-5xl">
-      <HelpOverlay id="reports-intro" title="Project Reports">
+      <HelpOverlay id="reports-intro" title={t('reports.helpTitle')}>
         <p className="mb-2">
-          Reports give you visibility into your team's delivery. Velocity shows
-          how many points you complete per sprint — it stabilizes over time.
+          {t('reports.helpBody1')}
         </p>
         <p>
-          Use the sprint progress and team workload charts to spot bottlenecks
-          early.
+          {t('reports.helpBody2')}
         </p>
       </HelpOverlay>
 
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Reports</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{t('reports.title')}</h2>
         {sprints.length > 0 && (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">Sprint:</span>
+            <span className="text-sm text-gray-500">{t('reports.sprint')}</span>
             <Select
               value={selectedSprintId ?? displaySprint?.id ?? ''}
               onChange={(e) => setSelectedSprintId(e.target.value || null)}
@@ -95,6 +95,7 @@ function VelocityChart({
   sprints: import('@projecta/types').Sprint[];
   allItems: WorkItem[];
 }) {
+  const { t } = useTranslation();
   const completedSprints = sprints
     .filter((s) => s.status === 'completed')
     .sort((a, b) => (a.endDate ?? '').localeCompare(b.endDate ?? ''));
@@ -105,9 +106,9 @@ function VelocityChart({
 
   if (completedSprints.length === 0) {
     return (
-      <Section title="Velocity">
+      <Section title={t('reports.velocity')}>
         <p className="text-sm text-gray-400">
-          No completed sprints yet. Velocity will appear after your first sprint is completed.
+          {t('reports.noCompletedSprints')}
         </p>
       </Section>
     );
@@ -130,7 +131,7 @@ function VelocityChart({
   }
 
   return (
-    <Section title="Velocity" subtitle="Story points completed per sprint">
+    <Section title={t('reports.velocity')} subtitle={t('reports.velocitySubtitle')}>
       {/* Chart area: bars with SVG trend overlay */}
       <div className="relative">
         {/* Bar chart */}
@@ -237,31 +238,31 @@ function VelocityChart({
       <div className="mt-2 flex flex-wrap gap-4 text-xs text-gray-500">
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-4 rounded" style={{ backgroundColor: '#7c3aed' }} />
-          Velocity
+          {t('reports.velocity')}
         </span>
         {completedSprints.length >= 2 && (
           <span className="flex items-center gap-1">
             <span className="inline-block h-0.5 w-4" style={{ backgroundColor: '#4f46e5' }} />
-            Trend
+            {t('reports.trend')}
           </span>
         )}
         {showMovingAvg && (
           <span className="flex items-center gap-1">
             <span className="inline-block h-0.5 w-4" style={{ borderTop: '2px dashed #f59e0b' }} />
-            3-sprint avg
+            {t('reports.threeSprintAvg')}
           </span>
         )}
       </div>
 
       {completedSprints.length >= 3 && (
         <p className="mt-2 text-xs text-gray-500">
-          Average velocity:{' '}
+          {t('reports.avgVelocity')}{' '}
           <strong>
             {Math.round(
               completedSprints.reduce((s, sp) => s + (sp.velocity ?? 0), 0) / completedSprints.length,
             )}
           </strong>{' '}
-          points/sprint
+          {t('reports.pointsPerSprint')}
         </p>
       )}
     </Section>
@@ -278,6 +279,7 @@ function SprintProgress({
   items: WorkItem[];
   allItems: WorkItem[];
 }) {
+  const { t } = useTranslation();
   const statusCounts = useMemo(() => {
     const counts: Record<string, { count: number; points: number }> = {
       done: { count: 0, points: 0 },
@@ -304,7 +306,7 @@ function SprintProgress({
     : null;
 
   return (
-    <Section title={`Sprint: ${sprint.name}`} subtitle={sprint.goal ?? undefined}>
+    <Section title={t('reports.sprintProgress', { name: sprint.name })} subtitle={sprint.goal ?? undefined}>
       <div className="flex items-center gap-4 mb-3">
         <div className="flex-1">
           <div className="flex h-4 rounded-full overflow-hidden bg-gray-200">
@@ -327,11 +329,11 @@ function SprintProgress({
       </div>
 
       <div className="flex gap-6 text-xs text-gray-500">
-        <span><span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1" />Done: {statusCounts['done']?.points ?? 0} pts</span>
-        <span><span className="inline-block w-2 h-2 rounded-full bg-brand-500 mr-1" />In Progress: {statusCounts['in_progress']?.points ?? 0} pts</span>
-        <span><span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1" />In Review: {statusCounts['in_review']?.points ?? 0} pts</span>
-        <span><span className="inline-block w-2 h-2 rounded-full bg-gray-300 mr-1" />Remaining: {totalPoints - donePoints} pts</span>
-        {daysLeft !== null && <span className="ml-auto font-medium">{daysLeft} days left</span>}
+        <span><span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1" />{t('reports.done', { points: statusCounts['done']?.points ?? 0 })}</span>
+        <span><span className="inline-block w-2 h-2 rounded-full bg-brand-500 mr-1" />{t('reports.inProgress', { points: statusCounts['in_progress']?.points ?? 0 })}</span>
+        <span><span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1" />{t('reports.inReview', { points: statusCounts['in_review']?.points ?? 0 })}</span>
+        <span><span className="inline-block w-2 h-2 rounded-full bg-gray-300 mr-1" />{t('reports.remaining', { points: totalPoints - donePoints })}</span>
+        {daysLeft !== null && <span className="ml-auto font-medium">{t('reports.daysLeft', { count: daysLeft })}</span>}
       </div>
     </Section>
   );
@@ -347,16 +349,18 @@ function EpicProgress({
   items: WorkItem[];
   projectId: string;
 }) {
+  const { t } = useTranslation();
+
   if (epics.length === 0) {
     return (
-      <Section title="Epic Progress">
-        <p className="text-sm text-gray-400">No epics defined yet.</p>
+      <Section title={t('reports.epicProgress')}>
+        <p className="text-sm text-gray-400">{t('reports.noEpics')}</p>
       </Section>
     );
   }
 
   return (
-    <Section title="Epic Progress" subtitle="Stories completed per epic">
+    <Section title={t('reports.epicProgress')} subtitle={t('reports.epicProgressSubtitle')}>
       <div className="space-y-3">
         {epics.map((epic) => {
           const stories = items.filter((i) => i.epicId === epic.id && i.type === 'story');
@@ -374,7 +378,7 @@ function EpicProgress({
                 >
                   {epic.title}
                 </Link>
-                <span className="text-xs text-gray-500">{done}/{total} stories — {pct}%</span>
+                <span className="text-xs text-gray-500">{t('reports.stories', { done, total, pct })}</span>
               </div>
               <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
                 <div
@@ -400,6 +404,7 @@ function TeamWorkload({
   allItems: WorkItem[];
   members: import('../../hooks/use-project-members').ProjectMember[];
 }) {
+  const { t } = useTranslation();
   const workload = useMemo(() => {
     const map = new Map<string, { name: string; role: string; points: number; count: number }>();
 
@@ -420,14 +425,14 @@ function TeamWorkload({
 
   if (workload.length === 0) {
     return (
-      <Section title="Team Workload">
-        <p className="text-sm text-gray-400">No items assigned in the active sprint.</p>
+      <Section title={t('reports.teamWorkload')}>
+        <p className="text-sm text-gray-400">{t('reports.noWorkload')}</p>
       </Section>
     );
   }
 
   return (
-    <Section title="Team Workload" subtitle="Points assigned in active sprint">
+    <Section title={t('reports.teamWorkload')} subtitle={t('reports.teamWorkloadSubtitle')}>
       <div className="space-y-2">
         {workload.map((w) => (
           <div key={w.name} className="flex items-center gap-3">
@@ -442,7 +447,7 @@ function TeamWorkload({
               />
             </div>
             <span className="w-16 text-right text-xs text-gray-600">
-              {w.points} pts ({w.count})
+              {t('reports.pts', { points: w.points, count: w.count })}
             </span>
           </div>
         ))}
@@ -461,12 +466,13 @@ function BlockedReport({
   blockedItems: Set<string>;
   projectId: string;
 }) {
+  const { t } = useTranslation();
   const blocked = items.filter((i) => blockedItems.has(i.id));
 
   return (
-    <Section title="Blocked Items" subtitle={`${blocked.length} item${blocked.length !== 1 ? 's' : ''} currently blocked`}>
+    <Section title={t('reports.blockedItems')} subtitle={t('reports.blockedSubtitle', { count: blocked.length })}>
       {blocked.length === 0 ? (
-        <p className="text-sm text-green-600">No blocked items. Nice work!</p>
+        <p className="text-sm text-green-600">{t('reports.noBlocked')}</p>
       ) : (
         <div className="space-y-2">
           {blocked.map((item) => (
@@ -497,13 +503,14 @@ function BurndownChart({
   sprintId: string;
   sprintName: string;
 }) {
+  const { t } = useTranslation();
   const { data } = useBurndown(projectId, sprintId);
 
   if (!data || data.days.length === 0) {
     return (
-      <Section title={`Burndown: ${sprintName}`}>
+      <Section title={t('reports.burndown', { name: sprintName })}>
         <p className="text-sm text-gray-400">
-          No burndown data yet. Data appears as items move through statuses during the sprint.
+          {t('reports.noBurndownData')}
         </p>
       </Section>
     );
@@ -540,7 +547,7 @@ function BurndownChart({
   const yTicks = [0, Math.round(maxPoints / 2), maxPoints];
 
   return (
-    <Section title={`Burndown: ${sprintName}`} subtitle="Story points remaining vs ideal">
+    <Section title={t('reports.burndown', { name: sprintName })} subtitle={t('reports.burndownSubtitle')}>
       <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full max-w-2xl">
         {/* Grid lines */}
         {yTicks.map((tick) => (
@@ -621,19 +628,19 @@ function BurndownChart({
       <div className="mt-2 flex gap-4 text-xs text-gray-500">
         <span className="flex items-center gap-1">
           <span className="inline-block h-0.5 w-4 bg-gray-400" style={{ borderTop: '1.5px dashed #9ca3af' }} />
-          Ideal
+          {t('reports.ideal')}
         </span>
         <span className="flex items-center gap-1">
           <span className="inline-block h-0.5 w-4 bg-brand-600" />
-          Actual
+          {t('reports.actual')}
         </span>
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
-          On track
+          {t('reports.onTrack')}
         </span>
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
-          Behind
+          {t('reports.behind')}
         </span>
       </div>
     </Section>

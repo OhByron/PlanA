@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "create": "Loo",
+    "delete": "Kustuta",
+    "edit": "Muuda",
+    "add": "Lisa",
+    "remove": "Eemalda",
+    "dismiss": "Sulge",
+    "close": "Sulge",
+    "loading": "Laadimine...",
+    "send": "Saada",
+    "open": "Ava",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "report": "Aruanne",
+    "settings": "Seaded",
+    "gotIt": "Selge",
+    "tryAgain": "Proovi uuesti",
+    "signOut": "Logi välja",
+    "signIn": "Logi sisse",
+    "whatsThis": "Mis see on?",
+    "help": "Abi",
+    "error": "Viga: {{message}}",
+    "thinking": "Mõtlen...",
+    "generating": "Genereerimine...",
+    "language": "Keel"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, tegelikult."
+  },
+
+  "nav": {
+    "board": "Tahvel",
+    "backlog": "Backlog",
+    "epics": "Epikud",
+    "sprints": "Sprindid",
+    "reports": "Aruanded",
+    "report": "Aruanne",
+    "team": "Meeskond",
+    "settings": "Seaded",
+    "project": "Projekt"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Laienda külgriba",
+    "collapseSidebar": "Ahenda külgriba",
+    "myWork": "Minu töö",
+    "organisations": "Organisatsioonid",
+    "noOrganisationsYet": "Organisatsioone pole veel",
+    "toggle": "Lülita {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Teavitused",
+    "markAllRead": "Märgi kõik loetuks",
+    "noNotificationsYet": "Teavitusi pole veel",
+    "justNow": "just praegu",
+    "minutesAgo": "{{count}} min tagasi",
+    "hoursAgo": "{{count}} t tagasi",
+    "daysAgo": "{{count}} p tagasi"
+  },
+
+  "notifications": {
+    "assigned": "Teile määrati \"{{title}}\"",
+    "statusChanged": "Olek muudeti \"{{title}}\"",
+    "commentAdded": "Uus kommentaar \"{{title}}\"",
+    "mentioned": "Teid mainiti \"{{title}}\"",
+    "default": "Teavitus: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Valmis",
+    "in_progress": "Töös",
+    "in_review": "Ülevaatuses",
+    "done": "Valmis",
+    "cancelled": "Tühistatud"
+  },
+
+  "priority": {
+    "urgent": "Kiire",
+    "high": "Kõrge",
+    "medium": "Keskmine",
+    "low": "Madal"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Viga",
+    "task": "Ülesanne"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktiivne",
+    "planned": "Planeeritud",
+    "completed": "Lõpetatud",
+    "cancelled": "Tühistatud"
+  },
+
+  "roles": {
+    "pm": "Projektijuht",
+    "po": "Tooteomanik",
+    "bsa": "Ärisüsteemide analüütik",
+    "ba": "Ärianalüütik",
+    "qe": "Kvaliteediinsener",
+    "ux": "UX disainer",
+    "dev": "Arendaja"
+  },
+
+  "login": {
+    "continueWithGitHub": "Jätka GitHubiga",
+    "continueWithGoogle": "Jätka Google'iga",
+    "orSignInWithEmail": "või logi sisse e-postiga",
+    "emailAddress": "E-posti aadress",
+    "password": "Parool",
+    "loginFailed": "Sisselogimine ebaõnnestus",
+    "devOnly": "ainult arenduseks",
+    "devLogin": "Arendaja sisselogimine (ilma OAuthita)"
+  },
+
+  "authError": {
+    "title": "Sisselogimine ebaõnnestus",
+    "badState": "Sisselogimise sessioon aegus. Palun proovige uuesti.",
+    "csrf": "Turvakontroll ebaõnnestus. Palun proovige uuesti.",
+    "exchangeFailed": "Teenusepakkujaga sisselogimist ei saanud lõpetada. Palun proovige uuesti.",
+    "dbError": "Serveri viga. Palun proovige hiljem uuesti.",
+    "missingToken": "Autentimise tõendit ei saadud.",
+    "default": "Sisselogimisel ilmnes ootamatu viga."
+  },
+
+  "myWork": {
+    "title": "Minu töö",
+    "itemCount": "Teile on määratud {{count}} element",
+    "itemCount_other": "Teile on määratud {{count}} elementi",
+    "noItems": "Määratud elemente pole.",
+    "noItemsHelp": "Elemendid ilmuvad siia, kui teid lisatakse projekti meeskonna liikmeks ja teile määratakse story'sid või ülesandeid. Veenduge, et teie konto e-post ühtib meeskonna liikme e-postiga või et olete kutse vastu võtnud."
+  },
+
+  "orgs": {
+    "title": "Organisatsioonid",
+    "orgCount": "{{count}} organisatsioon",
+    "orgCount_other": "{{count}} organisatsiooni",
+    "showArchived": "Näita arhiveeritud",
+    "newOrganisation": "+ Uus organisatsioon",
+    "noOrgsYet": "Organisatsioone pole veel. Looge üks, et alustada.",
+    "archived": "Arhiveeritud",
+    "confirmDelete": "Kustutada see organisatsioon ja kõik selle andmed jäädavalt?",
+    "added": "Lisatud {{date}}",
+    "newOrg": "Uus organisatsioon",
+    "orgName": "Organisatsiooni nimi",
+    "orgNameRequired": "Organisatsiooni nimi *",
+    "contactName": "Kontaktisiku nimi",
+    "contactEmail": "Kontakti e-post",
+    "contactPhone": "Kontakttelefon",
+    "addressLine1": "Aadressi rida 1",
+    "addressLine2": "Aadressi rida 2",
+    "city": "Linn",
+    "state": "Maakond",
+    "postalCode": "Postikood",
+    "country": "Riik"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Kõik organisatsioonid",
+    "editDetails": "Muuda andmeid",
+    "noContactDetails": "Kontaktandmeid pole veel. Klõpsake \"Muuda andmeid\", et need lisada.",
+    "contact": "Kontakt:",
+    "email": "E-post:",
+    "phone": "Telefon:",
+    "location": "Asukoht:",
+    "projects": "Projektid ({{count}})",
+    "newProject": "+ Uus projekt",
+    "noProjectsYet": "Projekte pole veel. Looge üks, et alustada.",
+    "newProjectTitle": "Uus projekt",
+    "projectName": "Projekti nimi",
+    "projectNameRequired": "Projekti nimi *",
+    "description": "Kirjeldus",
+    "methodology": "Metoodika",
+    "dueDate": "Tähtaeg",
+    "customerContact": "Kliendi kontakt",
+    "createProject": "Loo projekt",
+    "whatIsThisProjectAbout": "Millest see projekt räägib?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Kehtetu kutse",
+    "invalidLink": "See kutselink ei ole kehtiv.",
+    "goToLogin": "Mine sisselogimisele",
+    "alreadyAccepted": "Juba vastu võetud",
+    "alreadyAcceptedMessage": "See kutse on juba kasutatud. Saate oma andmetega sisse logida.",
+    "expired": "Kutse aegunud",
+    "expiredMessage": "See kutse on aegunud. Paluge oma meeskonnal saata uus.",
+    "invitedToJoin": "Teid on kutsutud projektiga liituma",
+    "emailLabel": "E-post",
+    "yourName": "Teie nimi",
+    "passwordLabel": "Parool",
+    "confirmPassword": "Kinnitage parool",
+    "minChars": "Vähemalt 8 märki",
+    "repeatPassword": "Korrake oma parooli",
+    "passwordTooShort": "Parool peab olema vähemalt 8 märki pikk",
+    "passwordsMismatch": "Paroolid ei kattu",
+    "createAccountJoin": "Loo konto ja liitu",
+    "creatingAccount": "Konto loomine...",
+    "alreadyHaveAccount": "Kas teil on juba konto?",
+    "logIn": "Logi sisse"
+  },
+
+  "board": {
+    "helpTitle": "Teie Kanban tahvel",
+    "helpBody1": "See on teie meeskonna töö visualiseeritud voona. Iga veerg esindab töövoo etappi.",
+    "helpBody2": "Lohistage kaarte veergude vahel, et olekut kohe uuendada. Kui liigutate story't, liiguvad selle alamülesanded kaasa.",
+    "helpBody3": "Hoidke veerg \"Töös\" väike; poolelioleva töö piiramine aitab teie meeskonnal asju lõpetada, selle asemel et uusi alustada.",
+    "itemCount": "{{count}} element",
+    "itemCount_other": "{{count}} elementi",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} punkti töös",
+    "overCapacity": "Ülekoormus",
+    "noItems": "Elemente pole",
+    "column": "{{status}} veerg"
+  },
+
+  "backlog": {
+    "helpTitle": "Teie Backlog",
+    "helpBody1": "Backlog on teie prioriseeritud tööde nimekiri. Ülal olevad elemendid on kõige kõrgema prioriteediga.",
+    "helpBody2": "Lohistage elemente haardekoha kaudu, et prioriteeti muuta. Kasutage filtreid, et keskenduda story'dele, vigadele või kindlatele olekutele.",
+    "helpBody3": "Klõpsake \"+ Uus element\", et kiiresti story'sid või ülesandeid lisada.",
+    "allStatuses": "Kõik olekud",
+    "allTypes": "Kõik tüübid",
+    "stories": "Story'd",
+    "bugs": "Vead",
+    "tasks": "Ülesanded",
+    "itemCount": "{{count}} element",
+    "itemCount_other": "{{count}} elementi",
+    "newItem": "+ Uus element",
+    "noItemsMatch": "Ükski element ei vasta teie filtritele. Proovige neid kohandada või looge uus element."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprindi planeerimine",
+    "helpBody1": "Sprindid on ajaliselt piiratud iteratsioonid (tavaliselt 2 nädalat). Tooge story'sid backlogist sprinti, et planeerida meeskonna tööd.",
+    "helpBody2": "Jälgige mahtuvuse näidikut, et meeskonda mitte üle koormata.",
+    "title": "Sprindid",
+    "noSprintsYet": "Sprinte pole veel. Looge üks, et planeerimist alustada.",
+    "pts": "{{count}} punkti"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Tagasi tahvlile",
+    "partOf": "Osa:",
+    "clickToEdit": "Klõpsake muutmiseks",
+    "description": "Kirjeldus",
+    "descPlaceholder": "Kirjeldage nõuet, eesmärki ja konteksti...",
+    "suggest": "Soovita",
+    "clickToAddDescription": "Klõpsake kirjelduse lisamiseks...",
+    "details": "Üksikasjad",
+    "statusLabel": "Olek",
+    "typeLabel": "Tüüp",
+    "priorityLabel": "Prioriteet",
+    "assigneeLabel": "Määratud",
+    "unassigned": "Määramata",
+    "totalPoints": "Punkte kokku",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Story'de puhul on punktid kõigi ülesannete punktide summa. Lisage punkte üksikutele ülesannetele täpsustamise käigus.",
+    "taskPointsHelp": "Hinnake suhtelist pingutust. Levinud skaalad: 1, 2, 3, 5, 8, 13. \"1\" on kõige lihtsam asi, mida teie meeskond teeb.",
+    "sumOfTasks": "{{count}} ülesande summa",
+    "sumOfTasks_other": "{{count}} ülesande summa",
+    "largeStoryWarning": "See story on {{points}} punkti. Kaaluge selle jagamist väiksemateks story'deks, millest igaühe saab lõpetada ühe sprindi jooksul.",
+    "blocked": "Blokeeritud",
+    "blockedBy": "Blokeerija:",
+    "notBlocked": "Pole blokeeritud",
+    "labels": "Sildid",
+    "convertToStory": "Teisenda Story'ks",
+    "convertToStoryConfirm": "Teisendada see ülesanne story'ks? Sõltuvusseos algse story'ga säilib.",
+    "convertToStoryHelp": "Edendab selle ülesande iseseisvaks story'ks koos sõltuvusseosega",
+    "created": "Loodud {{date}}",
+    "updated": "Uuendatud {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Ülesanded ({{count}})",
+    "contextHelp": "Ülesanded jagavad story töö valdkondade kaupa: UX disain, backend arendus, frontend arendus ja QE testimine. Iga ülesannet saab määrata meeskonna liikmele.",
+    "suggestTasks": "Soovita ülesandeid",
+    "addTask": "+ Lisa ülesanne",
+    "noTasksYet": "Ülesandeid pole veel.",
+    "taskTitlePlaceholder": "Ülesande pealkiri (nt 'UX: Sisselogimiskuva disain')",
+    "suggestedTasks": "Soovitatud ülesanded, klõpsake lisamiseks:",
+    "pts": "{{count}} punkti",
+    "clarificationNeeded": "Vajalik täpsustus:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Vastuvõtukriteeriumid",
+    "contextHelp": "Vastuvõtukriteeriumid määravad, millal element on tõesti \"valmis\". Given / When / Then formaadis (BDD) kirjutatuna muudavad need ootused selgeks ja testitavaks. Iga kriteerium on konkreetne, kontrollitav tingimus, mitte ebamäärane soov.",
+    "addButton": "+ Lisa",
+    "suggestAC": "Soovita VK",
+    "noCriteriaYet": "Vastuvõtukriteeriumeid pole veel. Määrake tingimused oleku \"valmis\" jaoks.",
+    "given": "Antud",
+    "when": "Kui",
+    "then": "Siis",
+    "deleteAC": "Kustuta vastuvõtukriteerium",
+    "givenPlaceholder": "Antud...",
+    "whenPlaceholder": "Kui...",
+    "thenPlaceholder": "Siis...",
+    "aiSuggestions": "AI soovitused, klõpsake lisamiseks:",
+    "aiNeedsMoreInfo": "AI vajab rohkem teavet:"
+  },
+
+  "comments": {
+    "title": "Kommentaarid",
+    "noCommentsYet": "Kommentaare pole veel.",
+    "addComment": "Lisa kommentaar..."
+  },
+
+  "dependencies": {
+    "title": "Sõltuvused",
+    "contextHelp": "Sõltuvused jälgivad elementidevahelisi seoseid. \"Sõltub\" tähendab, et see element ei saa edasi minna enne sihtmärgi valmimist. \"Seotud\" on informatiivne link.",
+    "noDependencies": "Sõltuvusi pole.",
+    "dependsOn": "Sõltub",
+    "relatesTo": "Seotud",
+    "dependedOnBy": "Sellest sõltub",
+    "removeDependency": "Eemalda sõltuvus",
+    "selectItem": "Valige element..."
+  },
+
+  "links": {
+    "title": "Lingid",
+    "addLink": "+ Lisa link",
+    "noLinksYet": "Linke pole veel.",
+    "labelPlaceholder": "Silt (nt GitHub PR, Figma, Testitulemused, Dokumendid)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Eemalda link"
+  },
+
+  "testResults": {
+    "retestRequired": "Vajalik uuesti testimine",
+    "retestMessage": "Sellel defektil on {{count}} ebaõnnestunud testi. Laadige uued testitulemused üles (JUnit XML või webhook) pärast paranduse juurutamist, et QE värav eemaldada ja see element sulgeda.",
+    "title": "Testitulemused",
+    "passed": "läbitud",
+    "failed": "ebaõnnestunud",
+    "errors": "vead",
+    "skipped": "vahele jäetud",
+    "lastRun": "Viimane käivitaus: {{date}}",
+    "sourceTestFailure": "Lähtetesti tõke",
+    "suite": "Komplekt: {{name}}",
+    "duration": "Kestus: {{ms}}ms",
+    "source": "Allikas: {{source}} | Teatatud: {{date}}",
+    "generateDescAC": "Genereeri kirjeldus ja VK"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Sulge",
+    "close": "Sulge"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Alustage tippimist...",
+    "bold": "Paks",
+    "italic": "Kaldkiri",
+    "inlineCode": "Reasisene kood",
+    "heading": "Pealkiri",
+    "subheading": "Alapealkiri",
+    "bulletList": "Täppidega loend",
+    "numberedList": "Nummerdatud loend",
+    "quote": "Tsitaat",
+    "codeBlock": "Koodiplokk"
+  },
+
+  "createEpic": {
+    "button": "+ Uus Epic",
+    "title": "Loo Epic",
+    "titleLabel": "Pealkiri",
+    "titlePlaceholder": "nt Kasutaja autentimine",
+    "descriptionLabel": "Kirjeldus",
+    "descriptionPlaceholder": "Selle Epic'u ärieesmärk ja ulatus...",
+    "priorityLabel": "Prioriteet",
+    "assigneeLabel": "Määratud"
+  },
+
+  "createProject": {
+    "button": "+ Uus projekt",
+    "title": "Loo projekt",
+    "organisationLabel": "Organisatsioon",
+    "selectOrg": "Valige organisatsioon...",
+    "teamLabel": "Meeskond",
+    "selectTeam": "Valige meeskond...",
+    "projectNameLabel": "Projekti nimi",
+    "projectNamePlaceholder": "nt PlanA MVP",
+    "descriptionLabel": "Kirjeldus",
+    "descriptionPlaceholder": "Millest see projekt räägib?",
+    "methodologyLabel": "Metoodika"
+  },
+
+  "createSprint": {
+    "button": "+ Uus Sprint",
+    "title": "Loo Sprint",
+    "nameLabel": "Nimi",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Eesmärk",
+    "goalPlaceholder": "Mida see Sprint peaks saavutama?",
+    "startDateLabel": "Alguskuupäev",
+    "endDateLabel": "Lõpukuupäev"
+  },
+
+  "createTeam": {
+    "button": "+ Uus meeskond",
+    "title": "Loo meeskond",
+    "organisationLabel": "Organisatsioon",
+    "selectOrg": "Valige organisatsioon...",
+    "teamNameLabel": "Meeskonna nimi",
+    "teamNamePlaceholder": "nt Backend meeskond"
+  },
+
+  "quickCreate": {
+    "placeholder": "Mida on vaja teha?"
+  },
+
+  "workItemCard": {
+    "open": "Ava {{title}}",
+    "taskCount": "{{count}} ülesanne",
+    "taskCount_other": "{{count}} ülesannet"
+  },
+
+  "team": {
+    "title": "Meeskond",
+    "memberCount": "{{count}} liige",
+    "memberCount_other": "{{count}} liiget",
+    "addMember": "+ Lisa liige",
+    "noMembersYet": "Meeskonna liikmeid pole veel. Lisage inimesi, et alustada töö määramist.",
+    "confirmRemove": "Eemaldada {{name}} meeskonnast?",
+    "invite": "Kutsu",
+    "inviteLink": "Kutselink:",
+    "copy": "Kopeeri",
+    "ptsPerSprint": "{{count}} punkti/Sprint",
+    "addTeamMember": "Lisa meeskonna liige",
+    "nameRequired": "Nimi *",
+    "emailLabel": "E-post",
+    "phoneLabel": "Telefon",
+    "roleRequired": "Roll *",
+    "capacity": "Mahtuvus",
+    "capacityPlaceholder": "punkti/Sprint",
+    "nameLabel": "Nimi",
+    "roleLabel": "Roll"
+  },
+
+  "epics": {
+    "helpTitle": "Epic'ud",
+    "helpBody1": "Epic'ud on funktsioonitaseme rühmitamised. Iga Epic sisaldab seotud story'sid, mis koos pakuvad ärivõimalust.",
+    "helpBody2": "Klõpsake Epic'ul, et näha selle story'sid, lisada uusi ja jälgida edenemist.",
+    "title": "Epic'ud",
+    "noEpicsYet": "Epic'uid pole veel. Epic'ud rühmitavad seotud story'sid funktsioonitaseme väljunditeks.",
+    "storyProgress": "{{done}}/{{total}} story'd"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Tagasi Epic'ute juurde",
+    "description": "Kirjeldus",
+    "descPlaceholder": "Kirjeldage ärieesmärki ja ulatust...",
+    "clickToAddDescription": "Klõpsake kirjelduse lisamiseks...",
+    "stories": "Story'd ({{count}})",
+    "storiesContextHelp": "Story'd on selle Epic'u tarnitavad eesmärgid. Iga story esindab konkreetset kasutajale suunatud tulemust, mida saab lõpetada ühes sprindis.",
+    "addStory": "+ Lisa Story",
+    "noStoriesYet": "Selles Epic'us pole veel story'sid. Lisage üks, et eesmärgid määrata.",
+    "details": "Üksikasjad",
+    "statusLabel": "Olek",
+    "priorityLabel": "Prioriteet",
+    "assigneeLabel": "Määratud",
+    "addStoryToEpic": "Lisa Story Epic'ule",
+    "titleRequired": "Pealkiri *",
+    "titleHint": "(\"[Rollina] soovin [eesmärk], et [kasu]\")",
+    "titlePlaceholder": "[Rollina] soovin [eesmärk], et [kasu]",
+    "descriptionLabel": "Kirjeldus",
+    "descriptionPlaceholder": "Kontekst, nõuded ja üksikasjad...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Määratule luuakse automaatselt ülesanne {{points}} punktiga. Punktid asuvad alati ülesannetel.",
+    "largeStoryWarning": "Suur story ({{points}} punkti). Kaaluge selle jagamist väiksemateks story'deks, millest igaühe saab lõpetada ühes sprindis. Väiksemaid story'sid on lihtsam hinnata, testida ja tarnida.",
+    "acceptanceCriteria": "Vastuvõtukriteeriumid",
+    "acContextHelp": "Määrake, millal see story on \"valmis\". Iga kriteerium peab olema konkreetne ja testitav.",
+    "addCriterion": "+ Lisa kriteerium",
+    "givenPlaceholder": "eeltingimus või kontekst...",
+    "whenPlaceholder": "tegevus või sündmus...",
+    "thenPlaceholder": "oodatav tulemus...",
+    "createRelatedTasks": "Luua seotud ülesanded?",
+    "autoAssignHint": "(määratakse automaatselt meeskonna liikmetele rolli järgi)",
+    "uxDesign": "UX disain",
+    "qeTesting": "QE testimine",
+    "bsaAnalysis": "BSA analüüs",
+    "creating": "Loomine...",
+    "createStory": "Loo Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Tagasi Sprintide juurde",
+    "start": "Algus:",
+    "end": "Lõpp:",
+    "capacity": "{{points}} / {{capacity}} mahtuvusest",
+    "storyPoints": "{{count}} Story Points",
+    "storiesAndItems": "{{stories}} story'd, {{items}} elementi kokku",
+    "done": "Valmis",
+    "addStories": "+ Lisa Story'sid",
+    "startSprint": "Alusta Sprinti",
+    "completeSprint": "Lõpeta Sprint",
+    "addStoriesToSprint": "Lisa story'sid Sprinti ({{count}} saadaval)",
+    "allStoriesAssigned": "Kõik story'd on juba sprindis või lõpetatud.",
+    "noItemsYet": "Selles sprindis pole veel elemente. Klõpsake \"+ Lisa Story'sid\", et Backlogist tuua.",
+    "removeStoryAndTasks": "Eemalda story ja ülesanded sprindist",
+    "removeFromSprint": "Eemalda sprindist",
+    "standaloneTasks": "Eraldiseisvad ülesanded",
+    "adding": "Lisamine...",
+    "tasks": "{{count}} ülesannet"
+  },
+
+  "reports": {
+    "helpTitle": "Projekti aruanded",
+    "helpBody1": "Aruanded annavad ülevaate teie meeskonna tarnimisest. Velocity näitab, mitu punkti te sprindi kohta lõpetate; aja jooksul stabiliseerub.",
+    "helpBody2": "Kasutage sprindi edenemise ja meeskonna töökoormuse diagramme, et kitsaskohti varakult märgata.",
+    "title": "Aruanded",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Sprindi kohta lõpetatud Story Points",
+    "noCompletedSprints": "Lõpetatud sprinte pole veel. Velocity ilmub pärast esimese sprindi lõpetamist.",
+    "trend": "Trend",
+    "threeSprintAvg": "3 sprindi keskmine",
+    "avgVelocity": "Keskmine Velocity:",
+    "pointsPerSprint": "punkti/Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Valmis: {{points}} punkti",
+    "inProgress": "Töös: {{points}} punkti",
+    "inReview": "Ülevaatuses: {{points}} punkti",
+    "remaining": "Järele jäänud: {{points}} punkti",
+    "daysLeft": "{{count}} päeva jäänud",
+    "epicProgress": "Epic'ute edenemine",
+    "epicProgressSubtitle": "Lõpetatud story'sid Epic'u kohta",
+    "noEpics": "Epic'uid pole veel määratud.",
+    "stories": "{{done}}/{{total}} story'd, {{pct}}%",
+    "teamWorkload": "Meeskonna töökoormus",
+    "teamWorkloadSubtitle": "Aktiivses sprindis määratud punktid",
+    "noWorkload": "Aktiivses sprindis pole määratud elemente.",
+    "pts": "{{points}} punkti ({{count}})",
+    "blockedItems": "Blokeeritud elemendid",
+    "blockedSubtitle": "{{count}} element on praegu blokeeritud",
+    "blockedSubtitle_other": "{{count}} elementi on praegu blokeeritud",
+    "noBlocked": "Blokeeritud elemente pole. Suurepärane töö!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Järelejäänud Story Points ideaali suhtes",
+    "noBurndownData": "Burndown andmeid pole veel. Andmed ilmuvad, kui elemendid sprindi jooksul olekute vahel liiguvad.",
+    "ideal": "Ideaalne",
+    "actual": "Tegelik",
+    "onTrack": "Graafikus",
+    "behind": "Maas"
+  },
+
+  "aiSettings": {
+    "title": "AI seadistamine",
+    "description": "Seadistage AI teenusepakkuja, et lubada vastuvõtukriteeriumide soovitusi, story dekomponseerimist ja väljalaskemärkuste mustandi koostamist. Kasutate oma API võtit; PlanA ei salvesta ega proksi ühiskonto kaudu.",
+    "provider": "Teenusepakkuja",
+    "notConfigured": "Seadistamata",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Kohandatud (OpenAI-ga ühilduv)",
+    "model": "Mudel",
+    "selectModel": "Valige mudel...",
+    "modelPlaceholder": "Mudeli ID (nt my-custom-model)",
+    "apiKey": "API võti",
+    "currentKey": "Praegune: {{key}}",
+    "enterApiKey": "Sisestage API võti",
+    "apiKeyHelp": "Teie võti salvestatakse krüpteeritult iga projekti kohta. Jätke tühjaks, et praegust võtit säilitada.",
+    "endpointUrl": "Lõpp-punkti URL",
+    "saving": "Salvestamine...",
+    "settingsSaved": "Seaded salvestatud",
+    "stakeholderSharing": "Jagamine huvigruppidega",
+    "sharingDescription": "Looge jagatavad lingid, et huvigrupid saaksid vaadata projekti armataudu ainult lugemise režiimis. Sisselogimist pole vaja; link on juurdepääs.",
+    "label": "Silt",
+    "labelPlaceholder": "nt Klient, Juhtnõukogu",
+    "expiresIn": "Aegub",
+    "days30": "30 päeva",
+    "days90": "90 päeva",
+    "days180": "180 päeva",
+    "year1": "1 aasta",
+    "never": "Mitte kunagi",
+    "createLink": "Loo link",
+    "creating": "Loomine...",
+    "noActiveLinks": "Aktiivseid jagamislinge pole.",
+    "created": "Loodud {{date}}",
+    "expires": "Aegub {{date}}",
+    "copyLink": "Kopeeri link",
+    "copied": "Kopeeritud!",
+    "revoke": "Tühista",
+    "revoked": "Tühistatud",
+    "revokedDate": "Tühistatud {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Huvigruppide armataud",
+    "invalidLink": "Kehtetu või aegunud link",
+    "poweredBy": "Töötab PlanA-ga",
+    "activeSprint": "Aktiivne Sprint",
+    "noActiveSprint": "Aktiivset sprinti pole",
+    "goal": "Eesmärk:",
+    "items": "Elemendid",
+    "points": "Punktid",
+    "recentlyCompleted": "Hiljuti lõpetatud",
+    "noCompletedItems": "Lõpetatud elemente pole veel.",
+    "defects": "Defektid",
+    "openDefects": "Avatud",
+    "closedDefects": "Suletud",
+    "sprintVelocity": "Sprindi Velocity",
+    "storyProgress": "Story edenemine"
+  },
+
+  "reportView": {
+    "title": "Aruanded",
+    "generateProject": "Projekti aruanne",
+    "generateSprint": "Sprindi aruanne",
+    "generating": "Genereerimine...",
+    "generateDescription": "Genereerige oma projekti andmetest põhjalik aruanne.",
+    "exportPdf": "Ekspordi PDF",
+    "back": "Tagasi",
+    "generated": "Genereeritud {{date}}",
+    "executiveSummary": "Juhtivkokkuvõte",
+    "metrics": "Mõõdikud",
+    "items": "Elemendid",
+    "points": "Punktid",
+    "completion": "Valmidus",
+    "testPassRate": "Testide läbimisprotsent",
+    "epicBreakdown": "Epic'ute jaotus",
+    "epicColumn": "Epic",
+    "storiesColumn": "Story'd",
+    "acceptanceCriteriaColumn": "Vastuvõtukriteeriumid",
+    "testCoverageColumn": "Testikate",
+    "defects": "Defektid",
+    "total": "Kokku",
+    "open": "Avatud",
+    "resolved": "Lahendatud",
+    "criticalOpen": "Kriitilised (avatud)",
+    "testEvidence": "Testitõendid",
+    "totalTests": "Teste kokku",
+    "passed": "Läbitud",
+    "failed": "Ebaõnnestunud",
+    "errors": "Vead",
+    "skipped": "Vahele jäetud",
+    "currentBlockers": "Praegused blokeerijad",
+    "velocityHistory": "Velocity ajalugu",
+    "generatedBy": "Genereeris PlanA"
+  }
+}

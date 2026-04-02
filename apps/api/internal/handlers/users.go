@@ -24,6 +24,7 @@ type meResponse struct {
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	AvatarURL *string   `json:"avatar_url"`
+	Language  *string   `json:"language"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -33,10 +34,10 @@ func (h *UserHandlers) Me(w http.ResponseWriter, r *http.Request) {
 
 	var resp meResponse
 	err := h.db.QueryRow(r.Context(), `
-		SELECT id, email, name, avatar_url, created_at
+		SELECT id, email, name, avatar_url, language, created_at
 		FROM users
 		WHERE id = $1
-	`, claims.UserID).Scan(&resp.ID, &resp.Email, &resp.Name, &resp.AvatarURL, &resp.CreatedAt)
+	`, claims.UserID).Scan(&resp.ID, &resp.Email, &resp.Name, &resp.AvatarURL, &resp.Language, &resp.CreatedAt)
 	if err != nil {
 		slog.Error("me: db query failed", "error", err, "user_id", claims.UserID)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to fetch user profile")
@@ -106,7 +107,8 @@ func (h *UserHandlers) UpdatePreferences(w http.ResponseWriter, r *http.Request)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 
 	var body struct {
-		DailyDigest *bool `json:"daily_digest"`
+		DailyDigest *bool   `json:"daily_digest"`
+		Language    *string `json:"language"`
 	}
 	if !readJSON(w, r, &body) {
 		return
@@ -119,6 +121,17 @@ func (h *UserHandlers) UpdatePreferences(w http.ResponseWriter, r *http.Request)
 		if err != nil {
 			slog.Error("users.UpdatePreferences: update failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to update preferences")
+			return
+		}
+	}
+
+	if body.Language != nil {
+		_, err := h.db.Exec(r.Context(),
+			`UPDATE users SET language = $1 WHERE id = $2`,
+			nilIfEmpty(*body.Language), claims.UserID)
+		if err != nil {
+			slog.Error("users.UpdatePreferences: language update failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "db_error", "Failed to update language preference")
 			return
 		}
 	}

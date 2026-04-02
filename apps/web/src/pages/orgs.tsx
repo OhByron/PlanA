@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { Button, Badge, Input } from '@projecta/ui';
 import { useOrgsList, useCreateOrg, useArchiveOrg, useUnarchiveOrg, useDeleteOrg } from '../hooks/use-orgs-management';
 
 export function OrgsPage() {
+  const { t } = useTranslation();
   const [showArchived, setShowArchived] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const { data: orgs = [], isLoading } = useOrgsList(showArchived);
@@ -23,8 +25,8 @@ export function OrgsPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">Organizations</h1>
-          <p className="mt-1 text-sm text-gray-500">{orgs.length} organization{orgs.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-xl font-semibold text-gray-900">{t('orgs.title')}</h1>
+          <p className="mt-1 text-sm text-gray-500">{t('orgs.orgCount', { count: orgs.length })}</p>
         </div>
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 text-sm text-gray-500">
@@ -34,9 +36,9 @@ export function OrgsPage() {
               onChange={(e) => setShowArchived(e.target.checked)}
               className="rounded border-gray-300"
             />
-            Show archived
+            {t('orgs.showArchived')}
           </label>
-          <Button size="sm" onClick={() => setShowCreate(true)}>+ New Organization</Button>
+          <Button size="sm" onClick={() => setShowCreate(true)}>{t('orgs.newOrganisation')}</Button>
         </div>
       </div>
 
@@ -44,7 +46,7 @@ export function OrgsPage() {
 
       {orgs.length === 0 && (
         <p className="py-12 text-center text-gray-400">
-          No organizations yet. Create one to get started.
+          {t('orgs.noOrgsYet')}
         </p>
       )}
 
@@ -64,7 +66,7 @@ export function OrgsPage() {
                   >
                     {org.name}
                   </Link>
-                  {org.archivedAt && <Badge variant="secondary">Archived</Badge>}
+                  {org.archivedAt && <Badge variant="secondary">{t('orgs.archived')}</Badge>}
                 </div>
                 <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
                   {org.contactName && <span>{org.contactName}</span>}
@@ -74,20 +76,20 @@ export function OrgsPage() {
                   {org.country && <span>{org.country}</span>}
                 </div>
                 <p className="mt-1 text-xs text-gray-400">
-                  Added {new Date(org.createdAt).toLocaleDateString()}
+                  {t('orgs.added', { date: new Date(org.createdAt).toLocaleDateString() })}
                 </p>
               </div>
               <div className="flex gap-2">
                 <Link to="/orgs/$orgId" params={{ orgId: org.id }}>
-                  <Button size="xs" variant="outline">Edit</Button>
+                  <Button size="xs" variant="outline">{t('common.edit')}</Button>
                 </Link>
                 {org.archivedAt ? (
                   <Button size="xs" variant="outline" onClick={() => unarchiveOrg.mutate(org.id)}>
-                    Restore
+                    {t('common.restore')}
                   </Button>
                 ) : (
                   <Button size="xs" variant="ghost" onClick={() => archiveOrg.mutate(org.id)}>
-                    Archive
+                    {t('common.archive')}
                   </Button>
                 )}
                 <Button
@@ -95,12 +97,12 @@ export function OrgsPage() {
                   variant="ghost"
                   className="text-red-500 hover:text-red-700"
                   onClick={() => {
-                    if (confirm('Permanently delete this organization and all its data?')) {
+                    if (confirm(t('orgs.confirmDelete'))) {
                       deleteOrg.mutate(org.id);
                     }
                   }}
                 >
-                  Delete
+                  {t('common.delete')}
                 </Button>
               </div>
             </div>
@@ -112,6 +114,7 @@ export function OrgsPage() {
 }
 
 function CreateOrgForm({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const create = useCreateOrg();
   const [name, setName] = useState('');
   const [contactName, setContactName] = useState('');
@@ -141,56 +144,56 @@ function CreateOrgForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="mb-6 rounded-lg border border-brand-200 bg-brand-50/30 p-4 space-y-3">
-      <h3 className="font-medium text-gray-900">New Organization</h3>
+      <h3 className="font-medium text-gray-900">{t('orgs.newOrg')}</h3>
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Organization Name *</label>
+        <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.orgNameRequired')}</label>
         <Input autoFocus placeholder="Acme Corporation" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Name</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactName')}</label>
           <Input placeholder="Jane Smith" value={contactName} onChange={(e) => setContactName(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Email</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactEmail')}</label>
           <Input placeholder="jane@acme.com" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Phone</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactPhone')}</label>
           <Input placeholder="+1 555-0100" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Address Line 1</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.addressLine1')}</label>
           <Input placeholder="123 Main St" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Address Line 2</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.addressLine2')}</label>
           <Input placeholder="Suite 100" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
         </div>
       </div>
       <div className="grid grid-cols-4 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">City</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.city')}</label>
           <Input placeholder="San Francisco" value={city} onChange={(e) => setCity(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">State</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.state')}</label>
           <Input placeholder="CA" value={state} onChange={(e) => setState(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Postal Code</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.postalCode')}</label>
           <Input placeholder="94105" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Country</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.country')}</label>
           <Input placeholder="US" value={country} onChange={(e) => setCountry(e.target.value)} />
         </div>
       </div>
       <div className="flex gap-2 pt-2">
-        <Button onClick={submit} disabled={!name.trim() || create.isPending}>Create</Button>
-        <Button variant="ghost" onClick={onClose}>Cancel</Button>
+        <Button onClick={submit} disabled={!name.trim() || create.isPending}>{t('common.create')}</Button>
+        <Button variant="ghost" onClick={onClose}>{t('common.cancel')}</Button>
       </div>
     </div>
   );

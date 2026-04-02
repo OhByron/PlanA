@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
 import type { WorkItem } from '@projecta/types';
 import { Avatar, cn } from '@projecta/ui';
@@ -23,6 +24,7 @@ export function WorkItemCard({
   isBlocked: isBlockedProp,
   assigneeName,
 }: WorkItemCardProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const displayPoints = calculatedPoints != null ? calculatedPoints
@@ -37,7 +39,7 @@ export function WorkItemCard({
           params: { projectId, workItemId: item.id },
         })
       }
-      aria-label={`Open ${item.title}`}
+      aria-label={t('workItemCard.open', { title: item.title })}
       className={cn(
         'w-full rounded-lg border border-gray-200 bg-white p-3 text-left shadow-sm transition-shadow hover:shadow-md',
         blocked && 'border-red-300 bg-red-50/50',
@@ -70,11 +72,11 @@ export function WorkItemCard({
           )}
           {childTaskCount != null && childTaskCount > 0 && (
             <span className="text-[10px] text-gray-400">
-              {childTaskCount} task{childTaskCount !== 1 ? 's' : ''}
+              {t('workItemCard.taskCount', { count: childTaskCount })}
             </span>
           )}
           {blocked && (
-            <span className="text-xs font-medium text-red-600">Blocked</span>
+            <span className="text-xs font-medium text-red-600">{t('workItemDetail.blocked')}</span>
           )}
         </div>
 

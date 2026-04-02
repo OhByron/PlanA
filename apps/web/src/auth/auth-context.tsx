@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { api, getToken, setToken, clearToken } from '../lib/api-client';
 import { toMe, type MeResponse } from '../lib/api-transforms';
+import { loadLanguage } from '../i18n';
 
 interface AuthState {
   user: MeResponse | null;
@@ -28,7 +29,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchUser = useCallback(async () => {
     try {
       const raw = await api.get('/me');
-      setUser(toMe(raw));
+      const me = toMe(raw);
+      setUser(me);
+      if (me.language) {
+        loadLanguage(me.language);
+      }
     } catch {
       clearToken();
       setTokenState(null);
@@ -49,7 +54,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(newToken);
     setTokenState(newToken);
     const raw = await api.get('/me');
-    setUser(toMe(raw));
+    const me = toMe(raw);
+    setUser(me);
+    if (me.language) {
+      loadLanguage(me.language);
+    }
   }, []);
 
   const logout = useCallback(async () => {

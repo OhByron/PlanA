@@ -1,5 +1,6 @@
 import { useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 interface DashboardData {
   project: { name: string; description: string | null };
@@ -21,6 +22,7 @@ interface DashboardData {
 }
 
 export function ShareDashboardPage() {
+  const { t } = useTranslation();
   const { token } = useParams({ strict: false }) as { token: string };
 
   const { data, isLoading, error } = useQuery<DashboardData>({
@@ -29,7 +31,7 @@ export function ShareDashboardPage() {
       const res = await fetch(`/api/share/${token}/dashboard`);
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.message || 'Invalid or expired link');
+        throw new Error(err.message || t('shareDashboard.invalidLink'));
       }
       return res.json();
     },
@@ -48,8 +50,8 @@ export function ShareDashboardPage() {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Link Unavailable</h1>
-          <p className="mt-2 text-gray-500">{(error as Error)?.message || 'This share link is invalid or has expired.'}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('shareDashboard.invalidLink')}</h1>
+          <p className="mt-2 text-gray-500">{(error as Error)?.message || t('shareDashboard.invalidLink')}</p>
         </div>
       </div>
     );
@@ -75,7 +77,7 @@ export function ShareDashboardPage() {
           <div className="flex items-center gap-3">
             <span className="text-xl font-bold text-blue-600">Plan<span className="text-gray-900">A</span></span>
             <span className="text-gray-300">|</span>
-            <span className="text-sm text-gray-500">Project Dashboard</span>
+            <span className="text-sm text-gray-500">{t('shareDashboard.title')}</span>
           </div>
           <h1 className="mt-2 text-2xl font-bold text-gray-900">{data.project.name}</h1>
           {data.project.description && (
@@ -87,8 +89,8 @@ export function ShareDashboardPage() {
       <main className="mx-auto max-w-5xl px-6 py-8">
         {/* Key metrics */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <MetricCard label="Overall Progress" value={`${progressPct}%`} detail={`${data.progress.done_stories} of ${data.progress.total_stories} stories`} />
-          <MetricCard label="Open Defects" value={String(data.defects.open)} color={data.defects.open > 0 ? 'red' : 'green'} />
+          <MetricCard label={t('shareDashboard.storyProgress')} value={`${progressPct}%`} detail={`${data.progress.done_stories} of ${data.progress.total_stories} stories`} />
+          <MetricCard label={t('shareDashboard.openDefects')} value={String(data.defects.open)} color={data.defects.open > 0 ? 'red' : 'green'} />
           <MetricCard label="Test Pass Rate" value={`${testPassRate}%`} detail={`${data.tests.total} tests`} color={testPassRate >= 90 ? 'green' : testPassRate >= 70 ? 'yellow' : 'red'} />
           <MetricCard label="Tests Run" value={String(data.tests.total)} detail={`${data.tests.failed} failing`} />
         </div>
@@ -96,11 +98,11 @@ export function ShareDashboardPage() {
         {/* Sprint progress */}
         {data.sprint && (
           <section className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Current Sprint: {data.sprint.name}</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('shareDashboard.activeSprint')}: {data.sprint.name}</h2>
             {data.sprint.goal && <p className="text-sm text-gray-500 mt-1">{data.sprint.goal}</p>}
             <div className="mt-3">
               <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-                <span>{data.sprint.done_points} of {data.sprint.total_points} points</span>
+                <span>{data.sprint.done_points} of {data.sprint.total_points} {t('shareDashboard.points').toLowerCase()}</span>
                 <span>{sprintPct}%</span>
               </div>
               <div className="h-3 rounded-full bg-gray-200 overflow-hidden">
@@ -110,7 +112,7 @@ export function ShareDashboardPage() {
                 />
               </div>
               <p className="mt-1 text-xs text-gray-400">
-                {data.sprint.done_items} of {data.sprint.total_items} items complete
+                {data.sprint.done_items} of {data.sprint.total_items} {t('shareDashboard.items').toLowerCase()} complete
               </p>
             </div>
           </section>
@@ -119,7 +121,7 @@ export function ShareDashboardPage() {
         {/* Velocity */}
         {data.velocity && data.velocity.length > 0 && (
           <section className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Velocity Trend</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('shareDashboard.sprintVelocity')}</h2>
             <div className="mt-3 flex items-end gap-3 h-32">
               {data.velocity.map((v, i) => {
                 const max = Math.max(...data.velocity.map((x) => x.velocity || 0), 1);
@@ -142,7 +144,7 @@ export function ShareDashboardPage() {
         {/* Recently completed */}
         {data.completed && data.completed.length > 0 && (
           <section className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Recently Completed</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('shareDashboard.recentlyCompleted')}</h2>
             <div className="mt-3 rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
               {data.completed.slice(0, 10).map((item, i) => (
                 <div key={i} className="flex items-center gap-3 px-4 py-3">
@@ -164,7 +166,7 @@ export function ShareDashboardPage() {
         {/* Footer */}
         <footer className="mt-12 border-t border-gray-200 pt-6 text-center">
           <p className="text-xs text-gray-400">
-            Powered by PlanA &middot; This is a read-only stakeholder view
+            {t('shareDashboard.poweredBy')} &middot; This is a read-only stakeholder view
           </p>
         </footer>
       </main>

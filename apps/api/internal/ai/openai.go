@@ -23,7 +23,7 @@ func NewOpenAIProvider(apiKey, model, endpoint string) *OpenAIProvider {
 }
 
 func (p *OpenAIProvider) SuggestAC(ctx context.Context, req SuggestACRequest) (*SuggestACResponse, error) {
-	systemPrompt := `You are an experienced Business Systems Analyst helping define acceptance criteria for user stories in an Agile project. Use Given/When/Then format. Be specific and testable. Consider edge cases. If ambiguous, ask clarifying questions. Return JSON: {"suggestions": [{"given": "...", "when": "...", "then": "..."}], "questions": ["..."]}`
+	systemPrompt := `You are an experienced Business Systems Analyst helping define acceptance criteria for user stories in an Agile project. Use Given/When/Then format. Be specific and testable. Consider edge cases. If ambiguous, ask clarifying questions. Return JSON: {"suggestions": [{"given": "...", "when": "...", "then": "..."}], "questions": ["..."]}` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nStory: %s\n%s\nSuggest acceptance criteria.",
 		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryTitle, req.StoryDescription)
@@ -80,7 +80,7 @@ func (p *OpenAIProvider) SuggestAC(ctx context.Context, req SuggestACRequest) (*
 }
 
 func (p *OpenAIProvider) SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error) {
-	systemPrompt := `You are a senior QA analyst creating defect reports from test failures. Write a clear description (expected vs actual, root cause, impact). Generate 2-4 acceptance criteria in Given/When/Then format for verifying the fix. Return JSON: {"description": "...", "acceptance_criteria": [{"given": "...", "when": "...", "then": "..."}], "questions": []}`
+	systemPrompt := `You are a senior QA analyst creating defect reports from test failures. Write a clear description (expected vs actual, root cause, impact). Generate 2-4 acceptance criteria in Given/When/Then format for verifying the fix. Return JSON: {"description": "...", "acceptance_criteria": [{"given": "...", "when": "...", "then": "..."}], "questions": []}` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf("Project: %s\nParent Story: %s\nTest: %s\nSuite: %s\nStatus: %s\n\nError:\n%s\n\nGenerate defect report.",
 		req.ProjectName, req.ParentTitle, req.TestName, req.SuiteName, req.Status, req.ErrorMessage)
@@ -130,7 +130,7 @@ func (p *OpenAIProvider) SuggestDefect(ctx context.Context, req SuggestDefectReq
 }
 
 func (p *OpenAIProvider) SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error) {
-	systemPrompt := `You are a Scrum Master decomposing stories into tasks. Suggest 3-8 tasks for disciplines: dev, qe, ux, ba, bsa. Include at least one QE task. Points: 1-8 scale. Return JSON: {"tasks": [{"title": "...", "role": "dev|qe|ux|ba|bsa", "points": N, "rationale": "..."}], "questions": []}`
+	systemPrompt := `You are a Scrum Master decomposing stories into tasks. Suggest 3-8 tasks for disciplines: dev, qe, ux, ba, bsa. Include at least one QE task. Points: 1-8 scale. Return JSON: {"tasks": [{"title": "...", "role": "dev|qe|ux|ba|bsa", "points": N, "rationale": "..."}], "questions": []}` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nStory: %s\n%s\n",
 		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryTitle, req.StoryDescription)
@@ -188,7 +188,7 @@ func (p *OpenAIProvider) SuggestDecomposition(ctx context.Context, req SuggestDe
 }
 
 func (p *OpenAIProvider) SuggestDescription(ctx context.Context, req SuggestDescRequest) (*SuggestDescResponse, error) {
-	systemPrompt := `You are a BSA writing story descriptions. Write 2-4 concise paragraphs covering context, requirements, and edge cases. Return JSON: {"description": "...", "questions": []}`
+	systemPrompt := `You are a BSA writing story descriptions. Write 2-4 concise paragraphs covering context, requirements, and edge cases. Return JSON: {"description": "...", "questions": []}` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nType: %s\nTitle: %s\n%s\nWrite a description.",
 		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryType, req.StoryTitle,

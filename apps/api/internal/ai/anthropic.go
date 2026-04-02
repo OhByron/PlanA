@@ -78,7 +78,7 @@ Return your response as JSON with this exact structure:
   "questions": ["...", "..."]
 }
 
-Only include "questions" if you genuinely need more information. If the story is clear enough, return only "suggestions" with an empty questions array.`
+Only include "questions" if you genuinely need more information. If the story is clear enough, return only "suggestions" with an empty questions array.` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf(`Project: %s
 
@@ -186,7 +186,7 @@ Return JSON:
   "questions": []
 }
 
-Only include "questions" if genuinely needed. Otherwise return an empty array.`
+Only include "questions" if genuinely needed. Otherwise return an empty array.` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf(`Project: %s
 Parent Story: %s
@@ -268,7 +268,7 @@ Return JSON:
 {
   "tasks": [{"title": "...", "role": "dev|qe|ux|ba|bsa", "points": N, "rationale": "..."}],
   "questions": []
-}`
+}` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf(`Project: %s
 Epic: %s
@@ -359,7 +359,7 @@ Rules:
 Return your response as JSON:
 {"description": "The full description text...", "questions": []}
 
-Only include "questions" if the title is genuinely too ambiguous. Otherwise return the description with an empty questions array.`
+Only include "questions" if the title is genuinely too ambiguous. Otherwise return the description with an empty questions array.` + LanguageInstruction(req.Language)
 
 	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nStory type: %s\nStory title: %s\n",
 		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryType, req.StoryTitle)

@@ -3,6 +3,7 @@ import { useParams, Link } from '@tanstack/react-router';
 import { Button, Badge, Input, Select } from '@projecta/ui';
 import type { WorkItem } from '@projecta/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { useSprints, useSprintItems, useRemoveSprintItem, useUpdateSprint, useAddSprintItem } from '../../hooks/use-sprints';
 import { useWorkItems } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
@@ -19,6 +20,7 @@ const statusColors: Record<string, 'success' | 'default' | 'secondary' | 'outlin
 };
 
 export function SprintDetailPage() {
+  const { t } = useTranslation();
   const { projectId, sprintId } = useParams({ strict: false }) as {
     projectId: string;
     sprintId: string;
@@ -144,7 +146,7 @@ export function SprintDetailPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        Back to sprints
+        {t('sprintDetail.backToSprints')}
       </Link>
 
       <div className="mb-6 flex items-center justify-between">
@@ -153,35 +155,35 @@ export function SprintDetailPage() {
             <h1 className="text-xl font-semibold text-gray-900">{sprint?.name ?? 'Sprint'}</h1>
             {sprint && (
               <Badge variant={statusColors[sprint.status] ?? 'secondary'}>
-                {sprint.status.charAt(0).toUpperCase() + sprint.status.slice(1)}
+                {t(`sprintStatus.${sprint.status}`)}
               </Badge>
             )}
           </div>
           {sprint?.goal && <p className="mt-1 text-sm text-gray-500">{sprint.goal}</p>}
           <div className="mt-1 flex items-center gap-4 text-xs text-gray-400">
-            {sprint?.startDate && <span>Start: {new Date(sprint.startDate).toLocaleDateString()}</span>}
-            {sprint?.endDate && <span>End: {new Date(sprint.endDate).toLocaleDateString()}</span>}
+            {sprint?.startDate && <span>{t('sprintDetail.start')} {new Date(sprint.startDate).toLocaleDateString()}</span>}
+            {sprint?.endDate && <span>{t('sprintDetail.end')} {new Date(sprint.endDate).toLocaleDateString()}</span>}
             {totalCapacity > 0 ? (
               <span className={totalPoints > totalCapacity ? 'text-red-500 font-medium' : ''}>
-                {totalPoints} / {totalCapacity} capacity
+                {t('sprintDetail.capacity', { points: totalPoints, capacity: totalCapacity })}
               </span>
             ) : (
-              <span>{totalPoints} story points</span>
+              <span>{t('sprintDetail.storyPoints', { count: totalPoints })}</span>
             )}
-            <span>{stories.length} stories, {sprintItems.length} total items</span>
+            <span>{t('sprintDetail.storiesAndItems', { stories: stories.length, items: sprintItems.length })}</span>
           </div>
         </div>
 
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => setShowPicker(!showPicker)}>
-            {showPicker ? 'Done' : '+ Add Stories'}
+            {showPicker ? t('sprintDetail.done') : t('sprintDetail.addStories')}
           </Button>
           {sprint?.status === 'planned' && (
             <Button
               size="sm"
               onClick={() => updateSprint.mutate({ sprintId, data: { status: 'active' } })}
             >
-              Start Sprint
+              {t('sprintDetail.startSprint')}
             </Button>
           )}
           {sprint?.status === 'active' && (
@@ -196,7 +198,7 @@ export function SprintDetailPage() {
                 updateSprint.mutate({ sprintId, data: { status: 'completed', velocity: donePoints } });
               }}
             >
-              Complete Sprint
+              {t('sprintDetail.completeSprint')}
             </Button>
           )}
         </div>
@@ -206,10 +208,10 @@ export function SprintDetailPage() {
       {showPicker && (
         <div className="mb-6 rounded-lg border border-brand-200 bg-brand-50/30 p-4">
           <h3 className="mb-3 text-sm font-medium text-gray-900">
-            Add stories to sprint ({availableStories.length} available)
+            {t('sprintDetail.addStoriesToSprint', { count: availableStories.length })}
           </h3>
           {availableStories.length === 0 && (
-            <p className="text-sm text-gray-400">All stories are already in a sprint or completed.</p>
+            <p className="text-sm text-gray-400">{t('sprintDetail.allStoriesAssigned')}</p>
           )}
           <div className="max-h-64 space-y-2 overflow-y-auto">
             {availableStories.map((story) => {
@@ -226,14 +228,14 @@ export function SprintDetailPage() {
                     {taskPoints || '—'}
                   </span>
                   {children.length > 0 && (
-                    <span className="text-[10px] text-gray-400">{children.length} tasks</span>
+                    <span className="text-[10px] text-gray-400">{t('sprintDetail.tasks', { count: children.length })}</span>
                   )}
                   <Button
                     size="xs"
                     onClick={() => handleAddStory(story.id)}
                     disabled={adding !== null}
                   >
-                    {adding === story.id ? 'Adding...' : 'Add'}
+                    {adding === story.id ? t('sprintDetail.adding') : t('common.add')}
                   </Button>
                 </div>
               );
@@ -245,7 +247,7 @@ export function SprintDetailPage() {
       {/* Sprint contents */}
       {stories.length === 0 && standaloneTasks.length === 0 && !showPicker && (
         <p className="py-12 text-center text-gray-400">
-          No items in this sprint yet. Click "+ Add Stories" to pull from the backlog.
+          {t('sprintDetail.noItemsYet')}
         </p>
       )}
 
@@ -274,7 +276,7 @@ export function SprintDetailPage() {
                 <button
                   onClick={() => handleRemoveStory(story.id)}
                   className="text-gray-400 hover:text-red-500"
-                  title="Remove story and tasks from sprint"
+                  title={t('sprintDetail.removeStoryAndTasks')}
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -310,7 +312,7 @@ export function SprintDetailPage() {
         {/* Standalone tasks (not under a story) */}
         {standaloneTasks.length > 0 && (
           <div>
-            <h3 className="mb-2 text-xs font-semibold text-gray-400 uppercase">Standalone Tasks</h3>
+            <h3 className="mb-2 text-xs font-semibold text-gray-400 uppercase">{t('sprintDetail.standaloneTasks')}</h3>
             {standaloneTasks.map((task) => (
               <div key={task.id} className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2.5 mb-2">
                 <TypeIcon type={task.type} />
@@ -328,7 +330,7 @@ export function SprintDetailPage() {
                 <button
                   onClick={() => removeItem.mutate({ sprintId, workItemId: task.id })}
                   className="text-gray-400 hover:text-red-500"
-                  title="Remove from sprint"
+                  title={t('sprintDetail.removeFromSprint')}
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

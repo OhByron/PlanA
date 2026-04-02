@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "create": "Criar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "remove": "Remover",
+    "dismiss": "Dispensar",
+    "close": "Fechar",
+    "loading": "Carregando...",
+    "send": "Enviar",
+    "open": "Abrir",
+    "archive": "Arquivar",
+    "restore": "Restaurar",
+    "report": "Relatório",
+    "settings": "Configurações",
+    "gotIt": "Entendi",
+    "tryAgain": "Tentar novamente",
+    "signOut": "Sair",
+    "signIn": "Entrar",
+    "whatsThis": "O que é isto?",
+    "help": "Ajuda",
+    "error": "Erro: {{message}}",
+    "thinking": "Processando...",
+    "generating": "Gerando...",
+    "language": "Idioma"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, de verdade."
+  },
+
+  "nav": {
+    "board": "Quadro",
+    "backlog": "Backlog",
+    "epics": "Épicos",
+    "sprints": "Sprints",
+    "reports": "Relatórios",
+    "report": "Relatório",
+    "team": "Equipe",
+    "settings": "Configurações",
+    "project": "Projeto"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Expandir barra lateral",
+    "collapseSidebar": "Recolher barra lateral",
+    "myWork": "Meu Trabalho",
+    "organisations": "Organizações",
+    "noOrganisationsYet": "Nenhuma organização ainda",
+    "toggle": "Alternar {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Notificações",
+    "markAllRead": "Marcar todas como lidas",
+    "noNotificationsYet": "Nenhuma notificação ainda",
+    "justNow": "agora mesmo",
+    "minutesAgo": "{{count}}m atrás",
+    "hoursAgo": "{{count}}h atrás",
+    "daysAgo": "{{count}}d atrás"
+  },
+
+  "notifications": {
+    "assigned": "Você foi atribuído a \"{{title}}\"",
+    "statusChanged": "Status alterado em \"{{title}}\"",
+    "commentAdded": "Novo comentário em \"{{title}}\"",
+    "mentioned": "Você foi mencionado em \"{{title}}\"",
+    "default": "Notificação: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Pronto",
+    "in_progress": "Em Progresso",
+    "in_review": "Em Revisão",
+    "done": "Concluído",
+    "cancelled": "Cancelado"
+  },
+
+  "priority": {
+    "urgent": "Urgente",
+    "high": "Alta",
+    "medium": "Média",
+    "low": "Baixa"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Task"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Ativo",
+    "planned": "Planejado",
+    "completed": "Concluído",
+    "cancelled": "Cancelado"
+  },
+
+  "roles": {
+    "pm": "Gerente de Projeto",
+    "po": "Product Owner",
+    "bsa": "Analista de Sistemas de Negócio",
+    "ba": "Analista de Negócio",
+    "qe": "Engenheiro de Qualidade",
+    "ux": "Designer UX",
+    "dev": "Desenvolvedor"
+  },
+
+  "login": {
+    "continueWithGitHub": "Continuar com GitHub",
+    "continueWithGoogle": "Continuar com Google",
+    "orSignInWithEmail": "ou entre com email",
+    "emailAddress": "Endereço de email",
+    "password": "Senha",
+    "loginFailed": "Falha no login",
+    "devOnly": "apenas dev",
+    "devLogin": "Login Dev (pular OAuth)"
+  },
+
+  "authError": {
+    "title": "Falha no login",
+    "badState": "A sessão de login expirou. Tente novamente.",
+    "csrf": "Verificação de segurança falhou. Tente novamente.",
+    "exchangeFailed": "Não foi possível completar o login com o provedor. Tente novamente.",
+    "dbError": "Ocorreu um erro no servidor. Tente novamente mais tarde.",
+    "missingToken": "Nenhum token de autenticação foi recebido.",
+    "default": "Ocorreu um erro inesperado durante o login."
+  },
+
+  "myWork": {
+    "title": "Meu Trabalho",
+    "itemCount": "{{count}} item atribuído a você",
+    "itemCount_other": "{{count}} itens atribuídos a você",
+    "noItems": "Nenhum item atribuído a você.",
+    "noItemsHelp": "Os itens aparecem aqui quando você é adicionado como membro da equipe do projeto e tem stories ou tasks atribuídos. Certifique-se de que o email da sua conta corresponda ao email do membro da equipe, ou que você aceitou um convite."
+  },
+
+  "orgs": {
+    "title": "Organizações",
+    "orgCount": "{{count}} organização",
+    "orgCount_other": "{{count}} organizações",
+    "showArchived": "Mostrar arquivados",
+    "newOrganisation": "+ Nova Organização",
+    "noOrgsYet": "Nenhuma organização ainda. Crie uma para começar.",
+    "archived": "Arquivado",
+    "confirmDelete": "Excluir permanentemente esta organização e todos os seus dados?",
+    "added": "Adicionado em {{date}}",
+    "newOrg": "Nova Organização",
+    "orgName": "Nome da Organização",
+    "orgNameRequired": "Nome da Organização *",
+    "contactName": "Nome do Contato",
+    "contactEmail": "Email do Contato",
+    "contactPhone": "Telefone do Contato",
+    "addressLine1": "Endereço Linha 1",
+    "addressLine2": "Endereço Linha 2",
+    "city": "Cidade",
+    "state": "Estado",
+    "postalCode": "CEP",
+    "country": "País"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Todas as organizações",
+    "editDetails": "Editar Detalhes",
+    "noContactDetails": "Nenhum detalhe de contato ainda. Clique em \"Editar Detalhes\" para adicioná-los.",
+    "contact": "Contato:",
+    "email": "Email:",
+    "phone": "Telefone:",
+    "location": "Localização:",
+    "projects": "Projetos ({{count}})",
+    "newProject": "+ Novo Projeto",
+    "noProjectsYet": "Nenhum projeto ainda. Crie um para começar.",
+    "newProjectTitle": "Novo Projeto",
+    "projectName": "Nome do Projeto",
+    "projectNameRequired": "Nome do Projeto *",
+    "description": "Descrição",
+    "methodology": "Metodologia",
+    "dueDate": "Data de Entrega",
+    "customerContact": "Contato do Cliente",
+    "createProject": "Criar Projeto",
+    "whatIsThisProjectAbout": "Sobre o que é este projeto?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Convite Inválido",
+    "invalidLink": "Este link de convite não é válido.",
+    "goToLogin": "Ir para Login",
+    "alreadyAccepted": "Já Aceito",
+    "alreadyAcceptedMessage": "Este convite já foi utilizado. Você pode entrar com suas credenciais.",
+    "expired": "Convite Expirado",
+    "expiredMessage": "Este convite expirou. Peça à sua equipe para enviar um novo.",
+    "invitedToJoin": "Você foi convidado para participar de um projeto",
+    "emailLabel": "Email",
+    "yourName": "Seu Nome",
+    "passwordLabel": "Senha",
+    "confirmPassword": "Confirmar Senha",
+    "minChars": "Mínimo de 8 caracteres",
+    "repeatPassword": "Repita sua senha",
+    "passwordTooShort": "A senha deve ter pelo menos 8 caracteres",
+    "passwordsMismatch": "As senhas não coincidem",
+    "createAccountJoin": "Criar Conta e Participar",
+    "creatingAccount": "Criando conta...",
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "logIn": "Entrar"
+  },
+
+  "board": {
+    "helpTitle": "Seu Kanban Board",
+    "helpBody1": "Este é o trabalho da sua equipe visualizado como fluxo. Cada coluna representa uma etapa do seu workflow.",
+    "helpBody2": "Arraste cartões entre colunas para atualizar o status instantaneamente. Quando você move uma story, suas tasks filhas se movem junto.",
+    "helpBody3": "Mantenha a coluna \"Em Progresso\" pequena; limitar o trabalho em progresso ajuda sua equipe a concluir tarefas em vez de começar novas.",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} itens",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} pts em andamento",
+    "overCapacity": "Acima da capacidade",
+    "noItems": "Nenhum item",
+    "column": "Coluna {{status}}"
+  },
+
+  "backlog": {
+    "helpTitle": "Seu Backlog",
+    "helpBody1": "O backlog é sua lista priorizada de trabalho. Itens no topo têm a maior prioridade.",
+    "helpBody2": "Arraste itens pela alça para repriorizar. Use os filtros para focar em stories, bugs ou status específicos.",
+    "helpBody3": "Clique em + Novo Item para adicionar rapidamente stories ou tasks.",
+    "allStatuses": "Todos os status",
+    "allTypes": "Todos os tipos",
+    "stories": "Stories",
+    "bugs": "Bugs",
+    "tasks": "Tasks",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} itens",
+    "newItem": "+ Novo Item",
+    "noItemsMatch": "Nenhum item corresponde aos seus filtros. Tente ajustar ou crie um novo item."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint Planning",
+    "helpBody1": "Sprints são iterações com tempo definido (geralmente 2 semanas). Puxe stories do backlog para um sprint para planejar o trabalho da equipe.",
+    "helpBody2": "Observe o indicador de capacidade para evitar sobrecarregar a equipe.",
+    "title": "Sprints",
+    "noSprintsYet": "Nenhum sprint ainda. Crie um para começar a planejar.",
+    "pts": "{{count}} pts"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Voltar ao board",
+    "partOf": "Parte de:",
+    "clickToEdit": "Clique para editar",
+    "description": "Descrição",
+    "descPlaceholder": "Descreva o requisito, objetivo e contexto...",
+    "suggest": "Sugerir",
+    "clickToAddDescription": "Clique para adicionar uma descrição...",
+    "details": "Detalhes",
+    "statusLabel": "Status",
+    "typeLabel": "Tipo",
+    "priorityLabel": "Prioridade",
+    "assigneeLabel": "Responsável",
+    "unassigned": "Não atribuído",
+    "totalPoints": "Pontos Totais",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Para stories, os pontos são a soma de todos os pontos das tasks. Adicione pontos às tasks individuais durante o refinement.",
+    "taskPointsHelp": "Estime o esforço relativo. Escalas comuns: 1, 2, 3, 5, 8, 13. Um \"1\" é a coisa mais simples que sua equipe faz.",
+    "sumOfTasks": "Soma de {{count}} task",
+    "sumOfTasks_other": "Soma de {{count}} tasks",
+    "largeStoryWarning": "Esta story tem {{points}} pontos. Considere dividi-la em stories menores que possam ser concluídas em um único sprint.",
+    "blocked": "Bloqueado",
+    "blockedBy": "Bloqueado por:",
+    "notBlocked": "Não bloqueado",
+    "labels": "Etiquetas",
+    "convertToStory": "Converter em Story",
+    "convertToStoryConfirm": "Converter esta task em uma story? Ela manterá um link de dependência com a story original.",
+    "convertToStoryHelp": "Promove esta task a uma story independente com um link de dependência",
+    "created": "Criado em {{date}}",
+    "updated": "Atualizado em {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Tasks ({{count}})",
+    "contextHelp": "Tasks dividem uma story em trabalho por disciplina, design UX, dev backend, dev frontend, testes QE, etc. Cada task pode ser atribuída a um membro da equipe.",
+    "suggestTasks": "Sugerir Tasks",
+    "addTask": "+ Adicionar Task",
+    "noTasksYet": "Nenhuma task ainda.",
+    "taskTitlePlaceholder": "Título da task (ex. 'UX: Projetar tela de login')",
+    "suggestedTasks": "Tasks sugeridas, clique para adicionar:",
+    "pts": "{{count}} pts",
+    "clarificationNeeded": "Esclarecimento necessário:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Critérios de Aceitação",
+    "contextHelp": "Critérios de Aceitação definem quando este item está realmente \"concluído\". Escritos no formato Given / When / Then (BDD), tornam as expectativas explícitas e testáveis. Cada critério é uma condição específica e verificável, não um desejo vago.",
+    "addButton": "+ Adicionar",
+    "suggestAC": "Sugerir AC",
+    "noCriteriaYet": "Nenhum critério de aceitação ainda. Defina as condições para \"concluído\".",
+    "given": "Dado que",
+    "when": "Quando",
+    "then": "Então",
+    "deleteAC": "Excluir critério de aceitação",
+    "givenPlaceholder": "Dado que...",
+    "whenPlaceholder": "Quando...",
+    "thenPlaceholder": "Então...",
+    "aiSuggestions": "Sugestões da IA, clique para adicionar:",
+    "aiNeedsMoreInfo": "A IA precisa de mais informações:"
+  },
+
+  "comments": {
+    "title": "Comentários",
+    "noCommentsYet": "Nenhum comentário ainda.",
+    "addComment": "Adicionar um comentário..."
+  },
+
+  "dependencies": {
+    "title": "Dependências",
+    "contextHelp": "Dependências rastreiam relações entre itens. \"Depende de\" significa que este item não pode prosseguir até que o alvo esteja concluído. \"Relacionado a\" é um link informativo.",
+    "noDependencies": "Nenhuma dependência.",
+    "dependsOn": "Depende de",
+    "relatesTo": "Relacionado a",
+    "dependedOnBy": "Dependência de",
+    "removeDependency": "Remover dependência",
+    "selectItem": "Selecionar um item..."
+  },
+
+  "links": {
+    "title": "Links",
+    "addLink": "+ Adicionar Link",
+    "noLinksYet": "Nenhum link ainda.",
+    "labelPlaceholder": "Rótulo (ex. GitHub PR, Figma, Resultados de teste, Docs)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Remover link"
+  },
+
+  "testResults": {
+    "retestRequired": "Reteste necessário",
+    "retestMessage": "Este defeito tem {{count}} teste(s) falhando. Envie novos resultados de teste (JUnit XML ou webhook) após o deploy da correção para liberar o controle QE e fechar este item.",
+    "title": "Resultados de Teste",
+    "passed": "aprovados",
+    "failed": "falharam",
+    "errors": "erros",
+    "skipped": "ignorados",
+    "lastRun": "Última execução: {{date}}",
+    "sourceTestFailure": "Falha de Teste de Origem",
+    "suite": "Suite: {{name}}",
+    "duration": "Duração: {{ms}}ms",
+    "source": "Origem: {{source}} | Reportado: {{date}}",
+    "generateDescAC": "Gerar Descrição e ACs"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Dispensar",
+    "close": "Fechar"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Comece a digitar...",
+    "bold": "Negrito",
+    "italic": "Itálico",
+    "inlineCode": "Código inline",
+    "heading": "Título",
+    "subheading": "Subtítulo",
+    "bulletList": "Lista com marcadores",
+    "numberedList": "Lista numerada",
+    "quote": "Citação",
+    "codeBlock": "Bloco de código"
+  },
+
+  "createEpic": {
+    "button": "+ Nova Epic",
+    "title": "Criar Epic",
+    "titleLabel": "Título",
+    "titlePlaceholder": "ex. Autenticação de Usuário",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Objetivo de negócio e escopo desta epic...",
+    "priorityLabel": "Prioridade",
+    "assigneeLabel": "Responsável"
+  },
+
+  "createProject": {
+    "button": "+ Novo Projeto",
+    "title": "Criar Projeto",
+    "organisationLabel": "Organização",
+    "selectOrg": "Selecionar organização...",
+    "teamLabel": "Equipe",
+    "selectTeam": "Selecionar equipe...",
+    "projectNameLabel": "Nome do Projeto",
+    "projectNamePlaceholder": "ex. PlanA MVP",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Sobre o que é este projeto?",
+    "methodologyLabel": "Metodologia"
+  },
+
+  "createSprint": {
+    "button": "+ Novo Sprint",
+    "title": "Criar Sprint",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Objetivo",
+    "goalPlaceholder": "O que este sprint deve alcançar?",
+    "startDateLabel": "Data de Início",
+    "endDateLabel": "Data de Término"
+  },
+
+  "createTeam": {
+    "button": "+ Nova Equipe",
+    "title": "Criar Equipe",
+    "organisationLabel": "Organização",
+    "selectOrg": "Selecionar organização...",
+    "teamNameLabel": "Nome da Equipe",
+    "teamNamePlaceholder": "ex. Squad Backend"
+  },
+
+  "quickCreate": {
+    "placeholder": "O que precisa ser feito?"
+  },
+
+  "workItemCard": {
+    "open": "Abrir {{title}}",
+    "taskCount": "{{count}} task",
+    "taskCount_other": "{{count}} tasks"
+  },
+
+  "reports": {
+    "helpTitle": "Relatórios do Projeto",
+    "helpBody1": "Os relatórios dão visibilidade sobre a entrega da sua equipe. A velocidade mostra quantos pontos você completa por sprint; ela se estabiliza com o tempo.",
+    "helpBody2": "Use os gráficos de progresso do sprint e carga de trabalho da equipe para identificar gargalos cedo.",
+    "title": "Relatórios",
+    "sprint": "Sprint:",
+    "velocity": "Velocidade",
+    "velocitySubtitle": "Story points concluídos por sprint",
+    "noCompletedSprints": "Nenhum sprint concluído ainda. A velocidade aparecerá após a conclusão do primeiro sprint.",
+    "trend": "Tendência",
+    "threeSprintAvg": "Média de 3 sprints",
+    "avgVelocity": "Velocidade média:",
+    "pointsPerSprint": "pontos/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Concluído: {{points}} pts",
+    "inProgress": "Em Progresso: {{points}} pts",
+    "inReview": "Em Revisão: {{points}} pts",
+    "remaining": "Restante: {{points}} pts",
+    "daysLeft": "{{count}} dias restantes",
+    "epicProgress": "Progresso dos Épicos",
+    "epicProgressSubtitle": "Stories concluídas por épico",
+    "noEpics": "Nenhum épico definido ainda.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Carga de Trabalho da Equipe",
+    "teamWorkloadSubtitle": "Pontos atribuídos no sprint ativo",
+    "noWorkload": "Nenhum item atribuído no sprint ativo.",
+    "pts": "{{points}} pts ({{count}})",
+    "blockedItems": "Itens Bloqueados",
+    "blockedSubtitle": "{{count}} item atualmente bloqueado",
+    "blockedSubtitle_other": "{{count}} itens atualmente bloqueados",
+    "noBlocked": "Nenhum item bloqueado. Bom trabalho!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Story points restantes vs ideal",
+    "noBurndownData": "Nenhum dado de burndown ainda. Os dados aparecem quando os itens mudam de status durante o sprint.",
+    "ideal": "Ideal",
+    "actual": "Real",
+    "onTrack": "No caminho",
+    "behind": "Atrasado"
+  },
+
+  "team": {
+    "title": "Equipe",
+    "memberCount": "{{count}} membro",
+    "memberCount_other": "{{count}} membros",
+    "addMember": "+ Adicionar Membro",
+    "noMembersYet": "Nenhum membro na equipe. Adicione pessoas para começar a atribuir trabalho.",
+    "confirmRemove": "Remover {{name}} da equipe?",
+    "invite": "Convidar",
+    "inviteLink": "Link de convite:",
+    "copy": "Copiar",
+    "ptsPerSprint": "{{count}} pts/sprint",
+    "addTeamMember": "Adicionar Membro da Equipe",
+    "nameRequired": "Nome *",
+    "emailLabel": "Email",
+    "phoneLabel": "Telefone",
+    "roleRequired": "Função *",
+    "capacity": "Capacidade",
+    "capacityPlaceholder": "pts/sprint",
+    "nameLabel": "Nome",
+    "roleLabel": "Função"
+  },
+
+  "aiSettings": {
+    "title": "Configuração de IA",
+    "description": "Configure um provedor de IA para habilitar sugestões de critérios de aceitação, decomposição de stories e rascunho de notas de versão. Você fornece sua própria chave API; PlanA não armazena nem redireciona por uma conta compartilhada.",
+    "provider": "Provedor",
+    "notConfigured": "Não configurado",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Personalizado (compatível com OpenAI)",
+    "model": "Modelo",
+    "selectModel": "Selecionar modelo...",
+    "modelPlaceholder": "ID do modelo (ex. my-custom-model)",
+    "apiKey": "Chave API",
+    "currentKey": "Atual: {{key}}",
+    "enterApiKey": "Inserir chave API",
+    "apiKeyHelp": "Sua chave é armazenada criptografada por projeto. Deixe em branco para manter a chave atual.",
+    "endpointUrl": "URL do Endpoint",
+    "saving": "Salvando...",
+    "settingsSaved": "Configurações salvas",
+    "stakeholderSharing": "Compartilhamento com Stakeholders",
+    "sharingDescription": "Crie links compartilháveis para que stakeholders visualizem um dashboard do projeto em modo leitura. Nenhum login necessário; o link é o acesso.",
+    "label": "Rótulo",
+    "labelPlaceholder": "ex. Cliente, Comitê Diretivo",
+    "expiresIn": "Expira em",
+    "days30": "30 dias",
+    "days90": "90 dias",
+    "days180": "180 dias",
+    "year1": "1 ano",
+    "never": "Nunca",
+    "createLink": "Criar Link",
+    "creating": "Criando...",
+    "noActiveLinks": "Nenhum link de compartilhamento ativo.",
+    "created": "Criado em {{date}}",
+    "expires": "Expira em {{date}}",
+    "copyLink": "Copiar Link",
+    "copied": "Copiado!",
+    "revoke": "Revogar",
+    "revoked": "Revogado",
+    "revokedDate": "Revogado em {{date}}"
+  },
+
+  "reportView": {
+    "title": "Relatórios",
+    "generateProject": "Relatório do Projeto",
+    "generateSprint": "Relatório do Sprint",
+    "generating": "Gerando...",
+    "generateDescription": "Gerar um relatório completo a partir dos dados do seu projeto.",
+    "exportPdf": "Exportar PDF",
+    "back": "Voltar",
+    "generated": "Gerado em {{date}}",
+    "executiveSummary": "Resumo Executivo",
+    "metrics": "Métricas",
+    "items": "Itens",
+    "points": "Pontos",
+    "completion": "Conclusão",
+    "testPassRate": "Taxa de aprovação de testes",
+    "epicBreakdown": "Detalhamento por Epic",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Critérios de Aceitação",
+    "testCoverageColumn": "Cobertura de Testes",
+    "defects": "Defeitos",
+    "total": "Total",
+    "open": "Abertos",
+    "resolved": "Resolvidos",
+    "criticalOpen": "Críticos (abertos)",
+    "testEvidence": "Evidências de Teste",
+    "totalTests": "Total de Testes",
+    "passed": "Aprovados",
+    "failed": "Falharam",
+    "errors": "Erros",
+    "skipped": "Ignorados",
+    "currentBlockers": "Bloqueios atuais",
+    "velocityHistory": "Histórico de Velocidade",
+    "generatedBy": "Gerado pelo PlanA"
+  },
+
+  "shareDashboard": {
+    "title": "Dashboard de Stakeholders",
+    "invalidLink": "Link inválido ou expirado",
+    "poweredBy": "Desenvolvido com PlanA",
+    "activeSprint": "Sprint Ativo",
+    "noActiveSprint": "Nenhum sprint ativo",
+    "goal": "Objetivo:",
+    "items": "Itens",
+    "points": "Pontos",
+    "recentlyCompleted": "Concluídos Recentemente",
+    "noCompletedItems": "Nenhum item concluído ainda.",
+    "defects": "Defeitos",
+    "openDefects": "Abertos",
+    "closedDefects": "Fechados",
+    "sprintVelocity": "Velocidade do Sprint",
+    "storyProgress": "Progresso das Stories"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Voltar aos sprints",
+    "start": "Início:",
+    "end": "Fim:",
+    "capacity": "{{points}} / {{capacity}} capacidade",
+    "storyPoints": "{{count}} story points",
+    "storiesAndItems": "{{stories}} stories, {{items}} itens no total",
+    "done": "Concluido",
+    "addStories": "+ Adicionar Stories",
+    "startSprint": "Iniciar Sprint",
+    "completeSprint": "Concluir Sprint",
+    "addStoriesToSprint": "Adicionar stories ao sprint ({{count}} disponíveis)",
+    "allStoriesAssigned": "Todas as stories já estão em um sprint ou concluídas.",
+    "noItemsYet": "Nenhum item neste sprint ainda. Clique em '+ Adicionar Stories' para puxar do backlog.",
+    "removeStoryAndTasks": "Remover story e tasks do sprint",
+    "removeFromSprint": "Remover do sprint",
+    "standaloneTasks": "Tasks Independentes",
+    "adding": "Adicionando...",
+    "tasks": "{{count}} tasks"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Voltar aos épicos",
+    "description": "Descrição",
+    "descPlaceholder": "Descreva o objetivo de negócio e o escopo...",
+    "clickToAddDescription": "Clique para adicionar uma descrição...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories são os objetivos entregáveis deste épico. Cada story representa um resultado específico para o usuário que pode ser concluído em um único sprint.",
+    "addStory": "+ Adicionar Story",
+    "noStoriesYet": "Nenhuma story neste épico ainda. Adicione uma para definir os objetivos.",
+    "details": "Detalhes",
+    "statusLabel": "Status",
+    "priorityLabel": "Prioridade",
+    "assigneeLabel": "Responsável",
+    "addStoryToEpic": "Adicionar Story ao Épico",
+    "titleRequired": "Título *",
+    "titleHint": "(Como [papel], eu quero [objetivo], para que [beneficio])",
+    "titlePlaceholder": "Como [papel], eu quero [objetivo], para que [beneficio]",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Contexto, requisitos e detalhes...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Uma task será criada automaticamente para o responsável com {{points}} ponto(s). Os pontos estão sempre nas tasks.",
+    "largeStoryWarning": "Story grande ({{points}} pontos). Considere dividir em stories menores que possam ser concluídas em um único sprint. Stories menores são mais fáceis de estimar, testar e entregar.",
+    "acceptanceCriteria": "Critérios de Aceitação",
+    "acContextHelp": "Defina quando esta story está 'concluída'. Cada critério deve ser específico e testável.",
+    "addCriterion": "+ Adicionar critério",
+    "givenPlaceholder": "uma pré-condição ou contexto...",
+    "whenPlaceholder": "uma ação ou evento...",
+    "thenPlaceholder": "o resultado esperado...",
+    "createRelatedTasks": "Criar tasks relacionadas?",
+    "autoAssignHint": "(atribuídas automaticamente aos membros da equipe por função)",
+    "uxDesign": "Design UX",
+    "qeTesting": "Testes QE",
+    "bsaAnalysis": "Análise BSA",
+    "creating": "Criando...",
+    "createStory": "Criar Story"
+  },
+
+  "epics": {
+    "helpTitle": "Épicos",
+    "helpBody1": "Épicos são agrupamentos a nível de funcionalidade. Cada épico contém stories relacionadas que juntas entregam uma capacidade de negócio.",
+    "helpBody2": "Clique em um épico para ver suas stories, adicionar novas e acompanhar o progresso.",
+    "title": "Épicos",
+    "noEpicsYet": "Nenhum épico ainda. Épicos agrupam stories relacionadas em entregáveis funcionais.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  }
+}

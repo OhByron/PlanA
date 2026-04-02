@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "dismiss": "Dismiss",
+    "close": "Close",
+    "loading": "Loading...",
+    "send": "Send",
+    "open": "Open",
+    "archive": "Archive",
+    "restore": "Restore",
+    "report": "Report",
+    "settings": "Settings",
+    "gotIt": "Got it",
+    "tryAgain": "Try again",
+    "signOut": "Sign out",
+    "signIn": "Sign In",
+    "whatsThis": "What's this?",
+    "help": "Help",
+    "error": "Error: {{message}}",
+    "thinking": "Thinking...",
+    "generating": "Generating...",
+    "language": "Language"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, actually."
+  },
+
+  "nav": {
+    "board": "Board",
+    "backlog": "Backlog",
+    "epics": "Epics",
+    "sprints": "Sprints",
+    "reports": "Reports",
+    "report": "Report",
+    "team": "Team",
+    "settings": "Settings",
+    "project": "Project"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "myWork": "My Work",
+    "organisations": "Organisations",
+    "noOrganisationsYet": "No organisations yet",
+    "toggle": "Toggle {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotificationsYet": "No notifications yet",
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgo": "{{count}}d ago"
+  },
+
+  "notifications": {
+    "assigned": "You were assigned to \"{{title}}\"",
+    "statusChanged": "Status changed on \"{{title}}\"",
+    "commentAdded": "New comment on \"{{title}}\"",
+    "mentioned": "You were mentioned in \"{{title}}\"",
+    "default": "Notification: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Ready",
+    "in_progress": "In Progress",
+    "in_review": "In Review",
+    "done": "Done",
+    "cancelled": "Cancelled"
+  },
+
+  "priority": {
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Task"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Active",
+    "planned": "Planned",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+
+  "roles": {
+    "pm": "Project Manager",
+    "po": "Product Owner",
+    "bsa": "Business Systems Analyst",
+    "ba": "Business Analyst",
+    "qe": "Quality Engineer",
+    "ux": "UX Designer",
+    "dev": "Developer"
+  },
+
+  "login": {
+    "continueWithGitHub": "Continue with GitHub",
+    "continueWithGoogle": "Continue with Google",
+    "orSignInWithEmail": "or sign in with email",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "loginFailed": "Login failed",
+    "devOnly": "dev only",
+    "devLogin": "Dev Login (skip OAuth)"
+  },
+
+  "authError": {
+    "title": "Login failed",
+    "badState": "The login session expired. Please try again.",
+    "csrf": "Security check failed. Please try again.",
+    "exchangeFailed": "Could not complete login with the provider. Please try again.",
+    "dbError": "A server error occurred. Please try again later.",
+    "missingToken": "No authentication token was received.",
+    "default": "An unexpected error occurred during login."
+  },
+
+  "myWork": {
+    "title": "My Work",
+    "itemCount": "{{count}} item assigned to you",
+    "itemCount_other": "{{count}} items assigned to you",
+    "noItems": "No items assigned to you.",
+    "noItemsHelp": "Items appear here when you're added as a project team member and have stories or tasks assigned to you. Make sure your account email matches your team member email, or that you accepted an invitation."
+  },
+
+  "orgs": {
+    "title": "Organisations",
+    "orgCount": "{{count}} organisation",
+    "orgCount_other": "{{count}} organisations",
+    "showArchived": "Show archived",
+    "newOrganisation": "+ New Organisation",
+    "noOrgsYet": "No organisations yet. Create one to get started.",
+    "archived": "Archived",
+    "confirmDelete": "Permanently delete this organisation and all its data?",
+    "added": "Added {{date}}",
+    "newOrg": "New Organisation",
+    "orgName": "Organisation Name",
+    "orgNameRequired": "Organisation Name *",
+    "contactName": "Contact Name",
+    "contactEmail": "Contact Email",
+    "contactPhone": "Contact Phone",
+    "addressLine1": "Address Line 1",
+    "addressLine2": "Address Line 2",
+    "city": "City",
+    "state": "State",
+    "postalCode": "Postal Code",
+    "country": "Country"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "All organisations",
+    "editDetails": "Edit Details",
+    "noContactDetails": "No contact details yet. Click \"Edit Details\" to add them.",
+    "contact": "Contact:",
+    "email": "Email:",
+    "phone": "Phone:",
+    "location": "Location:",
+    "projects": "Projects ({{count}})",
+    "newProject": "+ New Project",
+    "noProjectsYet": "No projects yet. Create one to get started.",
+    "newProjectTitle": "New Project",
+    "projectName": "Project Name",
+    "projectNameRequired": "Project Name *",
+    "description": "Description",
+    "methodology": "Methodology",
+    "dueDate": "Due Date",
+    "customerContact": "Customer Contact",
+    "createProject": "Create Project",
+    "whatIsThisProjectAbout": "What is this project about?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Invalid Invitation",
+    "invalidLink": "This invitation link is not valid.",
+    "goToLogin": "Go to Login",
+    "alreadyAccepted": "Already Accepted",
+    "alreadyAcceptedMessage": "This invitation has already been used. You can log in with your credentials.",
+    "expired": "Invitation Expired",
+    "expiredMessage": "This invitation has expired. Please ask your team to send a new one.",
+    "invitedToJoin": "You've been invited to join a project",
+    "emailLabel": "Email",
+    "yourName": "Your Name",
+    "passwordLabel": "Password",
+    "confirmPassword": "Confirm Password",
+    "minChars": "Minimum 8 characters",
+    "repeatPassword": "Repeat your password",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordsMismatch": "Passwords do not match",
+    "createAccountJoin": "Create Account & Join",
+    "creatingAccount": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "logIn": "Log in"
+  },
+
+  "board": {
+    "helpTitle": "Your Kanban Board",
+    "helpBody1": "This is your team's work visualised as a flow. Each column represents a stage in your workflow.",
+    "helpBody2": "Drag cards between columns to update their status instantly. When you move a story, its child tasks move with it.",
+    "helpBody3": "Keep the \"In Progress\" column small; limiting work-in-progress helps your team finish things instead of starting new ones.",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} pts in flight",
+    "overCapacity": "Over capacity",
+    "noItems": "No items",
+    "column": "{{status}} column"
+  },
+
+  "backlog": {
+    "helpTitle": "Your Backlog",
+    "helpBody1": "The backlog is your prioritised list of work. Items at the top are highest priority.",
+    "helpBody2": "Drag items by the grip handle to reprioritise. Use the filters to focus on stories, bugs, or specific statuses.",
+    "helpBody3": "Click + New Item to quickly add stories or tasks.",
+    "allStatuses": "All statuses",
+    "allTypes": "All types",
+    "stories": "Stories",
+    "bugs": "Bugs",
+    "tasks": "Tasks",
+    "itemCount": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "newItem": "+ New Item",
+    "noItemsMatch": "No items match your filters. Try adjusting or create a new item."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint Planning",
+    "helpBody1": "Sprints are time-boxed iterations (typically 2 weeks). Pull stories from the backlog into a sprint to plan your team's work.",
+    "helpBody2": "Watch the capacity indicator to avoid overloading the team.",
+    "title": "Sprints",
+    "noSprintsYet": "No sprints yet. Create one to start planning.",
+    "pts": "{{count}} pts"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Back to board",
+    "partOf": "Part of:",
+    "clickToEdit": "Click to edit",
+    "description": "Description",
+    "descPlaceholder": "Describe the requirement, goal, and context...",
+    "suggest": "Suggest",
+    "clickToAddDescription": "Click to add a description...",
+    "details": "Details",
+    "statusLabel": "Status",
+    "typeLabel": "Type",
+    "priorityLabel": "Priority",
+    "assigneeLabel": "Assignee",
+    "unassigned": "Unassigned",
+    "totalPoints": "Total Points",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "For stories, points are the sum of all task points. Add points to individual tasks during refinement.",
+    "taskPointsHelp": "Estimate the relative effort. Common scales: 1, 2, 3, 5, 8, 13. A \"1\" is the simplest thing your team does.",
+    "sumOfTasks": "Sum of {{count}} task",
+    "sumOfTasks_other": "Sum of {{count}} tasks",
+    "largeStoryWarning": "This story is {{points}} points. Consider breaking it into smaller stories that can each be completed in a single sprint.",
+    "blocked": "Blocked",
+    "blockedBy": "Blocked by:",
+    "notBlocked": "Not blocked",
+    "labels": "Labels",
+    "convertToStory": "Convert to Story",
+    "convertToStoryConfirm": "Convert this task to a story? It will maintain a dependency link to the original story.",
+    "convertToStoryHelp": "Promotes this task to an independent story with a dependency link",
+    "created": "Created {{date}}",
+    "updated": "Updated {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Tasks ({{count}})",
+    "contextHelp": "Tasks break a story into work by discipline, such as UX design, backend dev, frontend dev and QE testing. Each task is assignable to a team member.",
+    "suggestTasks": "Suggest Tasks",
+    "addTask": "+ Add Task",
+    "noTasksYet": "No tasks yet.",
+    "taskTitlePlaceholder": "Task title (e.g. 'UX: Design login screen')",
+    "suggestedTasks": "Suggested tasks, click to add:",
+    "pts": "{{count}} pts",
+    "clarificationNeeded": "Clarification needed:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Acceptance Criteria",
+    "contextHelp": "Acceptance Criteria define when this item is truly \"done.\" Written in Given / When / Then format (BDD), they make expectations explicit and testable. Each criterion is a specific, verifiable condition, not a vague wish.",
+    "addButton": "+ Add",
+    "suggestAC": "Suggest AC",
+    "noCriteriaYet": "No acceptance criteria yet. Define the conditions for \"done\".",
+    "given": "Given",
+    "when": "When",
+    "then": "Then",
+    "deleteAC": "Delete acceptance criterion",
+    "givenPlaceholder": "Given...",
+    "whenPlaceholder": "When...",
+    "thenPlaceholder": "Then...",
+    "aiSuggestions": "AI Suggestions, click to add:",
+    "aiNeedsMoreInfo": "The AI needs more information:"
+  },
+
+  "comments": {
+    "title": "Comments",
+    "noCommentsYet": "No comments yet.",
+    "addComment": "Add a comment..."
+  },
+
+  "dependencies": {
+    "title": "Dependencies",
+    "contextHelp": "Dependencies track relationships between items. \"Depends on\" means this item can't proceed until the target is complete. \"Relates to\" is an informational link.",
+    "noDependencies": "No dependencies.",
+    "dependsOn": "Depends on",
+    "relatesTo": "Relates to",
+    "dependedOnBy": "Depended on by",
+    "removeDependency": "Remove dependency",
+    "selectItem": "Select an item..."
+  },
+
+  "links": {
+    "title": "Links",
+    "addLink": "+ Add Link",
+    "noLinksYet": "No links yet.",
+    "labelPlaceholder": "Label (e.g. GitHub PR, Figma, Test results, Docs)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Remove link"
+  },
+
+  "testResults": {
+    "retestRequired": "Retest required",
+    "retestMessage": "This defect has {{count}} failing test(s). Upload new test results (JUnit XML or webhook) after the fix is deployed to clear the QE gate and close this item.",
+    "title": "Test Results",
+    "passed": "passed",
+    "failed": "failed",
+    "errors": "errors",
+    "skipped": "skipped",
+    "lastRun": "Last run: {{date}}",
+    "sourceTestFailure": "Source Test Failure",
+    "suite": "Suite: {{name}}",
+    "duration": "Duration: {{ms}}ms",
+    "source": "Source: {{source}} | Reported: {{date}}",
+    "generateDescAC": "Generate Description & ACs"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Dismiss",
+    "close": "Close"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Start typing...",
+    "bold": "Bold",
+    "italic": "Italic",
+    "inlineCode": "Inline code",
+    "heading": "Heading",
+    "subheading": "Subheading",
+    "bulletList": "Bullet list",
+    "numberedList": "Numbered list",
+    "quote": "Quote",
+    "codeBlock": "Code block"
+  },
+
+  "createEpic": {
+    "button": "+ New Epic",
+    "title": "Create Epic",
+    "titleLabel": "Title",
+    "titlePlaceholder": "e.g. User Authentication",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Business goal and scope of this epic...",
+    "priorityLabel": "Priority",
+    "assigneeLabel": "Assignee"
+  },
+
+  "createProject": {
+    "button": "+ New Project",
+    "title": "Create Project",
+    "organisationLabel": "Organisation",
+    "selectOrg": "Select org...",
+    "teamLabel": "Team",
+    "selectTeam": "Select team...",
+    "projectNameLabel": "Project Name",
+    "projectNamePlaceholder": "e.g. PlanA MVP",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "What is this project about?",
+    "methodologyLabel": "Methodology"
+  },
+
+  "createSprint": {
+    "button": "+ New Sprint",
+    "title": "Create Sprint",
+    "nameLabel": "Name",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Goal",
+    "goalPlaceholder": "What should this sprint achieve?",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date"
+  },
+
+  "createTeam": {
+    "button": "+ New Team",
+    "title": "Create Team",
+    "organisationLabel": "Organisation",
+    "selectOrg": "Select org...",
+    "teamNameLabel": "Team Name",
+    "teamNamePlaceholder": "e.g. Backend Squad"
+  },
+
+  "quickCreate": {
+    "placeholder": "What needs to be done?"
+  },
+
+  "workItemCard": {
+    "open": "Open {{title}}",
+    "taskCount": "{{count}} task",
+    "taskCount_other": "{{count}} tasks"
+  },
+
+  "team": {
+    "title": "Team",
+    "memberCount": "{{count}} member",
+    "memberCount_other": "{{count}} members",
+    "addMember": "+ Add Member",
+    "noMembersYet": "No team members yet. Add people to start assigning work.",
+    "confirmRemove": "Remove {{name}} from the team?",
+    "invite": "Invite",
+    "inviteLink": "Invite link:",
+    "copy": "Copy",
+    "ptsPerSprint": "{{count}} pts/sprint",
+    "addTeamMember": "Add Team Member",
+    "nameRequired": "Name *",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "roleRequired": "Role *",
+    "capacity": "Capacity",
+    "capacityPlaceholder": "pts/sprint",
+    "nameLabel": "Name",
+    "roleLabel": "Role"
+  },
+
+  "epics": {
+    "helpTitle": "Epics",
+    "helpBody1": "Epics are feature-level groupings. Each epic contains related stories that together deliver a business capability.",
+    "helpBody2": "Click an epic to see its stories, add new ones, and track progress.",
+    "title": "Epics",
+    "noEpicsYet": "No epics yet. Epics group related stories into feature-level deliverables.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Back to epics",
+    "description": "Description",
+    "descPlaceholder": "Describe the business goal and scope...",
+    "clickToAddDescription": "Click to add a description...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories are the deliverable goals of this epic. Each story represents a specific user-facing outcome that can be completed within a single sprint.",
+    "addStory": "+ Add Story",
+    "noStoriesYet": "No stories in this epic yet. Add one to define the goals.",
+    "details": "Details",
+    "statusLabel": "Status",
+    "priorityLabel": "Priority",
+    "assigneeLabel": "Assignee",
+    "addStoryToEpic": "Add Story to Epic",
+    "titleRequired": "Title *",
+    "titleHint": "(\"As a [role], I want [goal], so that [benefit]\")",
+    "titlePlaceholder": "As a [role], I want [goal], so that [benefit]",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Context, requirements, and details...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "A task will be auto-created for the assignee with {{points}} point(s). Points always live on tasks.",
+    "largeStoryWarning": "Large story ({{points}} points). Consider breaking this into smaller stories that can each be completed in a single sprint. Smaller stories are easier to estimate, test, and deliver.",
+    "acceptanceCriteria": "Acceptance Criteria",
+    "acContextHelp": "Define when this story is \"done.\" Each criterion should be specific and testable.",
+    "addCriterion": "+ Add criterion",
+    "givenPlaceholder": "a precondition or context...",
+    "whenPlaceholder": "an action or event...",
+    "thenPlaceholder": "the expected outcome...",
+    "createRelatedTasks": "Create related tasks?",
+    "autoAssignHint": "(auto-assigned to team members by role)",
+    "uxDesign": "UX Design",
+    "qeTesting": "QE Testing",
+    "bsaAnalysis": "BSA Analysis",
+    "creating": "Creating...",
+    "createStory": "Create Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Back to sprints",
+    "start": "Start:",
+    "end": "End:",
+    "capacity": "{{points}} / {{capacity}} capacity",
+    "storyPoints": "{{count}} story points",
+    "storiesAndItems": "{{stories}} stories, {{items}} total items",
+    "done": "Done",
+    "addStories": "+ Add Stories",
+    "startSprint": "Start Sprint",
+    "completeSprint": "Complete Sprint",
+    "addStoriesToSprint": "Add stories to sprint ({{count}} available)",
+    "allStoriesAssigned": "All stories are already in a sprint or completed.",
+    "noItemsYet": "No items in this sprint yet. Click \"+ Add Stories\" to pull from the backlog.",
+    "removeStoryAndTasks": "Remove story and tasks from sprint",
+    "removeFromSprint": "Remove from sprint",
+    "standaloneTasks": "Standalone Tasks",
+    "adding": "Adding...",
+    "tasks": "{{count}} tasks"
+  },
+
+  "reports": {
+    "helpTitle": "Project Reports",
+    "helpBody1": "Reports give you visibility into your team's delivery. Velocity shows how many points you complete per sprint; it stabilises over time.",
+    "helpBody2": "Use the sprint progress and team workload charts to spot bottlenecks early.",
+    "title": "Reports",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story points completed per sprint",
+    "noCompletedSprints": "No completed sprints yet. Velocity will appear after your first sprint is completed.",
+    "trend": "Trend",
+    "threeSprintAvg": "3-sprint avg",
+    "avgVelocity": "Average velocity:",
+    "pointsPerSprint": "points/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Done: {{points}} pts",
+    "inProgress": "In Progress: {{points}} pts",
+    "inReview": "In Review: {{points}} pts",
+    "remaining": "Remaining: {{points}} pts",
+    "daysLeft": "{{count}} days left",
+    "epicProgress": "Epic Progress",
+    "epicProgressSubtitle": "Stories completed per epic",
+    "noEpics": "No epics defined yet.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Team Workload",
+    "teamWorkloadSubtitle": "Points assigned in active sprint",
+    "noWorkload": "No items assigned in the active sprint.",
+    "pts": "{{points}} pts ({{count}})",
+    "blockedItems": "Blocked Items",
+    "blockedSubtitle": "{{count}} item currently blocked",
+    "blockedSubtitle_other": "{{count}} items currently blocked",
+    "noBlocked": "No blocked items. Nice work!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Story points remaining vs ideal",
+    "noBurndownData": "No burndown data yet. Data appears as items move through statuses during the sprint.",
+    "ideal": "Ideal",
+    "actual": "Actual",
+    "onTrack": "On track",
+    "behind": "Behind"
+  },
+
+  "aiSettings": {
+    "title": "AI Configuration",
+    "description": "Configure an AI provider to enable acceptance criteria suggestions, story decomposition, and release note drafting. You provide your own API key; PlanA doesn't store or proxy through any shared account.",
+    "provider": "Provider",
+    "notConfigured": "Not configured",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Custom (OpenAI-compatible)",
+    "model": "Model",
+    "selectModel": "Select model...",
+    "modelPlaceholder": "Model ID (e.g. my-custom-model)",
+    "apiKey": "API Key",
+    "currentKey": "Current: {{key}}",
+    "enterApiKey": "Enter API key",
+    "apiKeyHelp": "Your key is stored encrypted per-project. Leave blank to keep the current key.",
+    "endpointUrl": "Endpoint URL",
+    "saving": "Saving...",
+    "settingsSaved": "Settings saved",
+    "stakeholderSharing": "Stakeholder Sharing",
+    "sharingDescription": "Create shareable links for stakeholders to view a read-only project dashboard. No login required; the link is the access.",
+    "label": "Label",
+    "labelPlaceholder": "e.g. Client, Steering Committee",
+    "expiresIn": "Expires in",
+    "days30": "30 days",
+    "days90": "90 days",
+    "days180": "180 days",
+    "year1": "1 year",
+    "never": "Never",
+    "createLink": "Create Link",
+    "creating": "Creating...",
+    "noActiveLinks": "No active share links.",
+    "created": "Created {{date}}",
+    "expires": "Expires {{date}}",
+    "copyLink": "Copy Link",
+    "copied": "Copied!",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revokedDate": "Revoked {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Stakeholder Dashboard",
+    "invalidLink": "Invalid or expired link",
+    "poweredBy": "Powered by PlanA",
+    "activeSprint": "Active Sprint",
+    "noActiveSprint": "No active sprint",
+    "goal": "Goal:",
+    "items": "Items",
+    "points": "Points",
+    "recentlyCompleted": "Recently Completed",
+    "noCompletedItems": "No completed items yet.",
+    "defects": "Defects",
+    "openDefects": "Open",
+    "closedDefects": "Closed",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Story Progress"
+  },
+
+  "reportView": {
+    "title": "Reports",
+    "generateProject": "Project Report",
+    "generateSprint": "Sprint Report",
+    "generating": "Generating...",
+    "generateDescription": "Generate a comprehensive report from your project data.",
+    "exportPdf": "Export PDF",
+    "back": "Back",
+    "generated": "Generated {{date}}",
+    "executiveSummary": "Executive Summary",
+    "metrics": "Metrics",
+    "items": "Items",
+    "points": "Points",
+    "completion": "Completion",
+    "testPassRate": "Test Pass Rate",
+    "epicBreakdown": "Epic Breakdown",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Acceptance Criteria",
+    "testCoverageColumn": "Test Coverage",
+    "defects": "Defects",
+    "total": "Total",
+    "open": "Open",
+    "resolved": "Resolved",
+    "criticalOpen": "Critical (Open)",
+    "testEvidence": "Test Evidence",
+    "totalTests": "Total Tests",
+    "passed": "Passed",
+    "failed": "Failed",
+    "errors": "Errors",
+    "skipped": "Skipped",
+    "currentBlockers": "Current Blockers",
+    "velocityHistory": "Velocity History",
+    "generatedBy": "Generated by PlanA"
+  }
+}

@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "create": "Létrehozás",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "add": "Hozzáadás",
+    "remove": "Eltávolítás",
+    "dismiss": "Elvetés",
+    "close": "Bezárás",
+    "loading": "Betöltés...",
+    "send": "Küldés",
+    "open": "Megnyitás",
+    "archive": "Archiválás",
+    "restore": "Visszaállítás",
+    "report": "Jelentés",
+    "settings": "Beállítások",
+    "gotIt": "Értem",
+    "tryAgain": "Újra próbálom",
+    "signOut": "Kijelentkezés",
+    "signIn": "Bejelentkezés",
+    "whatsThis": "Mi ez?",
+    "help": "Súgó",
+    "error": "Hiba: {{message}}",
+    "thinking": "Gondolkodom...",
+    "generating": "Generálás...",
+    "language": "Nyelv"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, tényleg."
+  },
+
+  "nav": {
+    "board": "Tábla",
+    "backlog": "Backlog",
+    "epics": "Epikek",
+    "sprints": "Sprintek",
+    "reports": "Jelentések",
+    "report": "Jelentés",
+    "team": "Csapat",
+    "settings": "Beállítások",
+    "project": "Projekt"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Oldalsáv kinyitása",
+    "collapseSidebar": "Oldalsáv összezárása",
+    "myWork": "Munkám",
+    "organisations": "Szervezetek",
+    "noOrganisationsYet": "Még nincsenek szervezetek",
+    "toggle": "{{name}} váltása"
+  },
+
+  "topBar": {
+    "notifications": "Értesítések",
+    "markAllRead": "Összes olvasottként jelölés",
+    "noNotificationsYet": "Még nincsenek értesítések",
+    "justNow": "épp most",
+    "minutesAgo": "{{count}} perce",
+    "hoursAgo": "{{count}} órája",
+    "daysAgo": "{{count}} napja"
+  },
+
+  "notifications": {
+    "assigned": "Ön lett hozzárendelve: \"{{title}}\"",
+    "statusChanged": "Állapot változott: \"{{title}}\"",
+    "commentAdded": "Új hozzászólás: \"{{title}}\"",
+    "mentioned": "Önt megemlítették: \"{{title}}\"",
+    "default": "Értesítés: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Kész",
+    "in_progress": "Folyamatban",
+    "in_review": "Felülvizsgálat alatt",
+    "done": "Kész",
+    "cancelled": "Visszavonva"
+  },
+
+  "priority": {
+    "urgent": "Sürgős",
+    "high": "Magas",
+    "medium": "Közepes",
+    "low": "Alacsony"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Hiba",
+    "task": "Feladat"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktív",
+    "planned": "Tervezett",
+    "completed": "Befejezett",
+    "cancelled": "Visszavont"
+  },
+
+  "roles": {
+    "pm": "Projektvezető",
+    "po": "Terméktulajdonos",
+    "bsa": "Üzleti rendszeranalitikus",
+    "ba": "Üzleti analitikus",
+    "qe": "Minőségbiztosítási mérnök",
+    "ux": "UX tervező",
+    "dev": "Fejlesztő"
+  },
+
+  "login": {
+    "continueWithGitHub": "Folytatás GitHubbal",
+    "continueWithGoogle": "Folytatás Google-lel",
+    "orSignInWithEmail": "vagy jelentkezzen be e-maillel",
+    "emailAddress": "E-mail cím",
+    "password": "Jelszó",
+    "loginFailed": "Bejelentkezés sikertelen",
+    "devOnly": "csak fejlesztéshez",
+    "devLogin": "Fejlesztői bejelentkezés (OAuth nélkül)"
+  },
+
+  "authError": {
+    "title": "Bejelentkezés sikertelen",
+    "badState": "A bejelentkezési munkamenet lejárt. Kérjük, próbálja újra.",
+    "csrf": "A biztonsági ellenőrzés sikertelen. Kérjük, próbálja újra.",
+    "exchangeFailed": "Nem sikerült befejezni a bejelentkezést a szolgáltatóval. Kérjük, próbálja újra.",
+    "dbError": "Szerverhiba történt. Kérjük, próbálja később újra.",
+    "missingToken": "Nem érkezett hitelesítési token.",
+    "default": "Váratlan hiba történt bejelentkezés közben."
+  },
+
+  "myWork": {
+    "title": "Munkám",
+    "itemCount": "{{count}} elem van Önhöz rendelve",
+    "itemCount_other": "{{count}} elem van Önhöz rendelve",
+    "noItems": "Nincsenek hozzárendelt elemek.",
+    "noItemsHelp": "Az elemek itt jelennek meg, amikor hozzáadják Önt egy projekt csapat tagjaként, és story-kat vagy feladatokat rendelnek Önhöz. Győződjön meg arról, hogy a fiókja e-mail címe megegyezik a csapattag e-mail címével, vagy hogy elfogadta a meghívást."
+  },
+
+  "orgs": {
+    "title": "Szervezetek",
+    "orgCount": "{{count}} szervezet",
+    "orgCount_other": "{{count}} szervezet",
+    "showArchived": "Archiváltak megjelenítése",
+    "newOrganisation": "+ Új szervezet",
+    "noOrgsYet": "Még nincsenek szervezetek. Hozzon létre egyet a kezdéshez.",
+    "archived": "Archivált",
+    "confirmDelete": "Véglegesen törli ezt a szervezetet és minden adatát?",
+    "added": "Hozzáadva: {{date}}",
+    "newOrg": "Új szervezet",
+    "orgName": "Szervezet neve",
+    "orgNameRequired": "Szervezet neve *",
+    "contactName": "Kapcsolattartó neve",
+    "contactEmail": "Kapcsolattartó e-mail",
+    "contactPhone": "Kapcsolattartó telefon",
+    "addressLine1": "Cím 1. sor",
+    "addressLine2": "Cím 2. sor",
+    "city": "Város",
+    "state": "Megye",
+    "postalCode": "Irányítószám",
+    "country": "Ország"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Összes szervezet",
+    "editDetails": "Részletek szerkesztése",
+    "noContactDetails": "Még nincsenek kapcsolattartási adatok. Kattintson a \"Részletek szerkesztése\" gombra a hozzáadáshoz.",
+    "contact": "Kapcsolat:",
+    "email": "E-mail:",
+    "phone": "Telefon:",
+    "location": "Helyszín:",
+    "projects": "Projektek ({{count}})",
+    "newProject": "+ Új projekt",
+    "noProjectsYet": "Még nincsenek projektek. Hozzon létre egyet a kezdéshez.",
+    "newProjectTitle": "Új projekt",
+    "projectName": "Projekt neve",
+    "projectNameRequired": "Projekt neve *",
+    "description": "Leírás",
+    "methodology": "Módszertan",
+    "dueDate": "Határidő",
+    "customerContact": "Ügyfél kapcsolat",
+    "createProject": "Projekt létrehozása",
+    "whatIsThisProjectAbout": "Miről szól ez a projekt?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Érvénytelen meghívás",
+    "invalidLink": "Ez a meghívó link nem érvényes.",
+    "goToLogin": "Bejelentkezéshez",
+    "alreadyAccepted": "Már elfogadva",
+    "alreadyAcceptedMessage": "Ez a meghívás már felhasználásra került. Bejelentkezhet a hitelesítési adataival.",
+    "expired": "Meghívás lejárt",
+    "expiredMessage": "Ez a meghívás lejárt. Kérje meg a csapatot, hogy küldjön újat.",
+    "invitedToJoin": "Meghívást kapott egy projekthez való csatlakozásra",
+    "emailLabel": "E-mail",
+    "yourName": "Az Ön neve",
+    "passwordLabel": "Jelszó",
+    "confirmPassword": "Jelszó megerősítése",
+    "minChars": "Legalább 8 karakter",
+    "repeatPassword": "Ismételje meg a jelszavát",
+    "passwordTooShort": "A jelszónak legalább 8 karakterből kell állnia",
+    "passwordsMismatch": "A jelszavak nem egyeznek",
+    "createAccountJoin": "Fiók létrehozása és csatlakozás",
+    "creatingAccount": "Fiók létrehozása...",
+    "alreadyHaveAccount": "Már van fiókja?",
+    "logIn": "Bejelentkezés"
+  },
+
+  "board": {
+    "helpTitle": "Az Ön Kanban táblája",
+    "helpBody1": "Ez a csapata munkájának folyamatként való megjelenítése. Minden oszlop a munkafolyamat egy szakaszát jelöli.",
+    "helpBody2": "Húzza a kártyákat az oszlopok között az állapot azonnali frissítéséhez. Ha áthelyez egy story-t, a hozzá tartozó feladatok vele együtt mozognak.",
+    "helpBody3": "Tartsa a \"Folyamatban\" oszlopot kicsinek; a folyamatban lévő munka korlátozása segít a csapatnak befejezni a dolgokat ahelyett, hogy újakat kezdene.",
+    "itemCount": "{{count}} elem",
+    "itemCount_other": "{{count}} elem",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} pont folyamatban",
+    "overCapacity": "Kapacitás túllépés",
+    "noItems": "Nincsenek elemek",
+    "column": "{{status}} oszlop"
+  },
+
+  "backlog": {
+    "helpTitle": "Az Ön Backlogja",
+    "helpBody1": "A backlog a prioritás szerint rendezett munkalista. A fent lévő elemek a legmagasabb prioritásúak.",
+    "helpBody2": "Húzza az elemeket a fogantyúnál fogva a prioritás megváltoztatásához. Használja a szűrőket, hogy a story-kra, hibákra vagy adott állapotokra összpontosítson.",
+    "helpBody3": "Kattintson a \"+ Új elem\" gombra story-k vagy feladatok gyors hozzáadásához.",
+    "allStatuses": "Összes állapot",
+    "allTypes": "Összes típus",
+    "stories": "Story-k",
+    "bugs": "Hibák",
+    "tasks": "Feladatok",
+    "itemCount": "{{count}} elem",
+    "itemCount_other": "{{count}} elem",
+    "newItem": "+ Új elem",
+    "noItemsMatch": "Nincs a szűrőknek megfelelő elem. Próbálja meg módosítani a szűrőket, vagy hozzon létre új elemet."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint tervezés",
+    "helpBody1": "A sprintek időkorlátós iterációk (általában 2 hét). Húzzon story-kat a backlogból a sprintbe a csapat munkájának tervezéséhez.",
+    "helpBody2": "Figyelje a kapacitás jelzőt, hogy ne terhelje túl a csapatot.",
+    "title": "Sprintek",
+    "noSprintsYet": "Még nincsenek sprintek. Hozzon létre egyet a tervezés megkezdéséhez.",
+    "pts": "{{count}} pont"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Vissza a táblára",
+    "partOf": "Része:",
+    "clickToEdit": "Kattintson a szerkesztéshez",
+    "description": "Leírás",
+    "descPlaceholder": "Írja le a követelményt, a célt és a kontextust...",
+    "suggest": "Javaslat",
+    "clickToAddDescription": "Kattintson a leírás hozzáadásához...",
+    "details": "Részletek",
+    "statusLabel": "Állapot",
+    "typeLabel": "Típus",
+    "priorityLabel": "Prioritás",
+    "assigneeLabel": "Hozzárendelt",
+    "unassigned": "Nincs hozzárendelve",
+    "totalPoints": "Összes pont",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "A story-k esetén a pontok az összes feladat pontjainak összege. Adjon pontokat az egyes feladatokhoz a finomítás során.",
+    "taskPointsHelp": "Becsülje meg a relatív erőfeszítést. Gyakori skálák: 1, 2, 3, 5, 8, 13. Az \"1\" a legegyszerűbb dolog, amit a csapata csinál.",
+    "sumOfTasks": "{{count}} feladat összege",
+    "sumOfTasks_other": "{{count}} feladat összege",
+    "largeStoryWarning": "Ez a story {{points}} pont. Fontolja meg kisebb story-kra bontását, amelyek mindegyike egyetlen sprintben elvégezhető.",
+    "blocked": "Blokkolt",
+    "blockedBy": "Blokkolja:",
+    "notBlocked": "Nincs blokkolva",
+    "labels": "Címkék",
+    "convertToStory": "Átalakítás Story-vá",
+    "convertToStoryConfirm": "Átalakítja ezt a feladatot story-vá? A függőségi kapcsolat az eredeti story-val megmarad.",
+    "convertToStoryHelp": "Fellépteti ezt a feladatot önálló story-vá függőségi kapcsolattal",
+    "created": "Létrehozva: {{date}}",
+    "updated": "Frissítve: {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Feladatok ({{count}})",
+    "contextHelp": "A feladatok a story-t szakmák szerinti munkára bontják, mint UX tervezés, backend fejlesztés, frontend fejlesztés és QE tesztelés. Minden feladat hozzárendelhető egy csapattaghoz.",
+    "suggestTasks": "Feladatok javaslása",
+    "addTask": "+ Feladat hozzáadása",
+    "noTasksYet": "Még nincsenek feladatok.",
+    "taskTitlePlaceholder": "Feladat címe (pl. 'UX: Bejelentkezési képernyő tervezése')",
+    "suggestedTasks": "Javasolt feladatok, kattintson a hozzáadáshoz:",
+    "pts": "{{count}} pont",
+    "clarificationNeeded": "Pontosítás szükséges:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Elfogadási kritériumok",
+    "contextHelp": "Az elfogadási kritériumok határozzák meg, mikor tekinthető egy elem valósan \"késznek\". Given / When / Then formátumban (BDD) írva az elvárásokat egyértelművé és tesztelhetővé teszik. Minden kritérium egy konkrét, ellenőrizhető feltétel, nem egy bizonytalan kívánság.",
+    "addButton": "+ Hozzáadás",
+    "suggestAC": "EK javaslása",
+    "noCriteriaYet": "Még nincsenek elfogadási kritériumok. Határozza meg a \"kész\" feltételeit.",
+    "given": "Adott",
+    "when": "Amikor",
+    "then": "Akkor",
+    "deleteAC": "Elfogadási kritérium törlése",
+    "givenPlaceholder": "Adott...",
+    "whenPlaceholder": "Amikor...",
+    "thenPlaceholder": "Akkor...",
+    "aiSuggestions": "AI javaslatok, kattintson a hozzáadáshoz:",
+    "aiNeedsMoreInfo": "Az AI-nak több információra van szüksége:"
+  },
+
+  "comments": {
+    "title": "Hozzászólások",
+    "noCommentsYet": "Még nincsenek hozzászólások.",
+    "addComment": "Hozzászólás írása..."
+  },
+
+  "dependencies": {
+    "title": "Függőségek",
+    "contextHelp": "A függőségek az elemek közötti kapcsolatokat követik. A \"Függ tőle\" azt jelenti, hogy ez az elem nem haladhat tovább, amíg a célelem nem kész. A \"Kapcsolódó\" információs jellegű link.",
+    "noDependencies": "Nincsenek függőségek.",
+    "dependsOn": "Függ tőle",
+    "relatesTo": "Kapcsolódó",
+    "dependedOnBy": "Függ tőle",
+    "removeDependency": "Függőség eltávolítása",
+    "selectItem": "Válasszon elemet..."
+  },
+
+  "links": {
+    "title": "Hivatkozások",
+    "addLink": "+ Hivatkozás hozzáadása",
+    "noLinksYet": "Még nincsenek hivatkozások.",
+    "labelPlaceholder": "Címke (pl. GitHub PR, Figma, Teszteredmények, Dokumentumok)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Hivatkozás eltávolítása"
+  },
+
+  "testResults": {
+    "retestRequired": "Újratesztelés szükséges",
+    "retestMessage": "Ennek a hibajegynek {{count}} sikertelen tesztje van. Töltsön fel új teszteredményeket (JUnit XML vagy webhook) a javítás telepítése után a QE kapuzat feloldásához és az elem lezárásához.",
+    "title": "Teszteredmények",
+    "passed": "sikeres",
+    "failed": "sikertelen",
+    "errors": "hibák",
+    "skipped": "kihagyva",
+    "lastRun": "Utolsó futtatás: {{date}}",
+    "sourceTestFailure": "Forrásteszt hiba",
+    "suite": "Csomag: {{name}}",
+    "duration": "Időtartam: {{ms}}ms",
+    "source": "Forrás: {{source}} | Jelentés: {{date}}",
+    "generateDescAC": "Leírás és EK generálása"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Elvetés",
+    "close": "Bezárás"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Kezdjen gépelni...",
+    "bold": "Félkövér",
+    "italic": "Dőlt",
+    "inlineCode": "Beágyazott kód",
+    "heading": "Címsor",
+    "subheading": "Alcímsor",
+    "bulletList": "Felsorolás",
+    "numberedList": "Számozott lista",
+    "quote": "Idézet",
+    "codeBlock": "Kódblokk"
+  },
+
+  "createEpic": {
+    "button": "+ Új Epic",
+    "title": "Epic létrehozása",
+    "titleLabel": "Cím",
+    "titlePlaceholder": "pl. Felhasználó hitelesítés",
+    "descriptionLabel": "Leírás",
+    "descriptionPlaceholder": "Az Epic üzleti célja és hatóköre...",
+    "priorityLabel": "Prioritás",
+    "assigneeLabel": "Hozzárendelt"
+  },
+
+  "createProject": {
+    "button": "+ Új projekt",
+    "title": "Projekt létrehozása",
+    "organisationLabel": "Szervezet",
+    "selectOrg": "Válasszon szervezetet...",
+    "teamLabel": "Csapat",
+    "selectTeam": "Válasszon csapatot...",
+    "projectNameLabel": "Projekt neve",
+    "projectNamePlaceholder": "pl. PlanA MVP",
+    "descriptionLabel": "Leírás",
+    "descriptionPlaceholder": "Miről szól ez a projekt?",
+    "methodologyLabel": "Módszertan"
+  },
+
+  "createSprint": {
+    "button": "+ Új Sprint",
+    "title": "Sprint létrehozása",
+    "nameLabel": "Név",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Cél",
+    "goalPlaceholder": "Mit kell elérnie ennek a sprintnek?",
+    "startDateLabel": "Kezdés dátuma",
+    "endDateLabel": "Befejezés dátuma"
+  },
+
+  "createTeam": {
+    "button": "+ Új csapat",
+    "title": "Csapat létrehozása",
+    "organisationLabel": "Szervezet",
+    "selectOrg": "Válasszon szervezetet...",
+    "teamNameLabel": "Csapat neve",
+    "teamNamePlaceholder": "pl. Backend csapat"
+  },
+
+  "quickCreate": {
+    "placeholder": "Mit kell megcsinálni?"
+  },
+
+  "workItemCard": {
+    "open": "{{title}} megnyitása",
+    "taskCount": "{{count}} feladat",
+    "taskCount_other": "{{count}} feladat"
+  },
+
+  "team": {
+    "title": "Csapat",
+    "memberCount": "{{count}} tag",
+    "memberCount_other": "{{count}} tag",
+    "addMember": "+ Tag hozzáadása",
+    "noMembersYet": "Még nincsenek csapattagok. Adjon hozzá embereket a munka kiosztás megkezdéséhez.",
+    "confirmRemove": "Eltávolítja {{name}} tagot a csapatból?",
+    "invite": "Meghívás",
+    "inviteLink": "Meghívó link:",
+    "copy": "Másolás",
+    "ptsPerSprint": "{{count}} pont/sprint",
+    "addTeamMember": "Csapattag hozzáadása",
+    "nameRequired": "Név *",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefon",
+    "roleRequired": "Szerepkör *",
+    "capacity": "Kapacitás",
+    "capacityPlaceholder": "pont/sprint",
+    "nameLabel": "Név",
+    "roleLabel": "Szerepkör"
+  },
+
+  "epics": {
+    "helpTitle": "Epikek",
+    "helpBody1": "Az epikek funkció szintű csoportosítások. Minden Epic kapcsolódó story-kat tartalmaz, amelyek együtt egy üzleti képességet valósítanak meg.",
+    "helpBody2": "Kattintson egy Epic-re a story-k megtekintéséhez, újak hozzáadásához és a haladás követéséhez.",
+    "title": "Epikek",
+    "noEpicsYet": "Még nincsenek epikek. Az epikek a kapcsolódó story-kat funkció szintű szállítmányokba csoportosítják.",
+    "storyProgress": "{{done}}/{{total}} story"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Vissza az epikekhez",
+    "description": "Leírás",
+    "descPlaceholder": "Írja le az üzleti célt és hatókört...",
+    "clickToAddDescription": "Kattintson a leírás hozzáadásához...",
+    "stories": "Story-k ({{count}})",
+    "storiesContextHelp": "A story-k ennek az Epic-nek a szállítható céljai. Minden story egy konkrét, felhasználói eredményt képvisel, amely egyetlen sprint alatt befejezhető.",
+    "addStory": "+ Story hozzáadása",
+    "noStoriesYet": "Ebben az Epic-ben még nincsenek story-k. Adjon hozzá egyet a célok meghatározásához.",
+    "details": "Részletek",
+    "statusLabel": "Állapot",
+    "priorityLabel": "Prioritás",
+    "assigneeLabel": "Hozzárendelt",
+    "addStoryToEpic": "Story hozzáadása az Epic-hez",
+    "titleRequired": "Cím *",
+    "titleHint": "(\"[Szerepkör]ként szeretném [cél], hogy [előny]\")",
+    "titlePlaceholder": "[Szerepkör]ként szeretném [cél], hogy [előny]",
+    "descriptionLabel": "Leírás",
+    "descriptionPlaceholder": "Kontextus, követelmények és részletek...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "A hozzárendeltnek automatikusan létrejön egy feladat {{points}} ponttal. A pontok mindig a feladatokon vannak.",
+    "largeStoryWarning": "Nagy story ({{points}} pont). Fontolja meg, hogy kisebb story-kra bontja, amelyek egyenként egy sprint alatt befejezhetők. A kisebb story-kat könnyebb becsülni, tesztelni és szállítani.",
+    "acceptanceCriteria": "Elfogadási kritériumok",
+    "acContextHelp": "Határozza meg, mikor \"kész\" ez a story. Minden kritériumnak konkrétnak és tesztelhetőnek kell lennie.",
+    "addCriterion": "+ Kritérium hozzáadása",
+    "givenPlaceholder": "előfeltétel vagy kontextus...",
+    "whenPlaceholder": "egy tevékenység vagy esemény...",
+    "thenPlaceholder": "az elvárt eredmény...",
+    "createRelatedTasks": "Létrehozza a kapcsolódó feladatokat?",
+    "autoAssignHint": "(automatikusan hozzárendelve a csapattagokhoz szerepkör szerint)",
+    "uxDesign": "UX tervezés",
+    "qeTesting": "QE tesztelés",
+    "bsaAnalysis": "BSA elemzés",
+    "creating": "Létrehozás...",
+    "createStory": "Story létrehozása"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Vissza a sprintekhez",
+    "start": "Kezdés:",
+    "end": "Befejezés:",
+    "capacity": "{{points}} / {{capacity}} kapacitás",
+    "storyPoints": "{{count}} story point",
+    "storiesAndItems": "{{stories}} story, {{items}} összes elem",
+    "done": "Kész",
+    "addStories": "+ Story-k hozzáadása",
+    "startSprint": "Sprint indítása",
+    "completeSprint": "Sprint befejezése",
+    "addStoriesToSprint": "Story-k hozzáadása a sprinthez ({{count}} elérhető)",
+    "allStoriesAssigned": "Minden story már egy sprintben van vagy befejeződött.",
+    "noItemsYet": "Ebben a sprintben még nincsenek elemek. Kattintson a \"+ Story-k hozzáadása\" gombra a backlogból való lehúzáshoz.",
+    "removeStoryAndTasks": "Story és feladatok eltávolítása a sprintből",
+    "removeFromSprint": "Eltávolítás a sprintből",
+    "standaloneTasks": "Önálló feladatok",
+    "adding": "Hozzáadás...",
+    "tasks": "{{count}} feladat"
+  },
+
+  "reports": {
+    "helpTitle": "Projekt jelentések",
+    "helpBody1": "A jelentések átláthatóságot adnak a csapat szállításáról. A Velocity megmutatja, hány pontot fejez be sprintenként; idővel stabilizálódik.",
+    "helpBody2": "Használja a sprint haladás és csapat munkaterhelési diagramokat a szűk keresztmetszetek korai felfedezésére.",
+    "title": "Jelentések",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Sprintenként befejezett story pontok",
+    "noCompletedSprints": "Még nincsenek befejezett sprintek. A Velocity az első sprint befejezése után jelenik meg.",
+    "trend": "Trend",
+    "threeSprintAvg": "3 sprint átlaga",
+    "avgVelocity": "Átlagos Velocity:",
+    "pointsPerSprint": "pont/sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Kész: {{points}} pont",
+    "inProgress": "Folyamatban: {{points}} pont",
+    "inReview": "Felülvizsgálat alatt: {{points}} pont",
+    "remaining": "Hátralévő: {{points}} pont",
+    "daysLeft": "{{count}} nap van hátra",
+    "epicProgress": "Epikek haladása",
+    "epicProgressSubtitle": "Epikenként befejezett story-k",
+    "noEpics": "Még nincsenek epikek meghatározva.",
+    "stories": "{{done}}/{{total}} story, {{pct}}%",
+    "teamWorkload": "Csapat munkaterhelése",
+    "teamWorkloadSubtitle": "Az aktív sprintben hozzárendelt pontok",
+    "noWorkload": "Nincsenek hozzárendelt elemek az aktív sprintben.",
+    "pts": "{{points}} pont ({{count}})",
+    "blockedItems": "Blokkolt elemek",
+    "blockedSubtitle": "{{count}} elem jelenleg blokkolva",
+    "blockedSubtitle_other": "{{count}} elem jelenleg blokkolva",
+    "noBlocked": "Nincsenek blokkolt elemek. Remek munka!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Hátralévő story pontok az ideálishoz képest",
+    "noBurndownData": "Még nincsenek burndown adatok. Az adatok megjelennek, amint az elemek a sprint során állapotok között mozognak.",
+    "ideal": "Ideális",
+    "actual": "Tényleges",
+    "onTrack": "Ütemben",
+    "behind": "Lemaradásban"
+  },
+
+  "aiSettings": {
+    "title": "AI beállítás",
+    "description": "Állítson be egy AI szolgáltatót az elfogadási kritériumok javaslatainak, a story felbontásának és a kiadási megjegyzések tervezeteinek engedélyezéséhez. Saját API kulcsot használ; a PlanA nem tárol és nem közvetít közös fiókon keresztül.",
+    "provider": "Szolgáltató",
+    "notConfigured": "Nincs beállítva",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Egyédi (OpenAI-kompatibilis)",
+    "model": "Modell",
+    "selectModel": "Válasszon modellt...",
+    "modelPlaceholder": "Modell azonosító (pl. my-custom-model)",
+    "apiKey": "API kulcs",
+    "currentKey": "Jelenlegi: {{key}}",
+    "enterApiKey": "Adja meg az API kulcsot",
+    "apiKeyHelp": "A kulcsa titkosítva tárolódik projektenként. Hagyja üresen a jelenlegi kulcs megtartásához.",
+    "endpointUrl": "Végpont URL",
+    "saving": "Mentés...",
+    "settingsSaved": "Beállítások mentve",
+    "stakeholderSharing": "Megosztás érdekeltekkel",
+    "sharingDescription": "Hozzon létre megosztható linkeket az érdekeltek számára a projekt irányítópult csak olvasási módban való megtekintéséhez. Bejelentkezés nem szükséges; a link maga a hozzáférés.",
+    "label": "Címke",
+    "labelPlaceholder": "pl. Ügyfél, Irányító Bizottság",
+    "expiresIn": "Lejár",
+    "days30": "30 nap",
+    "days90": "90 nap",
+    "days180": "180 nap",
+    "year1": "1 év",
+    "never": "Soha",
+    "createLink": "Link létrehozása",
+    "creating": "Létrehozás...",
+    "noActiveLinks": "Nincsenek aktív megosztási linkek.",
+    "created": "Létrehozva: {{date}}",
+    "expires": "Lejár: {{date}}",
+    "copyLink": "Link másolása",
+    "copied": "Másolva!",
+    "revoke": "Visszavonás",
+    "revoked": "Visszavonva",
+    "revokedDate": "Visszavonva: {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Érdekelt felek irányítópultja",
+    "invalidLink": "Érvénytelen vagy lejárt link",
+    "poweredBy": "Üzemeltető: PlanA",
+    "activeSprint": "Aktív Sprint",
+    "noActiveSprint": "Nincs aktív sprint",
+    "goal": "Cél:",
+    "items": "Elemek",
+    "points": "Pontok",
+    "recentlyCompleted": "Nemrég befejezett",
+    "noCompletedItems": "Még nincsenek befejezett elemek.",
+    "defects": "Hibák",
+    "openDefects": "Nyitott",
+    "closedDefects": "Lezárt",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Story haladás"
+  },
+
+  "reportView": {
+    "title": "Jelentések",
+    "generateProject": "Projekt jelentés",
+    "generateSprint": "Sprint jelentés",
+    "generating": "Generálás...",
+    "generateDescription": "Készítsen átfogó jelentést a projekt adataiból.",
+    "exportPdf": "Exportálás PDF-be",
+    "back": "Vissza",
+    "generated": "Generálva: {{date}}",
+    "executiveSummary": "Vezetői összefoglaló",
+    "metrics": "Mutatószámok",
+    "items": "Elemek",
+    "points": "Pontok",
+    "completion": "Készültség",
+    "testPassRate": "Tesztmegfelelési arány",
+    "epicBreakdown": "Epikek részletezése",
+    "epicColumn": "Epic",
+    "storiesColumn": "Story-k",
+    "acceptanceCriteriaColumn": "Elfogadási kritériumok",
+    "testCoverageColumn": "Tesztlefedettség",
+    "defects": "Hibák",
+    "total": "Összes",
+    "open": "Nyitott",
+    "resolved": "Megoldott",
+    "criticalOpen": "Kritikus (nyitott)",
+    "testEvidence": "Teszt bizonyítékok",
+    "totalTests": "Összes teszt",
+    "passed": "Sikeres",
+    "failed": "Sikertelen",
+    "errors": "Hibák",
+    "skipped": "Kihagyva",
+    "currentBlockers": "Jelenlegi akadályok",
+    "velocityHistory": "Velocity története",
+    "generatedBy": "Generálta: PlanA"
+  }
+}

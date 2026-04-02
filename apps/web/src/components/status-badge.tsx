@@ -1,16 +1,18 @@
 import { Badge } from '@projecta/ui';
 import type { WorkItemStatus } from '@projecta/types';
+import { useTranslation } from 'react-i18next';
 
-const statusConfig: Record<WorkItemStatus, { label: string; variant: 'secondary' | 'default' | 'warning' | 'success' | 'outline' }> = {
-  backlog: { label: 'Backlog', variant: 'secondary' },
-  ready: { label: 'Ready', variant: 'outline' },
-  in_progress: { label: 'In Progress', variant: 'default' },
-  in_review: { label: 'In Review', variant: 'warning' },
-  done: { label: 'Done', variant: 'success' },
-  cancelled: { label: 'Cancelled', variant: 'secondary' },
+const statusVariant: Record<WorkItemStatus, 'secondary' | 'default' | 'warning' | 'success' | 'outline'> = {
+  backlog: 'secondary',
+  ready: 'outline',
+  in_progress: 'default',
+  in_review: 'warning',
+  done: 'success',
+  cancelled: 'secondary',
 };
 
 export function StatusBadge({ status }: { status: WorkItemStatus }) {
-  const config = statusConfig[status] ?? { label: status, variant: 'secondary' as const };
-  return <Badge variant={config.variant}>{config.label}</Badge>;
+  const { t } = useTranslation();
+  const variant = statusVariant[status] ?? 'secondary';
+  return <Badge variant={variant}>{t(`status.${status}`)}</Badge>;
 }

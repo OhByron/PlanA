@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "create": "创建",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "remove": "移除",
+    "dismiss": "关闭",
+    "close": "关闭",
+    "loading": "加载中...",
+    "send": "发送",
+    "open": "打开",
+    "archive": "归档",
+    "restore": "恢复",
+    "report": "报告",
+    "settings": "设置",
+    "gotIt": "知道了",
+    "tryAgain": "重试",
+    "signOut": "退出登录",
+    "signIn": "登录",
+    "whatsThis": "这是什么？",
+    "help": "帮助",
+    "error": "错误：{{message}}",
+    "thinking": "思考中...",
+    "generating": "生成中...",
+    "language": "语言"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "真正的敏捷。"
+  },
+
+  "nav": {
+    "board": "看板",
+    "backlog": "待办列表",
+    "epics": "Epic",
+    "sprints": "Sprint",
+    "reports": "报告",
+    "report": "报告",
+    "team": "团队",
+    "settings": "设置",
+    "project": "项目"
+  },
+
+  "sidebar": {
+    "expandSidebar": "展开侧边栏",
+    "collapseSidebar": "折叠侧边栏",
+    "myWork": "我的工作",
+    "organisations": "组织",
+    "noOrganisationsYet": "暂无组织",
+    "toggle": "切换 {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "通知",
+    "markAllRead": "全部标为已读",
+    "noNotificationsYet": "暂无通知",
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前",
+    "daysAgo": "{{count}}天前"
+  },
+
+  "notifications": {
+    "assigned": "你被分配到了「{{title}}」",
+    "statusChanged": "「{{title}}」的状态已更改",
+    "commentAdded": "「{{title}}」有新评论",
+    "mentioned": "你在「{{title}}」中被提及",
+    "default": "通知：{{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "就绪",
+    "in_progress": "进行中",
+    "in_review": "审查中",
+    "done": "已完成",
+    "cancelled": "已取消"
+  },
+
+  "priority": {
+    "urgent": "紧急",
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  },
+
+  "type": {
+    "story": "用户故事",
+    "bug": "缺陷",
+    "task": "任务"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "进行中",
+    "planned": "已计划",
+    "completed": "已完成",
+    "cancelled": "已取消"
+  },
+
+  "roles": {
+    "pm": "项目经理",
+    "po": "产品负责人",
+    "bsa": "业务系统分析师",
+    "ba": "业务分析师",
+    "qe": "质量工程师",
+    "ux": "UX 设计师",
+    "dev": "开发人员"
+  },
+
+  "login": {
+    "continueWithGitHub": "使用 GitHub 继续",
+    "continueWithGoogle": "使用 Google 继续",
+    "orSignInWithEmail": "或使用邮箱登录",
+    "emailAddress": "邮箱地址",
+    "password": "密码",
+    "loginFailed": "登录失败",
+    "devOnly": "仅开发用",
+    "devLogin": "开发登录（跳过 OAuth）"
+  },
+
+  "authError": {
+    "title": "登录失败",
+    "badState": "登录会话已过期，请重试。",
+    "csrf": "安全检查失败，请重试。",
+    "exchangeFailed": "无法完成与提供商的登录，请重试。",
+    "dbError": "服务器发生错误，请稍后重试。",
+    "missingToken": "未收到认证令牌。",
+    "default": "登录过程中发生意外错误。"
+  },
+
+  "myWork": {
+    "title": "我的工作",
+    "itemCount": "{{count}} 个项目分配给你",
+    "itemCount_other": "{{count}} 个项目分配给你",
+    "noItems": "没有分配给你的项目。",
+    "noItemsHelp": "当你被添加为项目团队成员并分配了用户故事或任务时，它们会显示在这里。请确保你的账户邮箱与团队成员邮箱一致，或者你已接受邀请。"
+  },
+
+  "orgs": {
+    "title": "组织",
+    "orgCount": "{{count}} 个组织",
+    "orgCount_other": "{{count}} 个组织",
+    "showArchived": "显示已归档",
+    "newOrganisation": "+ 新建组织",
+    "noOrgsYet": "暂无组织。创建一个以开始使用。",
+    "archived": "已归档",
+    "confirmDelete": "确定要永久删除此组织及其所有数据吗？",
+    "added": "添加于 {{date}}",
+    "newOrg": "新建组织",
+    "orgName": "组织名称",
+    "orgNameRequired": "组织名称 *",
+    "contactName": "联系人姓名",
+    "contactEmail": "联系邮箱",
+    "contactPhone": "联系电话",
+    "addressLine1": "地址行 1",
+    "addressLine2": "地址行 2",
+    "city": "城市",
+    "state": "省/州",
+    "postalCode": "邮政编码",
+    "country": "国家"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "所有组织",
+    "editDetails": "编辑详情",
+    "noContactDetails": "暂无联系信息。点击'编辑详情'添加。",
+    "contact": "联系人：",
+    "email": "邮箱：",
+    "phone": "电话：",
+    "location": "地址：",
+    "projects": "项目 ({{count}})",
+    "newProject": "+ 新建项目",
+    "noProjectsYet": "暂无项目。创建一个以开始使用。",
+    "newProjectTitle": "新建项目",
+    "projectName": "项目名称",
+    "projectNameRequired": "项目名称 *",
+    "description": "描述",
+    "methodology": "方法论",
+    "dueDate": "截止日期",
+    "customerContact": "客户联系人",
+    "createProject": "创建项目",
+    "whatIsThisProjectAbout": "这个项目是关于什么的？"
+  },
+
+  "invite": {
+    "invalidInvitation": "无效邀请",
+    "invalidLink": "此邀请链接无效。",
+    "goToLogin": "前往登录",
+    "alreadyAccepted": "已接受",
+    "alreadyAcceptedMessage": "此邀请已被使用。你可以使用你的凭据登录。",
+    "expired": "邀请已过期",
+    "expiredMessage": "此邀请已过期。请联系你的团队重新发送邀请。",
+    "invitedToJoin": "你被邀请加入一个项目",
+    "emailLabel": "邮箱",
+    "yourName": "你的姓名",
+    "passwordLabel": "密码",
+    "confirmPassword": "确认密码",
+    "minChars": "至少8个字符",
+    "repeatPassword": "再次输入密码",
+    "passwordTooShort": "密码至少需要8个字符",
+    "passwordsMismatch": "两次密码不一致",
+    "createAccountJoin": "创建账户并加入",
+    "creatingAccount": "正在创建账户...",
+    "alreadyHaveAccount": "已有账户？",
+    "logIn": "登录"
+  },
+
+  "board": {
+    "helpTitle": "你的 Kanban 看板",
+    "helpBody1": "这是将团队工作可视化为流程的看板。每一列代表工作流中的一个阶段。",
+    "helpBody2": "在列之间拖拽卡片可以即时更新状态。移动用户故事时，其子任务也会随之移动。",
+    "helpBody3": "保持'进行中'列尽量精简; 限制在制品有助于团队完成工作，而非不断开始新任务。",
+    "itemCount": "{{count}} 个项目",
+    "itemCount_other": "{{count}} 个项目",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} 点进行中",
+    "overCapacity": "超出容量",
+    "noItems": "无项目",
+    "column": "{{status}} 列"
+  },
+
+  "backlog": {
+    "helpTitle": "你的 Backlog",
+    "helpBody1": "Backlog 是按优先级排列的工作列表。顶部的项目优先级最高。",
+    "helpBody2": "通过拖拽手柄重新排列优先级。使用筛选器聚焦于用户故事、缺陷或特定状态。",
+    "helpBody3": "点击'+ 新建项目'快速添加用户故事或任务。",
+    "allStatuses": "所有状态",
+    "allTypes": "所有类型",
+    "stories": "用户故事",
+    "bugs": "缺陷",
+    "tasks": "任务",
+    "itemCount": "{{count}} 个项目",
+    "itemCount_other": "{{count}} 个项目",
+    "newItem": "+ 新建项目",
+    "noItemsMatch": "没有匹配筛选条件的项目。请调整筛选条件或创建新项目。"
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint 计划",
+    "helpBody1": "Sprint 是时间盒化的迭代（通常为2周）。从 Backlog 中拉取用户故事到 Sprint 中来计划团队工作。",
+    "helpBody2": "关注容量指标，避免团队超负荷。",
+    "title": "Sprint",
+    "noSprintsYet": "暂无 Sprint。创建一个以开始计划。",
+    "pts": "{{count}} 点"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "返回看板",
+    "partOf": "所属：",
+    "clickToEdit": "点击编辑",
+    "description": "描述",
+    "descPlaceholder": "描述需求、目标和背景...",
+    "suggest": "建议",
+    "clickToAddDescription": "点击添加描述...",
+    "details": "详情",
+    "statusLabel": "状态",
+    "typeLabel": "类型",
+    "priorityLabel": "优先级",
+    "assigneeLabel": "负责人",
+    "unassigned": "未分配",
+    "totalPoints": "总点数",
+    "storyPoints": "故事点数",
+    "storyPointsHelp": "用户故事的点数是所有任务点数之和。在需求梳理时为各任务添加点数。",
+    "taskPointsHelp": "估算相对工作量。常用规模：1、2、3、5、8、13。「1」代表团队最简单的工作。",
+    "sumOfTasks": "{{count}} 个任务的总和",
+    "sumOfTasks_other": "{{count}} 个任务的总和",
+    "largeStoryWarning": "这个story有{{points}}个点数。考虑将其拆分为更小的story，每个都可以在一个sprint内完成。",
+    "blocked": "已阻塞",
+    "blockedBy": "阻塞来源：",
+    "notBlocked": "未阻塞",
+    "labels": "标签",
+    "convertToStory": "转换为用户故事",
+    "convertToStoryConfirm": "将此任务转换为用户故事？它将保留与原用户故事的依赖链接。",
+    "convertToStoryHelp": "将此任务提升为带有依赖链接的独立用户故事",
+    "created": "创建于 {{date}}",
+    "updated": "更新于 {{date}}"
+  },
+
+  "childTasks": {
+    "title": "任务 ({{count}})",
+    "contextHelp": "任务将用户故事按专业分工分解为具体工作, UX 设计、后端开发、前端开发、QE 测试等。每个任务可分配给团队成员。",
+    "suggestTasks": "建议任务",
+    "addTask": "+ 添加任务",
+    "noTasksYet": "暂无任务。",
+    "taskTitlePlaceholder": "任务标题（例如：'UX：设计登录页面'）",
+    "suggestedTasks": "建议的任务, 点击添加：",
+    "pts": "{{count}} 点",
+    "clarificationNeeded": "需要澄清："
+  },
+
+  "acceptanceCriteria": {
+    "title": "验收标准",
+    "contextHelp": "验收标准定义了此项目何时真正'完成'。以 Given / When / Then 格式（BDD）编写，使期望明确且可测试。每条标准都是具体的、可验证的条件，而非模糊的期望。",
+    "addButton": "+ 添加",
+    "suggestAC": "建议验收标准",
+    "noCriteriaYet": "暂无验收标准。请定义'完成'的条件。",
+    "given": "假设 (Given)",
+    "when": "当 (When)",
+    "then": "则 (Then)",
+    "deleteAC": "删除验收标准",
+    "givenPlaceholder": "假设...",
+    "whenPlaceholder": "当...",
+    "thenPlaceholder": "则...",
+    "aiSuggestions": "AI 建议, 点击添加：",
+    "aiNeedsMoreInfo": "AI 需要更多信息："
+  },
+
+  "comments": {
+    "title": "评论",
+    "noCommentsYet": "暂无评论。",
+    "addComment": "添加评论..."
+  },
+
+  "dependencies": {
+    "title": "依赖关系",
+    "contextHelp": "依赖关系追踪项目之间的关系。'依赖于'表示在目标完成之前此项目无法继续。'关联'是信息性链接。",
+    "noDependencies": "无依赖关系。",
+    "dependsOn": "依赖于",
+    "relatesTo": "关联",
+    "dependedOnBy": "被依赖于",
+    "removeDependency": "移除依赖",
+    "selectItem": "选择一个项目..."
+  },
+
+  "links": {
+    "title": "链接",
+    "addLink": "+ 添加链接",
+    "noLinksYet": "暂无链接。",
+    "labelPlaceholder": "标签（例如：GitHub PR、Figma、测试结果、文档）",
+    "urlPlaceholder": "https://...",
+    "removeLink": "移除链接"
+  },
+
+  "testResults": {
+    "retestRequired": "需要重新测试",
+    "retestMessage": "此缺陷有 {{count}} 个失败的测试。修复部署后请上传新的测试结果（JUnit XML 或 Webhook）以清除 QE 关卡并关闭此项目。",
+    "title": "测试结果",
+    "passed": "通过",
+    "failed": "失败",
+    "errors": "错误",
+    "skipped": "跳过",
+    "lastRun": "上次运行：{{date}}",
+    "sourceTestFailure": "源测试失败",
+    "suite": "套件：{{name}}",
+    "duration": "耗时：{{ms}}ms",
+    "source": "来源：{{source}} | 报告于：{{date}}",
+    "generateDescAC": "生成描述和验收标准"
+  },
+
+  "helpOverlay": {
+    "dismiss": "关闭",
+    "close": "关闭"
+  },
+
+  "richTextEditor": {
+    "startTyping": "开始输入...",
+    "bold": "加粗",
+    "italic": "斜体",
+    "inlineCode": "行内代码",
+    "heading": "标题",
+    "subheading": "副标题",
+    "bulletList": "无序列表",
+    "numberedList": "有序列表",
+    "quote": "引用",
+    "codeBlock": "代码块"
+  },
+
+  "createEpic": {
+    "button": "+ 新建史诗",
+    "title": "创建史诗",
+    "titleLabel": "标题",
+    "titlePlaceholder": "例如：用户认证",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "此史诗的业务目标和范围...",
+    "priorityLabel": "优先级",
+    "assigneeLabel": "负责人"
+  },
+
+  "createProject": {
+    "button": "+ 新建项目",
+    "title": "创建项目",
+    "organisationLabel": "组织",
+    "selectOrg": "选择组织...",
+    "teamLabel": "团队",
+    "selectTeam": "选择团队...",
+    "projectNameLabel": "项目名称",
+    "projectNamePlaceholder": "例如：PlanA MVP",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "这个项目是关于什么的？",
+    "methodologyLabel": "方法论"
+  },
+
+  "createSprint": {
+    "button": "+ 新建 Sprint",
+    "title": "创建 Sprint",
+    "nameLabel": "名称",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "目标",
+    "goalPlaceholder": "此 Sprint 要达成什么目标？",
+    "startDateLabel": "开始日期",
+    "endDateLabel": "结束日期"
+  },
+
+  "createTeam": {
+    "button": "+ 新建团队",
+    "title": "创建团队",
+    "organisationLabel": "组织",
+    "selectOrg": "选择组织...",
+    "teamNameLabel": "团队名称",
+    "teamNamePlaceholder": "例如：后端小组"
+  },
+
+  "quickCreate": {
+    "placeholder": "需要完成什么？"
+  },
+
+  "workItemCard": {
+    "open": "打开 {{title}}",
+    "taskCount": "{{count}} 个任务",
+    "taskCount_other": "{{count}} 个任务"
+  },
+
+  "team": {
+    "title": "团队",
+    "memberCount": "{{count}} 名成员",
+    "memberCount_other": "{{count}} 名成员",
+    "addMember": "+ 添加成员",
+    "noMembersYet": "暂无团队成员。添加成员以开始分配工作。",
+    "confirmRemove": "确定要将 {{name}} 从团队中移除吗？",
+    "invite": "邀请",
+    "inviteLink": "邀请链接：",
+    "copy": "复制",
+    "ptsPerSprint": "{{count}} 点/Sprint",
+    "addTeamMember": "添加团队成员",
+    "nameRequired": "姓名 *",
+    "emailLabel": "邮箱",
+    "phoneLabel": "电话",
+    "roleRequired": "角色 *",
+    "capacity": "容量",
+    "capacityPlaceholder": "点/Sprint",
+    "nameLabel": "姓名",
+    "roleLabel": "角色"
+  },
+
+  "epics": {
+    "helpTitle": "史诗",
+    "helpBody1": "史诗是功能级别的分组。每个史诗包含相关的用户故事，它们共同交付一个业务能力。",
+    "helpBody2": "点击史诗查看其用户故事、添加新故事并跟踪进度。",
+    "title": "史诗",
+    "noEpicsYet": "暂无史诗。史诗将相关用户故事组织为功能级别的交付物。",
+    "storyProgress": "{{done}}/{{total}} 个故事"
+  },
+
+  "epicDetail": {
+    "backToEpics": "返回史诗列表",
+    "description": "描述",
+    "descPlaceholder": "描述业务目标和范围...",
+    "clickToAddDescription": "点击添加描述...",
+    "stories": "用户故事 ({{count}})",
+    "storiesContextHelp": "用户故事是此史诗的可交付目标。每个故事代表一个可以在单个 Sprint 内完成的具体用户成果。",
+    "addStory": "+ 添加故事",
+    "noStoriesYet": "此史诗中暂无用户故事。添加一个来定义目标。",
+    "details": "详情",
+    "statusLabel": "状态",
+    "priorityLabel": "优先级",
+    "assigneeLabel": "负责人",
+    "addStoryToEpic": "向史诗添加用户故事",
+    "titleRequired": "标题 *",
+    "titleHint": "(\"作为[角色]，我想要[目标]，以便[收益]\")",
+    "titlePlaceholder": "作为[角色]，我想要[目标]，以便[收益]",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "背景、需求和详情...",
+    "storyPointsLabel": "故事点数",
+    "autoTaskHint": "将为负责人自动创建一个 {{points}} 点的任务。点数始终在任务上。",
+    "largeStoryWarning": "大型故事（{{points}} 点）。考虑将其拆分为可在单个 Sprint 内完成的更小故事。更小的故事更容易估算、测试和交付。",
+    "acceptanceCriteria": "验收标准",
+    "acContextHelp": "定义此故事的'完成'条件。每条标准应具体且可测试。",
+    "addCriterion": "+ 添加标准",
+    "givenPlaceholder": "前提条件或上下文...",
+    "whenPlaceholder": "操作或事件...",
+    "thenPlaceholder": "期望结果...",
+    "createRelatedTasks": "创建关联任务？",
+    "autoAssignHint": "（按角色自动分配给团队成员）",
+    "uxDesign": "UX 设计",
+    "qeTesting": "QE 测试",
+    "bsaAnalysis": "BSA 分析",
+    "creating": "创建中...",
+    "createStory": "创建故事"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "返回 Sprint 列表",
+    "start": "开始：",
+    "end": "结束：",
+    "capacity": "{{points}} / {{capacity}} 容量",
+    "storyPoints": "{{count}} 个故事点数",
+    "storiesAndItems": "{{stories}} 个故事，共 {{items}} 个项目",
+    "done": "已完成",
+    "addStories": "+ 添加故事",
+    "startSprint": "开始 Sprint",
+    "completeSprint": "完成 Sprint",
+    "addStoriesToSprint": "向 Sprint 添加故事（{{count}} 个可用）",
+    "allStoriesAssigned": "所有故事已在 Sprint 中或已完成。",
+    "noItemsYet": "此 Sprint 中暂无项目。点击'+ 添加故事'从 Backlog 中拉取。",
+    "removeStoryAndTasks": "从 Sprint 中移除故事和任务",
+    "removeFromSprint": "从 Sprint 中移除",
+    "standaloneTasks": "独立任务",
+    "adding": "添加中...",
+    "tasks": "{{count}} 个任务"
+  },
+
+  "reports": {
+    "helpTitle": "项目报告",
+    "helpBody1": "报告让你了解团队的交付情况。速率显示每个 Sprint 完成的点数，会随时间趋于稳定。",
+    "helpBody2": "使用 Sprint 进度和团队工作量图表及早发现瓶颈。",
+    "title": "报告",
+    "sprint": "Sprint：",
+    "velocity": "速率",
+    "velocitySubtitle": "每个 Sprint 完成的故事点数",
+    "noCompletedSprints": "暂无已完成的 Sprint。第一个 Sprint 完成后将显示速率。",
+    "trend": "趋势",
+    "threeSprintAvg": "3个Sprint平均",
+    "avgVelocity": "平均速率：",
+    "pointsPerSprint": "点/Sprint",
+    "sprintProgress": "Sprint：{{name}}",
+    "done": "已完成：{{points}} 点",
+    "inProgress": "进行中：{{points}} 点",
+    "inReview": "审查中：{{points}} 点",
+    "remaining": "剩余：{{points}} 点",
+    "daysLeft": "剩余 {{count}} 天",
+    "epicProgress": "史诗进度",
+    "epicProgressSubtitle": "每个史诗已完成的故事数",
+    "noEpics": "暂未定义史诗。",
+    "stories": "{{done}}/{{total}} 个故事，{{pct}}%",
+    "teamWorkload": "团队工作量",
+    "teamWorkloadSubtitle": "活跃 Sprint 中分配的点数",
+    "noWorkload": "活跃 Sprint 中无已分配项目。",
+    "pts": "{{points}} 点 ({{count}})",
+    "blockedItems": "阻塞项目",
+    "blockedSubtitle": "{{count}} 个项目当前被阻塞",
+    "blockedSubtitle_other": "{{count}} 个项目当前被阻塞",
+    "noBlocked": "没有被阻塞的项目。做得好！",
+    "burndown": "燃尽图：{{name}}",
+    "burndownSubtitle": "剩余故事点数 vs 理想线",
+    "noBurndownData": "暂无燃尽图数据。Sprint 期间项目状态变化后将显示数据。",
+    "ideal": "理想",
+    "actual": "实际",
+    "onTrack": "正常",
+    "behind": "落后"
+  },
+
+  "aiSettings": {
+    "title": "AI 配置",
+    "description": "配置 AI 提供商以启用验收标准建议、故事分解和发布说明撰写。你提供自己的 API 密钥；PlanA 不会通过任何共享账户存储或代理。",
+    "provider": "提供商",
+    "notConfigured": "未配置",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "自定义（OpenAI 兼容）",
+    "model": "模型",
+    "selectModel": "选择模型...",
+    "modelPlaceholder": "模型 ID（例如：my-custom-model）",
+    "apiKey": "API 密钥",
+    "currentKey": "当前：{{key}}",
+    "enterApiKey": "输入 API 密钥",
+    "apiKeyHelp": "你的密钥按项目加密存储。留空以保留当前密钥。",
+    "endpointUrl": "端点 URL",
+    "saving": "保存中...",
+    "settingsSaved": "设置已保存",
+    "stakeholderSharing": "利益相关者共享",
+    "sharingDescription": "创建可共享链接，让利益相关者查看只读的项目仪表板。无需登录；链接即为访问方式。",
+    "label": "标签",
+    "labelPlaceholder": "例如：客户、指导委员会",
+    "expiresIn": "有效期",
+    "days30": "30 天",
+    "days90": "90 天",
+    "days180": "180 天",
+    "year1": "1 年",
+    "never": "永不过期",
+    "createLink": "创建链接",
+    "creating": "创建中...",
+    "noActiveLinks": "暂无活跃的共享链接。",
+    "created": "创建于 {{date}}",
+    "expires": "过期于 {{date}}",
+    "copyLink": "复制链接",
+    "copied": "已复制！",
+    "revoke": "撤销",
+    "revoked": "已撤销",
+    "revokedDate": "撤销于 {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "利益相关者仪表板",
+    "invalidLink": "链接无效或已过期",
+    "poweredBy": "由 PlanA 提供支持",
+    "activeSprint": "活跃 Sprint",
+    "noActiveSprint": "无活跃 Sprint",
+    "goal": "目标：",
+    "items": "项目",
+    "points": "点数",
+    "recentlyCompleted": "最近完成",
+    "noCompletedItems": "暂无已完成项目。",
+    "defects": "缺陷",
+    "openDefects": "未关闭",
+    "closedDefects": "已关闭",
+    "sprintVelocity": "Sprint 速率",
+    "storyProgress": "故事进度"
+  },
+
+  "reportView": {
+    "title": "报告",
+    "generateProject": "项目报告",
+    "generateSprint": "Sprint 报告",
+    "generating": "生成中...",
+    "generateDescription": "根据项目数据生成综合报告。",
+    "exportPdf": "导出 PDF",
+    "back": "返回",
+    "generated": "生成于 {{date}}",
+    "executiveSummary": "执行摘要",
+    "metrics": "指标",
+    "items": "项目",
+    "points": "点数",
+    "completion": "完成率",
+    "testPassRate": "测试通过率",
+    "epicBreakdown": "Epic 分解",
+    "epicColumn": "Epic",
+    "storiesColumn": "用户故事",
+    "acceptanceCriteriaColumn": "验收标准",
+    "testCoverageColumn": "测试覆盖率",
+    "defects": "缺陷",
+    "total": "总计",
+    "open": "未关闭",
+    "resolved": "已解决",
+    "criticalOpen": "严重 (未关闭)",
+    "testEvidence": "测试证据",
+    "totalTests": "测试总数",
+    "passed": "通过",
+    "failed": "失败",
+    "errors": "错误",
+    "skipped": "跳过",
+    "currentBlockers": "当前阻塞项",
+    "velocityHistory": "速率历史",
+    "generatedBy": "由 PlanA 生成"
+  }
+}

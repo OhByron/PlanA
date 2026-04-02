@@ -1,5 +1,6 @@
 import { useParams, Link } from '@tanstack/react-router';
 import { Badge } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import { useEpics } from '../../hooks/use-epics';
 import { useWorkItems } from '../../hooks/use-work-items';
 import { PriorityIndicator } from '../../components/priority-indicator';
@@ -14,6 +15,7 @@ const statusColors: Record<string, 'success' | 'default' | 'secondary' | 'outlin
 };
 
 export function EpicsPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: epics = [], isLoading } = useEpics(projectId);
   const { data: allItems = [] } = useWorkItems(projectId);
@@ -28,24 +30,23 @@ export function EpicsPage() {
 
   return (
     <div className="p-6">
-      <HelpOverlay id="epics-intro" title="Epics">
+      <HelpOverlay id="epics-intro" title={t('epics.helpTitle')}>
         <p className="mb-2">
-          Epics are feature-level groupings. Each epic contains related stories that
-          together deliver a business capability.
+          {t('epics.helpBody1')}
         </p>
         <p>
-          Click an epic to see its stories, add new ones, and track progress.
+          {t('epics.helpBody2')}
         </p>
       </HelpOverlay>
 
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Epics</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{t('epics.title')}</h2>
         <CreateEpicDialog projectId={projectId} />
       </div>
 
       {epics.length === 0 && (
         <p className="py-12 text-center text-gray-400">
-          No epics yet. Epics group related stories into feature-level deliverables.
+          {t('epics.noEpicsYet')}
         </p>
       )}
 
@@ -65,12 +66,12 @@ export function EpicsPage() {
                 <div className="flex items-center gap-3">
                   <h3 className="font-medium text-gray-900">{epic.title}</h3>
                   <Badge variant={statusColors[epic.status] ?? 'secondary'}>
-                    {epic.status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                    {t(`status.${epic.status}`, epic.status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))}
                   </Badge>
                   <PriorityIndicator priority={epic.priority} />
                 </div>
                 <span className="text-sm text-gray-500">
-                  {doneCount}/{storyCount} stories
+                  {t('epics.storyProgress', { done: doneCount, total: storyCount })}
                 </span>
               </div>
               {epic.description && (

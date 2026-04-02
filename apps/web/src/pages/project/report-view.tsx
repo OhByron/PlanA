@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { Button } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
 import { buildReportHTML } from '../../lib/report-template';
 
@@ -30,6 +31,7 @@ interface ReportData {
 }
 
 export function ReportViewPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [report, setReport] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -51,11 +53,11 @@ export function ReportViewPage() {
   if (!report) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4">
-        <h1 className="text-xl font-semibold text-gray-900">Project Report</h1>
-        <p className="text-sm text-gray-500">Generate a comprehensive report from your project data.</p>
+        <h1 className="text-xl font-semibold text-gray-900">{t('reportView.generateProject')}</h1>
+        <p className="text-sm text-gray-500">{t('reportView.generateDescription')}</p>
         <div className="flex gap-3">
           <Button onClick={() => generateReport('project')} disabled={loading}>
-            {loading ? 'Generating...' : 'Generate Project Report'}
+            {loading ? t('reportView.generating') : t('reportView.generateProject')}
           </Button>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -67,31 +69,30 @@ export function ReportViewPage() {
     <div className="mx-auto max-w-4xl p-8 print:p-0">
       {/* Controls */}
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="ghost" onClick={() => setReport(null)}>Back</Button>
+        <Button variant="ghost" onClick={() => setReport(null)}>{t('reportView.back')}</Button>
         <Button onClick={() => {
           const html = buildReportHTML(report);
           const win = window.open('', '_blank');
           if (win) {
             win.document.write(html);
             win.document.close();
-            // Auto-trigger print dialog after render
             setTimeout(() => win.print(), 300);
           }
-        }}>Export PDF</Button>
+        }}>{t('reportView.exportPdf')}</Button>
       </div>
 
       {/* Report header */}
       <div className="mb-8 border-b border-gray-200 pb-6">
         <h1 className="text-3xl font-bold text-gray-900">{report.project.name}</h1>
         <p className="mt-1 text-sm text-gray-500">
-          {report.type === 'project' ? 'Project Report' : 'Sprint Report'} &middot; Generated {new Date(report.generated_at).toLocaleDateString()}
+          {report.type === 'project' ? t('reportView.generateProject') : t('reportView.generateSprint')} &middot; {t('reportView.generated', { date: new Date(report.generated_at).toLocaleDateString() })}
         </p>
       </div>
 
       {/* Executive summary */}
       {report.executive_summary && (
         <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">Executive Summary</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.executiveSummary')}</h2>
           <div className="prose prose-sm max-w-none text-gray-700">
             {report.executive_summary.split('\n\n').map((p, i) => (
               <p key={i}>{p}</p>
@@ -102,26 +103,26 @@ export function ReportViewPage() {
 
       {/* Metrics */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-3">Project Metrics</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.metrics')}</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <StatBox label="Completion" value={`${report.metrics.completion_pct}%`} />
-          <StatBox label="Items Done" value={`${report.metrics.done_items} / ${report.metrics.total_items}`} />
-          <StatBox label="Points Delivered" value={`${report.metrics.done_points} / ${report.metrics.total_points}`} />
-          <StatBox label="Test Pass Rate" value={`${report.tests.pass_rate}%`} />
+          <StatBox label={t('reportView.completion')} value={`${report.metrics.completion_pct}%`} />
+          <StatBox label={t('reportView.items')} value={`${report.metrics.done_items} / ${report.metrics.total_items}`} />
+          <StatBox label={t('reportView.points')} value={`${report.metrics.done_points} / ${report.metrics.total_points}`} />
+          <StatBox label={t('reportView.testPassRate')} value={`${report.tests.pass_rate}%`} />
         </div>
       </section>
 
       {/* Epics */}
       {report.epics && report.epics.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">Epic Breakdown</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.epicBreakdown')}</h2>
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase">
-                <th className="py-2 pr-4">Epic</th>
-                <th className="py-2 pr-4">Stories</th>
-                <th className="py-2 pr-4">Acceptance Criteria</th>
-                <th className="py-2">Test Coverage</th>
+                <th className="py-2 pr-4">{t('reportView.epicColumn')}</th>
+                <th className="py-2 pr-4">{t('reportView.storiesColumn')}</th>
+                <th className="py-2 pr-4">{t('reportView.acceptanceCriteriaColumn')}</th>
+                <th className="py-2">{t('reportView.testCoverageColumn')}</th>
               </tr>
             </thead>
             <tbody>
@@ -144,31 +145,31 @@ export function ReportViewPage() {
 
       {/* Defects */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-3">Defects</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.defects')}</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <StatBox label="Total" value={String(report.defects.total)} />
-          <StatBox label="Open" value={String(report.defects.open)} {...(report.defects.open > 0 ? { color: 'red' as const } : {})} />
-          <StatBox label="Resolved" value={String(report.defects.resolved)} color="green" />
-          <StatBox label="Critical (Open)" value={String(report.defects.critical)} {...(report.defects.critical > 0 ? { color: 'red' as const } : {})} />
+          <StatBox label={t('reportView.total')} value={String(report.defects.total)} />
+          <StatBox label={t('reportView.open')} value={String(report.defects.open)} {...(report.defects.open > 0 ? { color: 'red' as const } : {})} />
+          <StatBox label={t('reportView.resolved')} value={String(report.defects.resolved)} color="green" />
+          <StatBox label={t('reportView.criticalOpen')} value={String(report.defects.critical)} {...(report.defects.critical > 0 ? { color: 'red' as const } : {})} />
         </div>
       </section>
 
       {/* Test evidence */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-3">Test Evidence</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.testEvidence')}</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-          <StatBox label="Total Tests" value={String(report.tests.total)} />
-          <StatBox label="Passed" value={String(report.tests.passed)} color="green" />
-          <StatBox label="Failed" value={String(report.tests.failed)} {...(report.tests.failed > 0 ? { color: 'red' as const } : {})} />
-          <StatBox label="Errors" value={String(report.tests.errors)} {...(report.tests.errors > 0 ? { color: 'red' as const } : {})} />
-          <StatBox label="Skipped" value={String(report.tests.skipped)} />
+          <StatBox label={t('reportView.totalTests')} value={String(report.tests.total)} />
+          <StatBox label={t('reportView.passed')} value={String(report.tests.passed)} color="green" />
+          <StatBox label={t('reportView.failed')} value={String(report.tests.failed)} {...(report.tests.failed > 0 ? { color: 'red' as const } : {})} />
+          <StatBox label={t('reportView.errors')} value={String(report.tests.errors)} {...(report.tests.errors > 0 ? { color: 'red' as const } : {})} />
+          <StatBox label={t('reportView.skipped')} value={String(report.tests.skipped)} />
         </div>
       </section>
 
       {/* Blockers */}
       {report.blockers && report.blockers.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">Current Blockers</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.currentBlockers')}</h2>
           <div className="rounded-lg border border-red-200 bg-red-50 divide-y divide-red-100">
             {report.blockers.map((b, i) => (
               <div key={i} className="px-4 py-3">
@@ -184,7 +185,7 @@ export function ReportViewPage() {
       {/* Velocity */}
       {report.velocity && report.velocity.length > 0 && (
         <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">Velocity History</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">{t('reportView.velocityHistory')}</h2>
           <div className="flex items-end gap-3 h-32">
             {report.velocity.map((v, i) => {
               const max = Math.max(...report.velocity.map((x) => x.velocity || 0), 1);
@@ -204,7 +205,7 @@ export function ReportViewPage() {
       {/* Footer */}
       <footer className="mt-12 border-t border-gray-200 pt-4 text-center print:mt-8">
         <p className="text-xs text-gray-400">
-          Generated by PlanA &middot; {new Date(report.generated_at).toLocaleString()}
+          {t('reportView.generatedBy')} &middot; {new Date(report.generated_at).toLocaleString()}
         </p>
       </footer>
     </div>

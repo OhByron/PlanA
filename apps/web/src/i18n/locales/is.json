@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Vista",
+    "cancel": "Hætta við",
+    "create": "Búa til",
+    "delete": "Eyða",
+    "edit": "Breyta",
+    "add": "Bæta við",
+    "remove": "Fjarlægja",
+    "dismiss": "Hunsa",
+    "close": "Loka",
+    "loading": "Hleð...",
+    "send": "Senda",
+    "open": "Opna",
+    "archive": "Setja í safn",
+    "restore": "Endurheimta",
+    "report": "Skýrsla",
+    "settings": "Stillingar",
+    "gotIt": "Skilið",
+    "tryAgain": "Reyna aftur",
+    "signOut": "Skrá út",
+    "signIn": "Skrá inn",
+    "whatsThis": "Hvað er þetta?",
+    "help": "Hjálp",
+    "error": "Villa: {{message}}",
+    "thinking": "Hugsa...",
+    "generating": "Bý til...",
+    "language": "Tungumál"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, í alvöru."
+  },
+
+  "nav": {
+    "board": "Board",
+    "backlog": "Backlog",
+    "epics": "Epics",
+    "sprints": "Sprints",
+    "reports": "Skýrslur",
+    "report": "Skýrsla",
+    "team": "Teymi",
+    "settings": "Stillingar",
+    "project": "Verkefni"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Stækka hliðarspjald",
+    "collapseSidebar": "Fela hliðarspjald",
+    "myWork": "Mitt verk",
+    "organisations": "Stofnanir",
+    "noOrganisationsYet": "Engar stofnanir ennþá",
+    "toggle": "Víxla {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Tilkynningar",
+    "markAllRead": "Merkja allar lesnar",
+    "noNotificationsYet": "Engar tilkynningar ennþá",
+    "justNow": "rétt í þessu",
+    "minutesAgo": "{{count}}m síðan",
+    "hoursAgo": "{{count}}klst síðan",
+    "daysAgo": "{{count}}d síðan"
+  },
+
+  "notifications": {
+    "assigned": "Þér var úthlutað \"{{title}}\"",
+    "statusChanged": "Staða breytt á \"{{title}}\"",
+    "commentAdded": "Ný athugasemd á \"{{title}}\"",
+    "mentioned": "Þú varst nefnd(ur) í \"{{title}}\"",
+    "default": "Tilkynning: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Tilbúið",
+    "in_progress": "Í vinnslu",
+    "in_review": "Í yfirferð",
+    "done": "Lokið",
+    "cancelled": "Hætt við"
+  },
+
+  "priority": {
+    "urgent": "Bráð",
+    "high": "Há",
+    "medium": "Meðal",
+    "low": "Lág"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Verkefni"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Virkt",
+    "planned": "Skipulagt",
+    "completed": "Lokið",
+    "cancelled": "Hætt við"
+  },
+
+  "roles": {
+    "pm": "Verkefnisstjóri",
+    "po": "Product Owner",
+    "bsa": "Viðskiptagreinandi",
+    "ba": "Viðskiptagreinandi",
+    "qe": "Gæðaverkfræðingur",
+    "ux": "UX-hönnuður",
+    "dev": "Hugbúnaðarhönnuður"
+  },
+
+  "login": {
+    "continueWithGitHub": "Halda áfram með GitHub",
+    "continueWithGoogle": "Halda áfram með Google",
+    "orSignInWithEmail": "eða skráðu þig inn með tölvupósti",
+    "emailAddress": "Netfang",
+    "password": "Lykilorð",
+    "loginFailed": "Innskráning mistókst",
+    "devOnly": "aðeins þróun",
+    "devLogin": "Dev-innskráning (sleppa OAuth)"
+  },
+
+  "authError": {
+    "title": "Innskráning mistókst",
+    "badState": "Innskráningarlota er útrunnin. Reynið aftur.",
+    "csrf": "Öryggisathugun mistókst. Reynið aftur.",
+    "exchangeFailed": "Ekki tókst að ljúka innskráningu hjá veitanda. Reynið aftur.",
+    "dbError": "Villa á þjóni. Reynið aftur síðar.",
+    "missingToken": "Ekkert auðkenningartákn barst.",
+    "default": "Óvænt villa kom upp við innskráningu."
+  },
+
+  "myWork": {
+    "title": "Mitt verk",
+    "itemCount": "{{count}} atriði úthlutað þér",
+    "itemCount_other": "{{count}} atriði úthlutað þér",
+    "noItems": "Engin atriði úthlutað þér.",
+    "noItemsHelp": "Atriði birtast hér þegar þú ert bætt við sem teymismeðlimur í verkefni og hefur stories eða verkefni úthlutað. Gakktu úr skugga um að netfang reikningsins samsvari netfangi teymismeðlims, eða að þú hafir samþykkt boðið."
+  },
+
+  "orgs": {
+    "title": "Stofnanir",
+    "orgCount": "{{count}} stofnun",
+    "orgCount_other": "{{count}} stofnanir",
+    "showArchived": "Sýna safnaðar",
+    "newOrganisation": "+ Ný stofnun",
+    "noOrgsYet": "Engar stofnanir ennþá. Búðu til eina til að byrja.",
+    "archived": "Safnað",
+    "confirmDelete": "Eyða þessari stofnun og öllum gögnum hennar varanlega?",
+    "added": "Bætt við {{date}}",
+    "newOrg": "Ný stofnun",
+    "orgName": "Heiti stofnunar",
+    "orgNameRequired": "Heiti stofnunar *",
+    "contactName": "Tengiliður",
+    "contactEmail": "Netfang tengiliðar",
+    "contactPhone": "Sími tengiliðar",
+    "addressLine1": "Heimilisfang 1",
+    "addressLine2": "Heimilisfang 2",
+    "city": "Borg",
+    "state": "Sveitarfélag",
+    "postalCode": "Póstnúmer",
+    "country": "Land"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Allar stofnanir",
+    "editDetails": "Breyta upplýsingum",
+    "noContactDetails": "Engar tengiliðaupplýsingar ennþá. Smelltu á \"Breyta upplýsingum\" til að bæta þeim við.",
+    "contact": "Tengiliður:",
+    "email": "Netfang:",
+    "phone": "Sími:",
+    "location": "Staðsetning:",
+    "projects": "Verkefni ({{count}})",
+    "newProject": "+ Nýtt verkefni",
+    "noProjectsYet": "Engin verkefni ennþá. Búðu til eitt til að byrja.",
+    "newProjectTitle": "Nýtt verkefni",
+    "projectName": "Heiti verkefnis",
+    "projectNameRequired": "Heiti verkefnis *",
+    "description": "Lýsing",
+    "methodology": "Aðferðafræði",
+    "dueDate": "Skilafrestur",
+    "customerContact": "Tengiliður viðskiptavinar",
+    "createProject": "Búa til verkefni",
+    "whatIsThisProjectAbout": "Hvað fjallar þetta verkefni um?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Ógilt boð",
+    "invalidLink": "Þessi boðstengill er ekki gildur.",
+    "goToLogin": "Fara í innskráningu",
+    "alreadyAccepted": "Þegar samþykkt",
+    "alreadyAcceptedMessage": "Þetta boð hefur þegar verið notað. Þú getur skráð þig inn með þínum innskráningarupplýsingum.",
+    "expired": "Boð útrunnið",
+    "expiredMessage": "Þetta boð er útrunnið. Biddu teymið þitt um að senda nýtt.",
+    "invitedToJoin": "Þér hefur verið boðið að taka þátt í verkefni",
+    "emailLabel": "Netfang",
+    "yourName": "Nafnið þitt",
+    "passwordLabel": "Lykilorð",
+    "confirmPassword": "Staðfesta lykilorð",
+    "minChars": "Lágmark 8 stafir",
+    "repeatPassword": "Endurtaktu lykilorðið þitt",
+    "passwordTooShort": "Lykilorð verður að vera að minnsta kosti 8 stafir",
+    "passwordsMismatch": "Lykilorð stemma ekki",
+    "createAccountJoin": "Búa til aðgang og taka þátt",
+    "creatingAccount": "Bý til aðgang...",
+    "alreadyHaveAccount": "Ertu þegar með aðgang?",
+    "logIn": "Skrá inn"
+  },
+
+  "board": {
+    "helpTitle": "Kanban-borðið þitt",
+    "helpBody1": "Þetta er vinna teymisins sýnd sem flæði. Hver dálkur táknar stig í verkferlinu.",
+    "helpBody2": "Dragðu kort á milli dálka til að uppfæra stöðu þeirra samstundis. Þegar þú færir Story fylgja undirverkefni með.",
+    "helpBody3": "Haltu dálknum \"Í vinnslu\" litlum; takmörkun á verki í vinnslu hjálpar teyminu þínu að klára hluti í stað þess að byrja á nýjum.",
+    "itemCount": "{{count}} atriði",
+    "itemCount_other": "{{count}} atriði",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} stig í vinnslu",
+    "overCapacity": "Yfir afkastagetu",
+    "noItems": "Engin atriði",
+    "column": "{{status}} dálkur"
+  },
+
+  "backlog": {
+    "helpTitle": "Backlog-ið þitt",
+    "helpBody1": "Backlog er forgangsraðaður listi yfir verk. Atriði efst hafa hæsta forgang.",
+    "helpBody2": "Dragðu atriði með griphaldinu til að endurraða forgangi. Notaðu síurnar til að einblína á stories, bugs eða tilteknar stöður.",
+    "helpBody3": "Smelltu á + Nýtt atriði til að bæta hratt við stories eða verkefnum.",
+    "allStatuses": "Allar stöður",
+    "allTypes": "Allar gerðir",
+    "stories": "Stories",
+    "bugs": "Bugs",
+    "tasks": "Verkefni",
+    "itemCount": "{{count}} atriði",
+    "itemCount_other": "{{count}} atriði",
+    "newItem": "+ Nýtt atriði",
+    "noItemsMatch": "Engin atriði passa við síurnar þínar. Reyndu að breyta þeim eða búðu til nýtt atriði."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint-skipulagning",
+    "helpBody1": "Sprints eru tímabundin tímabil (venjulega 2 vikur). Dragðu stories úr Backlog-inu í Sprint til að skipuleggja vinnu teymisins.",
+    "helpBody2": "Fylgstu með afkastamælinum til að forðast yfirálag á teymið.",
+    "title": "Sprints",
+    "noSprintsYet": "Engir Sprints ennþá. Búðu til einn til að hefja skipulagningu.",
+    "pts": "{{count}} stig"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Til baka á borðið",
+    "partOf": "Hluti af:",
+    "clickToEdit": "Smelltu til að breyta",
+    "description": "Lýsing",
+    "descPlaceholder": "Lýstu kröfunni, markmiðinu og samhenginu...",
+    "suggest": "Stinga upp á",
+    "clickToAddDescription": "Smelltu til að bæta við lýsingu...",
+    "details": "Nánar",
+    "statusLabel": "Staða",
+    "typeLabel": "Gerð",
+    "priorityLabel": "Forgangur",
+    "assigneeLabel": "Ábyrgðaraðili",
+    "unassigned": "Óúthlutað",
+    "totalPoints": "Heildarstig",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Fyrir stories eru stig samtala allra verkefnastiga. Bættu stigum við einstök verkefni við fínpússun.",
+    "taskPointsHelp": "Metið hlutfallslega fyrirhöfn. Algengir kvarðar: 1, 2, 3, 5, 8, 13. \"1\" er einfaldasta verkið sem teymið þitt vinnur.",
+    "sumOfTasks": "Samtala {{count}} verkefnis",
+    "sumOfTasks_other": "Samtala {{count}} verkefna",
+    "largeStoryWarning": "Þessi story er {{points}} stig. Íhugaðu að skipta henni upp í minni stories sem hægt er að ljúka í einum sprint.",
+    "blocked": "Lokað á",
+    "blockedBy": "Lokað á af:",
+    "notBlocked": "Ekki lokað á",
+    "labels": "Merki",
+    "convertToStory": "Breyta í Story",
+    "convertToStoryConfirm": "Breyta þessu verkefni í Story? Það mun halda tengingu við upprunalegu Story.",
+    "convertToStoryHelp": "Hækkar þetta verkefni í sjálfstæða Story með tengingu",
+    "created": "Búið til {{date}}",
+    "updated": "Uppfært {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Verkefni ({{count}})",
+    "contextHelp": "Verkefni brjóta Story niður í vinnu eftir sérfræðisviði, eins og UX-hönnun, bakendaþróun, framendaþróun og QE-prófun. Hverju verkefni er hægt að úthluta á teymismeðlim.",
+    "suggestTasks": "Stinga upp á verkefnum",
+    "addTask": "+ Bæta við verkefni",
+    "noTasksYet": "Engin verkefni ennþá.",
+    "taskTitlePlaceholder": "Heiti verkefnis (t.d. 'UX: Hanna innskráningarskjá')",
+    "suggestedTasks": "Tillögur að verkefnum, smelltu til að bæta við:",
+    "pts": "{{count}} stig",
+    "clarificationNeeded": "Skýringa þörf:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Samþykkisskilyrði",
+    "contextHelp": "Samþykkisskilyrði skilgreina hvenær þetta atriði er raunverulega \"lokið.\" Skrifuð á Given / When / Then sniði (BDD) gera þau væntingar skýrar og prófanlegar. Hvert skilyrði er sérstakt, sannreynanlegt ákvæði, ekki óljós ósk.",
+    "addButton": "+ Bæta við",
+    "suggestAC": "Stinga upp á skilyrðum",
+    "noCriteriaYet": "Engin samþykkisskilyrði ennþá. Skilgreindu skilyrðin fyrir \"lokið.\"",
+    "given": "Given",
+    "when": "When",
+    "then": "Then",
+    "deleteAC": "Eyða samþykkisskilyrði",
+    "givenPlaceholder": "Given...",
+    "whenPlaceholder": "When...",
+    "thenPlaceholder": "Then...",
+    "aiSuggestions": "Tillögur gervigreindar, smelltu til að bæta við:",
+    "aiNeedsMoreInfo": "Gervigreindin þarf meiri upplýsingar:"
+  },
+
+  "comments": {
+    "title": "Athugasemdir",
+    "noCommentsYet": "Engar athugasemdir ennþá.",
+    "addComment": "Bæta við athugasemd..."
+  },
+
+  "dependencies": {
+    "title": "Tengsl",
+    "contextHelp": "Tengsl rekja sambönd á milli atriða. \"Háð\" þýðir að þetta atriði getur ekki haldið áfram fyrr en markmiðið er lokið. \"Tengist\" er upplýsingatengill.",
+    "noDependencies": "Engin tengsl.",
+    "dependsOn": "Háð",
+    "relatesTo": "Tengist",
+    "dependedOnBy": "Annað háð þessu",
+    "removeDependency": "Fjarlægja tengsl",
+    "selectItem": "Veldu atriði..."
+  },
+
+  "links": {
+    "title": "Tenglar",
+    "addLink": "+ Bæta við tengli",
+    "noLinksYet": "Engir tenglar ennþá.",
+    "labelPlaceholder": "Merki (t.d. GitHub PR, Figma, Prófunarniðurstöður, Skjöl)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Fjarlægja tengil"
+  },
+
+  "testResults": {
+    "retestRequired": "Endurprófun nauðsynleg",
+    "retestMessage": "Þessi galli hefur {{count}} fallið próf. Hladdu upp nýjum prófunarniðurstöðum (JUnit XML eða webhook) eftir að lagfæring er sett í notkun til að opna QE-hliðið og loka þessu atriði.",
+    "title": "Prófunarniðurstöður",
+    "passed": "staðist",
+    "failed": "fallið",
+    "errors": "villur",
+    "skipped": "sleppt",
+    "lastRun": "Síðasta keyrsla: {{date}}",
+    "sourceTestFailure": "Upprunalegt prófunarfall",
+    "suite": "Suite: {{name}}",
+    "duration": "Lengd: {{ms}}ms",
+    "source": "Uppruni: {{source}} | Tilkynnt: {{date}}",
+    "generateDescAC": "Búa til lýsingu og samþykkisskilyrði"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Hunsa",
+    "close": "Loka"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Byrjaðu að skrifa...",
+    "bold": "Feitletrað",
+    "italic": "Skáletrað",
+    "inlineCode": "Innbyggður kóði",
+    "heading": "Fyrirsögn",
+    "subheading": "Undirfyrirsögn",
+    "bulletList": "Punktalisti",
+    "numberedList": "Númeraður listi",
+    "quote": "Tilvitnun",
+    "codeBlock": "Kóðablokk"
+  },
+
+  "createEpic": {
+    "button": "+ Nýtt Epic",
+    "title": "Búa til Epic",
+    "titleLabel": "Titill",
+    "titlePlaceholder": "t.d. Notandaauðkenning",
+    "descriptionLabel": "Lýsing",
+    "descriptionPlaceholder": "Viðskiptamarkmið og umfang þessa Epic...",
+    "priorityLabel": "Forgangur",
+    "assigneeLabel": "Ábyrgðaraðili"
+  },
+
+  "createProject": {
+    "button": "+ Nýtt verkefni",
+    "title": "Búa til verkefni",
+    "organisationLabel": "Stofnun",
+    "selectOrg": "Veldu stofnun...",
+    "teamLabel": "Teymi",
+    "selectTeam": "Veldu teymi...",
+    "projectNameLabel": "Heiti verkefnis",
+    "projectNamePlaceholder": "t.d. PlanA MVP",
+    "descriptionLabel": "Lýsing",
+    "descriptionPlaceholder": "Hvað fjallar þetta verkefni um?",
+    "methodologyLabel": "Aðferðafræði"
+  },
+
+  "createSprint": {
+    "button": "+ Nýtt Sprint",
+    "title": "Búa til Sprint",
+    "nameLabel": "Heiti",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Markmið",
+    "goalPlaceholder": "Hvað á þetta Sprint að ná?",
+    "startDateLabel": "Upphafsdagur",
+    "endDateLabel": "Lokadagur"
+  },
+
+  "createTeam": {
+    "button": "+ Nýtt teymi",
+    "title": "Búa til teymi",
+    "organisationLabel": "Stofnun",
+    "selectOrg": "Veldu stofnun...",
+    "teamNameLabel": "Heiti teymis",
+    "teamNamePlaceholder": "t.d. Bakendateymi"
+  },
+
+  "quickCreate": {
+    "placeholder": "Hvað þarf að gera?"
+  },
+
+  "workItemCard": {
+    "open": "Opna {{title}}",
+    "taskCount": "{{count}} verkefni",
+    "taskCount_other": "{{count}} verkefni"
+  },
+
+  "team": {
+    "title": "Teymi",
+    "memberCount": "{{count}} meðlimur",
+    "memberCount_other": "{{count}} meðlimir",
+    "addMember": "+ Bæta við meðlim",
+    "noMembersYet": "Engir teymismeðlimir ennþá. Bættu við fólki til að byrja að úthluta vinnu.",
+    "confirmRemove": "Fjarlægja {{name}} úr teyminu?",
+    "invite": "Bjóða",
+    "inviteLink": "Boðstengill:",
+    "copy": "Afrita",
+    "ptsPerSprint": "{{count}} stig/Sprint",
+    "addTeamMember": "Bæta við teymismeðlim",
+    "nameRequired": "Nafn *",
+    "emailLabel": "Netfang",
+    "phoneLabel": "Sími",
+    "roleRequired": "Hlutverk *",
+    "capacity": "Afkastageta",
+    "capacityPlaceholder": "stig/Sprint",
+    "nameLabel": "Nafn",
+    "roleLabel": "Hlutverk"
+  },
+
+  "epics": {
+    "helpTitle": "Epics",
+    "helpBody1": "Epics eru hópar á eiginleikastigi. Hvert Epic inniheldur tengdar stories sem saman skila viðskiptagetu.",
+    "helpBody2": "Smelltu á Epic til að sjá stories þess, bæta við nýjum og fylgjast með framvindu.",
+    "title": "Epics",
+    "noEpicsYet": "Engin Epics ennþá. Epics flokka tengdar stories í afurðir á eiginleikastigi.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Til baka í Epics",
+    "description": "Lýsing",
+    "descPlaceholder": "Lýstu viðskiptamarkmiðinu og umfanginu...",
+    "clickToAddDescription": "Smelltu til að bæta við lýsingu...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories eru afhendingarmarkmið þessa Epic. Hver Story táknar ákveðna niðurstöðu sem notandi upplifir og hægt er að ljúka innan eins Sprint.",
+    "addStory": "+ Bæta við Story",
+    "noStoriesYet": "Engar stories í þessu Epic ennþá. Bættu við einni til að skilgreina markmiðin.",
+    "details": "Nánar",
+    "statusLabel": "Staða",
+    "priorityLabel": "Forgangur",
+    "assigneeLabel": "Ábyrgðaraðili",
+    "addStoryToEpic": "Bæta Story við Epic",
+    "titleRequired": "Titill *",
+    "titleHint": "(\"Sem [hlutverk] vil ég [markmið] svo að [ávinningur]\")",
+    "titlePlaceholder": "Sem [hlutverk] vil ég [markmið] svo að [ávinningur]",
+    "descriptionLabel": "Lýsing",
+    "descriptionPlaceholder": "Samhengi, kröfur og nánari upplýsingar...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Verkefni verður sjálfkrafa búið til fyrir ábyrgðaraðila með {{points}} stig(um). Stig eru alltaf á verkefnum.",
+    "largeStoryWarning": "Stór Story ({{points}} stig). Íhugaðu að brjóta hana niður í smærri stories sem hægt er að ljúka hverri fyrir sig innan eins Sprint. Smærri stories eru auðveldari að meta, prófa og afhenda.",
+    "acceptanceCriteria": "Samþykkisskilyrði",
+    "acContextHelp": "Skilgreindu hvenær þessi Story er \"lokið.\" Hvert skilyrði á að vera sérstakt og prófanlegt.",
+    "addCriterion": "+ Bæta við skilyrði",
+    "givenPlaceholder": "forsenda eða samhengi...",
+    "whenPlaceholder": "aðgerð eða atburður...",
+    "thenPlaceholder": "vænt niðurstaða...",
+    "createRelatedTasks": "Búa til tengd verkefni?",
+    "autoAssignHint": "(sjálfkrafa úthlutað á teymismeðlimi eftir hlutverki)",
+    "uxDesign": "UX-hönnun",
+    "qeTesting": "QE-prófun",
+    "bsaAnalysis": "BSA-greining",
+    "creating": "Bý til...",
+    "createStory": "Búa til Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Til baka í Sprints",
+    "start": "Byrjar:",
+    "end": "Endar:",
+    "capacity": "{{points}} / {{capacity}} afkastageta",
+    "storyPoints": "{{count}} Story Points",
+    "storiesAndItems": "{{stories}} stories, {{items}} atriði samtals",
+    "done": "Lokið",
+    "addStories": "+ Bæta við stories",
+    "startSprint": "Hefja Sprint",
+    "completeSprint": "Ljúka Sprint",
+    "addStoriesToSprint": "Bæta stories í Sprint ({{count}} tiltækar)",
+    "allStoriesAssigned": "Allar stories eru þegar í Sprint eða kláraðar.",
+    "noItemsYet": "Engin atriði í þessu Sprint ennþá. Smelltu á \"+ Bæta við stories\" til að draga úr Backlog-inu.",
+    "removeStoryAndTasks": "Fjarlægja Story og verkefni úr Sprint",
+    "removeFromSprint": "Fjarlægja úr Sprint",
+    "standaloneTasks": "Sjálfstæð verkefni",
+    "adding": "Bæti við...",
+    "tasks": "{{count}} verkefni"
+  },
+
+  "reports": {
+    "helpTitle": "Verkefnaskýrslur",
+    "helpBody1": "Skýrslur gefa þér yfirsýn yfir afhendingu teymisins. Velocity sýnir hversu mörg stig þið ljúkið á hverju Sprint; hún stöðugast með tímanum.",
+    "helpBody2": "Notaðu Sprint-framvindu og álagsrit teymis til að greina flöskuhálsa snemma.",
+    "title": "Skýrslur",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story Points lokið á hvert Sprint",
+    "noCompletedSprints": "Engu Sprint lokið ennþá. Velocity birtist eftir að fyrsta Sprint er lokið.",
+    "trend": "Þróun",
+    "threeSprintAvg": "Meðaltal 3 Sprint",
+    "avgVelocity": "Meðal-Velocity:",
+    "pointsPerSprint": "stig/Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Lokið: {{points}} stig",
+    "inProgress": "Í vinnslu: {{points}} stig",
+    "inReview": "Í yfirferð: {{points}} stig",
+    "remaining": "Eftir: {{points}} stig",
+    "daysLeft": "{{count}} dagar eftir",
+    "epicProgress": "Framvinda Epic",
+    "epicProgressSubtitle": "Stories lokið á hvert Epic",
+    "noEpics": "Engin Epics skilgreind ennþá.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Álag teymis",
+    "teamWorkloadSubtitle": "Stig úthlutað í virku Sprint",
+    "noWorkload": "Engin atriði úthlutað í virku Sprint.",
+    "pts": "{{points}} stig ({{count}})",
+    "blockedItems": "Lokuð atriði",
+    "blockedSubtitle": "{{count}} atriði lokað á",
+    "blockedSubtitle_other": "{{count}} atriði lokuð á",
+    "noBlocked": "Engin lokuð atriði. Vel gert!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Story Points eftir miðað við áætlun",
+    "noBurndownData": "Engin Burndown-gögn ennþá. Gögn birtast þegar atriði færast á milli staða á meðan Sprint stendur.",
+    "ideal": "Áætlun",
+    "actual": "Raunverulegt",
+    "onTrack": "Á áætlun",
+    "behind": "Á eftir"
+  },
+
+  "aiSettings": {
+    "title": "Stilling gervigreindar",
+    "description": "Stilltu gervigreindarveitanda til að virkja tillögur að samþykkisskilyrðum, sundurliðun stories og drög að útgáfuskýrslum. Þú notar þinn eigin API-lykil; PlanA geymir hann ekki né miðlar gegnum sameiginlegan aðgang.",
+    "provider": "Veitandi",
+    "notConfigured": "Ekki stillt",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Sérsniðið (OpenAI-samhæft)",
+    "model": "Módel",
+    "selectModel": "Veldu módel...",
+    "modelPlaceholder": "Módel-auðkenni (t.d. my-custom-model)",
+    "apiKey": "API-lykill",
+    "currentKey": "Núverandi: {{key}}",
+    "enterApiKey": "Sláðu inn API-lykil",
+    "apiKeyHelp": "Lykillinn þinn er geymdur dulkóðaður á hvert verkefni. Skildu eftir autt til að halda núverandi lykli.",
+    "endpointUrl": "Endapunkts-URL",
+    "saving": "Vista...",
+    "settingsSaved": "Stillingar vistaðar",
+    "stakeholderSharing": "Deiling með hagsmunaaðilum",
+    "sharingDescription": "Búðu til deilitengla fyrir hagsmunaaðila til að skoða verkefnastjórnborð í lesstillingu. Engin innskráning nauðsynleg; tengillinn er aðgangurinn.",
+    "label": "Merki",
+    "labelPlaceholder": "t.d. Viðskiptavinur, Stýrinefnd",
+    "expiresIn": "Rennur út eftir",
+    "days30": "30 daga",
+    "days90": "90 daga",
+    "days180": "180 daga",
+    "year1": "1 ár",
+    "never": "Aldrei",
+    "createLink": "Búa til tengil",
+    "creating": "Bý til...",
+    "noActiveLinks": "Engir virkir deilitenglar.",
+    "created": "Búið til {{date}}",
+    "expires": "Rennur út {{date}}",
+    "copyLink": "Afrita tengil",
+    "copied": "Afritað!",
+    "revoke": "Afturkalla",
+    "revoked": "Afturkallað",
+    "revokedDate": "Afturkallað {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Stjórnborð hagsmunaaðila",
+    "invalidLink": "Ógildur eða útrunninn tengill",
+    "poweredBy": "Keyrt af PlanA",
+    "activeSprint": "Virkt Sprint",
+    "noActiveSprint": "Ekkert virkt Sprint",
+    "goal": "Markmið:",
+    "items": "Atriði",
+    "points": "Stig",
+    "recentlyCompleted": "Nýlega lokið",
+    "noCompletedItems": "Engum atriðum lokið ennþá.",
+    "defects": "Gallar",
+    "openDefects": "Opnir",
+    "closedDefects": "Lokaðir",
+    "sprintVelocity": "Sprint Velocity",
+    "storyProgress": "Framvinda stories"
+  },
+
+  "reportView": {
+    "title": "Skýrslur",
+    "generateProject": "Verkefnaskýrsla",
+    "generateSprint": "Sprint-skýrsla",
+    "generating": "Bý til...",
+    "generateDescription": "Búðu til ítarlega skýrslu úr verkefnagögnum þínum.",
+    "exportPdf": "Flytja út PDF",
+    "back": "Til baka",
+    "generated": "Búin til {{date}}",
+    "executiveSummary": "Yfirlit stjórnenda",
+    "metrics": "Mælikvarðar",
+    "items": "Atriði",
+    "points": "Stig",
+    "completion": "Framvinda",
+    "testPassRate": "Hlutfall staðinna prófa",
+    "epicBreakdown": "Sundurliðun Epic",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Samþykkisskilyrði",
+    "testCoverageColumn": "Prófunarþekja",
+    "defects": "Gallar",
+    "total": "Samtals",
+    "open": "Opnir",
+    "resolved": "Leystir",
+    "criticalOpen": "Alvarlegt (Opið)",
+    "testEvidence": "Prófunargögn",
+    "totalTests": "Heildarfjöldi prófa",
+    "passed": "Staðist",
+    "failed": "Fallið",
+    "errors": "Villur",
+    "skipped": "Sleppt",
+    "currentBlockers": "Núverandi hindranir",
+    "velocityHistory": "Velocity-saga",
+    "generatedBy": "Búin til af PlanA"
+  }
+}

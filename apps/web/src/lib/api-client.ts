@@ -33,6 +33,12 @@ async function fetchApi<T>(path: string, options: RequestInit = {}): Promise<T> 
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  // Send the current UI language so AI responses match
+  const lang = localStorage.getItem('plana_language');
+  if (lang) {
+    headers['X-Language'] = lang;
+  }
+
   if (options.body && !headers['Content-Type']) {
     headers['Content-Type'] = 'application/json';
   }

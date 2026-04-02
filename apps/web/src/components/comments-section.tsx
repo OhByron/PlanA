@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@projecta/ui';
 import type { Comment } from '@projecta/types';
 import type { UseMutationResult } from '@tanstack/react-query';
@@ -17,6 +18,7 @@ export function CommentsSection({
   createComment,
   projectMembers,
 }: CommentsSectionProps) {
+  const { t } = useTranslation();
   const [commentDraft, setCommentDraft] = useState('');
   const [commentKey, setCommentKey] = useState(0);
 
@@ -31,11 +33,11 @@ export function CommentsSection({
   return (
     <section>
       <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-        Comments
+        {t('comments.title')}
       </h2>
 
       {comments.length === 0 && (
-        <p className="mb-3 text-sm text-gray-400">No comments yet.</p>
+        <p className="mb-3 text-sm text-gray-400">{t('comments.noCommentsYet')}</p>
       )}
 
       {comments.map((c) => {
@@ -58,7 +60,7 @@ export function CommentsSection({
       <div className="space-y-2">
         <RichTextEditor
           key={commentKey}
-          placeholder="Add a comment..."
+          placeholder={t('comments.addComment')}
           onChange={(json) => setCommentDraft(JSON.stringify(json))}
         />
         <Button
@@ -66,7 +68,7 @@ export function CommentsSection({
           onClick={submitComment}
           disabled={!commentDraft}
         >
-          Send
+          {t('common.send')}
         </Button>
       </div>
     </section>

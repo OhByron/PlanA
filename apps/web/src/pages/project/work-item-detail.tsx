@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { Button, Badge, Select, Input } from '@projecta/ui';
 import type { WorkItemStatus, Priority, WorkItemType } from '@projecta/types';
 import { useWorkItem } from '../../hooks/use-work-item';
@@ -28,6 +29,7 @@ const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 const TYPES: WorkItemType[] = ['story', 'bug', 'task'];
 
 export function WorkItemDetailPage() {
+  const { t } = useTranslation();
   const { projectId, workItemId } = useParams({ strict: false }) as {
     projectId: string;
     workItemId: string;
@@ -52,7 +54,7 @@ export function WorkItemDetailPage() {
 
   // Calculated points for stories (sum of child task points)
   const childTasksForPoints = allItems.filter((i) => i.parentId === workItemId);
-  const calculatedPoints = childTasksForPoints.reduce((sum, t) => sum + (t.storyPoints ?? 0), 0);
+  const calculatedPoints = childTasksForPoints.reduce((sum, task) => sum + (task.storyPoints ?? 0), 0);
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleDraft, setTitleDraft] = useState('');
@@ -70,8 +72,8 @@ export function WorkItemDetailPage() {
   // Auto-dismiss field error after 5 seconds
   useEffect(() => {
     if (!fieldError) return;
-    const t = setTimeout(() => setFieldError(null), 5000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setFieldError(null), 5000);
+    return () => clearTimeout(timer);
   }, [fieldError]);
 
   const [aiLoading, setAiLoading] = useState(false);
@@ -171,7 +173,7 @@ export function WorkItemDetailPage() {
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          Back to board
+          {t('workItemDetail.backToBoard')}
         </Link>
 
         {/* Parent story link for tasks */}
@@ -179,7 +181,7 @@ export function WorkItemDetailPage() {
           const parent = allItems.find((i) => i.id === item.parentId);
           return parent ? (
             <div className="mb-3 flex items-center gap-2 rounded-md bg-gray-50 px-3 py-1.5 text-sm">
-              <span className="text-gray-400">Part of:</span>
+              <span className="text-gray-400">{t('workItemDetail.partOf')}</span>
               <Link
                 to="/p/$projectId/items/$workItemId"
                 params={{ projectId, workItemId: parent.id }}
@@ -217,7 +219,7 @@ export function WorkItemDetailPage() {
                 setTitleDraft(item.title);
                 setEditingTitle(true);
               }}
-              title="Click to edit"
+              title={t('workItemDetail.clickToEdit')}
             >
               {item.title}
             </h1>
@@ -227,7 +229,7 @@ export function WorkItemDetailPage() {
         {/* Description */}
         <section className="mb-8">
           <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h2>
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{t('workItemDetail.description')}</h2>
             <Button
               variant="ghost"
               size="sm"
@@ -239,10 +241,18 @@ export function WorkItemDetailPage() {
                     `/projects/${projectId}/work-items/${workItemId}/suggest-desc`, {}
                   );
                   if (result.description) {
-                    patchField({ description: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: result.description }] }] } });
+                    await new Promise<void>((resolve, reject) => {
+                      updateItem.mutate(
+                        { workItemId: item.id, data: { description: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: result.description }] }] } } },
+                        { onSuccess: () => resolve(), onError: (err) => reject(err) },
+                      );
+                    });
                   }
                   if (result.questions?.length) {
                     setAiQuestions(result.questions);
+                  }
+                  if (!result.description && !result.questions?.length) {
+                    setAiQuestions([t('common.error', { message: 'Empty AI response' })]);
                   }
                 } catch (err: any) {
                   setAiQuestions([err.message ?? 'AI suggestion failed']);
@@ -251,14 +261,14 @@ export function WorkItemDetailPage() {
                 }
               }}
             >
-              {aiDescLoading ? 'Thinking...' : '\u2728 Suggest'}
+              {aiDescLoading ? t('common.thinking') : '\u2728 ' + t('workItemDetail.suggest')}
             </Button>
           </div>
           {editingDesc ? (
             <div className="space-y-2">
               <RichTextEditor
                 content={item.description as Record<string, unknown> | null}
-                placeholder="Describe the requirement, goal, and context..."
+                placeholder={t('workItemDetail.descPlaceholder')}
                 autoFocus
                 onChange={(json) => setDescDraft(JSON.stringify(json))}
               />
@@ -270,10 +280,10 @@ export function WorkItemDetailPage() {
                     setEditingDesc(false);
                   }}
                 >
-                  Save
+                  {t('common.save')}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setEditingDesc(false)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
               </div>
             </div>
@@ -288,7 +298,7 @@ export function WorkItemDetailPage() {
               {item.description ? (
                 <RichTextDisplay content={item.description as Record<string, unknown>} />
               ) : (
-                <span className="text-sm italic text-gray-400">Click to add a description...</span>
+                <span className="text-sm italic text-gray-400">{t('workItemDetail.clickToAddDescription')}</span>
               )}
             </div>
           )}
@@ -353,13 +363,13 @@ export function WorkItemDetailPage() {
         {fieldError && (
           <div className="mb-3 flex items-center justify-between rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
             <span>{fieldError}</span>
-            <button onClick={() => setFieldError(null)} className="ml-2 font-medium hover:text-red-900" aria-label="Dismiss">×</button>
+            <button onClick={() => setFieldError(null)} className="ml-2 font-medium hover:text-red-900" aria-label={t('common.dismiss')}>×</button>
           </div>
         )}
-        <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Details</h2>
+        <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('workItemDetail.details')}</h2>
 
         {/* Status */}
-        <FieldGroup label="Status">
+        <FieldGroup label={t('workItemDetail.statusLabel')}>
           <Select
             value={item.status}
             onChange={(e) => patchField({ status: e.target.value })}
@@ -367,14 +377,14 @@ export function WorkItemDetailPage() {
           >
             {STATUSES.map((s) => (
               <option key={s} value={s}>
-                {s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                {t(`status.${s}`)}
               </option>
             ))}
           </Select>
         </FieldGroup>
 
         {/* Type */}
-        <FieldGroup label="Type">
+        <FieldGroup label={t('workItemDetail.typeLabel')}>
           <div className="flex items-center gap-2">
             <TypeIcon type={item.type} />
             <Select
@@ -382,9 +392,9 @@ export function WorkItemDetailPage() {
               onChange={(e) => patchField({ type: e.target.value })}
               aria-label="Type"
             >
-              {TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
+              {TYPES.map((typeVal) => (
+                <option key={typeVal} value={typeVal}>
+                  {t(`type.${typeVal}`)}
                 </option>
               ))}
             </Select>
@@ -392,7 +402,7 @@ export function WorkItemDetailPage() {
         </FieldGroup>
 
         {/* Priority */}
-        <FieldGroup label="Priority">
+        <FieldGroup label={t('workItemDetail.priorityLabel')}>
           <div className="flex items-center gap-2">
             <PriorityIndicator priority={item.priority} />
             <Select
@@ -402,7 +412,7 @@ export function WorkItemDetailPage() {
             >
               {PRIORITIES.map((p) => (
                 <option key={p} value={p}>
-                  {p.charAt(0).toUpperCase() + p.slice(1)}
+                  {t(`priority.${p}`)}
                 </option>
               ))}
             </Select>
@@ -410,13 +420,13 @@ export function WorkItemDetailPage() {
         </FieldGroup>
 
         {/* Assignee */}
-        <FieldGroup label="Assignee">
+        <FieldGroup label={t('workItemDetail.assigneeLabel')}>
           <Select
             value={item.assigneeId ?? ''}
             onChange={(e) => patchField({ assigneeId: e.target.value || null })}
             aria-label="Assignee"
           >
-            <option value="">Unassigned</option>
+            <option value="">{t('workItemDetail.unassigned')}</option>
             {projectMembers.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name} ({m.jobRole.toUpperCase()})
@@ -428,20 +438,25 @@ export function WorkItemDetailPage() {
         {/* Story Points */}
         <FieldGroup label={
           <span className="flex items-center gap-1">
-            {item.type === 'story' ? 'Total Points' : 'Story Points'}
+            {item.type === 'story' ? t('workItemDetail.totalPoints') : t('workItemDetail.storyPoints')}
             <ContextHelp>
               {item.type === 'story'
-                ? 'For stories, points are the sum of all task points. Add points to individual tasks during refinement.'
-                : 'Estimate the relative effort. Common scales: 1, 2, 3, 5, 8, 13. A "1" is the simplest thing your team does.'}
+                ? t('workItemDetail.storyPointsHelp')
+                : t('workItemDetail.taskPointsHelp')}
             </ContextHelp>
           </span>
         }>
           {item.type === 'story' && childTasksForPoints.length > 0 ? (
             <div>
-              <p className="text-lg font-semibold text-gray-900">{calculatedPoints}</p>
+              <p className={`text-lg font-semibold ${calculatedPoints >= 8 ? 'text-amber-600' : 'text-gray-900'}`}>{calculatedPoints}</p>
               <p className="text-xs text-gray-400">
-                Sum of {childTasksForPoints.length} task{childTasksForPoints.length !== 1 ? 's' : ''}
+                {t('workItemDetail.sumOfTasks', { count: childTasksForPoints.length })}
               </p>
+              {calculatedPoints >= 8 && (
+                <p className="mt-1 text-xs text-amber-600">
+                  {t('workItemDetail.largeStoryWarning', { points: calculatedPoints })}
+                </p>
+              )}
             </div>
           ) : (
             <Input
@@ -459,7 +474,7 @@ export function WorkItemDetailPage() {
         </FieldGroup>
 
         {/* Blocked status (derived from depends_on dependencies) */}
-        <FieldGroup label="Blocked">
+        <FieldGroup label={t('workItemDetail.blocked')}>
           {(() => {
             const blockers = dependencies
               .filter((d) => d.type === 'depends_on' && d.sourceId === workItemId)
@@ -471,7 +486,7 @@ export function WorkItemDetailPage() {
             if (blockers.length > 0) {
               return (
                 <div className="space-y-1">
-                  <p className="text-sm font-medium text-red-600">Blocked by:</p>
+                  <p className="text-sm font-medium text-red-600">{t('workItemDetail.blockedBy')}</p>
                   {blockers.map((b) => (
                     <Link
                       key={b.id}
@@ -486,13 +501,13 @@ export function WorkItemDetailPage() {
               );
             }
 
-            return <p className="text-sm text-gray-500">Not blocked</p>;
+            return <p className="text-sm text-gray-500">{t('workItemDetail.notBlocked')}</p>;
           })()}
         </FieldGroup>
 
         {/* Labels */}
         {item.labels.length > 0 && (
-          <FieldGroup label="Labels">
+          <FieldGroup label={t('workItemDetail.labels')}>
             <div className="flex flex-wrap gap-1">
               {item.labels.map((l) => (
                 <Badge key={l} variant="secondary">{l}</Badge>
@@ -509,7 +524,7 @@ export function WorkItemDetailPage() {
               variant="outline"
               className="w-full justify-center"
               onClick={async () => {
-                if (!confirm('Convert this task to a story? It will maintain a dependency link to the original story.')) return;
+                if (!confirm(t('workItemDetail.convertToStoryConfirm'))) return;
                 try {
                   // 1. Change type to story and remove parent link
                   await api.patch(`/projects/${projectId}/work-items/${item.id}`, {
@@ -530,18 +545,18 @@ export function WorkItemDetailPage() {
                 }
               }}
             >
-              Convert to Story
+              {t('workItemDetail.convertToStory')}
             </Button>
             <p className="mt-1 text-center text-xs text-gray-400">
-              Promotes this task to an independent story with a dependency link
+              {t('workItemDetail.convertToStoryHelp')}
             </p>
           </div>
         )}
 
         {/* Metadata */}
         <div className="mt-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-400">
-          <p>Created {new Date(item.createdAt).toLocaleDateString()}</p>
-          <p>Updated {new Date(item.updatedAt).toLocaleDateString()}</p>
+          <p>{t('workItemDetail.created', { date: new Date(item.createdAt).toLocaleDateString() })}</p>
+          <p>{t('workItemDetail.updated', { date: new Date(item.updatedAt).toLocaleDateString() })}</p>
           <p className="font-mono text-[10px]">{item.id}</p>
         </div>
       </aside>
@@ -573,6 +588,7 @@ function ChildTasksSection({
   allItems: import('@projecta/types').WorkItem[];
   members: import('../../hooks/use-project-members').ProjectMember[];
 }) {
+  const { t } = useTranslation();
   const childTasks = allItems.filter((i) => i.parentId === parentId);
   const [showAdd, setShowAdd] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
@@ -612,7 +628,7 @@ function ChildTasksSection({
     if (matchingMember) data.assignee_id = matchingMember.id;
     createItem.mutate(data, {
       onSuccess: () => {
-        setDecompSuggestions((prev) => prev.filter((t) => t.title !== task.title));
+        setDecompSuggestions((prev) => prev.filter((s) => s.title !== task.title));
       },
     });
   };
@@ -640,25 +656,24 @@ function ChildTasksSection({
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-            Tasks ({childTasks.length})
+            {t('childTasks.title', { count: childTasks.length })}
           </h2>
           <ContextHelp>
-            Tasks break a story into work by discipline — UX design, backend dev,
-            frontend dev, QE testing, etc. Each task is assignable to a team member.
+            {t('childTasks.contextHelp')}
           </ContextHelp>
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={suggestDecompose} disabled={decompLoading}>
-            {decompLoading ? 'Thinking...' : 'Suggest Tasks'}
+            {decompLoading ? t('common.thinking') : t('childTasks.suggestTasks')}
           </Button>
           <Button variant="ghost" size="sm" onClick={() => setShowAdd(!showAdd)}>
-            + Add Task
+            {t('childTasks.addTask')}
           </Button>
         </div>
       </div>
 
       {childTasks.length === 0 && !showAdd && (
-        <p className="text-sm text-gray-400">No tasks yet.</p>
+        <p className="text-sm text-gray-400">{t('childTasks.noTasksYet')}</p>
       )}
 
       {childTasks.map((task) => {
@@ -676,6 +691,9 @@ function ChildTasksSection({
               <span className="text-xs text-gray-500">{assignee.name} ({assignee.jobRole.toUpperCase()})</span>
             )}
             <StatusBadge status={task.status} />
+            <span className="w-8 text-center rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
+              {task.storyPoints ?? '—'}
+            </span>
           </Link>
         );
       })}
@@ -685,7 +703,7 @@ function ChildTasksSection({
           <div className="flex gap-2">
             <Input
               autoFocus
-              placeholder="Task title (e.g. 'UX: Design login screen')"
+              placeholder={t('childTasks.taskTitlePlaceholder')}
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') addTask(); }}
@@ -698,7 +716,7 @@ function ChildTasksSection({
               className="w-48"
               aria-label="Task assignee"
             >
-              <option value="">Unassigned</option>
+              <option value="">{t('workItemDetail.unassigned')}</option>
               {members.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.name} ({m.jobRole.toUpperCase()})
@@ -708,9 +726,9 @@ function ChildTasksSection({
           </div>
           <div className="flex gap-2">
             <Button size="sm" onClick={addTask} disabled={!taskTitle.trim() || createItem.isPending}>
-              Add
+              {t('common.add')}
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => setShowAdd(false)}>Cancel</Button>
+            <Button size="sm" variant="ghost" onClick={() => setShowAdd(false)}>{t('common.cancel')}</Button>
           </div>
         </div>
       )}
@@ -718,26 +736,26 @@ function ChildTasksSection({
       {/* AI Decomposition Suggestions */}
       {decompSuggestions.length > 0 && (
         <div className="mt-3 space-y-2">
-          <p className="text-xs font-medium text-gray-500">Suggested tasks — click to add:</p>
+          <p className="text-xs font-medium text-gray-500">{t('childTasks.suggestedTasks')}</p>
           {decompSuggestions.map((task, i) => (
             <div key={i} className="flex items-center gap-2 rounded-lg border border-brand-200 bg-brand-50/30 px-3 py-2">
               <div className="flex-1">
                 <span className="text-sm text-gray-900">{task.title}</span>
                 <div className="flex gap-3 text-xs text-gray-500 mt-0.5">
                   <span className="uppercase">{task.role}</span>
-                  <span>{task.points} pts</span>
+                  <span>{t('childTasks.pts', { count: task.points })}</span>
                   {task.rationale && <span className="italic">{task.rationale}</span>}
                 </div>
               </div>
               <Button size="sm" onClick={() => acceptTask(task)} disabled={createItem.isPending}>
-                Add
+                {t('common.add')}
               </Button>
               <button
                 onClick={() => setDecompSuggestions((prev) => prev.filter((_, j) => j !== i))}
                 className="text-xs text-gray-400 hover:text-gray-600"
                 aria-label="Dismiss suggestion"
               >
-                Dismiss
+                {t('common.dismiss')}
               </button>
             </div>
           ))}
@@ -746,7 +764,7 @@ function ChildTasksSection({
 
       {decompQuestions.length > 0 && (
         <div className="mt-3 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-          <p className="text-xs font-medium text-yellow-700 mb-1">Clarification needed:</p>
+          <p className="text-xs font-medium text-yellow-700 mb-1">{t('childTasks.clarificationNeeded')}</p>
           <ul className="text-xs text-yellow-600 list-disc list-inside">
             {decompQuestions.map((q, i) => <li key={i}>{q}</li>)}
           </ul>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
 import { Button, Input, Textarea, Select, Badge } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import type { Priority, WorkItemType } from '@projecta/types';
 import { useEpic, useUpdateEpic } from '../../hooks/use-epics';
 import { useWorkItems, useCreateWorkItem } from '../../hooks/use-work-items';
@@ -16,6 +17,7 @@ const STATUSES = ['open', 'in_progress', 'done', 'cancelled'];
 const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 
 export function EpicDetailPage() {
+  const { t } = useTranslation();
   const { projectId, epicId } = useParams({ strict: false }) as {
     projectId: string;
     epicId: string;
@@ -58,7 +60,7 @@ export function EpicDetailPage() {
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          Back to epics
+          {t('epicDetail.backToEpics')}
         </Link>
 
         {/* Title */}
@@ -93,7 +95,7 @@ export function EpicDetailPage() {
 
         {/* Description */}
         <section className="mb-8">
-          <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h2>
+          <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">{t('epicDetail.description')}</h2>
           {editingDesc ? (
             <div className="space-y-2">
               <Textarea
@@ -101,11 +103,11 @@ export function EpicDetailPage() {
                 rows={4}
                 value={descDraft}
                 onChange={(e) => setDescDraft(e.target.value)}
-                placeholder="Describe the business goal and scope..."
+                placeholder={t('epicDetail.descPlaceholder')}
               />
               <div className="flex gap-2">
-                <Button size="sm" onClick={() => { patch({ description: descDraft }); setEditingDesc(false); }}>Save</Button>
-                <Button size="sm" variant="ghost" onClick={() => setEditingDesc(false)}>Cancel</Button>
+                <Button size="sm" onClick={() => { patch({ description: descDraft }); setEditingDesc(false); }}>{t('common.save')}</Button>
+                <Button size="sm" variant="ghost" onClick={() => setEditingDesc(false)}>{t('common.cancel')}</Button>
               </div>
             </div>
           ) : (
@@ -115,7 +117,7 @@ export function EpicDetailPage() {
             >
               {epic.description
                 ? epic.description.split('\n').map((line, i) => <p key={i} className={line ? '' : 'h-4'}>{line}</p>)
-                : <span className="italic text-gray-400">Click to add a description...</span>}
+                : <span className="italic text-gray-400">{t('epicDetail.clickToAddDescription')}</span>}
             </div>
           )}
         </section>
@@ -125,16 +127,14 @@ export function EpicDetailPage() {
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                Stories ({epicItems.length})
+                {t('epicDetail.stories', { count: epicItems.length })}
               </h2>
               <ContextHelp>
-                Stories are the deliverable goals of this epic. Each story represents a
-                specific user-facing outcome that can be completed within a single sprint.
-                A good story follows the format: <strong>"As a [role], I want [goal], so that [benefit]"</strong>.
+                {t('epicDetail.storiesContextHelp')}
               </ContextHelp>
             </div>
             <Button size="sm" onClick={() => setShowAddStory(true)} disabled={showAddStory}>
-              + Add Story
+              {t('epicDetail.addStory')}
             </Button>
           </div>
 
@@ -150,7 +150,7 @@ export function EpicDetailPage() {
           )}
 
           {epicItems.length === 0 && !showAddStory && (
-            <p className="text-sm text-gray-400">No stories in this epic yet. Add one to define the goals.</p>
+            <p className="text-sm text-gray-400">{t('epicDetail.noStoriesYet')}</p>
           )}
 
           <div className="space-y-2">
@@ -182,33 +182,33 @@ export function EpicDetailPage() {
 
       {/* Sidebar */}
       <aside className="w-64 border-l border-gray-200 bg-white p-4 overflow-y-auto">
-        <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">Details</h2>
+        <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('epicDetail.details')}</h2>
 
         <div className="mb-4">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Status</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.statusLabel')}</label>
           <Select value={epic.status} onChange={(e) => patch({ status: e.target.value })}>
             {STATUSES.map((s) => (
-              <option key={s} value={s}>{s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+              <option key={s} value={s}>{t(`status.${s}`, s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))}</option>
             ))}
           </Select>
         </div>
 
         <div className="mb-4">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Priority</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.priorityLabel')}</label>
           <Select value={epic.priority} onChange={(e) => patch({ priority: e.target.value })}>
             {PRIORITIES.map((p) => (
-              <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
+              <option key={p} value={p}>{t(`priority.${p}`)}</option>
             ))}
           </Select>
         </div>
 
         <div className="mb-4">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Assignee</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.assigneeLabel')}</label>
           <Select
             value={(epic as unknown as { assigneeId?: string | null }).assigneeId ?? ''}
             onChange={(e) => patch({ assignee_id: e.target.value || null })}
           >
-            <option value="">Unassigned</option>
+            <option value="">{t('workItemDetail.unassigned')}</option>
             {members.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name} ({m.jobRole.toUpperCase()})
@@ -218,8 +218,8 @@ export function EpicDetailPage() {
         </div>
 
         <div className="mt-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-400">
-          <p>Created {new Date(epic.createdAt).toLocaleDateString()}</p>
-          <p>Updated {new Date(epic.updatedAt).toLocaleDateString()}</p>
+          <p>{t('workItemDetail.created', { date: new Date(epic.createdAt).toLocaleDateString() })}</p>
+          <p>{t('workItemDetail.updated', { date: new Date(epic.updatedAt).toLocaleDateString() })}</p>
         </div>
       </aside>
     </div>
@@ -236,10 +236,10 @@ const STORY_PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 
 interface ACRow { given: string; when: string; then: string }
 
-const TASK_TEMPLATES: { role: string; label: string; titlePrefix: string }[] = [
-  { role: 'ux', label: 'UX Design', titlePrefix: 'UX: Design' },
-  { role: 'qe', label: 'QE Testing', titlePrefix: 'QE: Write test cases for' },
-  { role: 'bsa', label: 'BSA Analysis', titlePrefix: 'BSA: Validate requirements for' },
+const TASK_TEMPLATES: { role: string; labelKey: string; titlePrefix: string }[] = [
+  { role: 'ux', labelKey: 'epicDetail.uxDesign', titlePrefix: 'UX: Design' },
+  { role: 'qe', labelKey: 'epicDetail.qeTesting', titlePrefix: 'QE: Write test cases for' },
+  { role: 'bsa', labelKey: 'epicDetail.bsaAnalysis', titlePrefix: 'BSA: Validate requirements for' },
 ];
 
 function AddStoryForm({
@@ -257,6 +257,7 @@ function AddStoryForm({
   members: ProjectMember[];
   onDone: () => void;
 }) {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -364,19 +365,19 @@ function AddStoryForm({
 
   return (
     <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50/30 p-4 space-y-4">
-      <h3 className="text-sm font-medium text-gray-900">Add Story to Epic</h3>
+      <h3 className="text-sm font-medium text-gray-900">{t('epicDetail.addStoryToEpic')}</h3>
 
       {/* Title */}
       <div>
         <label className="mb-1 block text-xs font-medium text-gray-500">
-          Title *
+          {t('epicDetail.titleRequired')}
           <span className="ml-1 font-normal text-gray-400">
-            ("As a [role], I want [goal], so that [benefit]")
+            {t('epicDetail.titleHint')}
           </span>
         </label>
         <Input
           autoFocus
-          placeholder="As a [role], I want [goal], so that [benefit]"
+          placeholder={t('epicDetail.titlePlaceholder')}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -385,7 +386,7 @@ function AddStoryForm({
       {/* Description */}
       <div>
         <div className="mb-1 flex items-center justify-between">
-          <label className="text-xs font-medium text-gray-500">Description</label>
+          <label className="text-xs font-medium text-gray-500">{t('epicDetail.descriptionLabel')}</label>
           <Button
             variant="ghost"
             size="sm"
@@ -402,11 +403,11 @@ function AddStoryForm({
               finally { setAiDescLoading(false); }
             }}
           >
-            {aiDescLoading ? 'Thinking...' : '✨ Suggest'}
+            {aiDescLoading ? t('common.thinking') : `✨ ${t('workItemDetail.suggest')}`}
           </Button>
         </div>
         <Textarea
-          placeholder="Context, requirements, and details..."
+          placeholder={t('epicDetail.descriptionPlaceholder')}
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -416,19 +417,18 @@ function AddStoryForm({
       {/* Priority + Points + Assignee */}
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Priority</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.priorityLabel')}</label>
           <Select value={priority} onChange={(e) => setPriority(e.target.value as Priority)}>
             {STORY_PRIORITIES.map((p) => (
-              <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
+              <option key={p} value={p}>{t(`priority.${p}`)}</option>
             ))}
           </Select>
         </div>
         <div>
           <label className="mb-1 flex items-center gap-1 text-xs font-medium text-gray-500">
-            Story Points
+            {t('epicDetail.storyPointsLabel')}
             <ContextHelp>
-              Estimate the relative effort. Common scales: 1, 2, 3, 5, 8, 13.
-              A "1" is the simplest thing your team does.
+              {t('workItemDetail.taskPointsHelp')}
             </ContextHelp>
           </label>
           <Input
@@ -440,9 +440,9 @@ function AddStoryForm({
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Assignee</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.assigneeLabel')}</label>
           <Select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)}>
-            <option value="">Unassigned</option>
+            <option value="">{t('workItemDetail.unassigned')}</option>
             {members.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name} ({m.jobRole.toUpperCase()})
@@ -455,16 +455,14 @@ function AddStoryForm({
       {/* Auto-task hint */}
       {willAutoCreateTask && (
         <p className="text-xs text-brand-600">
-          A task will be auto-created for the assignee with {storyPoints} point{Number(storyPoints) !== 1 ? 's' : ''}. Points always live on tasks.
+          {t('epicDetail.autoTaskHint', { points: storyPoints })}
         </p>
       )}
 
       {/* Story point guard */}
       {isLarge && (
         <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          <strong>Large story ({points} points).</strong> Consider breaking this into
-          smaller stories that can each be completed in a single sprint. Smaller stories
-          are easier to estimate, test, and deliver.
+          {t('epicDetail.largeStoryWarning', { points })}
         </div>
       )}
 
@@ -472,10 +470,9 @@ function AddStoryForm({
       <div>
         <div className="mb-2 flex items-center justify-between">
           <label className="flex items-center gap-1 text-xs font-medium text-gray-500">
-            Acceptance Criteria
+            {t('epicDetail.acceptanceCriteria')}
             <ContextHelp>
-              Define when this story is "done." Each criterion should be specific and
-              testable. Use <strong>Given / When / Then</strong> format.
+              {t('epicDetail.acContextHelp')}
             </ContextHelp>
           </label>
           <div className="flex items-center gap-2">
@@ -497,37 +494,37 @@ function AddStoryForm({
                 finally { setAiAcLoading(false); }
               }}
             >
-              {aiAcLoading ? 'Thinking...' : '✨ Suggest'}
+              {aiAcLoading ? t('common.thinking') : `✨ ${t('workItemDetail.suggest')}`}
             </Button>
             <button onClick={addAcRow} className="text-xs text-brand-600 hover:text-brand-800">
-              + Add criterion
+              {t('epicDetail.addCriterion')}
             </button>
           </div>
         </div>
         {acRows.map((ac, idx) => (
           <div key={idx} className="mb-2 rounded border border-gray-200 bg-white p-2 space-y-1.5">
             <div className="flex items-center gap-2">
-              <span className="w-12 text-right text-xs font-medium text-gray-400">Given</span>
+              <span className="w-12 text-right text-xs font-medium text-gray-400">{t('acceptanceCriteria.given')}</span>
               <Input
-                placeholder="a precondition or context..."
+                placeholder={t('epicDetail.givenPlaceholder')}
                 value={ac.given}
                 onChange={(e) => updateAcRow(idx, 'given', e.target.value)}
                 className="flex-1"
               />
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-12 text-right text-xs font-medium text-gray-400">When</span>
+              <span className="w-12 text-right text-xs font-medium text-gray-400">{t('acceptanceCriteria.when')}</span>
               <Input
-                placeholder="an action or event..."
+                placeholder={t('epicDetail.whenPlaceholder')}
                 value={ac.when}
                 onChange={(e) => updateAcRow(idx, 'when', e.target.value)}
                 className="flex-1"
               />
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-12 text-right text-xs font-medium text-gray-400">Then</span>
+              <span className="w-12 text-right text-xs font-medium text-gray-400">{t('acceptanceCriteria.then')}</span>
               <Input
-                placeholder="the expected outcome..."
+                placeholder={t('epicDetail.thenPlaceholder')}
                 value={ac.then}
                 onChange={(e) => updateAcRow(idx, 'then', e.target.value)}
                 className="flex-1"
@@ -536,7 +533,7 @@ function AddStoryForm({
                 <button
                   onClick={() => removeAcRow(idx)}
                   className="text-gray-400 hover:text-red-500"
-                  title="Remove"
+                  title={t('common.remove')}
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -551,9 +548,9 @@ function AddStoryForm({
       {/* Related tasks prompt */}
       <div>
         <label className="mb-2 block text-xs font-medium text-gray-500">
-          Create related tasks?
+          {t('epicDetail.createRelatedTasks')}
           <span className="ml-1 font-normal text-gray-400">
-            (auto-assigned to team members by role)
+            {t('epicDetail.autoAssignHint')}
           </span>
         </label>
         <div className="flex flex-wrap gap-3">
@@ -568,7 +565,7 @@ function AddStoryForm({
                   onChange={(e) => setCreateTasks({ ...createTasks, [tmpl.role]: e.target.checked })}
                   className="rounded border-gray-300"
                 />
-                {tmpl.label}
+                {t(tmpl.labelKey)}
                 {memberName && (
                   <span className="text-xs text-gray-400">→ {memberName}</span>
                 )}
@@ -581,9 +578,9 @@ function AddStoryForm({
       {/* Submit */}
       <div className="flex gap-2 pt-1">
         <Button size="sm" onClick={submit} disabled={!title.trim() || submitting}>
-          {submitting ? 'Creating...' : 'Create Story'}
+          {submitting ? t('epicDetail.creating') : t('epicDetail.createStory')}
         </Button>
-        <Button size="sm" variant="ghost" onClick={onDone}>Cancel</Button>
+        <Button size="sm" variant="ghost" onClick={onDone}>{t('common.cancel')}</Button>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useParams, Link } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import { Badge } from '@projecta/ui';
 import type { Sprint, SprintStatus } from '@projecta/types';
 import { useSprints } from '../../hooks/use-sprints';
@@ -14,6 +15,7 @@ const statusColors: Record<SprintStatus, 'success' | 'default' | 'secondary' | '
 };
 
 export function SprintsPage() {
+  const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: sprints = [], isLoading } = useSprints(projectId);
 
@@ -31,24 +33,23 @@ export function SprintsPage() {
 
   return (
     <div className="p-6">
-      <HelpOverlay id="sprints-intro" title="Sprint Planning">
+      <HelpOverlay id="sprints-intro" title={t('sprints.helpTitle')}>
         <p className="mb-2">
-          Sprints are time-boxed iterations (typically 2 weeks). Pull stories from
-          the backlog into a sprint to plan your team's work.
+          {t('sprints.helpBody1')}
         </p>
         <p>
-          Watch the capacity indicator to avoid overloading the team.
+          {t('sprints.helpBody2')}
         </p>
       </HelpOverlay>
 
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Sprints</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{t('sprints.title')}</h2>
         <CreateSprintDialog projectId={projectId} />
       </div>
 
       {sorted.length === 0 && (
         <p className="py-12 text-center text-gray-400">
-          No sprints yet. Create one to start planning.
+          {t('sprints.noSprintsYet')}
         </p>
       )}
 
@@ -64,11 +65,11 @@ export function SprintsPage() {
               <div className="flex items-center gap-3">
                 <h3 className="font-medium text-gray-900">{sprint.name}</h3>
                 <Badge variant={statusColors[sprint.status]}>
-                  {sprint.status.charAt(0).toUpperCase() + sprint.status.slice(1)}
+                  {t(`sprintStatus.${sprint.status}`)}
                 </Badge>
               </div>
               {sprint.velocity != null && (
-                <span className="text-sm text-gray-500">{sprint.velocity} pts</span>
+                <span className="text-sm text-gray-500">{t('sprints.pts', { count: sprint.velocity })}</span>
               )}
             </div>
             {sprint.goal && (

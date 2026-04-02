@@ -214,6 +214,7 @@ export interface MeResponse {
   email: string;
   name: string;
   avatarUrl: string | null;
+  language: string | null;
 }
 
 export function toMe(w: any): MeResponse {
@@ -222,5 +223,6 @@ export function toMe(w: any): MeResponse {
     email: w.email,
     name: w.name,
     avatarUrl: w.avatar_url,
+    language: w.language ?? null,
   };
 }

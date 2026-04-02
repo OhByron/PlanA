@@ -6,8 +6,10 @@ import { useNavigationTree } from '../hooks/use-orgs';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { api } from '../lib/api-client';
 import type { OrgDetail } from '../lib/api-transforms';
+import { useTranslation } from 'react-i18next';
 
 export function OrgDetailPage() {
+  const { t } = useTranslation();
   const { orgId } = useParams({ strict: false }) as { orgId: string };
   const { data: org, isLoading } = useOrg(orgId);
   const { data: navTree = [] } = useNavigationTree();
@@ -36,17 +38,17 @@ export function OrgDetailPage() {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        All organizations
+        {t('orgDetail.allOrganisations')}
       </Link>
 
       {/* Org header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-xl font-semibold text-gray-900">{org.name}</h1>
-          {org.archivedAt && <Badge variant="secondary">Archived</Badge>}
+          {org.archivedAt && <Badge variant="secondary">{t('orgs.archived')}</Badge>}
         </div>
         <Button size="sm" variant="outline" onClick={() => setEditing(!editing)}>
-          {editing ? 'Cancel' : 'Edit Details'}
+          {editing ? t('common.cancel') : t('orgDetail.editDetails')}
         </Button>
       </div>
 
@@ -60,10 +62,10 @@ export function OrgDetailPage() {
       <div className="mt-8">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base font-semibold text-gray-900">
-            Projects ({projects.length})
+            {t('orgDetail.projects', { count: projects.length })}
           </h2>
           <Button size="sm" onClick={() => setShowCreateProject(true)} disabled={showCreateProject}>
-            + New Project
+            {t('orgDetail.newProject')}
           </Button>
         </div>
 
@@ -77,7 +79,7 @@ export function OrgDetailPage() {
 
         {projects.length === 0 && !showCreateProject && (
           <p className="py-8 text-center text-gray-400">
-            No projects yet. Create one to get started.
+            {t('orgDetail.noProjectsYet')}
           </p>
         )}
 
@@ -106,13 +108,13 @@ export function OrgDetailPage() {
                 </div>
                 <div className="flex gap-2">
                   <Link to="/p/$projectId/report" params={{ projectId: p.id }}>
-                    <Button size="xs" variant="ghost">Report</Button>
+                    <Button size="xs" variant="ghost">{t('common.report')}</Button>
                   </Link>
                   <Link to="/p/$projectId/settings" params={{ projectId: p.id }}>
-                    <Button size="xs" variant="ghost">Settings</Button>
+                    <Button size="xs" variant="ghost">{t('common.settings')}</Button>
                   </Link>
                   <Link to="/p/$projectId/board" params={{ projectId: p.id }}>
-                    <Button size="xs" variant="outline">Open</Button>
+                    <Button size="xs" variant="outline">{t('common.open')}</Button>
                   </Link>
                 </div>
               </div>
@@ -126,6 +128,7 @@ export function OrgDetailPage() {
 
 // --- Compact org summary (read-only) ---
 function OrgSummary({ org }: { org: OrgDetail }) {
+  const { t } = useTranslation();
   const details = [
     org.contactName,
     org.contactEmail,
@@ -134,23 +137,23 @@ function OrgSummary({ org }: { org: OrgDetail }) {
   ].filter(Boolean);
 
   if (details.length === 0) {
-    return <p className="text-sm text-gray-400 italic">No contact details yet. Click "Edit Details" to add them.</p>;
+    return <p className="text-sm text-gray-400 italic">{t('orgDetail.noContactDetails')}</p>;
   }
 
   return (
     <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-600">
       {org.contactName && (
-        <span><span className="text-gray-400">Contact:</span> {org.contactName}</span>
+        <span><span className="text-gray-400">{t('orgDetail.contact')}</span> {org.contactName}</span>
       )}
       {org.contactEmail && (
-        <span><span className="text-gray-400">Email:</span> {org.contactEmail}</span>
+        <span><span className="text-gray-400">{t('orgDetail.email')}</span> {org.contactEmail}</span>
       )}
       {org.contactPhone && (
-        <span><span className="text-gray-400">Phone:</span> {org.contactPhone}</span>
+        <span><span className="text-gray-400">{t('orgDetail.phone')}</span> {org.contactPhone}</span>
       )}
       {(org.city || org.state || org.country) && (
         <span>
-          <span className="text-gray-400">Location:</span>{' '}
+          <span className="text-gray-400">{t('orgDetail.location')}</span>{' '}
           {[org.city, org.state, org.country].filter(Boolean).join(', ')}
         </span>
       )}
@@ -160,6 +163,7 @@ function OrgSummary({ org }: { org: OrgDetail }) {
 
 // --- Edit org form ---
 function EditOrgForm({ org, onSave }: { org: OrgDetail; onSave: () => void }) {
+  const { t } = useTranslation();
   const update = useUpdateOrg();
   const [name, setName] = useState(org.name);
   const [contactName, setContactName] = useState(org.contactName ?? '');
@@ -191,54 +195,54 @@ function EditOrgForm({ org, onSave }: { org: OrgDetail; onSave: () => void }) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 space-y-3">
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Organization Name</label>
+        <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.orgName')}</label>
         <Input value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Name</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactName')}</label>
           <Input value={contactName} onChange={(e) => setContactName(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Email</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactEmail')}</label>
           <Input value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Contact Phone</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.contactPhone')}</label>
           <Input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Address Line 1</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.addressLine1')}</label>
           <Input value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Address Line 2</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.addressLine2')}</label>
           <Input value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
         </div>
       </div>
       <div className="grid grid-cols-4 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">City</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.city')}</label>
           <Input value={city} onChange={(e) => setCity(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">State</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.state')}</label>
           <Input value={state} onChange={(e) => setState(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Postal Code</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.postalCode')}</label>
           <Input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Country</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgs.country')}</label>
           <Input value={country} onChange={(e) => setCountry(e.target.value)} />
         </div>
       </div>
       <div className="flex gap-2 pt-1">
-        <Button onClick={submit} disabled={!name.trim() || update.isPending}>Save</Button>
-        <Button variant="ghost" onClick={onSave}>Cancel</Button>
+        <Button onClick={submit} disabled={!name.trim() || update.isPending}>{t('common.save')}</Button>
+        <Button variant="ghost" onClick={onSave}>{t('common.cancel')}</Button>
       </div>
     </div>
   );
@@ -255,6 +259,7 @@ function CreateProjectForm({
   teams: Array<{ id: string; name: string }>;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -291,30 +296,30 @@ function CreateProjectForm({
 
   return (
     <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50/30 p-4 space-y-3">
-      <h3 className="font-medium text-gray-900">New Project</h3>
+      <h3 className="font-medium text-gray-900">{t('orgDetail.newProjectTitle')}</h3>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Project Name *</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.projectNameRequired')}</label>
           <Input
             autoFocus
-            placeholder="e.g. PlanA MVP"
+            placeholder={t('createProject.projectNamePlaceholder')}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Methodology</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.methodology')}</label>
           <Select value={methodology} onChange={(e) => setMethodology(e.target.value)}>
-            <option value="scrum">Scrum</option>
-            <option value="kanban">Kanban</option>
-            <option value="shape_up">Shape Up</option>
+            <option value="scrum">{t('methodology.scrum')}</option>
+            <option value="kanban">{t('methodology.kanban')}</option>
+            <option value="shape_up">{t('methodology.shape_up')}</option>
           </Select>
         </div>
       </div>
       <div>
-        <label className="mb-1 block text-xs font-medium text-gray-500">Description</label>
+        <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.description')}</label>
         <Textarea
-          placeholder="What is this project about?"
+          placeholder={t('orgDetail.whatIsThisProjectAbout')}
           rows={2}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -322,29 +327,29 @@ function CreateProjectForm({
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Due Date</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.dueDate')}</label>
           <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Customer Contact</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.customerContact')}</label>
           <Input placeholder="Name" value={contactName} onChange={(e) => setContactName(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Email</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.email')}</label>
           <Input placeholder="email@example.com" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">Phone</label>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('orgDetail.phone')}</label>
           <Input placeholder="+1 555-0100" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} />
         </div>
       </div>
       <div className="flex gap-2 pt-1">
         <Button onClick={() => create.mutate()} disabled={!name.trim() || create.isPending}>
-          Create Project
+          {t('orgDetail.createProject')}
         </Button>
-        <Button variant="ghost" onClick={onClose}>Cancel</Button>
+        <Button variant="ghost" onClick={onClose}>{t('common.cancel')}</Button>
       </div>
     </div>
   );

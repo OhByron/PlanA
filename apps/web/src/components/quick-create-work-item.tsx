@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Input, Select } from '@projecta/ui';
 import type { WorkItemType } from '@projecta/types';
 import { useCreateWorkItem } from '../hooks/use-work-items';
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function QuickCreateWorkItem({ projectId, onClose }: Props) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [type, setType] = useState<WorkItemType>('story');
   const create = useCreateWorkItem(projectId);
@@ -29,13 +31,13 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
         className="w-24"
         aria-label="Item type"
       >
-        <option value="story">Story</option>
-        <option value="bug">Bug</option>
-        <option value="task">Task</option>
+        <option value="story">{t('type.story')}</option>
+        <option value="bug">{t('type.bug')}</option>
+        <option value="task">{t('type.task')}</option>
       </Select>
       <Input
         autoFocus
-        placeholder="What needs to be done?"
+        placeholder={t('quickCreate.placeholder')}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {
@@ -46,10 +48,10 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
         aria-label="Item title"
       />
       <Button size="sm" onClick={submit} disabled={!title.trim() || create.isPending}>
-        Create
+        {t('common.create')}
       </Button>
       <Button size="sm" variant="ghost" onClick={onClose}>
-        Cancel
+        {t('common.cancel')}
       </Button>
     </div>
   );

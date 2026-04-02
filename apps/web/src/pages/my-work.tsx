@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import type { WorkItem } from '@projecta/types';
 import { useMyWorkItems } from '../hooks/use-my-work-items';
 import { useAuth } from '../auth/auth-context';
@@ -11,6 +12,7 @@ import { api } from '../lib/api-client';
 import { toProject } from '../lib/api-transforms';
 
 export function MyWorkPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: items = [], isLoading } = useMyWorkItems();
 
@@ -57,19 +59,17 @@ export function MyWorkPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-900">My Work</h1>
+        <h1 className="text-xl font-semibold text-gray-900">{t('myWork.title')}</h1>
         <p className="mt-1 text-sm text-gray-500">
-          {items.length} item{items.length !== 1 ? 's' : ''} assigned to you
+          {t('myWork.itemCount', { count: items.length })}
         </p>
       </div>
 
       {items.length === 0 && (
         <div className="py-16 text-center">
-          <p className="text-gray-400">No items assigned to you.</p>
+          <p className="text-gray-400">{t('myWork.noItems')}</p>
           <p className="mt-2 text-sm text-gray-400">
-            Items appear here when you're added as a project team member and have
-            stories or tasks assigned to you. Make sure your account email matches
-            your team member email, or that you accepted an invitation.
+            {t('myWork.noItemsHelp')}
           </p>
         </div>
       )}

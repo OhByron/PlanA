@@ -228,6 +228,22 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, report)
 }
 
+func (h *ReportHandlers) userLanguage(r *http.Request) string {
+	if lang := r.Header.Get("X-Language"); lang != "" {
+		return lang
+	}
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		return ""
+	}
+	var lang *string
+	_ = h.db.QueryRow(r.Context(), `SELECT language FROM users WHERE id = $1`, claims.UserID).Scan(&lang)
+	if lang != nil {
+		return *lang
+	}
+	return ""
+}
+
 func (h *ReportHandlers) generateSummary(r *http.Request, provider ai.Provider, projectName string, report map[string]any) string {
 	metrics := report["metrics"].(map[string]any)
 	defects := report["defects"].(defectSummary)
@@ -256,6 +272,7 @@ Return only the summary text, no JSON wrapper.`,
 		CurrentDesc: prompt,
 		ProjectName: projectName,
 		StoryType:   "report",
+		Language:    h.userLanguage(r),
 	})
 	if err != nil {
 		slog.Warn("reports.Generate: AI summary failed", "error", err)

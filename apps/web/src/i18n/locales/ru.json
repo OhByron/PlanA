@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "create": "Создать",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "add": "Добавить",
+    "remove": "Убрать",
+    "dismiss": "Скрыть",
+    "close": "Закрыть",
+    "loading": "Загрузка...",
+    "send": "Отправить",
+    "open": "Открыть",
+    "archive": "Архивировать",
+    "restore": "Восстановить",
+    "report": "Отчёт",
+    "settings": "Настройки",
+    "gotIt": "Понятно",
+    "tryAgain": "Попробовать снова",
+    "signOut": "Выйти",
+    "signIn": "Войти",
+    "whatsThis": "Что это?",
+    "help": "Помощь",
+    "error": "Ошибка: {{message}}",
+    "thinking": "Думаю...",
+    "generating": "Генерация...",
+    "language": "Язык"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile как он есть."
+  },
+
+  "nav": {
+    "board": "Доска",
+    "backlog": "Backlog",
+    "epics": "Эпики",
+    "sprints": "Спринты",
+    "reports": "Отчёты",
+    "report": "Отчёт",
+    "team": "Команда",
+    "settings": "Настройки",
+    "project": "Проект"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Развернуть боковую панель",
+    "collapseSidebar": "Свернуть боковую панель",
+    "myWork": "Мои задачи",
+    "organisations": "Организации",
+    "noOrganisationsYet": "Пока нет организаций",
+    "toggle": "Переключить {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Уведомления",
+    "markAllRead": "Прочитать все",
+    "noNotificationsYet": "Пока нет уведомлений",
+    "justNow": "только что",
+    "minutesAgo": "{{count}} мин. назад",
+    "hoursAgo": "{{count}} ч. назад",
+    "daysAgo": "{{count}} дн. назад"
+  },
+
+  "notifications": {
+    "assigned": "Вам назначена задача \"{{title}}\"",
+    "statusChanged": "Статус изменён: \"{{title}}\"",
+    "commentAdded": "Новый комментарий к \"{{title}}\"",
+    "mentioned": "Вас упомянули в \"{{title}}\"",
+    "default": "Уведомление: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Готово к работе",
+    "in_progress": "В работе",
+    "in_review": "На ревью",
+    "done": "Готово",
+    "cancelled": "Отменено"
+  },
+
+  "priority": {
+    "urgent": "Срочный",
+    "high": "Высокий",
+    "medium": "Средний",
+    "low": "Низкий"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Баг",
+    "task": "Задача"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Активный",
+    "planned": "Запланирован",
+    "completed": "Завершён",
+    "cancelled": "Отменён"
+  },
+
+  "roles": {
+    "pm": "Менеджер проекта",
+    "po": "Владелец продукта",
+    "bsa": "Бизнес-системный аналитик",
+    "ba": "Бизнес-аналитик",
+    "qe": "Инженер по качеству",
+    "ux": "UX-дизайнер",
+    "dev": "Разработчик"
+  },
+
+  "login": {
+    "continueWithGitHub": "Продолжить через GitHub",
+    "continueWithGoogle": "Продолжить через Google",
+    "orSignInWithEmail": "или войти по email",
+    "emailAddress": "Email",
+    "password": "Пароль",
+    "loginFailed": "Не удалось войти",
+    "devOnly": "только для разработки",
+    "devLogin": "Вход для разработки (без OAuth)"
+  },
+
+  "authError": {
+    "title": "Не удалось войти",
+    "badState": "Сессия входа истекла. Попробуйте снова.",
+    "csrf": "Проверка безопасности не пройдена. Попробуйте снова.",
+    "exchangeFailed": "Не удалось завершить вход через провайдер. Попробуйте снова.",
+    "dbError": "Произошла ошибка сервера. Попробуйте позже.",
+    "missingToken": "Токен аутентификации не получен.",
+    "default": "Произошла непредвиденная ошибка при входе."
+  },
+
+  "myWork": {
+    "title": "Мои задачи",
+    "itemCount": "{{count}} задача назначена вам",
+    "itemCount_other": "{{count}} задач назначено вам",
+    "noItems": "Нет назначенных задач.",
+    "noItemsHelp": "Задачи появятся здесь, когда вас добавят в команду проекта и назначат вам story или задачи. Убедитесь, что email вашего аккаунта совпадает с email участника команды, или что вы приняли приглашение."
+  },
+
+  "orgs": {
+    "title": "Организации",
+    "orgCount": "{{count}} организация",
+    "orgCount_other": "{{count}} организаций",
+    "showArchived": "Показать архивные",
+    "newOrganisation": "+ Новая организация",
+    "noOrgsYet": "Пока нет организаций. Создайте первую, чтобы начать.",
+    "archived": "В архиве",
+    "confirmDelete": "Удалить эту организацию и все её данные безвозвратно?",
+    "added": "Добавлено {{date}}",
+    "newOrg": "Новая организация",
+    "orgName": "Название организации",
+    "orgNameRequired": "Название организации *",
+    "contactName": "Контактное лицо",
+    "contactEmail": "Контактный email",
+    "contactPhone": "Контактный телефон",
+    "addressLine1": "Адрес, строка 1",
+    "addressLine2": "Адрес, строка 2",
+    "city": "Город",
+    "state": "Область",
+    "postalCode": "Почтовый индекс",
+    "country": "Страна"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Все организации",
+    "editDetails": "Редактировать",
+    "noContactDetails": "Контактные данные не указаны. Нажмите \"Редактировать\", чтобы добавить их.",
+    "contact": "Контакт:",
+    "email": "Email:",
+    "phone": "Телефон:",
+    "location": "Адрес:",
+    "projects": "Проекты ({{count}})",
+    "newProject": "+ Новый проект",
+    "noProjectsYet": "Пока нет проектов. Создайте первый, чтобы начать.",
+    "newProjectTitle": "Новый проект",
+    "projectName": "Название проекта",
+    "projectNameRequired": "Название проекта *",
+    "description": "Описание",
+    "methodology": "Методология",
+    "dueDate": "Срок",
+    "customerContact": "Контакт заказчика",
+    "createProject": "Создать проект",
+    "whatIsThisProjectAbout": "О чём этот проект?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Недействительное приглашение",
+    "invalidLink": "Эта ссылка-приглашение недействительна.",
+    "goToLogin": "Перейти ко входу",
+    "alreadyAccepted": "Уже принято",
+    "alreadyAcceptedMessage": "Это приглашение уже использовано. Вы можете войти с вашими учётными данными.",
+    "expired": "Приглашение истекло",
+    "expiredMessage": "Срок действия приглашения истёк. Попросите команду отправить новое.",
+    "invitedToJoin": "Вас пригласили присоединиться к проекту",
+    "emailLabel": "Email",
+    "yourName": "Ваше имя",
+    "passwordLabel": "Пароль",
+    "confirmPassword": "Подтверждение пароля",
+    "minChars": "Минимум 8 символов",
+    "repeatPassword": "Повторите пароль",
+    "passwordTooShort": "Пароль должен содержать минимум 8 символов",
+    "passwordsMismatch": "Пароли не совпадают",
+    "createAccountJoin": "Создать аккаунт и присоединиться",
+    "creatingAccount": "Создание аккаунта...",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "logIn": "Войти"
+  },
+
+  "board": {
+    "helpTitle": "Ваша Kanban-доска",
+    "helpBody1": "Здесь работа вашей команды представлена в виде потока. Каждый столбец соответствует этапу рабочего процесса.",
+    "helpBody2": "Перетаскивайте карточки между столбцами, чтобы мгновенно обновлять статус. При перемещении story дочерние задачи перемещаются вместе с ней.",
+    "helpBody3": "Старайтесь, чтобы столбец \"В работе\" был небольшим; ограничение незавершённой работы помогает команде доводить дела до конца, а не начинать новые.",
+    "itemCount": "{{count}} элемент",
+    "itemCount_other": "{{count}} элементов",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} очков в работе",
+    "overCapacity": "Превышение ёмкости",
+    "noItems": "Нет элементов",
+    "column": "Столбец {{status}}"
+  },
+
+  "backlog": {
+    "helpTitle": "Ваш Backlog",
+    "helpBody1": "Backlog, это приоритизированный список работ. Элементы вверху имеют наивысший приоритет.",
+    "helpBody2": "Перетаскивайте элементы за ручку для изменения приоритета. Используйте фильтры, чтобы сосредоточиться на story, багах или определённых статусах.",
+    "helpBody3": "Нажмите \"+ Новый элемент\", чтобы быстро добавить story или задачи.",
+    "allStatuses": "Все статусы",
+    "allTypes": "Все типы",
+    "stories": "Story",
+    "bugs": "Баги",
+    "tasks": "Задачи",
+    "itemCount": "{{count}} элемент",
+    "itemCount_other": "{{count}} элементов",
+    "newItem": "+ Новый элемент",
+    "noItemsMatch": "Ничего не найдено по вашим фильтрам. Попробуйте изменить их или создайте новый элемент."
+  },
+
+  "sprints": {
+    "helpTitle": "Планирование спринтов",
+    "helpBody1": "Спринты; это ограниченные по времени итерации (обычно 2 недели). Перемещайте story из backlog в спринт, чтобы спланировать работу команды.",
+    "helpBody2": "Следите за индикатором ёмкости, чтобы не перегружать команду.",
+    "title": "Спринты",
+    "noSprintsYet": "Пока нет спринтов. Создайте первый, чтобы начать планирование.",
+    "pts": "{{count}} очков"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Назад к доске",
+    "partOf": "Часть:",
+    "clickToEdit": "Нажмите, чтобы редактировать",
+    "description": "Описание",
+    "descPlaceholder": "Опишите требование, цель и контекст...",
+    "suggest": "Предложить",
+    "clickToAddDescription": "Нажмите, чтобы добавить описание...",
+    "details": "Детали",
+    "statusLabel": "Статус",
+    "typeLabel": "Тип",
+    "priorityLabel": "Приоритет",
+    "assigneeLabel": "Исполнитель",
+    "unassigned": "Не назначен",
+    "totalPoints": "Всего очков",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Для story очки являются суммой очков всех задач. Добавляйте очки к отдельным задачам во время уточнения.",
+    "taskPointsHelp": "Оцените относительную трудоёмкость. Типичные шкалы: 1, 2, 3, 5, 8, 13. \"1\"; это самая простая задача, которую делает ваша команда.",
+    "sumOfTasks": "Сумма {{count}} задачи",
+    "sumOfTasks_other": "Сумма {{count}} задач",
+    "largeStoryWarning": "Эта story составляет {{points}} очков. Рассмотрите возможность разделения на более мелкие stories, каждая из которых может быть завершена за один спринт.",
+    "blocked": "Заблокировано",
+    "blockedBy": "Заблокировано:",
+    "notBlocked": "Не заблокировано",
+    "labels": "Метки",
+    "convertToStory": "Преобразовать в Story",
+    "convertToStoryConfirm": "Преобразовать эту задачу в story? Связь зависимости с исходной story сохранится.",
+    "convertToStoryHelp": "Повышает задачу до самостоятельной story со связью зависимости",
+    "created": "Создано {{date}}",
+    "updated": "Обновлено {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Задачи ({{count}})",
+    "contextHelp": "Задачи разбивают story на работу по дисциплинам: UX-дизайн, бэкенд, фронтенд и тестирование. Каждая задача может быть назначена участнику команды.",
+    "suggestTasks": "Предложить задачи",
+    "addTask": "+ Добавить задачу",
+    "noTasksYet": "Пока нет задач.",
+    "taskTitlePlaceholder": "Название задачи (напр. 'UX: Дизайн экрана входа')",
+    "suggestedTasks": "Предложенные задачи, нажмите для добавления:",
+    "pts": "{{count}} очков",
+    "clarificationNeeded": "Требуется уточнение:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Критерии приёмки",
+    "contextHelp": "Критерии приёмки определяют, когда задача действительно \"готова\". Написанные в формате Given / When / Then (BDD), они делают ожидания явными и проверяемыми. Каждый критерий; это конкретное, верифицируемое условие, а не расплывчатое пожелание.",
+    "addButton": "+ Добавить",
+    "suggestAC": "Предложить КП",
+    "noCriteriaYet": "Пока нет критериев приёмки. Определите условия для состояния \"готово\".",
+    "given": "Дано",
+    "when": "Когда",
+    "then": "Тогда",
+    "deleteAC": "Удалить критерий приёмки",
+    "givenPlaceholder": "Дано...",
+    "whenPlaceholder": "Когда...",
+    "thenPlaceholder": "Тогда...",
+    "aiSuggestions": "Предложения ИИ, нажмите для добавления:",
+    "aiNeedsMoreInfo": "ИИ нужно больше информации:"
+  },
+
+  "comments": {
+    "title": "Комментарии",
+    "noCommentsYet": "Пока нет комментариев.",
+    "addComment": "Добавить комментарий..."
+  },
+
+  "dependencies": {
+    "title": "Зависимости",
+    "contextHelp": "Зависимости отслеживают связи между элементами. \"Зависит от\" означает, что этот элемент не может продвигаться, пока целевой не завершён. \"Связан с\", информационная ссылка.",
+    "noDependencies": "Нет зависимостей.",
+    "dependsOn": "Зависит от",
+    "relatesTo": "Связан с",
+    "dependedOnBy": "От него зависит",
+    "removeDependency": "Удалить зависимость",
+    "selectItem": "Выберите элемент..."
+  },
+
+  "links": {
+    "title": "Ссылки",
+    "addLink": "+ Добавить ссылку",
+    "noLinksYet": "Пока нет ссылок.",
+    "labelPlaceholder": "Метка (напр. GitHub PR, Figma, Результаты тестов, Документы)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Удалить ссылку"
+  },
+
+  "testResults": {
+    "retestRequired": "Требуется повторное тестирование",
+    "retestMessage": "У этого дефекта {{count}} проваленных тестов. Загрузите новые результаты тестов (JUnit XML или webhook) после развёртывания исправления, чтобы снять блокировку QE и закрыть этот элемент.",
+    "title": "Результаты тестов",
+    "passed": "пройдено",
+    "failed": "провалено",
+    "errors": "ошибки",
+    "skipped": "пропущено",
+    "lastRun": "Последний запуск: {{date}}",
+    "sourceTestFailure": "Исходный проваленный тест",
+    "suite": "Набор: {{name}}",
+    "duration": "Длительность: {{ms}} мс",
+    "source": "Источник: {{source}} | Зарегистрировано: {{date}}",
+    "generateDescAC": "Сгенерировать описание и КП"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Скрыть",
+    "close": "Закрыть"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Начните вводить текст...",
+    "bold": "Жирный",
+    "italic": "Курсив",
+    "inlineCode": "Код",
+    "heading": "Заголовок",
+    "subheading": "Подзаголовок",
+    "bulletList": "Маркированный список",
+    "numberedList": "Нумерованный список",
+    "quote": "Цитата",
+    "codeBlock": "Блок кода"
+  },
+
+  "createEpic": {
+    "button": "+ Новый эпик",
+    "title": "Создать эпик",
+    "titleLabel": "Название",
+    "titlePlaceholder": "напр. Аутентификация пользователей",
+    "descriptionLabel": "Описание",
+    "descriptionPlaceholder": "Бизнес-цель и объём этого эпика...",
+    "priorityLabel": "Приоритет",
+    "assigneeLabel": "Исполнитель"
+  },
+
+  "createProject": {
+    "button": "+ Новый проект",
+    "title": "Создать проект",
+    "organisationLabel": "Организация",
+    "selectOrg": "Выберите организацию...",
+    "teamLabel": "Команда",
+    "selectTeam": "Выберите команду...",
+    "projectNameLabel": "Название проекта",
+    "projectNamePlaceholder": "напр. PlanA MVP",
+    "descriptionLabel": "Описание",
+    "descriptionPlaceholder": "О чём этот проект?",
+    "methodologyLabel": "Методология"
+  },
+
+  "createSprint": {
+    "button": "+ Новый спринт",
+    "title": "Создать спринт",
+    "nameLabel": "Название",
+    "namePlaceholder": "Спринт 1",
+    "goalLabel": "Цель",
+    "goalPlaceholder": "Чего должен достичь этот спринт?",
+    "startDateLabel": "Дата начала",
+    "endDateLabel": "Дата окончания"
+  },
+
+  "createTeam": {
+    "button": "+ Новая команда",
+    "title": "Создать команду",
+    "organisationLabel": "Организация",
+    "selectOrg": "Выберите организацию...",
+    "teamNameLabel": "Название команды",
+    "teamNamePlaceholder": "напр. Backend Squad"
+  },
+
+  "quickCreate": {
+    "placeholder": "Что нужно сделать?"
+  },
+
+  "workItemCard": {
+    "open": "Открыть {{title}}",
+    "taskCount": "{{count}} задача",
+    "taskCount_other": "{{count}} задач"
+  },
+
+  "team": {
+    "title": "Команда",
+    "memberCount": "{{count}} участник",
+    "memberCount_other": "{{count}} участников",
+    "addMember": "+ Добавить участника",
+    "noMembersYet": "Пока нет участников. Добавьте людей, чтобы начать назначать работу.",
+    "confirmRemove": "Удалить {{name}} из команды?",
+    "invite": "Пригласить",
+    "inviteLink": "Ссылка-приглашение:",
+    "copy": "Копировать",
+    "ptsPerSprint": "{{count}} очков/спринт",
+    "addTeamMember": "Добавить участника",
+    "nameRequired": "Имя *",
+    "emailLabel": "Email",
+    "phoneLabel": "Телефон",
+    "roleRequired": "Роль *",
+    "capacity": "Ёмкость",
+    "capacityPlaceholder": "очков/спринт",
+    "nameLabel": "Имя",
+    "roleLabel": "Роль"
+  },
+
+  "epics": {
+    "helpTitle": "Эпики",
+    "helpBody1": "Эпики, это группировка на уровне функциональности. Каждый эпик содержит связанные story, которые вместе реализуют бизнес-возможность.",
+    "helpBody2": "Нажмите на эпик, чтобы увидеть его story, добавить новые и отслеживать прогресс.",
+    "title": "Эпики",
+    "noEpicsYet": "Пока нет эпиков. Эпики группируют связанные story в функциональные блоки.",
+    "storyProgress": "{{done}}/{{total}} story"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Назад к эпикам",
+    "description": "Описание",
+    "descPlaceholder": "Опишите бизнес-цель и объём...",
+    "clickToAddDescription": "Нажмите, чтобы добавить описание...",
+    "stories": "Story ({{count}})",
+    "storiesContextHelp": "Story, это достижимые цели этого эпика. Каждая story представляет конкретный пользовательский результат, который можно завершить в рамках одного спринта.",
+    "addStory": "+ Добавить Story",
+    "noStoriesYet": "В этом эпике пока нет story. Добавьте, чтобы определить цели.",
+    "details": "Детали",
+    "statusLabel": "Статус",
+    "priorityLabel": "Приоритет",
+    "assigneeLabel": "Исполнитель",
+    "addStoryToEpic": "Добавить Story в эпик",
+    "titleRequired": "Название *",
+    "titleHint": "(\"Как [роль], я хочу [цель], чтобы [выгода]\")",
+    "titlePlaceholder": "Как [роль], я хочу [цель], чтобы [выгода]",
+    "descriptionLabel": "Описание",
+    "descriptionPlaceholder": "Контекст, требования и подробности...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Для исполнителя будет автоматически создана задача на {{points}} очков. Очки всегда живут на задачах.",
+    "largeStoryWarning": "Большая story ({{points}} очков). Рассмотрите возможность разбить её на более мелкие story, каждую из которых можно завершить за один спринт. Маленькие story легче оценивать, тестировать и поставлять.",
+    "acceptanceCriteria": "Критерии приёмки",
+    "acContextHelp": "Определите, когда story считается \"готовой\". Каждый критерий должен быть конкретным и проверяемым.",
+    "addCriterion": "+ Добавить критерий",
+    "givenPlaceholder": "предусловие или контекст...",
+    "whenPlaceholder": "действие или событие...",
+    "thenPlaceholder": "ожидаемый результат...",
+    "createRelatedTasks": "Создать связанные задачи?",
+    "autoAssignHint": "(автоматически назначаются участникам команды по роли)",
+    "uxDesign": "UX-дизайн",
+    "qeTesting": "QE-тестирование",
+    "bsaAnalysis": "BSA-анализ",
+    "creating": "Создание...",
+    "createStory": "Создать Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Назад к спринтам",
+    "start": "Начало:",
+    "end": "Окончание:",
+    "capacity": "{{points}} / {{capacity}} ёмкости",
+    "storyPoints": "{{count}} story points",
+    "storiesAndItems": "{{stories}} story, {{items}} всего элементов",
+    "done": "Готово",
+    "addStories": "+ Добавить Story",
+    "startSprint": "Начать спринт",
+    "completeSprint": "Завершить спринт",
+    "addStoriesToSprint": "Добавить story в спринт ({{count}} доступно)",
+    "allStoriesAssigned": "Все story уже в спринте или завершены.",
+    "noItemsYet": "В этом спринте пока нет элементов. Нажмите \"+ Добавить Story\", чтобы взять из backlog.",
+    "removeStoryAndTasks": "Убрать story и задачи из спринта",
+    "removeFromSprint": "Убрать из спринта",
+    "standaloneTasks": "Отдельные задачи",
+    "adding": "Добавление...",
+    "tasks": "{{count}} задач"
+  },
+
+  "reports": {
+    "helpTitle": "Отчёты по проекту",
+    "helpBody1": "Отчёты дают представление о поставке вашей команды. Velocity показывает, сколько очков вы завершаете за спринт; со временем показатель стабилизируется.",
+    "helpBody2": "Используйте графики прогресса спринта и загрузки команды, чтобы вовремя выявлять узкие места.",
+    "title": "Отчёты",
+    "sprint": "Спринт:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story points, завершённых за спринт",
+    "noCompletedSprints": "Пока нет завершённых спринтов. Velocity появится после завершения первого спринта.",
+    "trend": "Тренд",
+    "threeSprintAvg": "Среднее за 3 спринта",
+    "avgVelocity": "Средняя velocity:",
+    "pointsPerSprint": "очков/спринт",
+    "sprintProgress": "Спринт: {{name}}",
+    "done": "Готово: {{points}} очков",
+    "inProgress": "В работе: {{points}} очков",
+    "inReview": "На ревью: {{points}} очков",
+    "remaining": "Осталось: {{points}} очков",
+    "daysLeft": "{{count}} дней осталось",
+    "epicProgress": "Прогресс эпиков",
+    "epicProgressSubtitle": "Завершённых story по эпикам",
+    "noEpics": "Эпики ещё не определены.",
+    "stories": "{{done}}/{{total}} story, {{pct}}%",
+    "teamWorkload": "Загрузка команды",
+    "teamWorkloadSubtitle": "Очки, назначенные в активном спринте",
+    "noWorkload": "В активном спринте нет назначенных элементов.",
+    "pts": "{{points}} очков ({{count}})",
+    "blockedItems": "Заблокированные элементы",
+    "blockedSubtitle": "{{count}} элемент заблокирован",
+    "blockedSubtitle_other": "{{count}} элементов заблокировано",
+    "noBlocked": "Нет заблокированных элементов. Отличная работа!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Оставшиеся story points по сравнению с идеалом",
+    "noBurndownData": "Пока нет данных для burndown. Данные появятся, когда элементы начнут перемещаться по статусам во время спринта.",
+    "ideal": "Идеал",
+    "actual": "Факт",
+    "onTrack": "По плану",
+    "behind": "Отставание"
+  },
+
+  "aiSettings": {
+    "title": "Настройки ИИ",
+    "description": "Настройте провайдера ИИ, чтобы включить предложения критериев приёмки, декомпозицию story и создание черновиков примечаний к релизу. Вы используете собственный API-ключ; PlanA не хранит и не проксирует через общий аккаунт.",
+    "provider": "Провайдер",
+    "notConfigured": "Не настроен",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Пользовательский (совместимый с OpenAI)",
+    "model": "Модель",
+    "selectModel": "Выберите модель...",
+    "modelPlaceholder": "ID модели (напр. my-custom-model)",
+    "apiKey": "API-ключ",
+    "currentKey": "Текущий: {{key}}",
+    "enterApiKey": "Введите API-ключ",
+    "apiKeyHelp": "Ваш ключ хранится в зашифрованном виде для каждого проекта. Оставьте пустым, чтобы сохранить текущий ключ.",
+    "endpointUrl": "URL эндпоинта",
+    "saving": "Сохранение...",
+    "settingsSaved": "Настройки сохранены",
+    "stakeholderSharing": "Доступ для заинтересованных сторон",
+    "sharingDescription": "Создавайте ссылки для заинтересованных сторон для просмотра панели проекта в режиме чтения. Авторизация не требуется; ссылка является ключом доступа.",
+    "label": "Метка",
+    "labelPlaceholder": "напр. Клиент, Управляющий комитет",
+    "expiresIn": "Истекает через",
+    "days30": "30 дней",
+    "days90": "90 дней",
+    "days180": "180 дней",
+    "year1": "1 год",
+    "never": "Никогда",
+    "createLink": "Создать ссылку",
+    "creating": "Создание...",
+    "noActiveLinks": "Нет активных ссылок.",
+    "created": "Создано {{date}}",
+    "expires": "Истекает {{date}}",
+    "copyLink": "Копировать ссылку",
+    "copied": "Скопировано!",
+    "revoke": "Отозвать",
+    "revoked": "Отозвано",
+    "revokedDate": "Отозвано {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Панель для заинтересованных сторон",
+    "invalidLink": "Недействительная или просроченная ссылка",
+    "poweredBy": "Работает на PlanA",
+    "activeSprint": "Активный спринт",
+    "noActiveSprint": "Нет активного спринта",
+    "goal": "Цель:",
+    "items": "Элементы",
+    "points": "Очки",
+    "recentlyCompleted": "Недавно завершённые",
+    "noCompletedItems": "Пока нет завершённых элементов.",
+    "defects": "Дефекты",
+    "openDefects": "Открытые",
+    "closedDefects": "Закрытые",
+    "sprintVelocity": "Velocity спринта",
+    "storyProgress": "Прогресс Story"
+  },
+
+  "reportView": {
+    "title": "Отчёты",
+    "generateProject": "Отчёт по проекту",
+    "generateSprint": "Отчёт по спринту",
+    "generating": "Генерация...",
+    "generateDescription": "Сформируйте подробный отчёт на основе данных проекта.",
+    "exportPdf": "Экспорт в PDF",
+    "back": "Назад",
+    "generated": "Сгенерировано {{date}}",
+    "executiveSummary": "Краткое резюме",
+    "metrics": "Метрики",
+    "items": "Элементы",
+    "points": "Очки",
+    "completion": "Завершённость",
+    "testPassRate": "Процент прохождения тестов",
+    "epicBreakdown": "Разбивка по эпикам",
+    "epicColumn": "Эпик",
+    "storiesColumn": "Story",
+    "acceptanceCriteriaColumn": "Критерии приёмки",
+    "testCoverageColumn": "Покрытие тестами",
+    "defects": "Дефекты",
+    "total": "Всего",
+    "open": "Открытые",
+    "resolved": "Решённые",
+    "criticalOpen": "Критические (открытые)",
+    "testEvidence": "Результаты тестирования",
+    "totalTests": "Всего тестов",
+    "passed": "Пройдено",
+    "failed": "Провалено",
+    "errors": "Ошибки",
+    "skipped": "Пропущено",
+    "currentBlockers": "Текущие блокировки",
+    "velocityHistory": "История Velocity",
+    "generatedBy": "Сгенерировано PlanA"
+  }
+}

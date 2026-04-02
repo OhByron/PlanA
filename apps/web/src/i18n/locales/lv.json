@@ -1,0 +1,655 @@
+{
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "create": "Izveidot",
+    "delete": "Dzēst",
+    "edit": "Rediģēt",
+    "add": "Pievienot",
+    "remove": "Noņemt",
+    "dismiss": "Noraidīt",
+    "close": "Aizvērt",
+    "loading": "Ielādē...",
+    "send": "Nosūtīt",
+    "open": "Atvērt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "report": "Atskaite",
+    "settings": "Iestatījumi",
+    "gotIt": "Sapratu",
+    "tryAgain": "Mēģināt vēlreiz",
+    "signOut": "Iziet",
+    "signIn": "Pieslēgties",
+    "whatsThis": "Kas tas ir?",
+    "help": "Palīdzība",
+    "error": "Kļūda: {{message}}",
+    "thinking": "Domāju...",
+    "generating": "Ģenerēšana...",
+    "language": "Valoda"
+  },
+
+  "brand": {
+    "name": "PlanA",
+    "tagline": "Agile, patiešām."
+  },
+
+  "nav": {
+    "board": "Panelis",
+    "backlog": "Backlog",
+    "epics": "Epic'i",
+    "sprints": "Sprint'i",
+    "reports": "Atskaites",
+    "report": "Atskaite",
+    "team": "Komanda",
+    "settings": "Iestatījumi",
+    "project": "Projekts"
+  },
+
+  "sidebar": {
+    "expandSidebar": "Izvērst sānjoslu",
+    "collapseSidebar": "Sakļaut sānjoslu",
+    "myWork": "Mans darbs",
+    "organisations": "Organizācijas",
+    "noOrganisationsYet": "Vēl nav organizāciju",
+    "toggle": "Pārslēgt {{name}}"
+  },
+
+  "topBar": {
+    "notifications": "Paziņojumi",
+    "markAllRead": "Atzīmēt visus kā lasītus",
+    "noNotificationsYet": "Vēl nav paziņojumu",
+    "justNow": "tikko",
+    "minutesAgo": "pirms {{count}} min",
+    "hoursAgo": "pirms {{count}} st",
+    "daysAgo": "pirms {{count}} d"
+  },
+
+  "notifications": {
+    "assigned": "Jums tika piešķirts \"{{title}}\"",
+    "statusChanged": "Statuss mainīts \"{{title}}\"",
+    "commentAdded": "Jauns komentārs \"{{title}}\"",
+    "mentioned": "Jūs tikāt pieminēts \"{{title}}\"",
+    "default": "Paziņojums: {{type}}"
+  },
+
+  "status": {
+    "backlog": "Backlog",
+    "ready": "Gatavs",
+    "in_progress": "Darbā",
+    "in_review": "Pārskatē",
+    "done": "Pabeigts",
+    "cancelled": "Atcelts"
+  },
+
+  "priority": {
+    "urgent": "Steidzams",
+    "high": "Augsts",
+    "medium": "Vidējs",
+    "low": "Zems"
+  },
+
+  "type": {
+    "story": "Story",
+    "bug": "Bug",
+    "task": "Uzdevums"
+  },
+
+  "methodology": {
+    "scrum": "Scrum",
+    "kanban": "Kanban",
+    "shape_up": "Shape Up"
+  },
+
+  "sprintStatus": {
+    "active": "Aktīvs",
+    "planned": "Plānots",
+    "completed": "Pabeigts",
+    "cancelled": "Atcelts"
+  },
+
+  "roles": {
+    "pm": "Projektu vadītājs",
+    "po": "Produkta īpašnieks",
+    "bsa": "Biznesa sistēmu analītiķis",
+    "ba": "Biznesa analītiķis",
+    "qe": "Kvalitātes inženieris",
+    "ux": "UX dizaineris",
+    "dev": "Izstrādātājs"
+  },
+
+  "login": {
+    "continueWithGitHub": "Turpināt ar GitHub",
+    "continueWithGoogle": "Turpināt ar Google",
+    "orSignInWithEmail": "vai pieslēdzieties ar e-pastu",
+    "emailAddress": "E-pasta adrese",
+    "password": "Parole",
+    "loginFailed": "Pieslēgšanās neizdevās",
+    "devOnly": "tikai izstrādei",
+    "devLogin": "Izstrādes pieslēgšanās (bez OAuth)"
+  },
+
+  "authError": {
+    "title": "Pieslēgšanās neizdevās",
+    "badState": "Pieslēgšanās sesija beidzās. Lūdzu, mēģiniet vēlreiz.",
+    "csrf": "Drošības pārbaude neizdevās. Lūdzu, mēģiniet vēlreiz.",
+    "exchangeFailed": "Nevarēja pabeigt pieslēgšanos ar pakalpojuma sniedzēju. Lūdzu, mēģiniet vēlreiz.",
+    "dbError": "Servera kļūda. Lūdzu, mēģiniet vēlāk.",
+    "missingToken": "Autentifikācijas tokens netika saņemts.",
+    "default": "Pieslēgšanās laikā radusies neparedzēta kļūda."
+  },
+
+  "myWork": {
+    "title": "Mans darbs",
+    "itemCount": "Jums piešķirts {{count}} elements",
+    "itemCount_other": "Jums piešķirti {{count}} elementi",
+    "noItems": "Nav piešķirtu elementu.",
+    "noItemsHelp": "Elementi parādīsies šeit, kad jūs tiksiet pievienots kā projekta komandas dalībnieks un jums tiks piešķirtas stories vai uzdevumi. Pārliecinieties, ka jūsu konta e-pasts atbilst komandas dalībnieka e-pastam vai ka esat pieņēmis uzaicinājumu."
+  },
+
+  "orgs": {
+    "title": "Organizācijas",
+    "orgCount": "{{count}} organizācija",
+    "orgCount_other": "{{count}} organizācijas",
+    "showArchived": "Rādīt arhivētās",
+    "newOrganisation": "+ Jauna organizācija",
+    "noOrgsYet": "Vēl nav organizāciju. Izveidojiet vienu, lai sāktu.",
+    "archived": "Arhivēts",
+    "confirmDelete": "Neatgriezeniski dzēst šo organizāciju un visus tās datus?",
+    "added": "Pievienots {{date}}",
+    "newOrg": "Jauna organizācija",
+    "orgName": "Organizācijas nosaukums",
+    "orgNameRequired": "Organizācijas nosaukums *",
+    "contactName": "Kontaktpersonas vārds",
+    "contactEmail": "Kontakta e-pasts",
+    "contactPhone": "Kontakta tālrunis",
+    "addressLine1": "Adreses 1. rinda",
+    "addressLine2": "Adreses 2. rinda",
+    "city": "Pilsēta",
+    "state": "Novads",
+    "postalCode": "Pasta indekss",
+    "country": "Valsts"
+  },
+
+  "orgDetail": {
+    "allOrganisations": "Visas organizācijas",
+    "editDetails": "Rediģēt detaļas",
+    "noContactDetails": "Vēl nav kontaktinformācijas. Noklikšķiniet uz \"Rediģēt detaļas\", lai pievienotu.",
+    "contact": "Kontaktpersona:",
+    "email": "E-pasts:",
+    "phone": "Tālrunis:",
+    "location": "Adrese:",
+    "projects": "Projekti ({{count}})",
+    "newProject": "+ Jauns projekts",
+    "noProjectsYet": "Vēl nav projektu. Izveidojiet vienu, lai sāktu.",
+    "newProjectTitle": "Jauns projekts",
+    "projectName": "Projekta nosaukums",
+    "projectNameRequired": "Projekta nosaukums *",
+    "description": "Apraksts",
+    "methodology": "Metodoloģija",
+    "dueDate": "Izpildes datums",
+    "customerContact": "Klienta kontakts",
+    "createProject": "Izveidot projektu",
+    "whatIsThisProjectAbout": "Par ko ir šis projekts?"
+  },
+
+  "invite": {
+    "invalidInvitation": "Nederīgs uzaicinājums",
+    "invalidLink": "Šī uzaicinājuma saite nav derīga.",
+    "goToLogin": "Doties uz pieslēgšanos",
+    "alreadyAccepted": "Jau pieņemts",
+    "alreadyAcceptedMessage": "Šis uzaicinājums jau ir izmantots. Jūs varat pieslēgties ar saviem akreditācijas datiem.",
+    "expired": "Uzaicinājums beidzies",
+    "expiredMessage": "Šim uzaicinājumam beidzies derīguma termiņš. Lūdzu, lūgiet komandai nosūtīt jaunu.",
+    "invitedToJoin": "Jūs esat uzaicināts pievienoties projektam",
+    "emailLabel": "E-pasts",
+    "yourName": "Jūsu vārds",
+    "passwordLabel": "Parole",
+    "confirmPassword": "Apstiprināt paroli",
+    "minChars": "Vismaz 8 rakstzīmes",
+    "repeatPassword": "Atkārtojiet paroli",
+    "passwordTooShort": "Parolei jābūt vismaz 8 rakstzīmēm",
+    "passwordsMismatch": "Paroles nesakrīt",
+    "createAccountJoin": "Izveidot kontu un pievienoties",
+    "creatingAccount": "Konta izveide...",
+    "alreadyHaveAccount": "Jau ir konts?",
+    "logIn": "Pieslēgties"
+  },
+
+  "board": {
+    "helpTitle": "Jūsu Kanban panelis",
+    "helpBody1": "Šajā panelī jūsu komandas darbs ir attēlots kā plūsma. Katra kolonna atbilst darba procesa posmam.",
+    "helpBody2": "Velciet kartītes starp kolonnām, lai uzreiz atjauninātu statusu. Pārvietojot story, tā pakārtotie uzdevumi pārvietojas līdzi.",
+    "helpBody3": "Turiet kolonnu \"Darbā\" mazu; nepabeigta darba ierobežošana palīdz jūsu komandai pabeigt lietas, nevis sākt jaunas.",
+    "itemCount": "{{count}} elements",
+    "itemCount_other": "{{count}} elementi",
+    "ptsInFlight": "{{inProgress}} / {{capacity}} punkti darbā",
+    "overCapacity": "Pārsniegta jauda",
+    "noItems": "Nav elementu",
+    "column": "{{status}} kolonna"
+  },
+
+  "backlog": {
+    "helpTitle": "Jūsu Backlog",
+    "helpBody1": "Backlog ir jūsu prioritizēts darbu saraksts. Elementi augšpusē ir ar augstāko prioritāti.",
+    "helpBody2": "Velciet elementus, turot pie roktura, lai mainītu prioritāti. Izmantojiet filtrus, lai fokusētos uz stories, kļūdām vai noteiktiem statusiem.",
+    "helpBody3": "Noklikšķiniet uz \"+ Jauns elements\", lai ātri pievienotu stories vai uzdevumus.",
+    "allStatuses": "Visi statusi",
+    "allTypes": "Visi tipi",
+    "stories": "Stories",
+    "bugs": "Bug'i",
+    "tasks": "Uzdevumi",
+    "itemCount": "{{count}} elements",
+    "itemCount_other": "{{count}} elementi",
+    "newItem": "+ Jauns elements",
+    "noItemsMatch": "Neviens elements neatbilst jūsu filtriem. Mēģiniet tos pielāgot vai izveidojiet jaunu elementu."
+  },
+
+  "sprints": {
+    "helpTitle": "Sprint'a plānošana",
+    "helpBody1": "Sprint'i ir laika ierobežotas iterācijas (parasti 2 nedēļas). Velciet stories no Backlog uz Sprint'u, lai plānotu komandas darbu.",
+    "helpBody2": "Sekojiet jaudas indikatoram, lai nepārslogotu komandu.",
+    "title": "Sprint'i",
+    "noSprintsYet": "Vēl nav Sprint'u. Izveidojiet vienu, lai sāktu plānot.",
+    "pts": "{{count}} punkti"
+  },
+
+  "workItemDetail": {
+    "backToBoard": "Atpakaļ uz paneli",
+    "partOf": "Daļa no:",
+    "clickToEdit": "Noklikšķiniet, lai rediģētu",
+    "description": "Apraksts",
+    "descPlaceholder": "Aprakstiet prasību, mērķi un kontekstu...",
+    "suggest": "Ieteikt",
+    "clickToAddDescription": "Noklikšķiniet, lai pievienotu aprakstu...",
+    "details": "Detaļas",
+    "statusLabel": "Statuss",
+    "typeLabel": "Tips",
+    "priorityLabel": "Prioritāte",
+    "assigneeLabel": "Piešķirts",
+    "unassigned": "Nav piešķirts",
+    "totalPoints": "Kopējie punkti",
+    "storyPoints": "Story Points",
+    "storyPointsHelp": "Story gadījumā punkti ir visu uzdevumu punktu summa. Pievienojiet punktus atsevišķiem uzdevumiem precizēšanas laikā.",
+    "taskPointsHelp": "Novērtējiet relatīvo piepūli. Izplatītas skalas: 1, 2, 3, 5, 8, 13. \"1\" ir visvienkāršākā lieta, ko jūsu komanda dara.",
+    "sumOfTasks": "{{count}} uzdevuma summa",
+    "sumOfTasks_other": "{{count}} uzdevumu summa",
+    "largeStoryWarning": "Šis story ir {{points}} punkti. Apsveriet iespēju to sadalīt mazākos stories, no kuriem katru var pabeigt vienā Sprint'ā.",
+    "blocked": "Bloķēts",
+    "blockedBy": "Bloķē:",
+    "notBlocked": "Nav bloķēts",
+    "labels": "Birkas",
+    "convertToStory": "Pārvērst par Story",
+    "convertToStoryConfirm": "Pārvērst šo uzdevumu par story? Tas saglabās atkarības saiti ar sākotnējo story.",
+    "convertToStoryHelp": "Paaugstina šo uzdevumu par neatkarīgu story ar atkarības saiti",
+    "created": "Izveidots {{date}}",
+    "updated": "Atjaunots {{date}}"
+  },
+
+  "childTasks": {
+    "title": "Uzdevumi ({{count}})",
+    "contextHelp": "Uzdevumi sadala story pa disciplīnām, piemēram, UX dizains, backend izstrāde, frontend izstrāde un QE testēšana. Katru uzdevumu var piešķirt komandas dalībniekam.",
+    "suggestTasks": "Ieteikt uzdevumus",
+    "addTask": "+ Pievienot uzdevumu",
+    "noTasksYet": "Vēl nav uzdevumu.",
+    "taskTitlePlaceholder": "Uzdevuma nosaukums (piem. 'UX: Pieslēgšanās ekrāna dizains')",
+    "suggestedTasks": "Ieteiktie uzdevumi, noklikšķiniet, lai pievienotu:",
+    "pts": "{{count}} punkti",
+    "clarificationNeeded": "Nepieciešams precizējums:"
+  },
+
+  "acceptanceCriteria": {
+    "title": "Pieņemšanas kritēriji",
+    "contextHelp": "Pieņemšanas kritēriji nosaka, kad elements ir patiesi \"pabeigts\". Rakstīti Given / When / Then formātā (BDD), tie padara gaidas skaidras un pārbaudāmas. Katrs kritērijs ir konkrēts, pārbaudāms nosacījums, nevis neskaidra vēlme.",
+    "addButton": "+ Pievienot",
+    "suggestAC": "Ieteikt PK",
+    "noCriteriaYet": "Vēl nav pieņemšanas kritēriju. Definējiet nosacījumus statusam \"pabeigts\".",
+    "given": "Dots",
+    "when": "Kad",
+    "then": "Tad",
+    "deleteAC": "Dzēst pieņemšanas kritēriju",
+    "givenPlaceholder": "Dots...",
+    "whenPlaceholder": "Kad...",
+    "thenPlaceholder": "Tad...",
+    "aiSuggestions": "AI ieteikumi, noklikšķiniet, lai pievienotu:",
+    "aiNeedsMoreInfo": "AI nepieciešama papildu informācija:"
+  },
+
+  "comments": {
+    "title": "Komentāri",
+    "noCommentsYet": "Vēl nav komentāru.",
+    "addComment": "Pievienot komentāru..."
+  },
+
+  "dependencies": {
+    "title": "Atkarības",
+    "contextHelp": "Atkarības seko saiknēm starp elementiem. \"Atkarīgs no\" nozīmē, ka šis elements nevar turpināties, kamēr mērķis nav pabeigts. \"Saistīts ar\" ir informatīva saite.",
+    "noDependencies": "Nav atkarību.",
+    "dependsOn": "Atkarīgs no",
+    "relatesTo": "Saistīts ar",
+    "dependedOnBy": "No tā atkarīgs",
+    "removeDependency": "Noņemt atkarību",
+    "selectItem": "Izvēlieties elementu..."
+  },
+
+  "links": {
+    "title": "Saites",
+    "addLink": "+ Pievienot saiti",
+    "noLinksYet": "Vēl nav saišu.",
+    "labelPlaceholder": "Birka (piem. GitHub PR, Figma, Testa rezultāti, Dokumenti)",
+    "urlPlaceholder": "https://...",
+    "removeLink": "Noņemt saiti"
+  },
+
+  "testResults": {
+    "retestRequired": "Nepieciešama atkārtota testēšana",
+    "retestMessage": "Šim defektam ir {{count}} neizturētu testu. Augšupielādējiet jaunus testa rezultātus (JUnit XML vai webhook) pēc labojuma ieviešanas, lai noņemtu QE vārtus un aizvērtu šo elementu.",
+    "title": "Testa rezultāti",
+    "passed": "izturēts",
+    "failed": "neizturēts",
+    "errors": "kļūdas",
+    "skipped": "izlaists",
+    "lastRun": "Pēdējā palaišana: {{date}}",
+    "sourceTestFailure": "Avota testa kļūme",
+    "suite": "Suite: {{name}}",
+    "duration": "Ilgums: {{ms}}ms",
+    "source": "Avots: {{source}} | Ziņots: {{date}}",
+    "generateDescAC": "Ģenerēt aprakstu un PK"
+  },
+
+  "helpOverlay": {
+    "dismiss": "Noraidīt",
+    "close": "Aizvērt"
+  },
+
+  "richTextEditor": {
+    "startTyping": "Sāciet rakstīt...",
+    "bold": "Treknraksts",
+    "italic": "Kursīvs",
+    "inlineCode": "Iekļauts kods",
+    "heading": "Virsraksts",
+    "subheading": "Apakšvirsraksts",
+    "bulletList": "Aizzīmju saraksts",
+    "numberedList": "Numurēts saraksts",
+    "quote": "Citāts",
+    "codeBlock": "Koda bloks"
+  },
+
+  "createEpic": {
+    "button": "+ Jauns Epic",
+    "title": "Izveidot Epic",
+    "titleLabel": "Nosaukums",
+    "titlePlaceholder": "piem. Lietotāju autentifikācija",
+    "descriptionLabel": "Apraksts",
+    "descriptionPlaceholder": "Biznesa mērķis un šī Epic'a tvērums...",
+    "priorityLabel": "Prioritāte",
+    "assigneeLabel": "Piešķirts"
+  },
+
+  "createProject": {
+    "button": "+ Jauns projekts",
+    "title": "Izveidot projektu",
+    "organisationLabel": "Organizācija",
+    "selectOrg": "Izvēlieties organizāciju...",
+    "teamLabel": "Komanda",
+    "selectTeam": "Izvēlieties komandu...",
+    "projectNameLabel": "Projekta nosaukums",
+    "projectNamePlaceholder": "piem. PlanA MVP",
+    "descriptionLabel": "Apraksts",
+    "descriptionPlaceholder": "Par ko ir šis projekts?",
+    "methodologyLabel": "Metodoloģija"
+  },
+
+  "createSprint": {
+    "button": "+ Jauns Sprint",
+    "title": "Izveidot Sprint'u",
+    "nameLabel": "Nosaukums",
+    "namePlaceholder": "Sprint 1",
+    "goalLabel": "Mērķis",
+    "goalPlaceholder": "Ko šim Sprint'am jāsasniedz?",
+    "startDateLabel": "Sākuma datums",
+    "endDateLabel": "Beigu datums"
+  },
+
+  "createTeam": {
+    "button": "+ Jauna komanda",
+    "title": "Izveidot komandu",
+    "organisationLabel": "Organizācija",
+    "selectOrg": "Izvēlieties organizāciju...",
+    "teamNameLabel": "Komandas nosaukums",
+    "teamNamePlaceholder": "piem. Backend komanda"
+  },
+
+  "quickCreate": {
+    "placeholder": "Kas jādara?"
+  },
+
+  "workItemCard": {
+    "open": "Atvērt {{title}}",
+    "taskCount": "{{count}} uzdevums",
+    "taskCount_other": "{{count}} uzdevumi"
+  },
+
+  "team": {
+    "title": "Komanda",
+    "memberCount": "{{count}} dalībnieks",
+    "memberCount_other": "{{count}} dalībnieki",
+    "addMember": "+ Pievienot dalībnieku",
+    "noMembersYet": "Vēl nav komandas dalībnieku. Pievienojiet cilvēkus, lai sāktu piešķirt darbu.",
+    "confirmRemove": "Noņemt {{name}} no komandas?",
+    "invite": "Uzaicināt",
+    "inviteLink": "Uzaicinājuma saite:",
+    "copy": "Kopēt",
+    "ptsPerSprint": "{{count}} punkti/Sprint",
+    "addTeamMember": "Pievienot komandas dalībnieku",
+    "nameRequired": "Vārds *",
+    "emailLabel": "E-pasts",
+    "phoneLabel": "Tālrunis",
+    "roleRequired": "Loma *",
+    "capacity": "Jauda",
+    "capacityPlaceholder": "punkti/Sprint",
+    "nameLabel": "Vārds",
+    "roleLabel": "Loma"
+  },
+
+  "epics": {
+    "helpTitle": "Epic'i",
+    "helpBody1": "Epic'i ir funkcionalitātes līmeņa grupējumi. Katrs Epic satur saistītas stories, kas kopā nodrošina biznesa iespēju.",
+    "helpBody2": "Noklikšķiniet uz Epic'a, lai redzētu tā stories, pievienotu jaunas un sekotu progresam.",
+    "title": "Epic'i",
+    "noEpicsYet": "Vēl nav Epic'u. Epic'i grupē saistītas stories funkcionalitātes līmeņa piegādājumos.",
+    "storyProgress": "{{done}}/{{total}} stories"
+  },
+
+  "epicDetail": {
+    "backToEpics": "Atpakaļ uz Epic'iem",
+    "description": "Apraksts",
+    "descPlaceholder": "Aprakstiet biznesa mērķi un tvērumu...",
+    "clickToAddDescription": "Noklikšķiniet, lai pievienotu aprakstu...",
+    "stories": "Stories ({{count}})",
+    "storiesContextHelp": "Stories ir šī Epic'a piegādājamie mērķi. Katra story atbilst konkrētam lietotāja rezultātam, ko var pabeigt viena Sprint'a laikā.",
+    "addStory": "+ Pievienot Story",
+    "noStoriesYet": "Šajā Epic'ā vēl nav story. Pievienojiet vienu, lai definētu mērķus.",
+    "details": "Detaļas",
+    "statusLabel": "Statuss",
+    "priorityLabel": "Prioritāte",
+    "assigneeLabel": "Piešķirts",
+    "addStoryToEpic": "Pievienot Story Epic'am",
+    "titleRequired": "Nosaukums *",
+    "titleHint": "(\"Kā [loma], es vēlos [mērķis], lai [ieguvums]\")",
+    "titlePlaceholder": "Kā [loma], es vēlos [mērķis], lai [ieguvums]",
+    "descriptionLabel": "Apraksts",
+    "descriptionPlaceholder": "Konteksts, prasības un detaļas...",
+    "storyPointsLabel": "Story Points",
+    "autoTaskHint": "Piešķirtajam tiks automātiski izveidots uzdevums ar {{points}} punktu(-iem). Punkti vienmēr ir uz uzdevumiem.",
+    "largeStoryWarning": "Liels story ({{points}} punkti). Apsveriet iespēju sadalīt to mazākos stories, no kuriem katru var pabeigt vienā Sprint'ā. Mazākus stories ir vieglāk novērtēt, testēt un piegādāt.",
+    "acceptanceCriteria": "Pieņemšanas kritēriji",
+    "acContextHelp": "Definējiet, kad šis story ir \"pabeigts\". Katram kritērijam jābūt konkrētam un pārbaudāmam.",
+    "addCriterion": "+ Pievienot kritēriju",
+    "givenPlaceholder": "priekšnoteikums vai konteksts...",
+    "whenPlaceholder": "darbība vai notikums...",
+    "thenPlaceholder": "gaidāmais rezultāts...",
+    "createRelatedTasks": "Izveidot saistītus uzdevumus?",
+    "autoAssignHint": "(automātiski piešķirts komandas dalībniekiem pēc lomas)",
+    "uxDesign": "UX dizains",
+    "qeTesting": "QE testēšana",
+    "bsaAnalysis": "BSA analīze",
+    "creating": "Izveido...",
+    "createStory": "Izveidot Story"
+  },
+
+  "sprintDetail": {
+    "backToSprints": "Atpakaļ uz Sprint'iem",
+    "start": "Sākums:",
+    "end": "Beigas:",
+    "capacity": "{{points}} / {{capacity}} jaudas",
+    "storyPoints": "{{count}} Story Points",
+    "storiesAndItems": "{{stories}} stories, {{items}} kopā elementu",
+    "done": "Pabeigts",
+    "addStories": "+ Pievienot Stories",
+    "startSprint": "Sākt Sprint'u",
+    "completeSprint": "Pabeigt Sprint'u",
+    "addStoriesToSprint": "Pievienot stories Sprint'am ({{count}} pieejami)",
+    "allStoriesAssigned": "Visas stories jau ir Sprint'ā vai pabeigtas.",
+    "noItemsYet": "Šajā Sprint'ā vēl nav elementu. Noklikšķiniet uz \"+ Pievienot Stories\", lai ņemtu no Backlog.",
+    "removeStoryAndTasks": "Noņemt story un uzdevumus no Sprint'a",
+    "removeFromSprint": "Noņemt no Sprint'a",
+    "standaloneTasks": "Atsevišķie uzdevumi",
+    "adding": "Pievieno...",
+    "tasks": "{{count}} uzdevumi"
+  },
+
+  "reports": {
+    "helpTitle": "Projekta atskaites",
+    "helpBody1": "Atskaites sniedz pārlūku par jūsu komandas piegādi. Velocity rāda, cik punktu jūs pabeidzat katrā Sprint'ā; laika gaitā tas stabilizējas.",
+    "helpBody2": "Izmantojiet Sprint'a progresa un komandas noslogojuma diagrammas, lai savlaicīgi pamanītu sašaurinājumus.",
+    "title": "Atskaites",
+    "sprint": "Sprint:",
+    "velocity": "Velocity",
+    "velocitySubtitle": "Story Points, kas pabeigti katrā Sprint'ā",
+    "noCompletedSprints": "Vēl nav pabeigtu Sprint'u. Velocity parādīsies pēc pirmā Sprint'a pabeigšanas.",
+    "trend": "Tendence",
+    "threeSprintAvg": "3 Sprint'u vidējais",
+    "avgVelocity": "Vidējā Velocity:",
+    "pointsPerSprint": "punkti/Sprint",
+    "sprintProgress": "Sprint: {{name}}",
+    "done": "Pabeigts: {{points}} punkti",
+    "inProgress": "Darbā: {{points}} punkti",
+    "inReview": "Pārskatē: {{points}} punkti",
+    "remaining": "Atlikušie: {{points}} punkti",
+    "daysLeft": "Atlikušas {{count}} dienas",
+    "epicProgress": "Epic'u progress",
+    "epicProgressSubtitle": "Pabeigtas stories katrā Epic'ā",
+    "noEpics": "Vēl nav definēti Epic'i.",
+    "stories": "{{done}}/{{total}} stories, {{pct}}%",
+    "teamWorkload": "Komandas noslogojums",
+    "teamWorkloadSubtitle": "Aktīvajā Sprint'ā piešķirtie punkti",
+    "noWorkload": "Aktīvajā Sprint'ā nav piešķirtu elementu.",
+    "pts": "{{points}} punkti ({{count}})",
+    "blockedItems": "Bloķēti elementi",
+    "blockedSubtitle": "{{count}} elements pašlaik bloķēts",
+    "blockedSubtitle_other": "{{count}} elementi pašlaik bloķēti",
+    "noBlocked": "Nav bloķētu elementu. Lielisks darbs!",
+    "burndown": "Burndown: {{name}}",
+    "burndownSubtitle": "Atlikušie Story Points pret ideālo",
+    "noBurndownData": "Vēl nav Burndown datu. Dati parādīsies, kad elementi sāks kustēties pa statusiem Sprint'a laikā.",
+    "ideal": "Ideāls",
+    "actual": "Faktiskais",
+    "onTrack": "Grafikā",
+    "behind": "Atpaliek"
+  },
+
+  "aiSettings": {
+    "title": "AI konfigurācija",
+    "description": "Konfigurējiet AI pakalpojuma sniedzēju, lai iespējotu pieņemšanas kritēriju ieteikumus, story dekompozīciju un laidiena piezīmju melnrakstus. Jūs izmantojat savu API atslēgu; PlanA neglabā un netarpniecē caur kopīgu kontu.",
+    "provider": "Pakalpojuma sniedzējs",
+    "notConfigured": "Nav konfigurēts",
+    "anthropic": "Anthropic (Claude)",
+    "openai": "OpenAI (GPT-4)",
+    "azureOpenai": "Azure OpenAI",
+    "custom": "Pielāgots (ar OpenAI savienojams)",
+    "model": "Modelis",
+    "selectModel": "Izvēlieties modeli...",
+    "modelPlaceholder": "Modeļa ID (piem. my-custom-model)",
+    "apiKey": "API atslēga",
+    "currentKey": "Pašreizējā: {{key}}",
+    "enterApiKey": "Ievadiet API atslēgu",
+    "apiKeyHelp": "Jūsu atslēga tiek glabāta šifrēta katram projektam. Atstājiet tukšu, lai saglabātu pašreizējo atslēgu.",
+    "endpointUrl": "Galapunkta URL",
+    "saving": "Saglabā...",
+    "settingsSaved": "Iestatījumi saglabāti",
+    "stakeholderSharing": "Dalīšana ar iesaistītajām pusēm",
+    "sharingDescription": "Izveidojiet kopīgojamas saites, lai iesaistītās puses skatītu projekta informācijas paneli tikai lasīšanas režīmā. Nav nepieciešama pieslēgšanās; saite ir pieeja.",
+    "label": "Birka",
+    "labelPlaceholder": "piem. Klients, Vadības komiteja",
+    "expiresIn": "Derīgums beidzas",
+    "days30": "30 dienas",
+    "days90": "90 dienas",
+    "days180": "180 dienas",
+    "year1": "1 gads",
+    "never": "Nekad",
+    "createLink": "Izveidot saiti",
+    "creating": "Izveido...",
+    "noActiveLinks": "Nav aktīvu kopīgošanas saišu.",
+    "created": "Izveidots {{date}}",
+    "expires": "Beidzas {{date}}",
+    "copyLink": "Kopēt saiti",
+    "copied": "Nokopēts!",
+    "revoke": "Atsaukt",
+    "revoked": "Atsaukts",
+    "revokedDate": "Atsaukts {{date}}"
+  },
+
+  "shareDashboard": {
+    "title": "Iesaistīto pušu panelis",
+    "invalidLink": "Nederīga vai beigusies saite",
+    "poweredBy": "Darbina PlanA",
+    "activeSprint": "Aktīvais Sprint",
+    "noActiveSprint": "Nav aktīva Sprint'a",
+    "goal": "Mērķis:",
+    "items": "Elementi",
+    "points": "Punkti",
+    "recentlyCompleted": "Nesen pabeigtie",
+    "noCompletedItems": "Vēl nav pabeigtu elementu.",
+    "defects": "Defekti",
+    "openDefects": "Atvērti",
+    "closedDefects": "Aizvērti",
+    "sprintVelocity": "Sprint'a Velocity",
+    "storyProgress": "Story progress"
+  },
+
+  "reportView": {
+    "title": "Atskaites",
+    "generateProject": "Projekta atskaite",
+    "generateSprint": "Sprint'a atskaite",
+    "generating": "Ģenerē...",
+    "generateDescription": "Ģenerējiet visaptverošu atskaiti no jūsu projekta datiem.",
+    "exportPdf": "Eksportēt PDF",
+    "back": "Atpakaļ",
+    "generated": "Ģenerēts {{date}}",
+    "executiveSummary": "Izpildkopsavilkums",
+    "metrics": "Metrikas rādītāji",
+    "items": "Elementi",
+    "points": "Punkti",
+    "completion": "Izpilde",
+    "testPassRate": "Testu izturēšanas rādītājs",
+    "epicBreakdown": "Epic'u sadalījums",
+    "epicColumn": "Epic",
+    "storiesColumn": "Stories",
+    "acceptanceCriteriaColumn": "Pieņemšanas kritēriji",
+    "testCoverageColumn": "Testu pārklājums",
+    "defects": "Defekti",
+    "total": "Kopā",
+    "open": "Atvērti",
+    "resolved": "Atrisināti",
+    "criticalOpen": "Kritiski (atvērti)",
+    "testEvidence": "Testu pierādījumi",
+    "totalTests": "Testi kopā",
+    "passed": "Izturēts",
+    "failed": "Neizturēts",
+    "errors": "Kļūdas",
+    "skipped": "Izlaists",
+    "currentBlockers": "Pašreizējie bloķētāji",
+    "velocityHistory": "Velocity vēsture",
+    "generatedBy": "Ģenerējis PlanA"
+  }
+}
