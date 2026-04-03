@@ -152,13 +152,9 @@ export function BoardPage() {
   const grouped = COLUMNS.reduce(
     (acc, status) => {
       const columnItems = items.filter((i) => i.status === status);
-      // Sort enablers (items that unblock others) to the top
-      columnItems.sort((a, b) => {
-        const aUnblocks = unblocksMap.get(a.id) ?? 0;
-        const bUnblocks = unblocksMap.get(b.id) ?? 0;
-        if (aUnblocks !== bUnblocks) return bUnblocks - aUnblocks;
-        return a.orderIndex - b.orderIndex;
-      });
+      // Sort by user-defined order. Enabler badges draw attention without
+      // overriding the order the user has set by dragging cards.
+      columnItems.sort((a, b) => a.orderIndex - b.orderIndex);
       acc[status] = columnItems;
       return acc;
     },
@@ -187,7 +183,35 @@ export function BoardPage() {
     }
 
     const item = items.find((i) => i.id === active.id);
-    if (!item || item.status === newStatus) return;
+    if (!item) return;
+
+    // Same column — reorder within the column
+    if (item.status === newStatus && !COLUMNS.includes(over.id as WorkItemStatus)) {
+      const columnItems = grouped[newStatus] ?? [];
+      const activeIdx = columnItems.findIndex((i) => i.id === active.id);
+      const overIdx = columnItems.findIndex((i) => i.id === over.id);
+      if (activeIdx === -1 || overIdx === -1 || activeIdx === overIdx) return;
+
+      let newOrderIndex: number;
+      if (overIdx === 0) {
+        newOrderIndex = (columnItems[0]?.orderIndex ?? 0) - 1;
+      } else if (overIdx >= columnItems.length - 1) {
+        newOrderIndex = (columnItems[columnItems.length - 1]?.orderIndex ?? 0) + 1;
+      } else if (activeIdx < overIdx) {
+        const above = columnItems[overIdx]!;
+        const below = columnItems[overIdx + 1];
+        newOrderIndex = below ? (above.orderIndex + below.orderIndex) / 2 : above.orderIndex + 1;
+      } else {
+        const above = columnItems[overIdx - 1];
+        const below = columnItems[overIdx]!;
+        newOrderIndex = above ? (above.orderIndex + below.orderIndex) / 2 : below.orderIndex - 1;
+      }
+
+      updateItem.mutate({ workItemId: item.id, data: { orderIndex: newOrderIndex } });
+      return;
+    }
+
+    if (item.status === newStatus) return;
 
     const onMutateError = (err: Error) => {
       if (err instanceof ApiError) {

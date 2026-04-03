@@ -118,6 +118,16 @@ func (h *DependencyHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Prevent dependencies between a parent and its direct children.
+	// A task cannot depend on its own parent story (or vice versa).
+	var sourceParent, targetParent *string
+	h.db.QueryRow(r.Context(), `SELECT parent_id FROM work_items WHERE id = $1`, workItemID).Scan(&sourceParent)
+	h.db.QueryRow(r.Context(), `SELECT parent_id FROM work_items WHERE id = $1`, body.TargetID).Scan(&targetParent)
+	if (sourceParent != nil && *sourceParent == body.TargetID) || (targetParent != nil && *targetParent == workItemID) {
+		writeError(w, http.StatusBadRequest, "validation_error", "Cannot create a dependency between a parent and its own child")
+		return
+	}
+
 	var d dependencyResponse
 	err := h.db.QueryRow(r.Context(), `
 		INSERT INTO work_item_dependencies (source_id, target_id, type, strength, created_by)
@@ -264,6 +274,21 @@ func (h *DependencyHandlers) BulkCommit(w http.ResponseWriter, r *http.Request) 
 			body.Create[i].Strength = "hard"
 		} else if item.Strength != "hard" && item.Strength != "soft" {
 			writeError(w, http.StatusBadRequest, "validation_error", "strength must be 'hard' or 'soft'")
+			return
+		}
+	}
+
+	// Pre-check: reject parent-child dependencies
+	for _, item := range body.Create {
+		if item.Type != "depends_on" {
+			continue
+		}
+		var srcParent, tgtParent *string
+		h.db.QueryRow(r.Context(), `SELECT parent_id FROM work_items WHERE id = $1`, item.SourceID).Scan(&srcParent)
+		h.db.QueryRow(r.Context(), `SELECT parent_id FROM work_items WHERE id = $1`, item.TargetID).Scan(&tgtParent)
+		if (srcParent != nil && *srcParent == item.TargetID) || (tgtParent != nil && *tgtParent == item.SourceID) {
+			writeError(w, http.StatusBadRequest, "validation_error",
+				"Cannot create a dependency between a parent and its own child")
 			return
 		}
 	}

@@ -297,9 +297,21 @@ function GraphPageInner() {
       const strength = connectorMode === 'soft_depends' ? 'soft' as const : 'hard' as const;
       const sourceId = type === 'depends_on' ? connection.target : connection.source;
       const targetId = type === 'depends_on' ? connection.source : connection.target;
+
+      // Prevent dependencies between parent and direct child
+      if (type === 'depends_on') {
+        const sourceItem = items.find((i) => i.id === sourceId);
+        const targetItem = items.find((i) => i.id === targetId);
+        if (sourceItem?.parentId === targetId || targetItem?.parentId === sourceId) {
+          setDragToast(t('graph.cannotDependParentChild'));
+          setTimeout(() => setDragToast(null), 3000);
+          return;
+        }
+      }
+
       draft.addEdge(sourceId, targetId, type, strength);
     },
-    [connectorMode, draft],
+    [connectorMode, draft, items, t],
   );
 
   // Edge changes
