@@ -167,6 +167,8 @@ func New(deps *Dependencies) http.Handler {
 			r.Route("/projects/{projectID}", func(r chi.Router) {
 				r.Get("/", projH.Get)
 				r.Patch("/", projH.Update)
+				r.Post("/archive", projH.Archive)
+				r.Post("/unarchive", projH.Unarchive)
 				r.Get("/dependencies", depH.ListByProject)
 				r.Post("/dependencies/bulk", depH.BulkCommit)
 				r.Get("/sprint-assigned", siH.AssignedItemIDs)

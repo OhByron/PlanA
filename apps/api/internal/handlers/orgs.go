@@ -373,6 +373,15 @@ func (h *OrgHandlers) Archive(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Cascade: archive all projects under this org's teams
+	if _, err := h.db.Exec(r.Context(),
+		`UPDATE projects SET archived_at = NOW(), updated_at = NOW()
+		 WHERE team_id IN (SELECT id FROM teams WHERE organization_id = $1)
+		   AND archived_at IS NULL`,
+		orgID); err != nil {
+		slog.Error("orgs.Archive: cascade to projects failed", "error", err)
+	}
+
 	writeJSON(w, http.StatusOK, org)
 }
 
@@ -418,6 +427,15 @@ func (h *OrgHandlers) Unarchive(w http.ResponseWriter, r *http.Request) {
 		slog.Error("orgs.Unarchive: update failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to unarchive organization")
 		return
+	}
+
+	// Cascade: unarchive all projects under this org's teams
+	if _, err := h.db.Exec(r.Context(),
+		`UPDATE projects SET archived_at = NULL, updated_at = NOW()
+		 WHERE team_id IN (SELECT id FROM teams WHERE organization_id = $1)
+		   AND archived_at IS NOT NULL`,
+		orgID); err != nil {
+		slog.Error("orgs.Unarchive: cascade to projects failed", "error", err)
 	}
 
 	writeJSON(w, http.StatusOK, org)

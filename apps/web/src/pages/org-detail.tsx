@@ -13,6 +13,7 @@ export function OrgDetailPage() {
   const { orgId } = useParams({ strict: false }) as { orgId: string };
   const { data: org, isLoading } = useOrg(orgId);
   const { data: navTree = [] } = useNavigationTree();
+  const qc = useQueryClient();
 
   const orgNode = navTree.find((o) => o.id === orgId);
   const projects = useMemo(
@@ -23,6 +24,7 @@ export function OrgDetailPage() {
 
   const [editing, setEditing] = useState(false);
   const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showArchiveWarning, setShowArchiveWarning] = useState(false);
 
   if (isLoading || !org) {
     return (
@@ -47,10 +49,70 @@ export function OrgDetailPage() {
           <h1 className="text-xl font-semibold text-gray-900">{org.name}</h1>
           {org.archivedAt && <Badge variant="secondary">{t('orgs.archived')}</Badge>}
         </div>
-        <Button size="sm" variant="outline" onClick={() => setEditing(!editing)}>
-          {editing ? t('common.cancel') : t('orgDetail.editDetails')}
-        </Button>
+        <div className="flex items-center gap-2">
+          {org.archivedAt ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={async () => {
+                await api.post(`/orgs/${orgId}/unarchive`, {});
+                qc.invalidateQueries({ queryKey: ['org', orgId] });
+                qc.invalidateQueries({ queryKey: ['nav-tree'] });
+              }}
+            >
+              {t('orgDetail.unarchive')}
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setShowArchiveWarning(true)}
+            >
+              {t('orgDetail.archive')}
+            </Button>
+          )}
+          <Button size="sm" variant="outline" onClick={() => setEditing(!editing)}>
+            {editing ? t('common.cancel') : t('orgDetail.editDetails')}
+          </Button>
+        </div>
       </div>
+
+      {/* Archive warning modal */}
+      {showArchiveWarning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+            <h3 className="text-base font-semibold text-gray-900 mb-2">{t('orgDetail.archiveWarningTitle')}</h3>
+            <p className="text-sm text-gray-600 mb-3">
+              {t('orgDetail.archiveWarningBody', { projectCount: projects.length, teamCount: teams.length })}
+            </p>
+            {projects.length > 0 && (
+              <div className="mb-4 max-h-32 overflow-y-auto rounded border border-gray-200 bg-gray-50 p-2">
+                <p className="text-xs font-medium text-gray-500 mb-1">{t('orgDetail.affectedProjects')}</p>
+                {projects.map((p) => (
+                  <p key={p.id} className="text-xs text-gray-700">- {p.name}</p>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-gray-400 mb-4">{t('orgDetail.archiveReversible')}</p>
+            <div className="flex justify-end gap-2">
+              <Button size="sm" variant="ghost" onClick={() => setShowArchiveWarning(false)}>
+                {t('common.cancel')}
+              </Button>
+              <Button
+                size="sm"
+                onClick={async () => {
+                  await api.post(`/orgs/${orgId}/archive`, {});
+                  qc.invalidateQueries({ queryKey: ['org', orgId] });
+                  qc.invalidateQueries({ queryKey: ['nav-tree'] });
+                  setShowArchiveWarning(false);
+                }}
+              >
+                {t('orgDetail.confirmArchive')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {editing ? (
         <EditOrgForm org={org} onSave={() => setEditing(false)} />

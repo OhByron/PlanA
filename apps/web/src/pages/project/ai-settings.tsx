@@ -180,6 +180,7 @@ function ProjectDetailsSection({ projectId }: { projectId: string }) {
   const [contactPhone, setContactPhone] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showArchiveWarning, setShowArchiveWarning] = useState(false);
 
   useEffect(() => {
     if (!project) return;
@@ -277,6 +278,82 @@ function ProjectDetailsSection({ projectId }: { projectId: string }) {
             {saving ? t('aiSettings.saving') : t('common.save')}
           </Button>
           {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
+        </div>
+
+        {/* Retention & Archive */}
+        <div className="mt-8 border-t border-gray-100 pt-6">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">{t('projectDetails.retention')}</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <label className="text-xs font-medium text-gray-500">{t('projectDetails.retentionDays')}</label>
+            <Select
+              value={String(project?.retentionDays ?? 365)}
+              onChange={(e) => api.patch(`/projects/${projectId}`, { retention_days: Number(e.target.value) }).then(() => qc.invalidateQueries({ queryKey: ['project', projectId] }))}
+              className="w-36"
+            >
+              <option value="90">90 {t('projectDetails.days')}</option>
+              <option value="180">180 {t('projectDetails.days')}</option>
+              <option value="365">1 {t('projectDetails.year')}</option>
+              <option value="730">2 {t('projectDetails.years')}</option>
+              <option value="1825">5 {t('projectDetails.years')}</option>
+            </Select>
+            <p className="text-xs text-gray-400">{t('projectDetails.retentionHelp')}</p>
+          </div>
+
+          {/* Archive warning modal */}
+          {showArchiveWarning && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+                <h3 className="text-base font-semibold text-gray-900 mb-2">{t('projectDetails.archiveWarningTitle')}</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  {t('projectDetails.archiveWarningBody', { name: project?.name })}
+                </p>
+                <p className="text-xs text-gray-400 mb-4">{t('projectDetails.archiveReversible')}</p>
+                <div className="flex justify-end gap-2">
+                  <Button size="sm" variant="ghost" onClick={() => setShowArchiveWarning(false)}>
+                    {t('common.cancel')}
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={async () => {
+                      await api.post(`/projects/${projectId}/archive`, {});
+                      qc.invalidateQueries({ queryKey: ['project', projectId] });
+                      qc.invalidateQueries({ queryKey: ['nav-tree'] });
+                      setShowArchiveWarning(false);
+                    }}
+                  >
+                    {t('projectDetails.confirmArchive')}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {project?.archivedAt ? (
+            <div className="flex items-center gap-3">
+              <span className="rounded bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700">
+                {t('projectDetails.archivedOn', { date: new Date(project.archivedAt).toLocaleDateString() })}
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={async () => {
+                  await api.post(`/projects/${projectId}/unarchive`, {});
+                  qc.invalidateQueries({ queryKey: ['project', projectId] });
+                  qc.invalidateQueries({ queryKey: ['nav-tree'] });
+                }}
+              >
+                {t('projectDetails.unarchive')}
+              </Button>
+            </div>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setShowArchiveWarning(true)}
+            >
+              {t('projectDetails.archiveProject')}
+            </Button>
+          )}
         </div>
       </div>
     </div>

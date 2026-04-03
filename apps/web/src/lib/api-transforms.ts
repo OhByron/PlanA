@@ -89,6 +89,8 @@ export function toProject(w: any): Project {
     sprintDurationWeeks: w.sprint_duration_weeks ?? 2,
     defaultProjectMonths: w.default_project_months ?? 6,
     defaultEpicWeeks: w.default_epic_weeks ?? 6,
+    archivedAt: w.archived_at ?? null,
+    retentionDays: w.retention_days ?? 365,
     createdAt: w.created_at,
     updatedAt: w.updated_at,
   };

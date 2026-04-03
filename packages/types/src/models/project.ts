@@ -17,6 +17,8 @@ export interface Project {
   sprintDurationWeeks: number;
   defaultProjectMonths: number;
   defaultEpicWeeks: number;
+  archivedAt: string | null;
+  retentionDays: number;
   createdAt: string;
   updatedAt: string;
 }

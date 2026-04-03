@@ -31,6 +31,7 @@ import { MyWorkPage } from './pages/my-work';
 import { OrgsPage } from './pages/orgs';
 import { OrgDetailPage } from './pages/org-detail';
 import { ShareDashboardPage } from './pages/share-dashboard';
+import { ArchivePage } from './pages/archive';
 import { ReportViewPage } from './pages/project/report-view';
 import { GraphPage } from './pages/project/graph';
 import { GanttPage } from './pages/project/gantt';
@@ -122,6 +123,12 @@ const orgDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/orgs/$orgId',
   component: OrgDetailPage,
+});
+
+const archiveRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/archive',
+  component: ArchivePage,
 });
 
 // --- Project routes ---
@@ -229,6 +236,7 @@ const routeTree = rootRoute.addChildren([
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
+    archiveRoute,
     projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, teamRoute, settingsRoute, reportViewRoute]),
     epicDetailRoute,
     sprintDetailRoute,

@@ -96,6 +96,14 @@ export function Sidebar() {
           <OrgIcon />
           {t('sidebar.organisations')}
         </Link>
+        <Link
+          to="/archive"
+          className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100"
+          activeProps={{ className: 'bg-brand-50 text-brand-700' }}
+        >
+          <ArchiveIcon />
+          {t('sidebar.archive')}
+        </Link>
       </div>
 
       {/* Nav tree */}
@@ -167,6 +175,14 @@ function OrgIcon() {
   return (
     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    </svg>
+  );
+}
+
+function ArchiveIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
     </svg>
   );
 }

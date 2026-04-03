@@ -84,6 +84,16 @@
     "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
 
+  "archive": {
+    "title": "Archive",
+    "description": "Archived organisations and projects. Restore items to make them active again.",
+    "nothingArchived": "Nothing is archived.",
+    "organisations": "Archived Organisations ({{count}})",
+    "projects": "Archived Projects ({{count}})",
+    "archivedOn": "Archived {{date}}",
+    "restore": "Restore"
+  },
+
   "gantt": {
     "title": "Gantt Chart",
     "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
@@ -128,7 +138,8 @@
     "myWork": "My Work",
     "organisations": "Organisations",
     "noOrganisationsYet": "No organisations yet",
-    "toggle": "Toggle {{name}}"
+    "toggle": "Toggle {{name}}",
+    "archive": "Archive"
   },
 
   "topBar": {
@@ -258,6 +269,13 @@
     "projects": "Projects ({{count}})",
     "newProject": "+ New Project",
     "noProjectsYet": "No projects yet. Create one to get started.",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveWarningTitle": "Archive Organisation",
+    "archiveWarningBody": "This will archive the organisation and all {{projectCount}} project(s) across {{teamCount}} team(s). Archived items are hidden from all listings and dashboards.",
+    "affectedProjects": "Projects that will be archived:",
+    "archiveReversible": "This action is reversible — you can unarchive the organisation later to restore everything.",
+    "confirmArchive": "Archive Organisation",
     "newProjectTitle": "New Project",
     "projectName": "Project Name",
     "projectNameRequired": "Project Name *",
@@ -691,7 +709,20 @@
     "contact": "Primary Contact",
     "contactName": "Name",
     "contactEmail": "Email",
-    "contactPhone": "Phone"
+    "contactPhone": "Phone",
+    "retention": "Retention & Archive",
+    "retentionDays": "Retention period",
+    "retentionHelp": "How long to keep archived project data.",
+    "days": "days",
+    "year": "year",
+    "years": "years",
+    "archiveProject": "Archive Project",
+    "archiveWarningTitle": "Archive Project",
+    "archiveWarningBody": "This will archive \"{{name}}\" and hide it from all listings, dashboards, and navigation. All work items, sprints, epics, and history will be preserved.",
+    "archiveReversible": "This action is reversible — you can unarchive the project later from the settings page.",
+    "confirmArchive": "Archive Project",
+    "unarchive": "Unarchive",
+    "archivedOn": "Archived on {{date}}"
   },
 
   "projectStatus": {

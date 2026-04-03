@@ -17,12 +17,12 @@ import (
 const projectColumns = `id, team_id, name, slug, description, methodology,
 	status, due_date, contact_name, contact_email, contact_phone,
 	sprint_duration_weeks, default_project_months, default_epic_weeks,
-	created_at, updated_at`
+	archived_at, retention_days, created_at, updated_at`
 
 const projectColumnsAliased = `p.id, p.team_id, p.name, p.slug, p.description, p.methodology,
 	p.status, p.due_date, p.contact_name, p.contact_email, p.contact_phone,
 	p.sprint_duration_weeks, p.default_project_months, p.default_epic_weeks,
-	p.created_at, p.updated_at`
+	p.archived_at, p.retention_days, p.created_at, p.updated_at`
 
 // Project represents a project row returned to clients.
 type Project struct {
@@ -38,8 +38,10 @@ type Project struct {
 	ContactEmail *string    `json:"contact_email"`
 	ContactPhone        *string    `json:"contact_phone"`
 	SprintDurationWeeks int        `json:"sprint_duration_weeks"`
-	DefaultProjectMonths int       `json:"default_project_months"`
+	DefaultProjectMonths int        `json:"default_project_months"`
 	DefaultEpicWeeks    int        `json:"default_epic_weeks"`
+	ArchivedAt          *time.Time `json:"archived_at"`
+	RetentionDays       int        `json:"retention_days"`
 	CreatedAt           time.Time  `json:"created_at"`
 	UpdatedAt           time.Time  `json:"updated_at"`
 }
@@ -49,7 +51,7 @@ func (p *Project) scanFields() []any {
 		&p.ID, &p.TeamID, &p.Name, &p.Slug, &p.Description, &p.Methodology,
 		&p.Status, &p.DueDate, &p.ContactName, &p.ContactEmail, &p.ContactPhone,
 		&p.SprintDurationWeeks, &p.DefaultProjectMonths, &p.DefaultEpicWeeks,
-		&p.CreatedAt, &p.UpdatedAt,
+		&p.ArchivedAt, &p.RetentionDays, &p.CreatedAt, &p.UpdatedAt,
 	}
 }
 
@@ -71,16 +73,21 @@ func (h *ProjectHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	includeArchived := r.URL.Query().Get("include_archived") == "true"
+	archiveFilter := ""
+	if !includeArchived {
+		archiveFilter = "AND p.archived_at IS NULL"
+	}
 	rows, err := h.db.Query(r.Context(),
 		fmt.Sprintf(`SELECT %s FROM projects p
-		 WHERE p.team_id = $1
+		 WHERE p.team_id = $1 %s
 		   AND (
 		     EXISTS(SELECT 1 FROM project_members pm WHERE pm.project_id = p.id AND pm.user_id = $2)
 		     OR EXISTS(SELECT 1 FROM organization_members om
 		               JOIN teams t ON t.organization_id = om.organization_id
 		               WHERE t.id = p.team_id AND om.user_id = $2 AND om.role = 'admin')
 		   )
-		 ORDER BY p.created_at`, projectColumnsAliased), teamID, claims.UserID)
+		 ORDER BY p.created_at`, projectColumnsAliased, archiveFilter), teamID, claims.UserID)
 	if err != nil {
 		slog.Error("projects.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list projects")
@@ -235,6 +242,7 @@ type updateProjectRequest struct {
 	SprintDurationWeeks  *int    `json:"sprint_duration_weeks"`
 	DefaultProjectMonths *int    `json:"default_project_months"`
 	DefaultEpicWeeks     *int    `json:"default_epic_weeks"`
+	RetentionDays        *int    `json:"retention_days"`
 }
 
 func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
@@ -307,6 +315,11 @@ func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		args = append(args, *body.DefaultEpicWeeks)
 		argN++
 	}
+	if body.RetentionDays != nil {
+		fields = append(fields, fmt.Sprintf("retention_days = $%d", argN))
+		args = append(args, *body.RetentionDays)
+		argN++
+	}
 
 	if len(fields) == 0 {
 		writeError(w, http.StatusBadRequest, "validation_error", "No fields to update")
@@ -364,4 +377,64 @@ func (h *ProjectHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// Archive soft-deletes a project by setting archived_at.
+func (h *ProjectHandlers) Archive(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
+	var p Project
+	err := h.db.QueryRow(r.Context(),
+		fmt.Sprintf(`UPDATE projects SET archived_at = NOW(), updated_at = NOW() WHERE id = $1 AND archived_at IS NULL RETURNING %s`, projectColumns),
+		projectID,
+	).Scan(p.scanFields()...)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Project not found or already archived")
+			return
+		}
+		slog.Error("projects.Archive: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to archive project")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, p)
+}
+
+// Unarchive restores an archived project.
+func (h *ProjectHandlers) Unarchive(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
+	var p Project
+	err := h.db.QueryRow(r.Context(),
+		fmt.Sprintf(`UPDATE projects SET archived_at = NULL, updated_at = NOW() WHERE id = $1 AND archived_at IS NOT NULL RETURNING %s`, projectColumns),
+		projectID,
+	).Scan(p.scanFields()...)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Project not found or not archived")
+			return
+		}
+		slog.Error("projects.Unarchive: query failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to unarchive project")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, p)
 }
