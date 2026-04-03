@@ -28,12 +28,10 @@
     "language": "Idioma",
     "back": "Voltar"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, de verdade."
   },
-
   "nav": {
     "board": "Quadro",
     "backlog": "Backlog",
@@ -48,7 +46,6 @@
     "gantt": "Gantt",
     "calendar": "Calendário"
   },
-
   "graph": {
     "hardDependency": "Dependência forte",
     "softDependency": "Dependência fraca",
@@ -83,7 +80,6 @@
     "invalidDrop": "Esta ação de arrastar não é suportada.",
     "cannotDependParentChild": "Uma tarefa não pode depender de sua história pai, e vice-versa. Dependências funcionam entre irmãos ou entre histórias."
   },
-
   "gantt": {
     "title": "Gráfico de Gantt",
     "pmOnly": "O gráfico de Gantt está disponível para Gerentes de Projeto e Product Owners.",
@@ -92,7 +88,6 @@
     "item": "Item",
     "status": "Status"
   },
-
   "calendar": {
     "today": "Hoje",
     "everyone": "Todos",
@@ -106,7 +101,6 @@
     "sat": "Sáb",
     "sun": "Dom"
   },
-
   "graphEdit": {
     "edit": "Editar",
     "title": "Título",
@@ -121,16 +115,15 @@
     "endDate": "Data de Fim",
     "confirmDelete": "Clique novamente para confirmar"
   },
-
   "sidebar": {
     "expandSidebar": "Expandir barra lateral",
     "collapseSidebar": "Recolher barra lateral",
     "myWork": "Meu Trabalho",
     "organisations": "Organizações",
     "noOrganisationsYet": "Nenhuma organização ainda",
-    "toggle": "Alternar {{name}}"
+    "toggle": "Alternar {{name}}",
+    "archive": "Archive"
   },
-
   "topBar": {
     "notifications": "Notificações",
     "markAllRead": "Marcar todas como lidas",
@@ -140,7 +133,6 @@
     "hoursAgo": "{{count}}h atrás",
     "daysAgo": "{{count}}d atrás"
   },
-
   "notifications": {
     "assigned": "Você foi atribuído a \"{{title}}\"",
     "statusChanged": "Status alterado em \"{{title}}\"",
@@ -148,7 +140,6 @@
     "mentioned": "Você foi mencionado em \"{{title}}\"",
     "default": "Notificação: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Pronto",
@@ -157,33 +148,28 @@
     "done": "Concluído",
     "cancelled": "Cancelado"
   },
-
   "priority": {
     "urgent": "Urgente",
     "high": "Alta",
     "medium": "Média",
     "low": "Baixa"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Task"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Ativo",
     "planned": "Planejado",
     "completed": "Concluído",
     "cancelled": "Cancelado"
   },
-
   "roles": {
     "pm": "Gerente de Projeto",
     "po": "Product Owner",
@@ -193,7 +179,6 @@
     "ux": "Designer UX",
     "dev": "Desenvolvedor"
   },
-
   "login": {
     "continueWithGitHub": "Continuar com GitHub",
     "continueWithGoogle": "Continuar com Google",
@@ -204,7 +189,6 @@
     "devOnly": "apenas dev",
     "devLogin": "Login Dev (pular OAuth)"
   },
-
   "authError": {
     "title": "Falha no login",
     "badState": "A sessão de login expirou. Tente novamente.",
@@ -214,7 +198,6 @@
     "missingToken": "Nenhum token de autenticação foi recebido.",
     "default": "Ocorreu um erro inesperado durante o login."
   },
-
   "myWork": {
     "title": "Meu Trabalho",
     "itemCount": "{{count}} item atribuído a você",
@@ -222,7 +205,6 @@
     "noItems": "Nenhum item atribuído a você.",
     "noItemsHelp": "Os itens aparecem aqui quando você é adicionado como membro da equipe do projeto e tem stories ou tasks atribuídos. Certifique-se de que o email da sua conta corresponda ao email do membro da equipe, ou que você aceitou um convite."
   },
-
   "orgs": {
     "title": "Organizações",
     "orgCount": "{{count}} organização",
@@ -246,7 +228,6 @@
     "postalCode": "CEP",
     "country": "País"
   },
-
   "orgDetail": {
     "allOrganisations": "Todas as organizações",
     "editDetails": "Editar Detalhes",
@@ -266,9 +247,16 @@
     "dueDate": "Data de Entrega",
     "customerContact": "Contato do Cliente",
     "createProject": "Criar Projeto",
-    "whatIsThisProjectAbout": "Sobre o que é este projeto?"
+    "whatIsThisProjectAbout": "Sobre o que é este projeto?",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveWarningTitle": "Archive Organisation",
+    "archiveWarningBody": "This will archive the organisation and all {{projectCount}} project(s) across {{teamCount}} team(s). Archived items are hidden from all listings and dashboards.",
+    "affectedProjects": "Projects that will be archived:",
+    "archiveReversible": "This action is reversible — you can unarchive the organisation later to restore everything.",
+    "confirmArchive": "Archive Organisation",
+    "importProject": "Import Project"
   },
-
   "invite": {
     "invalidInvitation": "Convite Inválido",
     "invalidLink": "Este link de convite não é válido.",
@@ -291,7 +279,6 @@
     "alreadyHaveAccount": "Já tem uma conta?",
     "logIn": "Entrar"
   },
-
   "board": {
     "helpTitle": "Seu Kanban Board",
     "helpBody1": "Este é o trabalho da sua equipe visualizado como fluxo. Cada coluna representa uma etapa do seu workflow.",
@@ -304,7 +291,6 @@
     "noItems": "Nenhum item",
     "column": "Coluna {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Seu Backlog",
     "helpBody1": "O backlog é sua lista priorizada de trabalho. Itens no topo têm a maior prioridade.",
@@ -323,7 +309,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint Planning",
     "helpBody1": "Sprints são iterações com tempo definido (geralmente 2 semanas). Puxe stories do backlog para um sprint para planejar o trabalho da equipe.",
@@ -332,7 +317,6 @@
     "noSprintsYet": "Nenhum sprint ainda. Crie um para começar a planejar.",
     "pts": "{{count}} pts"
   },
-
   "workItemDetail": {
     "backToBoard": "Voltar ao board",
     "partOf": "Parte de:",
@@ -379,7 +363,6 @@
     "created": "Criado em {{date}}",
     "updated": "Atualizado em {{date}}"
   },
-
   "childTasks": {
     "title": "Tasks ({{count}})",
     "contextHelp": "Tasks dividem uma story em trabalho por disciplina, design UX, dev backend, dev frontend, testes QE, etc. Cada task pode ser atribuída a um membro da equipe.",
@@ -391,7 +374,6 @@
     "pts": "{{count}} pts",
     "clarificationNeeded": "Esclarecimento necessário:"
   },
-
   "acceptanceCriteria": {
     "title": "Critérios de Aceitação",
     "contextHelp": "Critérios de Aceitação definem quando este item está realmente \"concluído\". Escritos no formato Given / When / Then (BDD), tornam as expectativas explícitas e testáveis. Cada critério é uma condição específica e verificável, não um desejo vago.",
@@ -408,13 +390,11 @@
     "aiSuggestions": "Sugestões da IA, clique para adicionar:",
     "aiNeedsMoreInfo": "A IA precisa de mais informações:"
   },
-
   "comments": {
     "title": "Comentários",
     "noCommentsYet": "Nenhum comentário ainda.",
     "addComment": "Adicionar um comentário..."
   },
-
   "dependencies": {
     "title": "Dependências",
     "contextHelp": "Dependências rastreiam relações entre itens. \"Depende de\" significa que este item não pode prosseguir até que o alvo esteja concluído. \"Relacionado a\" é um link informativo.",
@@ -425,7 +405,6 @@
     "removeDependency": "Remover dependência",
     "selectItem": "Selecionar um item..."
   },
-
   "links": {
     "title": "Links",
     "addLink": "+ Adicionar Link",
@@ -434,7 +413,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Remover link"
   },
-
   "testResults": {
     "retestRequired": "Reteste necessário",
     "retestMessage": "Este defeito tem {{count}} teste(s) falhando. Envie novos resultados de teste (JUnit XML ou webhook) após o deploy da correção para liberar o controle QE e fechar este item.",
@@ -450,12 +428,10 @@
     "source": "Origem: {{source}} | Reportado: {{date}}",
     "generateDescAC": "Gerar Descrição e ACs"
   },
-
   "helpOverlay": {
     "dismiss": "Dispensar",
     "close": "Fechar"
   },
-
   "richTextEditor": {
     "startTyping": "Comece a digitar...",
     "bold": "Negrito",
@@ -468,7 +444,6 @@
     "quote": "Citação",
     "codeBlock": "Bloco de código"
   },
-
   "createEpic": {
     "button": "+ Nova Epic",
     "title": "Criar Epic",
@@ -479,7 +454,6 @@
     "priorityLabel": "Prioridade",
     "assigneeLabel": "Responsável"
   },
-
   "createProject": {
     "button": "+ Novo Projeto",
     "title": "Criar Projeto",
@@ -493,7 +467,6 @@
     "descriptionPlaceholder": "Sobre o que é este projeto?",
     "methodologyLabel": "Metodologia"
   },
-
   "createSprint": {
     "button": "+ Novo Sprint",
     "title": "Criar Sprint",
@@ -504,7 +477,6 @@
     "startDateLabel": "Data de Início",
     "endDateLabel": "Data de Término"
   },
-
   "createTeam": {
     "button": "+ Nova Equipe",
     "title": "Criar Equipe",
@@ -513,12 +485,10 @@
     "teamNameLabel": "Nome da Equipe",
     "teamNamePlaceholder": "ex. Squad Backend"
   },
-
   "quickCreate": {
     "placeholder": "O que precisa ser feito?",
     "selectEpic": "Selecionar épico..."
   },
-
   "workItemCard": {
     "open": "Abrir {{title}}",
     "taskCount": "{{count}} task",
@@ -526,7 +496,6 @@
     "unblocks": "Desbloqueia {{count}}",
     "unblocks_other": "Desbloqueia {{count}}"
   },
-
   "reports": {
     "helpTitle": "Relatórios do Projeto",
     "helpBody1": "Os relatórios dão visibilidade sobre a entrega da sua equipe. A velocidade mostra quantos pontos você completa por sprint; ela se estabiliza com o tempo.",
@@ -566,7 +535,6 @@
     "onTrack": "No caminho",
     "behind": "Atrasado"
   },
-
   "team": {
     "title": "Equipe",
     "memberCount": "{{count}} membro",
@@ -588,7 +556,6 @@
     "nameLabel": "Nome",
     "roleLabel": "Função"
   },
-
   "aiSettings": {
     "title": "Configuração de IA",
     "description": "Configure um provedor de IA para habilitar sugestões de critérios de aceitação, decomposição de stories e rascunho de notas de versão. Você fornece sua própria chave API; PlanA não armazena nem redireciona por uma conta compartilhada.",
@@ -629,7 +596,6 @@
     "revoked": "Revogado",
     "revokedDate": "Revogado em {{date}}"
   },
-
   "reportView": {
     "title": "Relatórios",
     "generateProject": "Relatório do Projeto",
@@ -665,7 +631,6 @@
     "velocityHistory": "Histórico de Velocidade",
     "generatedBy": "Gerado pelo PlanA"
   },
-
   "shareDashboard": {
     "title": "Dashboard de Stakeholders",
     "invalidLink": "Link inválido ou expirado",
@@ -683,7 +648,6 @@
     "sprintVelocity": "Velocidade do Sprint",
     "storyProgress": "Progresso das Stories"
   },
-
   "sprintDetail": {
     "backToSprints": "Voltar aos sprints",
     "start": "Início:",
@@ -715,7 +679,6 @@
     "totalPointsLabel": "{{count}} story points",
     "velocityStat": "Velocidade: {{velocity}} pts"
   },
-
   "epicDetail": {
     "backToEpics": "Voltar aos épicos",
     "description": "Descrição",
@@ -764,7 +727,6 @@
     "itemsDone": "itens concluídos",
     "totalPts": "pts no total"
   },
-
   "epics": {
     "helpTitle": "Épicos",
     "helpBody1": "Épicos são agrupamentos a nível de funcionalidade. Cada épico contém stories relacionadas que juntas entregam uma capacidade de negócio.",
@@ -773,7 +735,6 @@
     "noEpicsYet": "Nenhum épico ainda. Épicos agrupam stories relacionadas em entregáveis funcionais.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "projectDetails": {
     "title": "Detalhes do Projeto",
     "description": "Informações principais sobre este projeto.",
@@ -786,16 +747,30 @@
     "contact": "Contato Principal",
     "contactName": "Nome",
     "contactEmail": "Email",
-    "contactPhone": "Telefone"
+    "contactPhone": "Telefone",
+    "retention": "Retention & Archive",
+    "retentionDays": "Retention period",
+    "retentionHelp": "How long to keep archived project data.",
+    "days": "days",
+    "year": "year",
+    "years": "years",
+    "exportImport": "Export / Import",
+    "exportProject": "Export",
+    "exportHelp": "Download the full project as a JSON file — all epics, stories, tasks, dependencies, sprints, and history.",
+    "archiveProject": "Archive Project",
+    "archiveWarningTitle": "Archive Project",
+    "archiveWarningBody": "This will archive \"{{name}}\" and hide it from all listings, dashboards, and navigation. All work items, sprints, epics, and history will be preserved.",
+    "archiveReversible": "This action is reversible — you can unarchive the project later from the settings page.",
+    "confirmArchive": "Archive Project",
+    "unarchive": "Unarchive",
+    "archivedOn": "Archived on {{date}}"
   },
-
   "projectStatus": {
     "active": "Ativo",
     "on_hold": "Em Espera",
     "completed": "Concluído",
     "cancelled": "Cancelado"
   },
-
   "settings": {
     "projectSettings": "Padrões de Planejamento",
     "projectSettingsDesc": "Defina os horizontes de tempo padrão para este projeto. Eles preenchem automaticamente as datas ao criar épicos e sprints.",
@@ -807,5 +782,14 @@
     "sprintDurationHelp": "Preenche automaticamente as datas de fim do sprint.",
     "months": "meses",
     "weeks": "semanas"
+  },
+  "archive": {
+    "title": "Archive",
+    "description": "Archived organisations and projects. Restore items to make them active again.",
+    "nothingArchived": "Nothing is archived.",
+    "organisations": "Archived Organisations ({{count}})",
+    "projects": "Archived Projects ({{count}})",
+    "archivedOn": "Archived {{date}}",
+    "restore": "Restore"
   }
 }

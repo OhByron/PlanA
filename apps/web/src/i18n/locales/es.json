@@ -28,12 +28,10 @@
     "language": "Idioma",
     "back": "Atrás"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, de verdad."
   },
-
   "nav": {
     "board": "Tablero",
     "backlog": "Backlog",
@@ -48,7 +46,6 @@
     "gantt": "Gantt",
     "calendar": "Calendario"
   },
-
   "graph": {
     "hardDependency": "Dependencia fuerte",
     "softDependency": "Dependencia débil",
@@ -83,7 +80,6 @@
     "invalidDrop": "Esta acción de arrastrar no es compatible.",
     "cannotDependParentChild": "Una tarea no puede depender de su historia padre, ni viceversa. Las dependencias funcionan entre hermanos o entre historias."
   },
-
   "gantt": {
     "title": "Diagrama de Gantt",
     "pmOnly": "El diagrama de Gantt está disponible para Gerentes de Proyecto y Product Owners.",
@@ -92,7 +88,6 @@
     "item": "Elemento",
     "status": "Estado"
   },
-
   "calendar": {
     "today": "Hoy",
     "everyone": "Todos",
@@ -106,7 +101,6 @@
     "sat": "Sáb",
     "sun": "Dom"
   },
-
   "graphEdit": {
     "edit": "Editar",
     "title": "Título",
@@ -121,16 +115,15 @@
     "endDate": "Fecha de Fin",
     "confirmDelete": "Haz clic de nuevo para confirmar"
   },
-
   "sidebar": {
     "expandSidebar": "Expandir barra lateral",
     "collapseSidebar": "Contraer barra lateral",
     "myWork": "Mi Trabajo",
     "organisations": "Organizaciones",
     "noOrganisationsYet": "Aún no hay organizaciones",
-    "toggle": "Alternar {{name}}"
+    "toggle": "Alternar {{name}}",
+    "archive": "Archive"
   },
-
   "topBar": {
     "notifications": "Notificaciones",
     "markAllRead": "Marcar todo como leído",
@@ -140,7 +133,6 @@
     "hoursAgo": "hace {{count}}h",
     "daysAgo": "hace {{count}}d"
   },
-
   "notifications": {
     "assigned": "Se te asignó \"{{title}}\"",
     "statusChanged": "El estado cambió en \"{{title}}\"",
@@ -148,7 +140,6 @@
     "mentioned": "Te mencionaron en \"{{title}}\"",
     "default": "Notificación: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Listo",
@@ -157,33 +148,28 @@
     "done": "Hecho",
     "cancelled": "Cancelado"
   },
-
   "priority": {
     "urgent": "Urgente",
     "high": "Alta",
     "medium": "Media",
     "low": "Baja"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Tarea"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Activo",
     "planned": "Planificado",
     "completed": "Completado",
     "cancelled": "Cancelado"
   },
-
   "roles": {
     "pm": "Gerente de Proyecto",
     "po": "Product Owner",
@@ -193,7 +179,6 @@
     "ux": "Diseñador UX",
     "dev": "Desarrollador"
   },
-
   "login": {
     "continueWithGitHub": "Continuar con GitHub",
     "continueWithGoogle": "Continuar con Google",
@@ -204,7 +189,6 @@
     "devOnly": "solo dev",
     "devLogin": "Login Dev (omitir OAuth)"
   },
-
   "authError": {
     "title": "Error al iniciar sesión",
     "badState": "La sesión de inicio expiró. Por favor, inténtalo de nuevo.",
@@ -214,7 +198,6 @@
     "missingToken": "No se recibió un token de autenticación.",
     "default": "Ocurrió un error inesperado durante el inicio de sesión."
   },
-
   "myWork": {
     "title": "Mi Trabajo",
     "itemCount": "{{count}} elemento asignado a ti",
@@ -222,7 +205,6 @@
     "noItems": "No tienes elementos asignados.",
     "noItemsHelp": "Los elementos aparecen aquí cuando te agregan como miembro del equipo del proyecto y tienes historias o tareas asignadas. Asegúrate de que el correo de tu cuenta coincida con el correo del miembro del equipo, o de que hayas aceptado una invitación."
   },
-
   "orgs": {
     "title": "Organizaciones",
     "orgCount": "{{count}} organización",
@@ -246,7 +228,6 @@
     "postalCode": "Código Postal",
     "country": "País"
   },
-
   "orgDetail": {
     "allOrganisations": "Todas las organizaciones",
     "editDetails": "Editar Detalles",
@@ -266,9 +247,16 @@
     "dueDate": "Fecha de Entrega",
     "customerContact": "Contacto del Cliente",
     "createProject": "Crear Proyecto",
-    "whatIsThisProjectAbout": "¿De qué trata este proyecto?"
+    "whatIsThisProjectAbout": "¿De qué trata este proyecto?",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveWarningTitle": "Archive Organisation",
+    "archiveWarningBody": "This will archive the organisation and all {{projectCount}} project(s) across {{teamCount}} team(s). Archived items are hidden from all listings and dashboards.",
+    "affectedProjects": "Projects that will be archived:",
+    "archiveReversible": "This action is reversible — you can unarchive the organisation later to restore everything.",
+    "confirmArchive": "Archive Organisation",
+    "importProject": "Import Project"
   },
-
   "invite": {
     "invalidInvitation": "Invitación Inválida",
     "invalidLink": "Este enlace de invitación no es válido.",
@@ -291,7 +279,6 @@
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "logIn": "Iniciar sesión"
   },
-
   "board": {
     "helpTitle": "Tu Tablero Kanban",
     "helpBody1": "Este es el trabajo de tu equipo visualizado como un flujo. Cada columna representa una etapa de tu flujo de trabajo.",
@@ -304,7 +291,6 @@
     "noItems": "Sin elementos",
     "column": "Columna {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Tu Backlog",
     "helpBody1": "El backlog es tu lista priorizada de trabajo. Los elementos en la parte superior tienen la mayor prioridad.",
@@ -323,7 +309,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Planificación de Sprint",
     "helpBody1": "Los sprints son iteraciones de tiempo fijo (típicamente 2 semanas). Arrastra historias del backlog a un sprint para planificar el trabajo de tu equipo.",
@@ -332,7 +317,6 @@
     "noSprintsYet": "Aún no hay sprints. Crea uno para comenzar a planificar.",
     "pts": "{{count}} pts"
   },
-
   "workItemDetail": {
     "backToBoard": "Volver al tablero",
     "partOf": "Parte de:",
@@ -379,7 +363,6 @@
     "created": "Creado {{date}}",
     "updated": "Actualizado {{date}}"
   },
-
   "childTasks": {
     "title": "Tareas ({{count}})",
     "contextHelp": "Las tareas dividen una historia en trabajo por disciplina, diseño UX, desarrollo backend, desarrollo frontend, pruebas QE, etc. Cada tarea se puede asignar a un miembro del equipo.",
@@ -391,7 +374,6 @@
     "pts": "{{count}} pts",
     "clarificationNeeded": "Se necesita aclaración:"
   },
-
   "acceptanceCriteria": {
     "title": "Criterios de Aceptación",
     "contextHelp": "Los Criterios de Aceptación definen cuándo este elemento está realmente \"hecho\". Escritos en formato Dado / Cuando / Entonces (BDD), hacen las expectativas explícitas y verificables. Cada criterio es una condición específica y verificable, no un deseo vago.",
@@ -408,13 +390,11 @@
     "aiSuggestions": "Sugerencias de IA, haz clic para agregar:",
     "aiNeedsMoreInfo": "La IA necesita más información:"
   },
-
   "comments": {
     "title": "Comentarios",
     "noCommentsYet": "Aún no hay comentarios.",
     "addComment": "Agregar un comentario..."
   },
-
   "dependencies": {
     "title": "Dependencias",
     "contextHelp": "Las dependencias rastrean relaciones entre elementos. \"Depende de\" significa que este elemento no puede avanzar hasta que el objetivo esté completo. \"Se relaciona con\" es un enlace informativo.",
@@ -425,7 +405,6 @@
     "removeDependency": "Quitar dependencia",
     "selectItem": "Seleccionar un elemento..."
   },
-
   "links": {
     "title": "Enlaces",
     "addLink": "+ Agregar Enlace",
@@ -434,7 +413,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Quitar enlace"
   },
-
   "testResults": {
     "retestRequired": "Se requiere nueva prueba",
     "retestMessage": "Este defecto tiene {{count}} prueba(s) fallida(s). Sube nuevos resultados de pruebas (JUnit XML o webhook) después de que se despliegue la corrección para desbloquear la validación QE y cerrar este elemento.",
@@ -450,12 +428,10 @@
     "source": "Origen: {{source}} | Reportado: {{date}}",
     "generateDescAC": "Generar Descripción y CAs"
   },
-
   "helpOverlay": {
     "dismiss": "Descartar",
     "close": "Cerrar"
   },
-
   "richTextEditor": {
     "startTyping": "Empieza a escribir...",
     "bold": "Negrita",
@@ -468,7 +444,6 @@
     "quote": "Cita",
     "codeBlock": "Bloque de código"
   },
-
   "createEpic": {
     "button": "+ Nueva Épica",
     "title": "Crear Épica",
@@ -479,7 +454,6 @@
     "priorityLabel": "Prioridad",
     "assigneeLabel": "Responsable"
   },
-
   "createProject": {
     "button": "+ Nuevo Proyecto",
     "title": "Crear Proyecto",
@@ -493,7 +467,6 @@
     "descriptionPlaceholder": "¿De qué trata este proyecto?",
     "methodologyLabel": "Metodología"
   },
-
   "createSprint": {
     "button": "+ Nuevo Sprint",
     "title": "Crear Sprint",
@@ -504,7 +477,6 @@
     "startDateLabel": "Fecha de Inicio",
     "endDateLabel": "Fecha de Fin"
   },
-
   "createTeam": {
     "button": "+ Nuevo Equipo",
     "title": "Crear Equipo",
@@ -513,12 +485,10 @@
     "teamNameLabel": "Nombre del Equipo",
     "teamNamePlaceholder": "ej. Equipo Backend"
   },
-
   "quickCreate": {
     "placeholder": "¿Qué hay que hacer?",
     "selectEpic": "Seleccionar épica..."
   },
-
   "workItemCard": {
     "open": "Abrir {{title}}",
     "taskCount": "{{count}} tarea",
@@ -526,7 +496,6 @@
     "unblocks": "Desbloquea {{count}}",
     "unblocks_other": "Desbloquea {{count}}"
   },
-
   "reports": {
     "helpTitle": "Informes del Proyecto",
     "helpBody1": "Los informes te dan visibilidad sobre la entrega de tu equipo. La velocidad muestra cuántos puntos completas por sprint; se estabiliza con el tiempo.",
@@ -566,7 +535,6 @@
     "onTrack": "En camino",
     "behind": "Retrasado"
   },
-
   "team": {
     "title": "Equipo",
     "memberCount": "{{count}} miembro",
@@ -588,7 +556,6 @@
     "nameLabel": "Nombre",
     "roleLabel": "Rol"
   },
-
   "aiSettings": {
     "title": "Configuración de IA",
     "description": "Configura un proveedor de IA para habilitar sugerencias de criterios de aceptación, descomposición de historias y redacción de notas de versión. Tú proporcionas tu propia clave API; PlanA no almacena ni redirige a través de una cuenta compartida.",
@@ -629,7 +596,6 @@
     "revoked": "Revocado",
     "revokedDate": "Revocado el {{date}}"
   },
-
   "reportView": {
     "title": "Informes",
     "generateProject": "Informe de Proyecto",
@@ -665,7 +631,6 @@
     "velocityHistory": "Historial de velocidad",
     "generatedBy": "Generado por PlanA"
   },
-
   "shareDashboard": {
     "title": "Panel de Interesados",
     "invalidLink": "Enlace inválido o expirado",
@@ -683,7 +648,6 @@
     "sprintVelocity": "Velocidad del Sprint",
     "storyProgress": "Progreso de Historias"
   },
-
   "sprintDetail": {
     "backToSprints": "Volver a sprints",
     "start": "Inicio:",
@@ -715,7 +679,6 @@
     "totalPointsLabel": "{{count}} puntos de historia",
     "velocityStat": "Velocidad: {{velocity}} pts"
   },
-
   "epicDetail": {
     "backToEpics": "Volver a épicas",
     "description": "Descripción",
@@ -764,7 +727,6 @@
     "itemsDone": "elementos completados",
     "totalPts": "pts en total"
   },
-
   "epics": {
     "helpTitle": "Épicas",
     "helpBody1": "Las épicas son agrupaciones a nivel de funcionalidad. Cada épica contiene historias relacionadas que en conjunto entregan una capacidad de negocio.",
@@ -773,7 +735,6 @@
     "noEpicsYet": "Aún no hay épicas. Las épicas agrupan historias relacionadas en entregables funcionales.",
     "storyProgress": "{{done}}/{{total}} historias"
   },
-
   "projectDetails": {
     "title": "Detalles del Proyecto",
     "description": "Información principal de este proyecto.",
@@ -786,16 +747,30 @@
     "contact": "Contacto Principal",
     "contactName": "Nombre",
     "contactEmail": "Correo",
-    "contactPhone": "Teléfono"
+    "contactPhone": "Teléfono",
+    "retention": "Retention & Archive",
+    "retentionDays": "Retention period",
+    "retentionHelp": "How long to keep archived project data.",
+    "days": "days",
+    "year": "year",
+    "years": "years",
+    "exportImport": "Export / Import",
+    "exportProject": "Export",
+    "exportHelp": "Download the full project as a JSON file — all epics, stories, tasks, dependencies, sprints, and history.",
+    "archiveProject": "Archive Project",
+    "archiveWarningTitle": "Archive Project",
+    "archiveWarningBody": "This will archive \"{{name}}\" and hide it from all listings, dashboards, and navigation. All work items, sprints, epics, and history will be preserved.",
+    "archiveReversible": "This action is reversible — you can unarchive the project later from the settings page.",
+    "confirmArchive": "Archive Project",
+    "unarchive": "Unarchive",
+    "archivedOn": "Archived on {{date}}"
   },
-
   "projectStatus": {
     "active": "Activo",
     "on_hold": "En Pausa",
     "completed": "Completado",
     "cancelled": "Cancelado"
   },
-
   "settings": {
     "projectSettings": "Valores Predeterminados de Planificación",
     "projectSettingsDesc": "Establece los horizontes de tiempo predeterminados para este proyecto. Rellenan automáticamente las fechas al crear épicas y sprints.",
@@ -807,5 +782,14 @@
     "sprintDurationHelp": "Rellena automáticamente las fechas de fin del sprint.",
     "months": "meses",
     "weeks": "semanas"
+  },
+  "archive": {
+    "title": "Archive",
+    "description": "Archived organisations and projects. Restore items to make them active again.",
+    "nothingArchived": "Nothing is archived.",
+    "organisations": "Archived Organisations ({{count}})",
+    "projects": "Archived Projects ({{count}})",
+    "archivedOn": "Archived {{date}}",
+    "restore": "Restore"
   }
 }

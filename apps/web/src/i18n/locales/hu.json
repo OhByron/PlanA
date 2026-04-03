@@ -86,7 +86,8 @@
     "myWork": "Munkám",
     "organisations": "Szervezetek",
     "noOrganisationsYet": "Még nincsenek szervezetek",
-    "toggle": "{{name}} váltása"
+    "toggle": "{{name}} váltása",
+    "archive": "Archive"
   },
   "topBar": {
     "notifications": "Értesítések",
@@ -211,7 +212,15 @@
     "dueDate": "Határidő",
     "customerContact": "Ügyfél kapcsolat",
     "createProject": "Projekt létrehozása",
-    "whatIsThisProjectAbout": "Miről szól ez a projekt?"
+    "whatIsThisProjectAbout": "Miről szól ez a projekt?",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveWarningTitle": "Archive Organisation",
+    "archiveWarningBody": "This will archive the organisation and all {{projectCount}} project(s) across {{teamCount}} team(s). Archived items are hidden from all listings and dashboards.",
+    "affectedProjects": "Projects that will be archived:",
+    "archiveReversible": "This action is reversible — you can unarchive the organisation later to restore everything.",
+    "confirmArchive": "Archive Organisation",
+    "importProject": "Import Project"
   },
   "invite": {
     "invalidInvitation": "Érvénytelen meghívás",
@@ -738,7 +747,23 @@
     "contact": "Primary Contact",
     "contactName": "Name",
     "contactEmail": "Email",
-    "contactPhone": "Phone"
+    "contactPhone": "Phone",
+    "retention": "Retention & Archive",
+    "retentionDays": "Retention period",
+    "retentionHelp": "How long to keep archived project data.",
+    "days": "days",
+    "year": "year",
+    "years": "years",
+    "exportImport": "Export / Import",
+    "exportProject": "Export",
+    "exportHelp": "Download the full project as a JSON file — all epics, stories, tasks, dependencies, sprints, and history.",
+    "archiveProject": "Archive Project",
+    "archiveWarningTitle": "Archive Project",
+    "archiveWarningBody": "This will archive \"{{name}}\" and hide it from all listings, dashboards, and navigation. All work items, sprints, epics, and history will be preserved.",
+    "archiveReversible": "This action is reversible — you can unarchive the project later from the settings page.",
+    "confirmArchive": "Archive Project",
+    "unarchive": "Unarchive",
+    "archivedOn": "Archived on {{date}}"
   },
   "projectStatus": {
     "active": "Active",
@@ -757,5 +782,14 @@
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
     "weeks": "weeks"
+  },
+  "archive": {
+    "title": "Archive",
+    "description": "Archived organisations and projects. Restore items to make them active again.",
+    "nothingArchived": "Nothing is archived.",
+    "organisations": "Archived Organisations ({{count}})",
+    "projects": "Archived Projects ({{count}})",
+    "archivedOn": "Archived {{date}}",
+    "restore": "Restore"
   }
 }
