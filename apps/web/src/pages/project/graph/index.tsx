@@ -17,7 +17,7 @@ import {
   BackgroundVariant,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import type { Epic, Sprint } from '@projecta/types';
+import type { Epic } from '@projecta/types';
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../../lib/api-client';
@@ -27,9 +27,8 @@ import { useProjectDependencies } from '../../../hooks/use-project-dependencies'
 import { useProjectMembers } from '../../../hooks/use-project-members';
 import { useBulkCommitDependencies } from '../../../hooks/use-bulk-commit-dependencies';
 import { useEpics, useCreateEpic, useUpdateEpic, useDeleteEpic } from '../../../hooks/use-epics';
-import { useSprints, useCreateSprint, useUpdateSprint, useDeleteSprint, useAddSprintItem } from '../../../hooks/use-sprints';
+import { useSprints, useCreateSprint } from '../../../hooks/use-sprints';
 import { useEpicDependencies } from '../../../hooks/use-container-dependencies';
-import { useSprintDependencies } from '../../../hooks/use-container-dependencies';
 import {
   GraphWorkItemNode,
   type GraphNodeData,
@@ -38,10 +37,6 @@ import {
   GraphEpicNode,
   type EpicNodeData,
 } from '../../../components/graph/graph-epic-node';
-import {
-  GraphSprintNode,
-  type SprintNodeData,
-} from '../../../components/graph/graph-sprint-node';
 import {
   DependencyEdge,
   EdgeMarkerDefs,
@@ -56,7 +51,6 @@ import { validateGraph } from './validate-graph';
 const nodeTypes = {
   workItem: GraphWorkItemNode,
   epic: GraphEpicNode,
-  sprint: GraphSprintNode,
 };
 const edgeTypes = { dependency: DependencyEdge };
 
@@ -104,18 +98,14 @@ function GraphPageInner() {
   const { data: persistedDeps = [] } = useProjectDependencies(projectId);
   const { data: members = [] } = useProjectMembers(projectId);
   const { data: epics = [] } = useEpics(projectId);
-  const { data: sprints = [] } = useSprints(projectId);
+  const { data: sprints = [] } = useSprints(projectId); // for create panel overlap check
   const { data: epicDeps = [] } = useEpicDependencies(projectId);
-  const { data: sprintDeps = [] } = useSprintDependencies(projectId);
   const bulkCommit = useBulkCommitDependencies(projectId);
   const createEpic = useCreateEpic(projectId);
   const createSprint = useCreateSprint(projectId);
   const updateEpic = useUpdateEpic(projectId);
-  const updateSprint = useUpdateSprint(projectId);
   const deleteEpic = useDeleteEpic(projectId);
-  const deleteSprint = useDeleteSprint(projectId);
   const updateItem = useUpdateWorkItem(projectId);
-  const addSprintItem = useAddSprintItem();
 
   // Draft state (work item dependencies)
   const draft = useGraphDraftState(persistedDeps);
@@ -126,7 +116,6 @@ function GraphPageInner() {
 
   type EditTarget =
     | { type: 'epic'; epic: Epic & { itemNumber?: number | null } }
-    | { type: 'sprint'; sprint: Sprint }
     | null;
   const [editTarget, setEditTarget] = useState<EditTarget>(null);
   const [dropTargetId, setDropTargetId] = useState<string | null>(null);
@@ -158,81 +147,17 @@ function GraphPageInner() {
     return { assigneeNames, blockedItems, parentTitles, childCounts, highlightId: null as string | null };
   }, [items, members, draft.mergedEdges]);
 
-  // Work item layout (persisted edges only to keep stable)
+  // Layout: produces epic containers with work items inside, plus orphan items
   const persistedEdges = useMemo(
     () => draft.mergedEdges.filter((e) => !e.isDraft),
     [draft.mergedEdges],
   );
-  const workItemNodes = useGraphLayout(items, persistedEdges, projectId, extras);
+  const epicAndItemNodes = useGraphLayout(items, persistedEdges, projectId, extras, epics);
 
-  // Epic nodes
-  const epicNodes = useMemo((): Node<EpicNodeData>[] => {
-    const NODE_WIDTH = 288;
-    const NODE_HEIGHT = 140;
-    const GAP = 40;
-    const OFFSET_Y = -200; // Place epics above work items
-
-    return epics.map((epic, i) => {
-      const epicItems = items.filter((wi) => wi.epicId === epic.id);
-      const doneItems = epicItems.filter((wi) => wi.status === 'done' || wi.status === 'cancelled');
-      const totalPts = epicItems.reduce((s, wi) => s + (wi.storyPoints ?? 0), 0);
-      const donePts = doneItems.reduce((s, wi) => s + (wi.storyPoints ?? 0), 0);
-
-      return {
-        id: `epic-${epic.id}`,
-        type: 'epic' as const,
-        position: { x: i * (NODE_WIDTH + GAP), y: OFFSET_Y },
-        data: {
-          epic,
-          itemCount: epicItems.length,
-          doneCount: doneItems.length,
-          totalPoints: totalPts,
-          donePoints: donePts,
-          isHighlighted: undefined,
-          isDropTarget: undefined,
-        },
-      };
-    });
-  }, [epics, items]);
-
-  // Sprint nodes
-  const sprintNodes = useMemo((): Node<SprintNodeData>[] => {
-    const NODE_WIDTH = 288;
-    const GAP = 40;
-    // Place sprints below work items
-    const maxWorkItemY = workItemNodes.reduce((max, n) => Math.max(max, n.position.y), 0);
-    const OFFSET_Y = maxWorkItemY + 200;
-
-    // Compute average velocity from completed sprints
-    const completedSprints = sprints.filter((s) => s.status === 'completed' && s.velocity != null);
-    const avgVelocity = completedSprints.length > 0
-      ? Math.round(completedSprints.reduce((s, sp) => s + (sp.velocity ?? 0), 0) / completedSprints.length)
-      : null;
-
-    return sprints.map((sprint, i) => {
-      // TODO: need sprint items data - for now count items with no sprint assignment
-      // In a full implementation we'd fetch sprint_items. For now use a placeholder.
-      return {
-        id: `sprint-${sprint.id}`,
-        type: 'sprint' as const,
-        position: { x: i * (NODE_WIDTH + GAP), y: OFFSET_Y },
-        data: {
-          sprint,
-          itemCount: 0, // Will be populated when we add sprint item fetching
-          doneCount: 0,
-          totalPoints: 0,
-          avgVelocity,
-          isHighlighted: undefined,
-          isDropTarget: undefined,
-        },
-      };
-    });
-  }, [sprints, workItemNodes]);
-
-  // Combine all edges: work item deps + epic deps + sprint deps
+  // Sprint nodes — positioned below the epic containers
+  // Edges: work item deps + epic deps
   const allRfEdges = useMemo(() => {
     const wiEdges = mergedEdgesToRfEdges(draft.mergedEdges);
-
     const epicEdges: Edge<DependencyEdgeData>[] = epicDeps.map((d) => ({
       id: `edep-${d.id}`,
       source: d.type === 'depends_on' ? `epic-${d.targetId}` : `epic-${d.sourceId}`,
@@ -240,29 +165,16 @@ function GraphPageInner() {
       type: 'dependency',
       data: { depType: d.type, strength: d.strength, isDraft: undefined },
     }));
+    return [...wiEdges, ...epicEdges];
+  }, [draft.mergedEdges, epicDeps]);
 
-    const sprintEdges: Edge<DependencyEdgeData>[] = sprintDeps.map((d) => ({
-      id: `sdep-${d.id}`,
-      source: d.type === 'depends_on' ? `sprint-${d.targetId}` : `sprint-${d.sourceId}`,
-      target: d.type === 'depends_on' ? `sprint-${d.sourceId}` : `sprint-${d.targetId}`,
-      type: 'dependency',
-      data: { depType: d.type, strength: d.strength, isDraft: undefined },
-    }));
-
-    return [...wiEdges, ...epicEdges, ...sprintEdges];
-  }, [draft.mergedEdges, epicDeps, sprintDeps]);
-
-  // Combine all nodes
-  const allLayoutNodes = useMemo(
-    () => [...workItemNodes, ...epicNodes, ...sprintNodes] as Node[],
-    [workItemNodes, epicNodes, sprintNodes],
-  );
+  const allLayoutNodes = epicAndItemNodes;
 
   // Node state management
   const layoutKey = useMemo(
     () => items.map((i) => i.id).join(',') + '|' + persistedDeps.map((d) => d.id).join(',')
-      + '|' + epics.map((e) => e.id).join(',') + '|' + sprints.map((s) => s.id).join(','),
-    [items, persistedDeps, epics, sprints],
+      + '|' + epics.map((e) => e.id).join(','),
+    [items, persistedDeps, epics],
   );
 
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -291,7 +203,7 @@ function GraphPageInner() {
       const cy = draggedNode.position.y + 50;
       for (const node of nodes) {
         if (node.id === draggedNode.id) continue;
-        if (!node.id.startsWith('epic-') && !node.id.startsWith('sprint-')) continue;
+        if (!node.id.startsWith('epic-')) continue;
         const x1 = node.position.x;
         const y1 = node.position.y;
         if (cx >= x1 && cx <= x1 + 288 && cy >= y1 && cy <= y1 + 140) return node.id;
@@ -324,7 +236,7 @@ function GraphPageInner() {
   const onNodeDrag = useCallback(
     (_event: React.MouseEvent, draggedNode: Node) => {
       // Only work items can be dropped on containers
-      const isWorkItem = !draggedNode.id.startsWith('epic-') && !draggedNode.id.startsWith('sprint-');
+      const isWorkItem = !draggedNode.id.startsWith('epic-');
       const target = isWorkItem ? findOverlappingContainer(draggedNode) : null;
 
       setDropTargetId((prev) => {
@@ -350,45 +262,29 @@ function GraphPageInner() {
       setDropTargetId(null);
 
       const isEpic = draggedNode.id.startsWith('epic-');
-      const isSprint = draggedNode.id.startsWith('sprint-');
       const overlapping = findOverlappingContainer(draggedNode);
 
-      // Reject invalid drops: epic-on-anything, sprint-on-anything
-      if ((isEpic || isSprint) && overlapping) {
-        let message: string;
-        if (isEpic && overlapping.startsWith('epic-')) {
-          message = t('graph.cannotDropEpicOnEpic');
-        } else if (isSprint && overlapping.startsWith('sprint-')) {
-          message = t('graph.cannotDropSprintOnSprint');
-        } else if (isSprint && overlapping.startsWith('epic-')) {
-          message = t('graph.cannotDropSprintOnEpic');
-        } else {
-          message = t('graph.invalidDrop');
-        }
+      // Reject invalid drops: epic-on-epic
+      if (isEpic && overlapping) {
         snapBack(draggedNode.id);
-        setDragToast(message);
+        setDragToast(t('graph.cannotDropEpicOnEpic'));
         setTimeout(() => setDragToast(null), 3000);
         return;
       }
 
-      // Valid drop: work item onto a container
-      if (!isEpic && !isSprint && overlapping) {
-        if (overlapping.startsWith('epic-')) {
-          const epicId = overlapping.replace('epic-', '');
-          updateItem.mutate({ workItemId: draggedNode.id, data: { epicId } });
-          const children = items.filter((i) => i.parentId === draggedNode.id);
-          for (const child of children) {
-            updateItem.mutate({ workItemId: child.id, data: { epicId } });
-          }
-        } else if (overlapping.startsWith('sprint-')) {
-          const sprintId = overlapping.replace('sprint-', '');
-          addSprintItem.mutate({ sprintId, workItemId: draggedNode.id });
+      // Valid drop: work item onto an epic container
+      if (!isEpic && overlapping && overlapping.startsWith('epic-')) {
+        const epicId = overlapping.replace('epic-', '');
+        updateItem.mutate({ workItemId: draggedNode.id, data: { epicId } });
+        const children = items.filter((i) => i.parentId === draggedNode.id);
+        for (const child of children) {
+          updateItem.mutate({ workItemId: child.id, data: { epicId } });
         }
       }
 
       dragStartPos.current.delete(draggedNode.id);
     },
-    [findOverlappingContainer, updateItem, addSprintItem, items, snapBack, t],
+    [findOverlappingContainer, updateItem, items, snapBack, t],
   );
 
   const edges = allRfEdges;
@@ -491,13 +387,6 @@ function GraphPageInner() {
           setCreateMode(null);
           setEditTarget({ type: 'epic', epic });
         }
-      } else if (node.id.startsWith('sprint-')) {
-        const sprintId = node.id.replace('sprint-', '');
-        const sprint = sprints.find((s) => s.id === sprintId);
-        if (sprint) {
-          setCreateMode(null);
-          setEditTarget({ type: 'sprint', sprint });
-        }
       } else {
         navigateTo({
           to: '/p/$projectId/backlog',
@@ -506,7 +395,7 @@ function GraphPageInner() {
         });
       }
     },
-    [navigateTo, projectId, epics, sprints],
+    [navigateTo, projectId, epics],
   );
 
   // Edit panel handlers
@@ -514,19 +403,10 @@ function GraphPageInner() {
     (epicId: string, data: Record<string, unknown>) => { updateEpic.mutate({ epicId, data }); },
     [updateEpic],
   );
-  const handleUpdateSprint = useCallback(
-    (sprintId: string, data: Record<string, unknown>) => { updateSprint.mutate({ sprintId, data }); },
-    [updateSprint],
-  );
   const handleDeleteEpic = useCallback(
     (epicId: string) => { deleteEpic.mutate(epicId); },
     [deleteEpic],
   );
-  const handleDeleteSprint = useCallback(
-    (sprintId: string) => { deleteSprint.mutate(sprintId); },
-    [deleteSprint],
-  );
-
   const warningItemIds = useMemo(() => {
     const ids = new Set<string>();
     for (const w of warnings) for (const id of w.itemIds) ids.add(id);
@@ -672,9 +552,9 @@ function GraphPageInner() {
           target={editTarget}
           onClose={() => setEditTarget(null)}
           onUpdateEpic={handleUpdateEpic}
-          onUpdateSprint={handleUpdateSprint}
+          onUpdateSprint={() => {}}
           onDeleteEpic={handleDeleteEpic}
-          onDeleteSprint={handleDeleteSprint}
+          onDeleteSprint={() => {}}
           members={members}
         />
         <EdgeMarkerDefs />
@@ -706,7 +586,6 @@ function GraphPageInner() {
             nodeColor={(node) => {
               if (node.id === highlightNodeId) return '#6366f1';
               if (node.id.startsWith('epic-')) return '#a5b4fc';
-              if (node.id.startsWith('sprint-')) return '#7dd3fc';
               if (warningItemIds.has(node.id)) return '#f59e0b';
               return '#e5e7eb';
             }}
