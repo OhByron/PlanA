@@ -42,7 +42,22 @@
     "report": "Aruanne",
     "team": "Meeskond",
     "settings": "Seaded",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Graaf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} element",
     "itemCount_other": "{{count}} elementi",
     "newItem": "+ Uus element",
-    "noItemsMatch": "Ükski element ei vasta teie filtritele. Proovige neid kohandada või looge uus element."
+    "noItemsMatch": "Ükski element ei vasta teie filtritele. Proovige neid kohandada või looge uus element.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

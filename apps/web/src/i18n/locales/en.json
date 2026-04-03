@@ -42,7 +42,57 @@
     "report": "Report",
     "team": "Team",
     "settings": "Settings",
-    "project": "Project"
+    "project": "Project",
+    "graph": "Graph"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported."
+  },
+
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
   },
 
   "sidebar": {
@@ -241,7 +291,10 @@
     "itemCount": "{{count}} item",
     "itemCount_other": "{{count}} items",
     "newItem": "+ New Item",
-    "noItemsMatch": "No items match your filters. Try adjusting or create a new item."
+    "noItemsMatch": "No items match your filters. Try adjusting or create a new item.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {
@@ -267,10 +320,16 @@
     "priorityLabel": "Priority",
     "assigneeLabel": "Assignee",
     "unassigned": "Unassigned",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
     "totalPoints": "Total Points",
     "storyPoints": "Story Points",
     "storyPointsHelp": "For stories, points are the sum of all task points. Add points to individual tasks during refinement.",
     "taskPointsHelp": "Estimate the relative effort. Common scales: 1, 2, 3, 5, 8, 13. A \"1\" is the simplest thing your team does.",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
     "sumOfTasks": "Sum of {{count}} task",
     "sumOfTasks_other": "Sum of {{count}} tasks",
     "largeStoryWarning": "This story is {{points}} points. Consider breaking it into smaller stories that can each be completed in a single sprint.",
@@ -420,13 +479,16 @@
   },
 
   "quickCreate": {
-    "placeholder": "What needs to be done?"
+    "placeholder": "What needs to be done?",
+    "selectEpic": "Select epic..."
   },
 
   "workItemCard": {
     "open": "Open {{title}}",
     "taskCount": "{{count}} task",
-    "taskCount_other": "{{count}} tasks"
+    "taskCount_other": "{{count}} tasks",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
 
   "team": {
@@ -494,7 +556,19 @@
     "qeTesting": "QE Testing",
     "bsaAnalysis": "BSA Analysis",
     "creating": "Creating...",
-    "createStory": "Create Story"
+    "createStory": "Create Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
 
   "sprintDetail": {
@@ -556,6 +630,41 @@
     "actual": "Actual",
     "onTrack": "On track",
     "behind": "Behind"
+  },
+
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   },
 
   "aiSettings": {

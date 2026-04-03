@@ -42,7 +42,22 @@
     "report": "Bericht",
     "team": "Team",
     "settings": "Einstellungen",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Graph"
+  },
+
+  "graph": {
+    "hardDependency": "Harte Abhängigkeit",
+    "softDependency": "Weiche Abhängigkeit",
+    "relatesTo": "Verknüpft mit",
+    "hardLine": "Hart (blockierend)",
+    "softLine": "Weich (implizit)",
+    "relatesLine": "Verknüpft mit",
+    "commit": "Änderungen übernehmen",
+    "committing": "Wird übernommen...",
+    "discard": "Verwerfen",
+    "errors": "Fehler",
+    "warnings": "Warnungen"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} Element",
     "itemCount_other": "{{count}} Elemente",
     "newItem": "+ Neues Element",
-    "noItemsMatch": "Keine Elemente entsprechen deinen Filtern. Passe sie an oder erstelle ein neues Element."
+    "noItemsMatch": "Keine Elemente entsprechen deinen Filtern. Passe sie an oder erstelle ein neues Element.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

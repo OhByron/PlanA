@@ -42,7 +42,22 @@
     "report": "रिपोर्ट",
     "team": "टीम",
     "settings": "सेटिंग्स",
-    "project": "प्रोजेक्ट"
+    "project": "प्रोजेक्ट",
+    "graph": "ग्राफ"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} आइटम",
     "itemCount_other": "{{count}} आइटम",
     "newItem": "+ नया आइटम",
-    "noItemsMatch": "आपके फ़िल्टर से कोई आइटम मेल नहीं खाता। समायोजित करने का प्रयास करें या एक नया आइटम बनाएं।"
+    "noItemsMatch": "आपके फ़िल्टर से कोई आइटम मेल नहीं खाता। समायोजित करने का प्रयास करें या एक नया आइटम बनाएं।",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

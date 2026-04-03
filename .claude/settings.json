@@ -117,7 +117,26 @@
       "Bash(node -e \"try{JSON.parse\\(require\\('fs'\\).readFileSync\\('apps/web/src/i18n/locales/is.json','utf8'\\)\\);console.log\\('FIXED'\\)}catch\\(e\\){console.log\\('Still broken:',e.message.substring\\(0,60\\)\\)}\")",
       "Bash(cp apps/web/src/i18n/locales/da.json apps/web/src/i18n/locales/is.json.bak)",
       "Bash(node -e \"try{const j=JSON.parse\\(require\\('fs'\\).readFileSync\\('apps/web/src/i18n/locales/is.json','utf8'\\)\\);console.log\\('is: VALID',Object.keys\\(j\\).length,'sections'\\)}catch\\(e\\){console.log\\('is: ERROR',e.message.substring\\(0,80\\)\\)}\")",
-      "Bash(ssh root@plana.bignell.com \"cd /opt/plana && git pull origin main\")"
+      "Bash(ssh root@plana.bignell.com \"cd /opt/plana && git pull origin main\")",
+      "Bash(npm -v)",
+      "Bash(docker --version)",
+      "Bash(pnpm -v)",
+      "Bash(pnpm ls:*)",
+      "Bash(go version:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(grep -n \"CREATE TABLE\" /f/Coding/ProjectA/apps/api/internal/migrations/sql/*.up.sql)",
+      "Bash(pnpm build:*)",
+      "Bash(taskkill //F //IM \"server.exe\")",
+      "Bash(taskkill //F //IM \"main.exe\")",
+      "Bash(curl -s -X POST http://localhost:8080/api/projects/nonexistent/dependencies/bulk -H \"Content-Type: application/json\" -d '{\"create\":[],\"delete\":[]}')",
+      "Bash(where python:*)",
+      "Bash(where node:*)",
+      "Bash(node _fix.js)",
+      "Bash(rm _fix.js)",
+      "Bash(mv F:/Coding/ProjectA/apps/web/src/i18n/locales/_fix.js F:/Coding/ProjectA/apps/web/src/i18n/locales/_fix.cjs)",
+      "Bash(node _fix.cjs)",
+      "Bash(rm _fix.cjs)"
     ]
   }
 }

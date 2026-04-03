@@ -29,6 +29,7 @@ type WorkItem struct {
 	Priority      string          `json:"priority"`
 	AssigneeID    *string         `json:"assignee_id"`
 	StoryPoints   *int            `json:"story_points"`
+	PointsUsed    *int            `json:"points_used"`
 	Labels        []string        `json:"labels"`
 	OrderIndex    float64         `json:"order_index"`
 	IsBlocked          bool            `json:"is_blocked"`
@@ -109,7 +110,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-		status, priority, assignee_id, story_points, labels, order_index,
+		status, priority, assignee_id, story_points, points_used, labels, order_index,
 		is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
 	args = append(args, pp.PageSize, pp.Offset)
@@ -127,7 +128,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		var wi WorkItem
 		if err := rows.Scan(
 			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
 			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
 			slog.Error("workitems.List: scan failed", "error", err)
@@ -220,19 +221,42 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If no epic_id provided, assign to the project's first epic (default epic).
+	// If the item has a parent, inherit the parent's epic_id.
+	epicID := body.EpicID
+	if epicID == nil || *epicID == "" {
+		if body.ParentID != nil && *body.ParentID != "" {
+			// Inherit from parent
+			var parentEpicID *string
+			h.db.QueryRow(r.Context(),
+				`SELECT epic_id FROM work_items WHERE id = $1`, *body.ParentID,
+			).Scan(&parentEpicID)
+			epicID = parentEpicID
+		}
+		if epicID == nil || *epicID == "" {
+			// Fall back to the project's first (default) epic
+			var defaultEpicID string
+			if err := h.db.QueryRow(r.Context(),
+				`SELECT id FROM epics WHERE project_id = $1 ORDER BY created_at LIMIT 1`,
+				projectID).Scan(&defaultEpicID); err == nil {
+				epicID = &defaultEpicID
+			}
+		}
+	}
+
 	var wi WorkItem
 	err = h.db.QueryRow(r.Context(),
 		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
 			priority, assignee_id, story_points, labels, order_index, created_by, item_number, source_test_result_id)
 		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
-		projectID, body.EpicID, body.ParentID, body.Type, body.Title, body.Description,
+		projectID, epicID, body.ParentID, body.Type, body.Title, body.Description,
 		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID, itemNumber, body.SourceTestResultID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -259,12 +283,12 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		 FROM work_items WHERE id = $1`, workItemID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -295,6 +319,7 @@ type updateWorkItemRequest struct {
 	ParentID      *string          `json:"parent_id"`
 	AssigneeID    *string          `json:"assignee_id"`
 	StoryPoints   *int             `json:"story_points"`
+	PointsUsed    *int             `json:"points_used"`
 	Labels        *[]string        `json:"labels"`
 	OrderIndex    *float64         `json:"order_index"`
 	IsBlocked     *bool            `json:"is_blocked"`
@@ -353,23 +378,40 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		argN++
 	}
 	if body.EpicID != nil {
-		fields = append(fields, fmt.Sprintf("epic_id = $%d", argN))
-		args = append(args, *body.EpicID)
-		argN++
+		if *body.EpicID == "" {
+			fields = append(fields, fmt.Sprintf("epic_id = NULL"))
+		} else {
+			fields = append(fields, fmt.Sprintf("epic_id = $%d", argN))
+			args = append(args, *body.EpicID)
+			argN++
+		}
 	}
 	if body.ParentID != nil {
-		fields = append(fields, fmt.Sprintf("parent_id = $%d", argN))
-		args = append(args, *body.ParentID)
-		argN++
+		if *body.ParentID == "" {
+			fields = append(fields, fmt.Sprintf("parent_id = NULL"))
+		} else {
+			fields = append(fields, fmt.Sprintf("parent_id = $%d", argN))
+			args = append(args, *body.ParentID)
+			argN++
+		}
 	}
 	if body.AssigneeID != nil {
-		fields = append(fields, fmt.Sprintf("assignee_id = $%d", argN))
-		args = append(args, *body.AssigneeID)
-		argN++
+		if *body.AssigneeID == "" {
+			fields = append(fields, fmt.Sprintf("assignee_id = NULL"))
+		} else {
+			fields = append(fields, fmt.Sprintf("assignee_id = $%d", argN))
+			args = append(args, *body.AssigneeID)
+			argN++
+		}
 	}
 	if body.StoryPoints != nil {
 		fields = append(fields, fmt.Sprintf("story_points = $%d", argN))
 		args = append(args, *body.StoryPoints)
+		argN++
+	}
+	if body.PointsUsed != nil {
+		fields = append(fields, fmt.Sprintf("points_used = $%d", argN))
+		args = append(args, *body.PointsUsed)
 		argN++
 	}
 	if body.Labels != nil {
@@ -414,6 +456,27 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			slog.Error("workitems.Update: pre-check query failed", "error", err)
 		}
 
+		// Story completion gate: a story with child tasks cannot be moved to "done"
+		// manually if any child task is not done/cancelled.
+		if *body.Status == "done" {
+			var itemType string
+			h.db.QueryRow(r.Context(), `SELECT type FROM work_items WHERE id = $1`, workItemID).Scan(&itemType)
+			if itemType == "story" {
+				var incompleteChildren int
+				if err := h.db.QueryRow(r.Context(),
+					`SELECT COUNT(*) FROM work_items
+					 WHERE parent_id = $1 AND status NOT IN ('done', 'cancelled')`,
+					workItemID).Scan(&incompleteChildren); err != nil {
+					slog.Warn("workitems.Update: child-check query failed", "error", err)
+				}
+				if incompleteChildren > 0 {
+					writeError(w, http.StatusUnprocessableEntity, "incomplete_subtasks",
+						fmt.Sprintf("Cannot mark story as done — %d subtask(s) still incomplete", incompleteChildren))
+					return
+				}
+			}
+		}
+
 		// QE status gate: QE-assigned items require linked test results that all pass before moving to Done.
 		if *body.Status == "done" {
 			var totalResults, failedResults int
@@ -443,7 +506,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(
 		`UPDATE work_items SET %s WHERE id = $%d
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		strings.Join(fields, ", "), argN,
 	)
@@ -451,7 +514,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -477,16 +540,74 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			workItemID).Scan(&sprintID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			slog.Warn("workitems.Update: sprint lookup for status-change log failed", "error", err)
 		}
+		// Use points_used (actual effort) when transitioning to done; otherwise use estimate.
+		statusChangePoints := wi.StoryPoints
+		if *body.Status == "done" && wi.PointsUsed != nil {
+			statusChangePoints = wi.PointsUsed
+		}
 		_, err := h.db.Exec(r.Context(),
 			`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
 			 VALUES ($1, $2, $3, $4, $5)`,
-			workItemID, sprintID, oldStatus, *body.Status, wi.StoryPoints)
+			workItemID, sprintID, oldStatus, *body.Status, statusChangePoints)
 		if err != nil {
 			slog.Error("workitems.Update: failed to log status change", "error", err)
 		}
 		// Notify assignee of status change
 		if wi.AssigneeID != nil {
 			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, *body.Status, claims.UserID, wi.ID)
+		}
+
+		// Default points_used to story_points when moving to done (if not explicitly set)
+		if *body.Status == "done" && wi.PointsUsed == nil && wi.StoryPoints != nil {
+			h.db.Exec(r.Context(),
+				`UPDATE work_items SET points_used = story_points WHERE id = $1 AND points_used IS NULL`,
+				workItemID)
+			wi.PointsUsed = wi.StoryPoints
+		}
+
+		// Auto-promote parent story: when a task moves to done, check if all
+		// sibling tasks under the same parent are now done/cancelled. If so,
+		// automatically move the parent story to done.
+		if *body.Status == "done" && wi.ParentID != nil {
+			var incompleteCount int
+			if err := h.db.QueryRow(r.Context(),
+				`SELECT COUNT(*) FROM work_items
+				 WHERE parent_id = $1 AND id != $2 AND status NOT IN ('done', 'cancelled')`,
+				*wi.ParentID, workItemID,
+			).Scan(&incompleteCount); err != nil {
+				slog.Warn("workitems.Update: sibling-check failed", "error", err)
+			}
+			if incompleteCount == 0 {
+				// All siblings done — auto-promote the parent
+				var parentStatus string
+				h.db.QueryRow(r.Context(),
+					`SELECT status FROM work_items WHERE id = $1`, *wi.ParentID,
+				).Scan(&parentStatus)
+				if parentStatus != "done" && parentStatus != "cancelled" {
+					h.db.Exec(r.Context(),
+						`UPDATE work_items SET status = 'done', updated_at = NOW(),
+						 points_used = COALESCE(points_used, story_points)
+						 WHERE id = $1`,
+						*wi.ParentID)
+					// Log the parent status change too
+					var parentSprintID *string
+					if err := h.db.QueryRow(r.Context(),
+						`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`,
+						*wi.ParentID).Scan(&parentSprintID); err != nil {
+						// no sprint — that's fine
+					}
+					var parentPoints *int
+					h.db.QueryRow(r.Context(),
+						`SELECT story_points FROM work_items WHERE id = $1`, *wi.ParentID,
+					).Scan(&parentPoints)
+					h.db.Exec(r.Context(),
+						`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
+						 VALUES ($1, $2, $3, 'done', $4)`,
+						*wi.ParentID, parentSprintID, parentStatus, parentPoints)
+					slog.Info("workitems.Update: auto-promoted parent story to done",
+						"parentID", *wi.ParentID, "triggeredBy", workItemID)
+				}
+			}
 		}
 	}
 

@@ -1,20 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { WorkItem } from '@projecta/types';
 import { api } from '../lib/api-client';
-import type { Dependency } from './use-dependencies';
-
-function toDependency(w: Record<string, unknown>): Dependency {
-  return {
-    id: w.id as string,
-    sourceId: w.source_id as string,
-    targetId: w.target_id as string,
-    type: w.type as 'depends_on' | 'relates_to',
-    createdBy: w.created_by as string,
-    createdAt: w.created_at as string,
-    targetTitle: w.target_title as string,
-    targetType: w.target_type as string,
-  };
-}
+import { toDependency, type Dependency } from './use-dependencies';
 
 export interface BlockedInfo {
   /** Set of work item IDs that are blocked */
@@ -25,7 +12,7 @@ export interface BlockedInfo {
 
 /**
  * Fetches all dependencies for a project in one request.
- * Computes which items are blocked based on `depends_on` where the target isn't done.
+ * Computes which items are blocked based on hard `depends_on` where the target isn't done.
  */
 export function useProjectBlockedStatus(projectId: string, items: WorkItem[]) {
   const itemStatusMap = new Map(items.map((i) => [i.id, i.status]));
@@ -47,7 +34,8 @@ export function useProjectBlockedStatus(projectId: string, items: WorkItem[]) {
   const blockerMap = new Map<string, { id: string; title: string }[]>();
 
   for (const dep of deps) {
-    if (dep.type !== 'depends_on') continue;
+    // Only hard depends_on relationships create blocking
+    if (dep.type !== 'depends_on' || dep.strength !== 'hard') continue;
     const targetStatus = itemStatusMap.get(dep.targetId);
     if (targetStatus && targetStatus !== 'done' && targetStatus !== 'cancelled') {
       blockedItems.add(dep.sourceId);
@@ -58,4 +46,19 @@ export function useProjectBlockedStatus(projectId: string, items: WorkItem[]) {
   }
 
   return { blockedItems, blockerMap };
+}
+
+/** Fetches all project dependencies (for the graph view). */
+export function useProjectDependencies(projectId: string) {
+  return useQuery({
+    queryKey: ['project-dependencies', projectId],
+    queryFn: async (): Promise<Dependency[]> => {
+      const raw = await api.get<Record<string, unknown>[]>(
+        `/projects/${projectId}/dependencies`,
+      );
+      return raw.map(toDependency);
+    },
+    enabled: !!projectId,
+    staleTime: 30_000,
+  });
 }

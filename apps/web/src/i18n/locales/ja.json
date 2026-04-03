@@ -42,7 +42,22 @@
     "report": "レポート",
     "team": "チーム",
     "settings": "設定",
-    "project": "プロジェクト"
+    "project": "プロジェクト",
+    "graph": "グラフ"
+  },
+
+  "graph": {
+    "hardDependency": "強い依存関係",
+    "softDependency": "弱い依存関係",
+    "relatesTo": "関連",
+    "hardLine": "強い（ブロッキング）",
+    "softLine": "弱い（暗黙的）",
+    "relatesLine": "関連",
+    "commit": "変更を確定",
+    "committing": "確定中...",
+    "discard": "破棄",
+    "errors": "エラー",
+    "warnings": "警告"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} 件",
     "itemCount_other": "{{count}} 件",
     "newItem": "+ 新しいアイテム",
-    "noItemsMatch": "フィルターに一致するアイテムがありません。条件を調整するか、新しいアイテムを作成してください。"
+    "noItemsMatch": "フィルターに一致するアイテムがありません。条件を調整するか、新しいアイテムを作成してください。",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

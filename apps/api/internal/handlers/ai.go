@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -306,12 +308,14 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var body struct {
-		Type        string `json:"type"` // "ac" or "description"
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		EpicTitle   string `json:"epic_title"`
-		EpicDesc    string `json:"epic_description"`
-		StoryType   string `json:"story_type"`
+		Type        string   `json:"type"` // "ac", "description", or "sprint_goal"
+		Title       string   `json:"title"`
+		Description string   `json:"description"`
+		EpicTitle   string   `json:"epic_title"`
+		EpicDesc    string   `json:"epic_description"`
+		StoryType   string   `json:"story_type"`
+		SprintName  string   `json:"sprint_name"`
+		ItemTitles  []string `json:"item_titles"` // for sprint_goal
 	}
 	if !readJSON(w, r, &body) {
 		return
@@ -319,7 +323,33 @@ func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 
 	lang := h.userLanguage(r)
 
-	if body.Type == "ac" {
+	if body.Type == "sprint_goal" {
+		systemPrompt := `You are an Agile coach helping craft sprint goals. Given a sprint name and the list of items planned for the sprint, write a concise sprint goal (1-2 sentences) that captures the business value being delivered. Focus on outcomes, not tasks. Return JSON: {"goal": "..."}`
+		if li := ai.LanguageInstruction(lang); li != "" {
+			systemPrompt += " " + li
+		}
+		itemList := ""
+		for _, t := range body.ItemTitles {
+			itemList += "- " + t + "\n"
+		}
+		userPrompt := fmt.Sprintf("Project: %s\nSprint: %s\nItems:\n%s\nGenerate a sprint goal.", projectName, body.SprintName, itemList)
+
+		raw, err := provider.RawChat(r.Context(), systemPrompt, userPrompt)
+		if err != nil {
+			slog.Error("ai.SuggestInline sprint_goal failed", "error", err)
+			writeError(w, http.StatusInternalServerError, "ai_error", "AI request failed: "+err.Error())
+			return
+		}
+		// Try to parse JSON, fallback to raw text
+		var result struct {
+			Goal string `json:"goal"`
+		}
+		if jsonErr := json.Unmarshal([]byte(raw), &result); jsonErr != nil {
+			result.Goal = raw
+		}
+		writeJSON(w, http.StatusOK, map[string]string{"goal": result.Goal})
+		return
+	} else if body.Type == "ac" {
 		req := ai.SuggestACRequest{
 			StoryTitle:       body.Title,
 			StoryDescription: body.Description,

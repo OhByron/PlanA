@@ -42,7 +42,22 @@
     "report": "리포트",
     "team": "팀",
     "settings": "설정",
-    "project": "프로젝트"
+    "project": "프로젝트",
+    "graph": "그래프"
+  },
+
+  "graph": {
+    "hardDependency": "강한 의존성",
+    "softDependency": "약한 의존성",
+    "relatesTo": "관련",
+    "hardLine": "강함 (차단)",
+    "softLine": "약함 (암시적)",
+    "relatesLine": "관련",
+    "commit": "변경 사항 커밋",
+    "committing": "커밋 중...",
+    "discard": "취소",
+    "errors": "오류",
+    "warnings": "경고"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}}개 항목",
     "itemCount_other": "{{count}}개 항목",
     "newItem": "+ 새 항목",
-    "noItemsMatch": "필터와 일치하는 항목이 없습니다. 조건을 조정하거나 새 항목을 만드세요."
+    "noItemsMatch": "필터와 일치하는 항목이 없습니다. 조건을 조정하거나 새 항목을 만드세요.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

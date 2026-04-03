@@ -16,7 +16,7 @@ import { cn } from '@projecta/ui';
 import { ApiError } from '../../lib/api-client';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
-import { useProjectBlockedStatus } from '../../hooks/use-project-dependencies';
+import { useProjectBlockedStatus, useProjectDependencies } from '../../hooks/use-project-dependencies';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
 import { HelpOverlay } from '../../components/help-overlay';
@@ -30,6 +30,53 @@ export function BoardPage() {
   const { data: members = [] } = useProjectMembers(projectId);
   const updateItem = useUpdateWorkItem(projectId);
   const { blockedItems } = useProjectBlockedStatus(projectId, items);
+  const { data: deps = [] } = useProjectDependencies(projectId);
+
+  // Compute enabler map: for each item, count how many not-yet-done items
+  // are waiting on it (directly or transitively via depends_on chains).
+  // Items that unblock the most work should be promoted through the pipeline first.
+  const unblocksMap = useMemo(() => {
+    const map = new Map<string, number>();
+    if (deps.length === 0) return map;
+
+    const itemStatusMap = new Map(items.map((i) => [i.id, i.status]));
+
+    // Build: target → [sources that depend on it]
+    // "source depends_on target" means target is the enabler
+    const dependents = new Map<string, Set<string>>();
+    for (const dep of deps) {
+      if (dep.type !== 'depends_on') continue;
+      const targetStatus = itemStatusMap.get(dep.targetId);
+      const sourceStatus = itemStatusMap.get(dep.sourceId);
+      // Only count if the target isn't done yet and the source isn't done/cancelled
+      if (targetStatus === 'done' || targetStatus === 'cancelled') continue;
+      if (sourceStatus === 'done' || sourceStatus === 'cancelled') continue;
+      const set = dependents.get(dep.targetId) ?? new Set();
+      set.add(dep.sourceId);
+      dependents.set(dep.targetId, set);
+    }
+
+    // Count transitive dependents via BFS from each enabler
+    for (const [enablerId] of dependents) {
+      const visited = new Set<string>();
+      const queue = [enablerId];
+      while (queue.length > 0) {
+        const current = queue.pop()!;
+        const directDeps = dependents.get(current);
+        if (!directDeps) continue;
+        for (const depId of directDeps) {
+          if (visited.has(depId)) continue;
+          visited.add(depId);
+          queue.push(depId);
+        }
+      }
+      if (visited.size > 0) {
+        map.set(enablerId, visited.size);
+      }
+    }
+
+    return map;
+  }, [items, deps]);
 
   const memberNames = useMemo(
     () => new Map(members.map((m) => [m.id, m.name])),
@@ -62,7 +109,7 @@ export function BoardPage() {
   );
 
   // Build parent-child lookup maps
-  const { parentTitles, childTaskCounts, calculatedPointsMap } = useMemo(() => {
+  const { parentTitles, childTaskCounts, calculatedPointsMap, childDoneCounts } = useMemo(() => {
     const parentTitles = new Map<string, string>();
     const childTaskCounts = new Map<string, number>();
     const calculatedPointsMap = new Map<string, number>();
@@ -91,12 +138,28 @@ export function BoardPage() {
       }
     }
 
-    return { parentTitles, childTaskCounts, calculatedPointsMap };
+    // Count done children for progress bars on story cards
+    const childDoneCounts = new Map<string, number>();
+    for (const item of items) {
+      if (item.parentId && (item.status === 'done' || item.status === 'cancelled')) {
+        childDoneCounts.set(item.parentId, (childDoneCounts.get(item.parentId) ?? 0) + 1);
+      }
+    }
+
+    return { parentTitles, childTaskCounts, calculatedPointsMap, childDoneCounts };
   }, [items]);
 
   const grouped = COLUMNS.reduce(
     (acc, status) => {
-      acc[status] = items.filter((i) => i.status === status);
+      const columnItems = items.filter((i) => i.status === status);
+      // Sort enablers (items that unblock others) to the top
+      columnItems.sort((a, b) => {
+        const aUnblocks = unblocksMap.get(a.id) ?? 0;
+        const bUnblocks = unblocksMap.get(b.id) ?? 0;
+        if (aUnblocks !== bUnblocks) return bUnblocks - aUnblocks;
+        return a.orderIndex - b.orderIndex;
+      });
+      acc[status] = columnItems;
       return acc;
     },
     {} as Record<WorkItemStatus, WorkItem[]>,
@@ -219,6 +282,8 @@ export function BoardPage() {
               blockedItems={blockedItems}
               wipWarning={status === 'in_progress' && totalInProgress > totalCapacity}
               memberNames={memberNames}
+              unblocksMap={unblocksMap}
+              childDoneCounts={childDoneCounts}
             />
           ))}
 

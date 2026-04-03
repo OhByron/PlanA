@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
-import { Button, Input, Textarea, Select, Badge } from '@projecta/ui';
+import { Button, Input, Textarea, Select, Badge, cn } from '@projecta/ui';
 import { useTranslation } from 'react-i18next';
 import type { Priority, WorkItemType } from '@projecta/types';
 import { useEpic, useUpdateEpic } from '../../hooks/use-epics';
-import { useWorkItems, useCreateWorkItem } from '../../hooks/use-work-items';
+import { useWorkItems, useCreateWorkItem, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useCreateAcceptanceCriterion } from '../../hooks/use-acceptance-criteria';
 import { api } from '../../lib/api-client';
 import { useProjectMembers } from '../../hooks/use-project-members';
@@ -27,14 +27,43 @@ export function EpicDetailPage() {
   const updateEpic = useUpdateEpic(projectId);
   const { data: allItems = [] } = useWorkItems(projectId);
   const epicItems = allItems.filter((i) => i.epicId === epicId);
+  // Top-level items: stories/bugs/tasks that don't have a parent within the epic
+  const topLevelEpicItems = epicItems.filter(
+    (item) => !item.parentId || !epicItems.some((ei) => ei.id === item.parentId),
+  );
   const { data: members = [] } = useProjectMembers(projectId);
   const createItem = useCreateWorkItem(projectId);
 
+  const updateItem = useUpdateWorkItem(projectId);
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleDraft, setTitleDraft] = useState('');
   const [editingDesc, setEditingDesc] = useState(false);
   const [descDraft, setDescDraft] = useState('');
   const [showAddStory, setShowAddStory] = useState(false);
+  const [showAddExisting, setShowAddExisting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // Items eligible to be added to this epic (not already in it, top-level only)
+  const availableItems = useMemo(
+    () => allItems.filter((i) => i.epicId !== epicId && !i.parentId),
+    [allItems, epicId],
+  );
+
+  const filteredAvailable = useMemo(() => {
+    if (!searchQuery.trim()) return availableItems.slice(0, 20);
+    const q = searchQuery.toLowerCase();
+    return availableItems
+      .filter((i) => i.title.toLowerCase().includes(q) || i.type.includes(q))
+      .slice(0, 20);
+  }, [availableItems, searchQuery]);
+
+  useEffect(() => {
+    if (showAddExisting) {
+      setSearchQuery('');
+      requestAnimationFrame(() => searchRef.current?.focus());
+    }
+  }, [showAddExisting]);
 
   if (isLoading || !epic) {
     return (
@@ -127,16 +156,89 @@ export function EpicDetailPage() {
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                {t('epicDetail.stories', { count: epicItems.length })}
+                {t('epicDetail.stories', { count: topLevelEpicItems.length })}
               </h2>
               <ContextHelp>
                 {t('epicDetail.storiesContextHelp')}
               </ContextHelp>
             </div>
-            <Button size="sm" onClick={() => setShowAddStory(true)} disabled={showAddStory}>
-              {t('epicDetail.addStory')}
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => setShowAddStory(true)} disabled={showAddStory}>
+                {t('epicDetail.addStory')}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowAddExisting(!showAddExisting)}
+              >
+                {t('epicDetail.addExisting')}
+              </Button>
+            </div>
           </div>
+
+          {showAddExisting && (
+            <div className="mb-4 rounded-lg border border-gray-200 bg-white p-3">
+              <div className="mb-2 flex items-center gap-2">
+                <Input
+                  ref={searchRef}
+                  placeholder={t('epicDetail.searchExisting')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1"
+                />
+                <button
+                  onClick={() => setShowAddExisting(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                  aria-label={t('common.close')}
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              {filteredAvailable.length === 0 ? (
+                <p className="py-3 text-center text-xs text-gray-400">{t('epicDetail.noItemsFound')}</p>
+              ) : (
+                <div className="max-h-60 space-y-1 overflow-y-auto">
+                  {filteredAvailable.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        updateItem.mutate(
+                          { workItemId: item.id, data: { epicId } },
+                          {
+                            onSuccess: () => {
+                              // Also move child tasks into the same epic
+                              const children = allItems.filter((i) => i.parentId === item.id);
+                              for (const child of children) {
+                                updateItem.mutate({ workItemId: child.id, data: { epicId } });
+                              }
+                            },
+                          },
+                        );
+                      }}
+                      className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-gray-50"
+                    >
+                      <TypeIcon type={item.type} />
+                      <span className="flex-1 truncate text-sm text-gray-900">{item.title}</span>
+                      <StatusBadge status={item.status} />
+                      {item.storyPoints != null && (
+                        <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500">
+                          {item.storyPoints}
+                        </span>
+                      )}
+                      <span className="shrink-0 text-xs text-brand-600">{t('epicDetail.addToEpic')}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {availableItems.length > 20 && !searchQuery && (
+                <p className="mt-2 text-center text-[10px] text-gray-400">
+                  {t('epicDetail.typeToSearch', { count: availableItems.length })}
+                </p>
+              )}
+            </div>
+          )}
 
           {showAddStory && (
             <AddStoryForm
@@ -149,33 +251,64 @@ export function EpicDetailPage() {
             />
           )}
 
-          {epicItems.length === 0 && !showAddStory && (
+          {topLevelEpicItems.length === 0 && !showAddStory && (
             <p className="text-sm text-gray-400">{t('epicDetail.noStoriesYet')}</p>
           )}
 
-          <div className="space-y-2">
-            {epicItems.map((item) => {
-              const assignee = members.find((m) => m.id === item.assigneeId);
-              return (
-                <Link
-                  key={item.id}
-                  to="/p/$projectId/items/$workItemId"
-                  params={{ projectId, workItemId: item.id }}
-                  className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2.5 hover:bg-gray-50"
-                >
-                  <TypeIcon type={item.type} />
-                  <span className="flex-1 truncate text-sm font-medium text-gray-900">{item.title}</span>
-                  {assignee && (
-                    <span className="text-xs text-gray-500">{assignee.name}</span>
-                  )}
-                  <StatusBadge status={item.status} />
-                  <PriorityIndicator priority={item.priority} />
-                  {item.storyPoints != null && (
-                    <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">{item.storyPoints}</span>
-                  )}
-                </Link>
-              );
-            })}
+          <div className="space-y-0.5">
+            {(() => {
+              // Recursively render the full tree
+              const rows: React.ReactNode[] = [];
+              const childrenOf = new Map<string, typeof epicItems>();
+              for (const item of epicItems) {
+                if (item.parentId) {
+                  const siblings = childrenOf.get(item.parentId) ?? [];
+                  siblings.push(item);
+                  childrenOf.set(item.parentId, siblings);
+                }
+              }
+
+              function renderTree(item: typeof epicItems[0], depth: number) {
+                const assignee = members.find((m) => m.id === item.assigneeId);
+                const children = childrenOf.get(item.id) ?? [];
+                const doneChildren = children.filter((c) => c.status === 'done' || c.status === 'cancelled').length;
+                // Collect all descendants for removal
+                const allDescendants: string[] = [];
+                function collectDescendants(id: string) {
+                  for (const c of childrenOf.get(id) ?? []) {
+                    allDescendants.push(c.id);
+                    collectDescendants(c.id);
+                  }
+                }
+                collectDescendants(item.id);
+
+                rows.push(
+                  <EpicItemRow
+                    key={item.id}
+                    item={item}
+                    projectId={projectId}
+                    assignee={assignee}
+                    childInfo={children.length > 0 ? `${doneChildren}/${children.length} subtasks` : undefined}
+                    depth={depth}
+                    onRemove={depth === 0 ? () => {
+                      updateItem.mutate({ workItemId: item.id, data: { epicId: '' } });
+                      for (const descId of allDescendants) {
+                        updateItem.mutate({ workItemId: descId, data: { epicId: '' } });
+                      }
+                    } : undefined}
+                    removeLabel={t('common.remove')}
+                  />,
+                );
+                for (const child of children) {
+                  renderTree(child, depth + 1);
+                }
+              }
+
+              for (const item of topLevelEpicItems) {
+                renderTree(item, 0);
+              }
+              return rows;
+            })()}
           </div>
         </section>
       </div>
@@ -205,7 +338,7 @@ export function EpicDetailPage() {
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.assigneeLabel')}</label>
           <Select
-            value={(epic as unknown as { assigneeId?: string | null }).assigneeId ?? ''}
+            value={epic.assigneeId ?? ''}
             onChange={(e) => patch({ assignee_id: e.target.value || null })}
           >
             <option value="">{t('workItemDetail.unassigned')}</option>
@@ -217,11 +350,118 @@ export function EpicDetailPage() {
           </Select>
         </div>
 
+        <div className="mb-4">
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.startDateLabel')}</label>
+          <Input
+            type="date"
+            value={epic.startDate ? new Date(epic.startDate).toISOString().slice(0, 10) : ''}
+            onChange={(e) => patch({ start_date: e.target.value || null })}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.dueDateLabel')}</label>
+          <Input
+            type="date"
+            value={epic.dueDate ? new Date(epic.dueDate).toISOString().slice(0, 10) : ''}
+            onChange={(e) => patch({ due_date: e.target.value || null })}
+          />
+          {epic.dueDate && new Date(epic.dueDate) < new Date() && epic.status !== 'done' && epic.status !== 'cancelled' && (
+            <p className="mt-1 text-xs font-medium text-red-500">{t('epicDetail.overdue')}</p>
+          )}
+        </div>
+
+        {/* Progress summary */}
+        {topLevelEpicItems.length > 0 && (
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.progress')}</label>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span>{epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length}/{epicItems.length} {t('epicDetail.itemsDone')}</span>
+                <span>{epicItems.reduce((s, i) => s + (i.storyPoints ?? 0), 0)} {t('epicDetail.totalPts')}</span>
+              </div>
+              <div className="h-2 rounded-full bg-gray-100">
+                <div
+                  className={cn(
+                    'h-full rounded-full transition-all',
+                    epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length === epicItems.length
+                      ? 'bg-emerald-400'
+                      : 'bg-indigo-400',
+                  )}
+                  style={{
+                    width: epicItems.length > 0
+                      ? `${(epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length / epicItems.length) * 100}%`
+                      : '0%',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="mt-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-400">
           <p>{t('workItemDetail.created', { date: new Date(epic.createdAt).toLocaleDateString() })}</p>
           <p>{t('workItemDetail.updated', { date: new Date(epic.updatedAt).toLocaleDateString() })}</p>
         </div>
       </aside>
+    </div>
+  );
+}
+
+// --- Epic item row (story or task) ---
+
+function EpicItemRow({
+  item,
+  projectId,
+  assignee,
+  childInfo,
+  depth = 0,
+  onRemove,
+  removeLabel,
+}: {
+  item: import('@projecta/types').WorkItem;
+  projectId: string;
+  assignee: { name: string } | undefined;
+  childInfo: string | undefined;
+  depth: number | undefined;
+  onRemove: (() => void) | undefined;
+  removeLabel: string | undefined;
+}) {
+  return (
+    <div
+      className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50"
+      style={depth > 0 ? { marginLeft: `${depth * 1.5}rem`, borderLeft: '2px solid #e5e7eb' } : undefined}
+    >
+      <Link
+        to="/p/$projectId/items/$workItemId"
+        params={{ projectId, workItemId: item.id }}
+        className="flex flex-1 items-center gap-3 min-w-0"
+      >
+        <TypeIcon type={item.type} />
+        <div className="flex-1 min-w-0">
+          <span className="truncate text-sm font-medium text-gray-900 block">{item.title}</span>
+          {childInfo && (
+            <span className="text-[10px] text-gray-400">{childInfo}</span>
+          )}
+        </div>
+        {assignee && (
+          <span className="text-xs text-gray-500 shrink-0">{assignee.name}</span>
+        )}
+        <StatusBadge status={item.status} />
+        <PriorityIndicator priority={item.priority} />
+        {item.storyPoints != null && (
+          <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">{item.storyPoints}</span>
+        )}
+      </Link>
+      {onRemove && (
+        <button
+          type="button"
+          onClick={onRemove}
+          className="relative z-10 shrink-0 rounded-md px-2 py-1 text-xs font-medium text-gray-400 hover:bg-red-50 hover:text-red-600"
+        >
+          {removeLabel}
+        </button>
+      )}
     </div>
   );
 }

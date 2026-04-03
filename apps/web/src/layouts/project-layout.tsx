@@ -28,6 +28,7 @@ export function ProjectLayout() {
 
   const tabs = [
     { label: t('nav.board'), to: '/p/$projectId/board' as const },
+    { label: t('nav.graph'), to: '/p/$projectId/graph' as const },
     { label: t('nav.backlog'), to: '/p/$projectId/backlog' as const },
     { label: t('nav.epics'), to: '/p/$projectId/epics' as const },
     { label: t('nav.sprints'), to: '/p/$projectId/sprints' as const },

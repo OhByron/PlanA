@@ -42,7 +42,22 @@
     "report": "التقرير",
     "team": "الفريق",
     "settings": "الإعدادات",
-    "project": "المشروع"
+    "project": "المشروع",
+    "graph": "رسم بياني"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} عنصر",
     "itemCount_other": "{{count}} عناصر",
     "newItem": "+ عنصر جديد",
-    "noItemsMatch": "لا توجد عناصر مطابقة للمرشحات. حاول تعديلها أو أنشئ عنصراً جديداً."
+    "noItemsMatch": "لا توجد عناصر مطابقة للمرشحات. حاول تعديلها أو أنشئ عنصراً جديداً.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

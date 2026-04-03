@@ -10,9 +10,13 @@ interface WorkItemCardProps {
   projectId: string;
   parentTitle?: string | undefined;
   childTaskCount?: number | undefined;
+  childDoneCount?: number | undefined;
   calculatedPoints?: number | undefined;
   isBlocked?: boolean | undefined;
   assigneeName?: string | undefined;
+  onClick?: () => void;
+  /** Number of items this card unblocks when completed */
+  unblocksCount?: number | undefined;
 }
 
 export function WorkItemCard({
@@ -23,6 +27,9 @@ export function WorkItemCard({
   calculatedPoints,
   isBlocked: isBlockedProp,
   assigneeName,
+  onClick: onClickProp,
+  unblocksCount,
+  childDoneCount,
 }: WorkItemCardProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -34,15 +41,18 @@ export function WorkItemCard({
   return (
     <button
       onClick={() =>
-        navigate({
-          to: '/p/$projectId/items/$workItemId',
-          params: { projectId, workItemId: item.id },
-        })
+        onClickProp
+          ? onClickProp()
+          : navigate({
+              to: '/p/$projectId/items/$workItemId',
+              params: { projectId, workItemId: item.id },
+            })
       }
       aria-label={t('workItemCard.open', { title: item.title })}
       className={cn(
         'w-full rounded-lg border border-gray-200 bg-white p-3 text-left shadow-sm transition-shadow hover:shadow-md',
         blocked && 'border-red-300 bg-red-50/50',
+        unblocksCount && unblocksCount > 0 && !blocked && 'border-l-[3px] border-l-emerald-400',
       )}
     >
       {/* Parent breadcrumb for tasks */}
@@ -62,6 +72,24 @@ export function WorkItemCard({
         </span>
       </div>
 
+      {/* Task progress bar for stories */}
+      {childTaskCount != null && childTaskCount > 0 && childDoneCount != null && (
+        <div className="mt-2 flex items-center gap-2">
+          <div className="h-1.5 flex-1 rounded-full bg-gray-100">
+            <div
+              className={cn(
+                'h-full rounded-full transition-all',
+                childDoneCount === childTaskCount ? 'bg-emerald-400' : 'bg-brand-400',
+              )}
+              style={{ width: `${(childDoneCount / childTaskCount) * 100}%` }}
+            />
+          </div>
+          <span className="text-[10px] text-gray-400 shrink-0">
+            {childDoneCount}/{childTaskCount}
+          </span>
+        </div>
+      )}
+
       <div className="mt-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <PriorityIndicator priority={item.priority} />
@@ -77,6 +105,11 @@ export function WorkItemCard({
           )}
           {blocked && (
             <span className="text-xs font-medium text-red-600">{t('workItemDetail.blocked')}</span>
+          )}
+          {unblocksCount != null && unblocksCount > 0 && (
+            <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+              {t('workItemCard.unblocks', { count: unblocksCount })}
+            </span>
           )}
         </div>
 

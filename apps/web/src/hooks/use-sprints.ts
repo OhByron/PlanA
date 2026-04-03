@@ -38,6 +38,16 @@ export function useUpdateSprint(projectId: string) {
   });
 }
 
+export function useDeleteSprint(projectId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (sprintId: string) => {
+      await api.delete(`/projects/${projectId}/sprints/${sprintId}`);
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ['sprints', projectId] }),
+  });
+}
+
 export function useSprintItems(sprintId: string) {
   return useQuery({
     queryKey: ['sprint-items', sprintId],

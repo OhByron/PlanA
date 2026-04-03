@@ -42,7 +42,22 @@
     "report": "Rapport",
     "team": "Team",
     "settings": "Indstillinger",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Graf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} element",
     "itemCount_other": "{{count}} elementer",
     "newItem": "+ Nyt element",
-    "noItemsMatch": "Ingen elementer matcher dine filtre. Pr\u00f8v at justere eller opret et nyt element."
+    "noItemsMatch": "Ingen elementer matcher dine filtre. Pr\u00f8v at justere eller opret et nyt element.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

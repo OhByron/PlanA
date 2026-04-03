@@ -42,7 +42,22 @@
     "report": "Rapport",
     "team": "Team",
     "settings": "Inst\u00e4llningar",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Graf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} objekt",
     "itemCount_other": "{{count}} objekt",
     "newItem": "+ Nytt objekt",
-    "noItemsMatch": "Inga objekt matchar dina filter. F\u00f6rs\u00f6k justera eller skapa ett nytt objekt."
+    "noItemsMatch": "Inga objekt matchar dina filter. F\u00f6rs\u00f6k justera eller skapa ett nytt objekt.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

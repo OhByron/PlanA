@@ -42,7 +42,22 @@
     "report": "Jelentés",
     "team": "Csapat",
     "settings": "Beállítások",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Gráf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} elem",
     "itemCount_other": "{{count}} elem",
     "newItem": "+ Új elem",
-    "noItemsMatch": "Nincs a szűrőknek megfelelő elem. Próbálja meg módosítani a szűrőket, vagy hozzon létre új elemet."
+    "noItemsMatch": "Nincs a szűrőknek megfelelő elem. Próbálja meg módosítani a szűrőket, vagy hozzon létre új elemet.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

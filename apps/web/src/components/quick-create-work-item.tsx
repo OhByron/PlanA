@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input, Select } from '@projecta/ui';
 import type { WorkItemType } from '@projecta/types';
 import { useCreateWorkItem } from '../hooks/use-work-items';
+import { useEpics } from '../hooks/use-epics';
 
 interface Props {
   projectId: string;
@@ -13,12 +14,16 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [type, setType] = useState<WorkItemType>('story');
+  const [epicId, setEpicId] = useState('');
   const create = useCreateWorkItem(projectId);
+  const { data: epics = [] } = useEpics(projectId);
 
   const submit = () => {
     if (!title.trim()) return;
+    const data: Record<string, unknown> = { type, title: title.trim() };
+    if (epicId) data.epic_id = epicId;
     create.mutate(
-      { type, title: title.trim() },
+      data,
       { onSuccess: () => { setTitle(''); onClose(); } },
     );
   };
@@ -34,6 +39,17 @@ export function QuickCreateWorkItem({ projectId, onClose }: Props) {
         <option value="story">{t('type.story')}</option>
         <option value="bug">{t('type.bug')}</option>
         <option value="task">{t('type.task')}</option>
+      </Select>
+      <Select
+        value={epicId}
+        onChange={(e) => setEpicId(e.target.value)}
+        className="w-40"
+        aria-label="Epic"
+      >
+        <option value="">{epics.length === 1 ? epics[0]!.title : t('quickCreate.selectEpic')}</option>
+        {epics.length > 1 && epics.map((e) => (
+          <option key={e.id} value={e.id}>{e.title}</option>
+        ))}
       </Select>
       <Input
         autoFocus

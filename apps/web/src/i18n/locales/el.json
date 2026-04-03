@@ -42,7 +42,22 @@
     "report": "Αναφορά",
     "team": "Ομάδα",
     "settings": "Ρυθμίσεις",
-    "project": "Έργο"
+    "project": "Έργο",
+    "graph": "Γράφημα"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} στοιχείο",
     "itemCount_other": "{{count}} στοιχεία",
     "newItem": "+ Νέο Στοιχείο",
-    "noItemsMatch": "Κανένα στοιχείο δεν ταιριάζει με τα φίλτρα σας. Δοκιμάστε να τα αλλάξετε ή δημιουργήστε νέο στοιχείο."
+    "noItemsMatch": "Κανένα στοιχείο δεν ταιριάζει με τα φίλτρα σας. Δοκιμάστε να τα αλλάξετε ή δημιουργήστε νέο στοιχείο.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

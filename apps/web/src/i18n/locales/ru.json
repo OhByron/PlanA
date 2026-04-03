@@ -42,7 +42,22 @@
     "report": "Отчёт",
     "team": "Команда",
     "settings": "Настройки",
-    "project": "Проект"
+    "project": "Проект",
+    "graph": "Граф"
+  },
+
+  "graph": {
+    "hardDependency": "Жёсткая зависимость",
+    "softDependency": "Мягкая зависимость",
+    "relatesTo": "Связано с",
+    "hardLine": "Жёсткая (блокирующая)",
+    "softLine": "Мягкая (неявная)",
+    "relatesLine": "Связано с",
+    "commit": "Применить изменения",
+    "committing": "Применение...",
+    "discard": "Отменить",
+    "errors": "ошибки",
+    "warnings": "предупреждения"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} элемент",
     "itemCount_other": "{{count}} элементов",
     "newItem": "+ Новый элемент",
-    "noItemsMatch": "Ничего не найдено по вашим фильтрам. Попробуйте изменить их или создайте новый элемент."
+    "noItemsMatch": "Ничего не найдено по вашим фильтрам. Попробуйте изменить их или создайте новый элемент.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

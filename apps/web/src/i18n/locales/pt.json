@@ -42,7 +42,22 @@
     "report": "Relatório",
     "team": "Equipe",
     "settings": "Configurações",
-    "project": "Projeto"
+    "project": "Projeto",
+    "graph": "Grafo"
+  },
+
+  "graph": {
+    "hardDependency": "Dependência forte",
+    "softDependency": "Dependência fraca",
+    "relatesTo": "Relacionado a",
+    "hardLine": "Forte (bloqueante)",
+    "softLine": "Fraca (implícita)",
+    "relatesLine": "Relacionado a",
+    "commit": "Confirmar alterações",
+    "committing": "Confirmando...",
+    "discard": "Descartar",
+    "errors": "erros",
+    "warnings": "avisos"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} item",
     "itemCount_other": "{{count}} itens",
     "newItem": "+ Novo Item",
-    "noItemsMatch": "Nenhum item corresponde aos seus filtros. Tente ajustar ou crie um novo item."
+    "noItemsMatch": "Nenhum item corresponde aos seus filtros. Tente ajustar ou crie um novo item.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

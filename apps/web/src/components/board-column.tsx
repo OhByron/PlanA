@@ -23,6 +23,10 @@ interface BoardColumnProps {
   blockedItems?: Set<string> | undefined;
   wipWarning?: boolean | undefined;
   memberNames?: Map<string, string> | undefined;
+  /** Map of item ID → number of items it unblocks when done */
+  unblocksMap?: Map<string, number> | undefined;
+  /** Map of story ID → number of child tasks that are done */
+  childDoneCounts?: Map<string, number> | undefined;
 }
 
 export function BoardColumn({
@@ -35,6 +39,8 @@ export function BoardColumn({
   blockedItems,
   wipWarning,
   memberNames,
+  unblocksMap,
+  childDoneCounts,
 }: BoardColumnProps) {
   const { t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: status });
@@ -80,6 +86,8 @@ export function BoardColumn({
               calculatedPoints={calculatedPointsMap?.get(item.id)}
               isBlocked={blockedItems?.has(item.id)}
               assigneeName={memberNames?.get(item.assigneeId ?? '')}
+              unblocksCount={unblocksMap?.get(item.id)}
+              childDoneCount={childDoneCounts?.get(item.id)}
             />
           ))}
         </SortableContext>

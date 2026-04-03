@@ -42,7 +42,22 @@
     "report": "Izvještaj",
     "team": "Tim",
     "settings": "Postavke",
-    "project": "Projekt"
+    "project": "Projekt",
+    "graph": "Graf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} stavka",
     "itemCount_other": "{{count}} stavki",
     "newItem": "+ Nova stavka",
-    "noItemsMatch": "Nijedna stavka ne odgovara vašim filtrima. Pokušajte prilagoditi filtre ili kreirajte novu stavku."
+    "noItemsMatch": "Nijedna stavka ne odgovara vašim filtrima. Pokušajte prilagoditi filtre ili kreirajte novu stavku.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

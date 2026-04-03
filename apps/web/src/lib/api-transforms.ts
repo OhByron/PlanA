@@ -81,6 +81,14 @@ export function toProject(w: any): Project {
     slug: w.slug,
     description: w.description,
     methodology: w.methodology,
+    status: w.status ?? null,
+    dueDate: w.due_date ?? null,
+    contactName: w.contact_name ?? null,
+    contactEmail: w.contact_email ?? null,
+    contactPhone: w.contact_phone ?? null,
+    sprintDurationWeeks: w.sprint_duration_weeks ?? 2,
+    defaultProjectMonths: w.default_project_months ?? 6,
+    defaultEpicWeeks: w.default_epic_weeks ?? 6,
     createdAt: w.created_at,
     updatedAt: w.updated_at,
   };
@@ -100,6 +108,7 @@ export function toWorkItem(w: any): WorkItem & { itemNumber?: number | null } {
     priority: w.priority,
     assigneeId: w.assignee_id,
     storyPoints: w.story_points,
+    pointsUsed: w.points_used ?? null,
     labels: w.labels ?? [],
     orderIndex: w.order_index,
     isBlocked: w.is_blocked,
@@ -111,7 +120,7 @@ export function toWorkItem(w: any): WorkItem & { itemNumber?: number | null } {
   };
 }
 
-export function toEpic(w: any): Epic & { assigneeId?: string | null; itemNumber?: number | null } {
+export function toEpic(w: any): Epic & { itemNumber?: number | null } {
   return {
     id: w.id,
     itemNumber: w.item_number ?? null,
@@ -121,6 +130,9 @@ export function toEpic(w: any): Epic & { assigneeId?: string | null; itemNumber?
     status: w.status,
     priority: w.priority,
     orderIndex: w.order_index,
+    startDate: w.start_date ?? null,
+    dueDate: w.due_date ?? null,
+    initiativeId: w.initiative_id ?? null,
     assigneeId: w.assignee_id ?? null,
     createdBy: w.created_by,
     createdAt: w.created_at,

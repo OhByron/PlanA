@@ -42,7 +42,22 @@
     "report": "Rapport",
     "team": "Team",
     "settings": "Instellingen",
-    "project": "Project"
+    "project": "Project",
+    "graph": "Graaf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} item",
     "itemCount_other": "{{count}} items",
     "newItem": "+ Nieuw Item",
-    "noItemsMatch": "Geen items komen overeen met je filters. Probeer ze aan te passen of maak een nieuw item aan."
+    "noItemsMatch": "Geen items komen overeen met je filters. Probeer ze aan te passen of maak een nieuw item aan.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

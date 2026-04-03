@@ -42,7 +42,22 @@
     "report": "Rapor",
     "team": "Takım",
     "settings": "Ayarlar",
-    "project": "Proje"
+    "project": "Proje",
+    "graph": "Grafik"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} öge",
     "itemCount_other": "{{count}} öge",
     "newItem": "+ Yeni Öge",
-    "noItemsMatch": "Filtrelerinizle eşleşen öge yok. Filtreleri değiştirmeyi deneyin veya yeni bir öge oluşturun."
+    "noItemsMatch": "Filtrelerinizle eşleşen öge yok. Filtreleri değiştirmeyi deneyin veya yeni bir öge oluşturun.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

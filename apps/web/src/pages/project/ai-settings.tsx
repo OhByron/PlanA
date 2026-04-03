@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from '@tanstack/react-router';
-import { Button, Input, Select } from '@projecta/ui';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Input, Select, Textarea } from '@projecta/ui';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
+import { toProject } from '../../lib/api-transforms';
 
 interface ShareToken {
   id: string;
@@ -76,6 +78,9 @@ export function AISettingsPage() {
 
   return (
     <div className="p-6 max-w-2xl">
+      <ProjectDetailsSection projectId={projectId} />
+      <ProjectSettingsSection projectId={projectId} />
+
       <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('aiSettings.title')}</h2>
       <p className="text-sm text-gray-500 mb-6">
         {t('aiSettings.description')}
@@ -149,6 +154,242 @@ export function AISettingsPage() {
 
       {/* Stakeholder Sharing */}
       <ShareTokensSection projectId={projectId} />
+    </div>
+  );
+}
+
+const METHODOLOGIES = ['scrum', 'kanban', 'shape_up'] as const;
+const PROJECT_STATUSES = ['active', 'on_hold', 'completed', 'cancelled'] as const;
+
+function ProjectDetailsSection({ projectId }: { projectId: string }) {
+  const { t } = useTranslation();
+  const qc = useQueryClient();
+  const { data: project } = useQuery({
+    queryKey: ['project', projectId],
+    queryFn: async () => { const raw = await api.get(`/projects/${projectId}`); return toProject(raw); },
+    staleTime: 5 * 60_000,
+  });
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [methodology, setMethodology] = useState('scrum');
+  const [status, setStatus] = useState('active');
+  const [dueDate, setDueDate] = useState('');
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+    setName(project.name);
+    setDescription(project.description ?? '');
+    setMethodology(project.methodology);
+    setStatus(project.status ?? 'active');
+    setDueDate(project.dueDate ? new Date(project.dueDate).toISOString().slice(0, 10) : '');
+    setContactName(project.contactName ?? '');
+    setContactEmail(project.contactEmail ?? '');
+    setContactPhone(project.contactPhone ?? '');
+  }, [project]);
+
+  const save = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await api.patch(`/projects/${projectId}`, {
+        name: name.trim(),
+        description: description.trim() || null,
+        methodology,
+        status,
+        due_date: dueDate || null,
+        contact_name: contactName.trim() || null,
+        contact_email: contactEmail.trim() || null,
+        contact_phone: contactPhone.trim() || null,
+      });
+      qc.invalidateQueries({ queryKey: ['project', projectId] });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="mb-10 border-b border-gray-200 pb-8">
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('projectDetails.title')}</h2>
+      <p className="text-sm text-gray-500 mb-6">{t('projectDetails.description')}</p>
+
+      <div className="space-y-4">
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('projectDetails.name')}</label>
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('projectDetails.desc')}</label>
+          <Textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t('projectDetails.descPlaceholder')} />
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('projectDetails.methodology')}</label>
+            <Select value={methodology} onChange={(e) => setMethodology(e.target.value)}>
+              {METHODOLOGIES.map((m) => (
+                <option key={m} value={m}>{t(`methodology.${m}`, m)}</option>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('projectDetails.status')}</label>
+            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+              {PROJECT_STATUSES.map((s) => (
+                <option key={s} value={s}>{t(`projectStatus.${s}`, s.replace(/_/g, ' '))}</option>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('projectDetails.dueDate')}</label>
+            <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+          </div>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('projectDetails.contact')}</label>
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t('projectDetails.contactName')}</label>
+              <Input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Project lead" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t('projectDetails.contactEmail')}</label>
+              <Input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} placeholder="lead@company.com" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-400">{t('projectDetails.contactPhone')}</label>
+              <Input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="+1 555-0100" />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 pt-1">
+          <Button size="sm" onClick={save} disabled={saving || !name.trim()}>
+            {saving ? t('aiSettings.saving') : t('common.save')}
+          </Button>
+          {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProjectSettingsSection({ projectId }: { projectId: string }) {
+  const { t } = useTranslation();
+  const { data: project } = useQuery({
+    queryKey: ['project', projectId],
+    queryFn: async () => { const raw = await api.get(`/projects/${projectId}`); return toProject(raw); },
+    staleTime: 5 * 60_000,
+  });
+
+  const [projectMonths, setProjectMonths] = useState<number>(6);
+  const [epicWeeks, setEpicWeeks] = useState<number>(6);
+  const [sprintWeeks, setSprintWeeks] = useState<number>(2);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+    setProjectMonths(project.defaultProjectMonths);
+    setEpicWeeks(project.defaultEpicWeeks);
+    setSprintWeeks(project.sprintDurationWeeks);
+  }, [project]);
+
+  const isDirty = project && (
+    projectMonths !== project.defaultProjectMonths ||
+    epicWeeks !== project.defaultEpicWeeks ||
+    sprintWeeks !== project.sprintDurationWeeks
+  );
+
+  const save = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await api.patch(`/projects/${projectId}`, {
+        default_project_months: projectMonths,
+        default_epic_weeks: epicWeeks,
+        sprint_duration_weeks: sprintWeeks,
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="mb-10 border-b border-gray-200 pb-8">
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('settings.projectSettings')}</h2>
+      <p className="text-sm text-gray-500 mb-6">{t('settings.projectSettingsDesc')}</p>
+
+      <div className="space-y-4">
+        {/* Feature / Project duration */}
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('settings.projectDuration')}</label>
+          <div className="flex items-center gap-3">
+            <Select
+              value={String(projectMonths)}
+              onChange={(e) => setProjectMonths(Number(e.target.value))}
+              className="w-36"
+            >
+              {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18].map((m) => (
+                <option key={m} value={m}>{m} {t('settings.months')}</option>
+              ))}
+            </Select>
+            <p className="text-xs text-gray-400">{t('settings.projectDurationHelp')}</p>
+          </div>
+        </div>
+
+        {/* Epic duration */}
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('settings.epicDuration')}</label>
+          <div className="flex items-center gap-3">
+            <Select
+              value={String(epicWeeks)}
+              onChange={(e) => setEpicWeeks(Number(e.target.value))}
+              className="w-36"
+            >
+              {[2, 3, 4, 5, 6, 8, 10, 12].map((w) => (
+                <option key={w} value={w}>{w} {t('settings.weeks')}</option>
+              ))}
+            </Select>
+            <p className="text-xs text-gray-400">{t('settings.epicDurationHelp')}</p>
+          </div>
+        </div>
+
+        {/* Sprint duration */}
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">{t('settings.sprintDuration')}</label>
+          <div className="flex items-center gap-3">
+            <Select
+              value={String(sprintWeeks)}
+              onChange={(e) => setSprintWeeks(Number(e.target.value))}
+              className="w-36"
+            >
+              {[1, 2, 3, 4].map((w) => (
+                <option key={w} value={w}>{w} {t('settings.weeks')}</option>
+              ))}
+            </Select>
+            <p className="text-xs text-gray-400">{t('settings.sprintDurationHelp')}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 pt-1">
+          <Button size="sm" onClick={save} disabled={saving || !isDirty}>
+            {saving ? t('aiSettings.saving') : t('common.save')}
+          </Button>
+          {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
+        </div>
+      </div>
     </div>
   );
 }

@@ -42,7 +42,22 @@
     "report": "Informe",
     "team": "Equipo",
     "settings": "Configuración",
-    "project": "Proyecto"
+    "project": "Proyecto",
+    "graph": "Grafo"
+  },
+
+  "graph": {
+    "hardDependency": "Dependencia fuerte",
+    "softDependency": "Dependencia débil",
+    "relatesTo": "Relacionado con",
+    "hardLine": "Fuerte (bloqueante)",
+    "softLine": "Débil (implícita)",
+    "relatesLine": "Relacionado con",
+    "commit": "Confirmar cambios",
+    "committing": "Confirmando...",
+    "discard": "Descartar",
+    "errors": "errores",
+    "warnings": "advertencias"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} elemento",
     "itemCount_other": "{{count}} elementos",
     "newItem": "+ Nuevo Elemento",
-    "noItemsMatch": "Ningún elemento coincide con tus filtros. Intenta ajustarlos o crea un nuevo elemento."
+    "noItemsMatch": "Ningún elemento coincide con tus filtros. Intenta ajustarlos o crea un nuevo elemento.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

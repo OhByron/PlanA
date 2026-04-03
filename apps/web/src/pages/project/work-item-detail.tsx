@@ -6,6 +6,7 @@ import type { WorkItemStatus, Priority, WorkItemType } from '@projecta/types';
 import { useWorkItem } from '../../hooks/use-work-item';
 import { useUpdateWorkItem, useWorkItems, useCreateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
+import { useEpics } from '../../hooks/use-epics';
 import { useAcceptanceCriteria, useCreateAcceptanceCriterion, useUpdateAcceptanceCriterion, useDeleteAcceptanceCriterion } from '../../hooks/use-acceptance-criteria';
 import { useComments, useCreateComment } from '../../hooks/use-comments';
 import { TypeIcon } from '../../components/type-icon';
@@ -51,6 +52,7 @@ export function WorkItemDetailPage() {
 
   // Project members for assignee dropdown
   const { data: projectMembers = [] } = useProjectMembers(projectId);
+  const { data: epics = [] } = useEpics(projectId);
 
   // Calculated points for stories (sum of child task points)
   const childTasksForPoints = allItems.filter((i) => i.parentId === workItemId);
@@ -435,6 +437,28 @@ export function WorkItemDetailPage() {
           </Select>
         </FieldGroup>
 
+        {/* Epic */}
+        <FieldGroup label={t('workItemDetail.epicLabel')}>
+          <Select
+            value={item.epicId ?? ''}
+            onChange={(e) => {
+              const val = e.target.value || '';
+              patchField({ epicId: val });
+              // Also move child tasks to the same epic
+              const children = allItems.filter((i) => i.parentId === item.id);
+              for (const child of children) {
+                updateItem.mutate({ workItemId: child.id, data: { epicId: val } });
+              }
+            }}
+            aria-label="Epic"
+          >
+            <option value="">{t('workItemDetail.noEpic')}</option>
+            {epics.map((e) => (
+              <option key={e.id} value={e.id}>{e.title}</option>
+            ))}
+          </Select>
+        </FieldGroup>
+
         {/* Story Points */}
         <FieldGroup label={
           <span className="flex items-center gap-1">
@@ -470,6 +494,33 @@ export function WorkItemDetailPage() {
               placeholder="—"
               aria-label="Story points"
             />
+          )}
+        </FieldGroup>
+
+        {/* Points used (actual effort on completion) */}
+        <FieldGroup label={
+          <span className="flex items-center gap-1">
+            {t('workItemDetail.pointsUsed')}
+            <ContextHelp>{t('workItemDetail.pointsUsedHelp')}</ContextHelp>
+          </span>
+        }>
+          <Input
+            type="number"
+            min={0}
+            value={item.pointsUsed ?? ''}
+            onChange={(e) => {
+              const val = e.target.value === '' ? null : Number(e.target.value);
+              patchField({ pointsUsed: val });
+            }}
+            placeholder={item.storyPoints != null ? String(item.storyPoints) : '—'}
+            aria-label="Points used"
+          />
+          {item.pointsUsed != null && item.storyPoints != null && item.pointsUsed !== item.storyPoints && (
+            <p className={`mt-1 text-xs ${item.pointsUsed < item.storyPoints ? 'text-emerald-600' : 'text-amber-600'}`}>
+              {item.pointsUsed < item.storyPoints
+                ? t('workItemDetail.underEstimate', { diff: item.storyPoints - item.pointsUsed })
+                : t('workItemDetail.overEstimate', { diff: item.pointsUsed - item.storyPoints })}
+            </p>
           )}
         </FieldGroup>
 

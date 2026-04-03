@@ -15,6 +15,8 @@ type Provider interface {
 	SuggestDefect(ctx context.Context, req SuggestDefectRequest) (*SuggestDefectResponse, error)
 	// SuggestDecomposition suggests child tasks for a story based on its context.
 	SuggestDecomposition(ctx context.Context, req SuggestDecompRequest) (*SuggestDecompResponse, error)
+	// RawChat sends a system+user prompt pair and returns the raw text response.
+	RawChat(ctx context.Context, systemPrompt, userPrompt string) (string, error)
 }
 
 // LanguageInstruction returns a prompt instruction for the AI to respond in the

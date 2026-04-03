@@ -381,6 +381,22 @@ func (h *SprintHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Auto-calculate velocity when sprint is completed and no manual velocity was provided.
+	if body.Status != nil && *body.Status == "completed" && body.Velocity == nil {
+		var computed *int
+		err := h.db.QueryRow(r.Context(),
+			`SELECT COALESCE(SUM(COALESCE(w.points_used, w.story_points, 0)), 0)
+			 FROM sprint_items si
+			 JOIN work_items w ON w.id = si.work_item_id
+			 WHERE si.sprint_id = $1 AND w.status = 'done'`,
+			sprintID).Scan(&computed)
+		if err == nil && computed != nil && s.Velocity == nil {
+			s.Velocity = computed
+			h.db.Exec(r.Context(),
+				`UPDATE sprints SET velocity = $1 WHERE id = $2`, *computed, sprintID)
+		}
+	}
+
 	writeJSON(w, http.StatusOK, s)
 }
 

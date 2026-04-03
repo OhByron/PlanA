@@ -42,7 +42,22 @@
     "report": "报告",
     "team": "团队",
     "settings": "设置",
-    "project": "项目"
+    "project": "项目",
+    "graph": "图表"
+  },
+
+  "graph": {
+    "hardDependency": "强依赖",
+    "softDependency": "弱依赖",
+    "relatesTo": "关联",
+    "hardLine": "强（阻塞）",
+    "softLine": "弱（隐含）",
+    "relatesLine": "关联",
+    "commit": "提交更改",
+    "committing": "提交中...",
+    "discard": "丢弃",
+    "errors": "错误",
+    "warnings": "警告"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} 个项目",
     "itemCount_other": "{{count}} 个项目",
     "newItem": "+ 新建项目",
-    "noItemsMatch": "没有匹配筛选条件的项目。请调整筛选条件或创建新项目。"
+    "noItemsMatch": "没有匹配筛选条件的项目。请调整筛选条件或创建新项目。",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

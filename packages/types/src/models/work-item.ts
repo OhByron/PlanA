@@ -22,6 +22,10 @@ export interface Epic {
   status: 'open' | 'in_progress' | 'done' | 'cancelled';
   priority: Priority;
   orderIndex: number;
+  startDate: string | null;
+  dueDate: string | null;
+  initiativeId: string | null;
+  assigneeId: string | null;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -39,6 +43,7 @@ export interface WorkItem {
   priority: Priority;
   assigneeId: string | null;
   storyPoints: number | null;
+  pointsUsed: number | null;
   labels: string[];
   orderIndex: number;
   isBlocked: boolean;
@@ -102,4 +107,19 @@ export interface Impediment {
   resolvedAt: string | null;
   resolvedBy: string | null;
   createdAt: string;
+}
+
+export type DependencyType = 'depends_on' | 'relates_to';
+export type DependencyStrength = 'hard' | 'soft';
+
+export interface WorkItemDependency {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  type: DependencyType;
+  strength: DependencyStrength;
+  createdBy: string;
+  createdAt: string;
+  targetTitle: string;
+  targetType: string;
 }

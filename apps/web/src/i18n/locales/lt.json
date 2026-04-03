@@ -42,7 +42,22 @@
     "report": "Ataskaita",
     "team": "Komanda",
     "settings": "Nustatymai",
-    "project": "Projektas"
+    "project": "Projektas",
+    "graph": "Grafas"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} elementas",
     "itemCount_other": "{{count}} elementų",
     "newItem": "+ Naujas elementas",
-    "noItemsMatch": "Jokie elementai neatitinka jūsų filtrų. Pabandykite juos pakoreguoti arba sukurkite naują elementą."
+    "noItemsMatch": "Jokie elementai neatitinka jūsų filtrų. Pabandykite juos pakoreguoti arba sukurkite naują elementą.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

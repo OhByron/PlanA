@@ -58,6 +58,8 @@ func New(deps *Dependencies) http.Handler {
 	testH    := handlers.NewTestResultHandlers(deps.DB)
 	shareH   := handlers.NewShareHandlers(deps.DB)
 	reportH  := handlers.NewReportHandlers(deps.DB)
+	epicDepH := handlers.NewEpicDepHandlers(deps.DB)
+	sprintDepH := handlers.NewSprintDepHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 
@@ -164,7 +166,9 @@ func New(deps *Dependencies) http.Handler {
 			// Project-scoped resources (shortcut routes — no need to traverse org/team)
 			r.Route("/projects/{projectID}", func(r chi.Router) {
 				r.Get("/", projH.Get)
+				r.Patch("/", projH.Update)
 				r.Get("/dependencies", depH.ListByProject)
+				r.Post("/dependencies/bulk", depH.BulkCommit)
 				r.Get("/sprint-assigned", siH.AssignedItemIDs)
 				r.Route("/work-items", func(r chi.Router) {
 					r.Get("/", wiH.List)
@@ -191,6 +195,8 @@ func New(deps *Dependencies) http.Handler {
 				r.Get("/ai-settings", aiH.GetSettings)
 				r.Patch("/ai-settings", aiH.UpdateSettings)
 				r.Post("/ai/suggest-inline", aiH.SuggestInline)
+				r.Get("/epic-dependencies", epicDepH.ListByProject)
+				r.Get("/sprint-dependencies", sprintDepH.ListByProject)
 				r.Route("/epics", func(r chi.Router) {
 					r.Get("/", epicH.List)
 					r.Post("/", epicH.Create)
@@ -198,6 +204,10 @@ func New(deps *Dependencies) http.Handler {
 						r.Get("/", epicH.Get)
 						r.Patch("/", epicH.Update)
 						r.Delete("/", epicH.Delete)
+						r.Route("/dependencies", func(r chi.Router) {
+							r.Post("/", epicDepH.Create)
+							r.Delete("/{depID}", epicDepH.Delete)
+						})
 					})
 				})
 				r.Route("/sprints", func(r chi.Router) {
@@ -207,6 +217,10 @@ func New(deps *Dependencies) http.Handler {
 						r.Patch("/", sprintH.Update)
 						r.Delete("/", sprintH.Delete)
 						r.Get("/burndown", sprintH.Burndown)
+						r.Route("/dependencies", func(r chi.Router) {
+							r.Post("/", sprintDepH.Create)
+							r.Delete("/{depID}", sprintDepH.Delete)
+						})
 					})
 				})
 				r.Route("/test-results", func(r chi.Router) {

@@ -16,19 +16,27 @@ import (
 
 // Epic represents an epic row returned to clients.
 type Epic struct {
-	ID           string    `json:"id"`
-	ItemNumber   *int      `json:"item_number"`
-	ProjectID    string    `json:"project_id"`
-	Title        string    `json:"title"`
-	Description  *string   `json:"description"`
-	Status       string    `json:"status"`
-	Priority     string    `json:"priority"`
-	OrderIndex   float64   `json:"order_index"`
-	InitiativeID *string   `json:"initiative_id"`
-	AssigneeID   *string   `json:"assignee_id"`
-	CreatedBy    string    `json:"created_by"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	ID           string     `json:"id"`
+	ItemNumber   *int       `json:"item_number"`
+	ProjectID    string     `json:"project_id"`
+	Title        string     `json:"title"`
+	Description  *string    `json:"description"`
+	Status       string     `json:"status"`
+	Priority     string     `json:"priority"`
+	OrderIndex   float64    `json:"order_index"`
+	StartDate    *time.Time `json:"start_date"`
+	DueDate      *time.Time `json:"due_date"`
+	InitiativeID *string    `json:"initiative_id"`
+	AssigneeID   *string    `json:"assignee_id"`
+	CreatedBy    string     `json:"created_by"`
+	CreatedAt    time.Time  `json:"created_at"`
+	UpdatedAt    time.Time  `json:"updated_at"`
+}
+
+const epicColumns = `id, item_number, project_id, title, description, status, priority, order_index, start_date, due_date, initiative_id, assignee_id, created_by, created_at, updated_at`
+
+func scanEpic(row interface{ Scan(dest ...any) error }, e *Epic) error {
+	return row.Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 }
 
 // EpicHandlers handles CRUD for epics within a project.
@@ -48,7 +56,6 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 	pp := parsePagination(r)
 
-	// Count total matching rows.
 	var total int
 	err := h.db.QueryRow(r.Context(),
 		`SELECT COUNT(*) FROM epics WHERE project_id = $1`, projectID).Scan(&total)
@@ -59,8 +66,8 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := h.db.Query(r.Context(),
-		`SELECT id, item_number, project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, created_at, updated_at
-		 FROM epics WHERE project_id = $1 ORDER BY order_index, created_at LIMIT $2 OFFSET $3`, projectID, pp.PageSize, pp.Offset)
+		`SELECT `+epicColumns+` FROM epics WHERE project_id = $1 ORDER BY order_index, created_at LIMIT $2 OFFSET $3`,
+		projectID, pp.PageSize, pp.Offset)
 	if err != nil {
 		slog.Error("epics.List: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list epics")
@@ -71,7 +78,7 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 	epics := []Epic{}
 	for rows.Next() {
 		var e Epic
-		if err := rows.Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt); err != nil {
+		if err := scanEpic(rows, &e); err != nil {
 			slog.Error("epics.List: scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read epic row")
 			return
@@ -94,6 +101,8 @@ type createEpicRequest struct {
 	Status       *string  `json:"status"`
 	Priority     *string  `json:"priority"`
 	OrderIndex   *float64 `json:"order_index"`
+	StartDate    *string  `json:"start_date"`
+	DueDate      *string  `json:"due_date"`
 	InitiativeID *string  `json:"initiative_id"`
 	AssigneeID   *string  `json:"assignee_id"`
 }
@@ -137,7 +146,25 @@ func (h *EpicHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		orderIndex = *body.OrderIndex
 	}
 
-	// Atomically increment the project's item counter to get a sequential number.
+	var startDate, dueDate *time.Time
+	if body.StartDate != nil && *body.StartDate != "" {
+		t, err := time.Parse("2006-01-02", *body.StartDate)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "validation_error", "start_date must be YYYY-MM-DD")
+			return
+		}
+		startDate = &t
+	}
+	if body.DueDate != nil && *body.DueDate != "" {
+		t, err := time.Parse("2006-01-02", *body.DueDate)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "validation_error", "due_date must be YYYY-MM-DD")
+			return
+		}
+		dueDate = &t
+	}
+
+	// Atomically increment the project's item counter.
 	var itemNumber int
 	err := h.db.QueryRow(r.Context(),
 		`UPDATE projects SET item_counter = item_counter + 1 WHERE id = $1 RETURNING item_counter`,
@@ -150,11 +177,11 @@ func (h *EpicHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	var e Epic
 	err = h.db.QueryRow(r.Context(),
-		`INSERT INTO epics (project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, item_number)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-		 RETURNING id, item_number, project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, created_at, updated_at`,
-		projectID, body.Title, body.Description, status, priority, orderIndex, body.InitiativeID, body.AssigneeID, claims.UserID, itemNumber,
-	).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
+		`INSERT INTO epics (project_id, title, description, status, priority, order_index, start_date, due_date, initiative_id, assignee_id, created_by, item_number)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+		 RETURNING `+epicColumns,
+		projectID, body.Title, body.Description, status, priority, orderIndex, startDate, dueDate, body.InitiativeID, body.AssigneeID, claims.UserID, itemNumber,
+	).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 	if err != nil {
 		slog.Error("epics.Create: insert failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create epic")
@@ -174,9 +201,7 @@ func (h *EpicHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 	var e Epic
 	err := h.db.QueryRow(r.Context(),
-		`SELECT id, item_number, project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, created_at, updated_at
-		 FROM epics WHERE id = $1`, epicID,
-	).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
+		`SELECT `+epicColumns+` FROM epics WHERE id = $1`, epicID).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Epic not found")
@@ -197,6 +222,8 @@ type updateEpicRequest struct {
 	Status       *string  `json:"status"`
 	Priority     *string  `json:"priority"`
 	OrderIndex   *float64 `json:"order_index"`
+	StartDate    *string  `json:"start_date"`
+	DueDate      *string  `json:"due_date"`
 	InitiativeID *string  `json:"initiative_id"`
 	AssigneeID   *string  `json:"assignee_id"`
 }
@@ -253,6 +280,36 @@ func (h *EpicHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		args = append(args, *body.OrderIndex)
 		argN++
 	}
+	if body.StartDate != nil {
+		if *body.StartDate == "" {
+			fields = append(fields, fmt.Sprintf("start_date = $%d", argN))
+			args = append(args, nil)
+		} else {
+			t, err := time.Parse("2006-01-02", *body.StartDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "start_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("start_date = $%d", argN))
+			args = append(args, t)
+		}
+		argN++
+	}
+	if body.DueDate != nil {
+		if *body.DueDate == "" {
+			fields = append(fields, fmt.Sprintf("due_date = $%d", argN))
+			args = append(args, nil)
+		} else {
+			t, err := time.Parse("2006-01-02", *body.DueDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "due_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("due_date = $%d", argN))
+			args = append(args, t)
+		}
+		argN++
+	}
 	if body.InitiativeID != nil {
 		fields = append(fields, fmt.Sprintf("initiative_id = $%d", argN))
 		args = append(args, *body.InitiativeID)
@@ -273,14 +330,11 @@ func (h *EpicHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	args = append(args, epicID)
 
 	query := fmt.Sprintf(
-		`UPDATE epics SET %s WHERE id = $%d
-		 RETURNING id, item_number, project_id, title, description, status, priority, order_index, initiative_id, assignee_id, created_by, created_at, updated_at`,
+		`UPDATE epics SET %s WHERE id = $%d RETURNING `+epicColumns,
 		strings.Join(fields, ", "), argN)
 
 	var e Epic
-	err := h.db.QueryRow(r.Context(), query, args...).
-		Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
-	if err != nil {
+	if err := scanEpic(h.db.QueryRow(r.Context(), query, args...), &e); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Epic not found")
 			return

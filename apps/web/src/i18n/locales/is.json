@@ -42,7 +42,22 @@
     "report": "Skýrsla",
     "team": "Teymi",
     "settings": "Stillingar",
-    "project": "Verkefni"
+    "project": "Verkefni",
+    "graph": "Graf"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} atriði",
     "itemCount_other": "{{count}} atriði",
     "newItem": "+ Nýtt atriði",
-    "noItemsMatch": "Engin atriði passa við síurnar þínar. Reyndu að breyta þeim eða búðu til nýtt atriði."
+    "noItemsMatch": "Engin atriði passa við síurnar þínar. Reyndu að breyta þeim eða búðu til nýtt atriði.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {

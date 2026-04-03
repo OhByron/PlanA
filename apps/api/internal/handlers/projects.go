@@ -16,10 +16,12 @@ import (
 
 const projectColumns = `id, team_id, name, slug, description, methodology,
 	status, due_date, contact_name, contact_email, contact_phone,
+	sprint_duration_weeks, default_project_months, default_epic_weeks,
 	created_at, updated_at`
 
 const projectColumnsAliased = `p.id, p.team_id, p.name, p.slug, p.description, p.methodology,
 	p.status, p.due_date, p.contact_name, p.contact_email, p.contact_phone,
+	p.sprint_duration_weeks, p.default_project_months, p.default_epic_weeks,
 	p.created_at, p.updated_at`
 
 // Project represents a project row returned to clients.
@@ -34,15 +36,19 @@ type Project struct {
 	DueDate      *time.Time `json:"due_date"`
 	ContactName  *string    `json:"contact_name"`
 	ContactEmail *string    `json:"contact_email"`
-	ContactPhone *string    `json:"contact_phone"`
-	CreatedAt    time.Time  `json:"created_at"`
-	UpdatedAt    time.Time  `json:"updated_at"`
+	ContactPhone        *string    `json:"contact_phone"`
+	SprintDurationWeeks int        `json:"sprint_duration_weeks"`
+	DefaultProjectMonths int       `json:"default_project_months"`
+	DefaultEpicWeeks    int        `json:"default_epic_weeks"`
+	CreatedAt           time.Time  `json:"created_at"`
+	UpdatedAt           time.Time  `json:"updated_at"`
 }
 
 func (p *Project) scanFields() []any {
 	return []any{
 		&p.ID, &p.TeamID, &p.Name, &p.Slug, &p.Description, &p.Methodology,
 		&p.Status, &p.DueDate, &p.ContactName, &p.ContactEmail, &p.ContactPhone,
+		&p.SprintDurationWeeks, &p.DefaultProjectMonths, &p.DefaultEpicWeeks,
 		&p.CreatedAt, &p.UpdatedAt,
 	}
 }
@@ -151,6 +157,20 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Auto-create a default epic so the project has a home for stories/tasks
+	var itemNumber int
+	if err := h.db.QueryRow(r.Context(),
+		`UPDATE projects SET item_counter = item_counter + 1 WHERE id = $1 RETURNING item_counter`,
+		p.ID).Scan(&itemNumber); err != nil {
+		slog.Warn("projects.Create: item counter increment for default epic failed", "error", err)
+	}
+	if _, err := h.db.Exec(r.Context(),
+		`INSERT INTO epics (project_id, title, description, status, priority, created_by, item_number)
+		 VALUES ($1, $2, $3, 'open', 'medium', $4, $5)`,
+		p.ID, p.Name, "Default epic for "+p.Name, claims.UserID, itemNumber); err != nil {
+		slog.Error("projects.Create: auto-create default epic failed", "error", err)
+	}
+
 	// Auto-add creator as a project member (PM role)
 	var userName, userEmail string
 	if err := h.db.QueryRow(r.Context(),
@@ -211,7 +231,10 @@ type updateProjectRequest struct {
 	DueDate      *string `json:"due_date"`
 	ContactName  *string `json:"contact_name"`
 	ContactEmail *string `json:"contact_email"`
-	ContactPhone *string `json:"contact_phone"`
+	ContactPhone         *string `json:"contact_phone"`
+	SprintDurationWeeks  *int    `json:"sprint_duration_weeks"`
+	DefaultProjectMonths *int    `json:"default_project_months"`
+	DefaultEpicWeeks     *int    `json:"default_epic_weeks"`
 }
 
 func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
@@ -267,6 +290,21 @@ func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	if body.DueDate != nil {
 		fields = append(fields, fmt.Sprintf("due_date = $%d::date", argN))
 		args = append(args, *body.DueDate)
+		argN++
+	}
+	if body.SprintDurationWeeks != nil {
+		fields = append(fields, fmt.Sprintf("sprint_duration_weeks = $%d", argN))
+		args = append(args, *body.SprintDurationWeeks)
+		argN++
+	}
+	if body.DefaultProjectMonths != nil {
+		fields = append(fields, fmt.Sprintf("default_project_months = $%d", argN))
+		args = append(args, *body.DefaultProjectMonths)
+		argN++
+	}
+	if body.DefaultEpicWeeks != nil {
+		fields = append(fields, fmt.Sprintf("default_epic_weeks = $%d", argN))
+		args = append(args, *body.DefaultEpicWeeks)
 		argN++
 	}
 

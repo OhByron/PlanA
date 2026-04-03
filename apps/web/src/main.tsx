@@ -32,6 +32,7 @@ import { OrgsPage } from './pages/orgs';
 import { OrgDetailPage } from './pages/org-detail';
 import { ShareDashboardPage } from './pages/share-dashboard';
 import { ReportViewPage } from './pages/project/report-view';
+import { GraphPage } from './pages/project/graph';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -189,6 +190,12 @@ const reportViewRoute = createRoute({
   component: ReportViewPage,
 });
 
+const graphRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/graph',
+  component: GraphPage,
+});
+
 const workItemDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/p/$projectId/items/$workItemId',
@@ -208,7 +215,7 @@ const routeTree = rootRoute.addChildren([
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
-    projectRoute.addChildren([boardRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute, settingsRoute, reportViewRoute]),
+    projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, reportsRoute, teamRoute, settingsRoute, reportViewRoute]),
     epicDetailRoute,
     sprintDetailRoute,
     workItemDetailRoute,

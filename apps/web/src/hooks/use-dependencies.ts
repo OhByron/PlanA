@@ -1,23 +1,27 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+type DependencyType = 'depends_on' | 'relates_to';
+type DependencyStrength = 'hard' | 'soft';
 import { api } from '../lib/api-client';
 
 export interface Dependency {
   id: string;
   sourceId: string;
   targetId: string;
-  type: 'depends_on' | 'relates_to';
+  type: DependencyType;
+  strength: DependencyStrength;
   createdBy: string;
   createdAt: string;
   targetTitle: string;
   targetType: string;
 }
 
-function toDependency(w: Record<string, unknown>): Dependency {
+export function toDependency(w: Record<string, unknown>): Dependency {
   return {
     id: w.id as string,
     sourceId: w.source_id as string,
     targetId: w.target_id as string,
-    type: w.type as 'depends_on' | 'relates_to',
+    type: w.type as DependencyType,
+    strength: (w.strength as DependencyStrength) ?? 'hard',
     createdBy: w.created_by as string,
     createdAt: w.created_at as string,
     targetTitle: w.target_title as string,
@@ -41,7 +45,7 @@ export function useDependencies(workItemId: string) {
 export function useCreateDependency(workItemId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (data: { target_id: string; type: string }) => {
+    mutationFn: async (data: { target_id: string; type: string; strength?: string }) => {
       const raw = await api.post(`/work-items/${workItemId}/dependencies`, data);
       return toDependency(raw as Record<string, unknown>);
     },

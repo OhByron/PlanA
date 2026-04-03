@@ -42,7 +42,22 @@
     "report": "Atskaite",
     "team": "Komanda",
     "settings": "Iestatījumi",
-    "project": "Projekts"
+    "project": "Projekts",
+    "graph": "Grafs"
+  },
+
+  "graph": {
+    "hardDependency": "Hard Dependency",
+    "softDependency": "Soft Dependency",
+    "relatesTo": "Relates To",
+    "hardLine": "Hard (blocking)",
+    "softLine": "Soft (implied)",
+    "relatesLine": "Relates to",
+    "commit": "Commit Changes",
+    "committing": "Committing...",
+    "discard": "Discard",
+    "errors": "errors",
+    "warnings": "warnings"
   },
 
   "sidebar": {
@@ -241,7 +256,10 @@
     "itemCount": "{{count}} elements",
     "itemCount_other": "{{count}} elementi",
     "newItem": "+ Jauns elements",
-    "noItemsMatch": "Neviens elements neatbilst jūsu filtriem. Mēģiniet tos pielāgot vai izveidojiet jaunu elementu."
+    "noItemsMatch": "Neviens elements neatbilst jūsu filtriem. Mēģiniet tos pielāgot vai izveidojiet jaunu elementu.",
+    "flowView": "Flow",
+    "priorityView": "Priority",
+    "showInGraph": "Show in graph"
   },
 
   "sprints": {
