@@ -25,14 +25,13 @@
     "error": "Villa: {{message}}",
     "thinking": "Hugsa...",
     "generating": "Bý til...",
-    "language": "Tungumál"
+    "language": "Tungumál",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, í alvöru."
   },
-
   "nav": {
     "board": "Board",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Teymi",
     "settings": "Stillingar",
     "project": "Verkefni",
-    "graph": "Graf"
+    "graph": "Graf",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Stækka hliðarspjald",
     "collapseSidebar": "Fela hliðarspjald",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Engar stofnanir ennþá",
     "toggle": "Víxla {{name}}"
   },
-
   "topBar": {
     "notifications": "Tilkynningar",
     "markAllRead": "Merkja allar lesnar",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}}klst síðan",
     "daysAgo": "{{count}}d síðan"
   },
-
   "notifications": {
     "assigned": "Þér var úthlutað \"{{title}}\"",
     "statusChanged": "Staða breytt á \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Þú varst nefnd(ur) í \"{{title}}\"",
     "default": "Tilkynning: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Tilbúið",
@@ -95,33 +112,28 @@
     "done": "Lokið",
     "cancelled": "Hætt við"
   },
-
   "priority": {
     "urgent": "Bráð",
     "high": "Há",
     "medium": "Meðal",
     "low": "Lág"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Verkefni"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Virkt",
     "planned": "Skipulagt",
     "completed": "Lokið",
     "cancelled": "Hætt við"
   },
-
   "roles": {
     "pm": "Verkefnisstjóri",
     "po": "Product Owner",
@@ -131,7 +143,6 @@
     "ux": "UX-hönnuður",
     "dev": "Hugbúnaðarhönnuður"
   },
-
   "login": {
     "continueWithGitHub": "Halda áfram með GitHub",
     "continueWithGoogle": "Halda áfram með Google",
@@ -142,7 +153,6 @@
     "devOnly": "aðeins þróun",
     "devLogin": "Dev-innskráning (sleppa OAuth)"
   },
-
   "authError": {
     "title": "Innskráning mistókst",
     "badState": "Innskráningarlota er útrunnin. Reynið aftur.",
@@ -152,7 +162,6 @@
     "missingToken": "Ekkert auðkenningartákn barst.",
     "default": "Óvænt villa kom upp við innskráningu."
   },
-
   "myWork": {
     "title": "Mitt verk",
     "itemCount": "{{count}} atriði úthlutað þér",
@@ -160,7 +169,6 @@
     "noItems": "Engin atriði úthlutað þér.",
     "noItemsHelp": "Atriði birtast hér þegar þú ert bætt við sem teymismeðlimur í verkefni og hefur stories eða verkefni úthlutað. Gakktu úr skugga um að netfang reikningsins samsvari netfangi teymismeðlims, eða að þú hafir samþykkt boðið."
   },
-
   "orgs": {
     "title": "Stofnanir",
     "orgCount": "{{count}} stofnun",
@@ -184,7 +192,6 @@
     "postalCode": "Póstnúmer",
     "country": "Land"
   },
-
   "orgDetail": {
     "allOrganisations": "Allar stofnanir",
     "editDetails": "Breyta upplýsingum",
@@ -206,7 +213,6 @@
     "createProject": "Búa til verkefni",
     "whatIsThisProjectAbout": "Hvað fjallar þetta verkefni um?"
   },
-
   "invite": {
     "invalidInvitation": "Ógilt boð",
     "invalidLink": "Þessi boðstengill er ekki gildur.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Ertu þegar með aðgang?",
     "logIn": "Skrá inn"
   },
-
   "board": {
     "helpTitle": "Kanban-borðið þitt",
     "helpBody1": "Þetta er vinna teymisins sýnd sem flæði. Hver dálkur táknar stig í verkferlinu.",
@@ -242,7 +247,6 @@
     "noItems": "Engin atriði",
     "column": "{{status}} dálkur"
   },
-
   "backlog": {
     "helpTitle": "Backlog-ið þitt",
     "helpBody1": "Backlog er forgangsraðaður listi yfir verk. Atriði efst hafa hæsta forgang.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint-skipulagning",
     "helpBody1": "Sprints eru tímabundin tímabil (venjulega 2 vikur). Dragðu stories úr Backlog-inu í Sprint til að skipuleggja vinnu teymisins.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Engir Sprints ennþá. Búðu til einn til að hefja skipulagningu.",
     "pts": "{{count}} stig"
   },
-
   "workItemDetail": {
     "backToBoard": "Til baka á borðið",
     "partOf": "Hluti af:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Breyta þessu verkefni í Story? Það mun halda tengingu við upprunalegu Story.",
     "convertToStoryHelp": "Hækkar þetta verkefni í sjálfstæða Story með tengingu",
     "created": "Búið til {{date}}",
-    "updated": "Uppfært {{date}}"
+    "updated": "Uppfært {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Verkefni ({{count}})",
     "contextHelp": "Verkefni brjóta Story niður í vinnu eftir sérfræðisviði, eins og UX-hönnun, bakendaþróun, framendaþróun og QE-prófun. Hverju verkefni er hægt að úthluta á teymismeðlim.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} stig",
     "clarificationNeeded": "Skýringa þörf:"
   },
-
   "acceptanceCriteria": {
     "title": "Samþykkisskilyrði",
     "contextHelp": "Samþykkisskilyrði skilgreina hvenær þetta atriði er raunverulega \"lokið.\" Skrifuð á Given / When / Then sniði (BDD) gera þau væntingar skýrar og prófanlegar. Hvert skilyrði er sérstakt, sannreynanlegt ákvæði, ekki óljós ósk.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "Tillögur gervigreindar, smelltu til að bæta við:",
     "aiNeedsMoreInfo": "Gervigreindin þarf meiri upplýsingar:"
   },
-
   "comments": {
     "title": "Athugasemdir",
     "noCommentsYet": "Engar athugasemdir ennþá.",
     "addComment": "Bæta við athugasemd..."
   },
-
   "dependencies": {
     "title": "Tengsl",
     "contextHelp": "Tengsl rekja sambönd á milli atriða. \"Háð\" þýðir að þetta atriði getur ekki haldið áfram fyrr en markmiðið er lokið. \"Tengist\" er upplýsingatengill.",
@@ -348,7 +361,6 @@
     "removeDependency": "Fjarlægja tengsl",
     "selectItem": "Veldu atriði..."
   },
-
   "links": {
     "title": "Tenglar",
     "addLink": "+ Bæta við tengli",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Fjarlægja tengil"
   },
-
   "testResults": {
     "retestRequired": "Endurprófun nauðsynleg",
     "retestMessage": "Þessi galli hefur {{count}} fallið próf. Hladdu upp nýjum prófunarniðurstöðum (JUnit XML eða webhook) eftir að lagfæring er sett í notkun til að opna QE-hliðið og loka þessu atriði.",
@@ -373,12 +384,10 @@
     "source": "Uppruni: {{source}} | Tilkynnt: {{date}}",
     "generateDescAC": "Búa til lýsingu og samþykkisskilyrði"
   },
-
   "helpOverlay": {
     "dismiss": "Hunsa",
     "close": "Loka"
   },
-
   "richTextEditor": {
     "startTyping": "Byrjaðu að skrifa...",
     "bold": "Feitletrað",
@@ -391,7 +400,6 @@
     "quote": "Tilvitnun",
     "codeBlock": "Kóðablokk"
   },
-
   "createEpic": {
     "button": "+ Nýtt Epic",
     "title": "Búa til Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Forgangur",
     "assigneeLabel": "Ábyrgðaraðili"
   },
-
   "createProject": {
     "button": "+ Nýtt verkefni",
     "title": "Búa til verkefni",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Hvað fjallar þetta verkefni um?",
     "methodologyLabel": "Aðferðafræði"
   },
-
   "createSprint": {
     "button": "+ Nýtt Sprint",
     "title": "Búa til Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "Upphafsdagur",
     "endDateLabel": "Lokadagur"
   },
-
   "createTeam": {
     "button": "+ Nýtt teymi",
     "title": "Búa til teymi",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Heiti teymis",
     "teamNamePlaceholder": "t.d. Bakendateymi"
   },
-
   "quickCreate": {
-    "placeholder": "Hvað þarf að gera?"
+    "placeholder": "Hvað þarf að gera?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Opna {{title}}",
     "taskCount": "{{count}} verkefni",
-    "taskCount_other": "{{count}} verkefni"
+    "taskCount_other": "{{count}} verkefni",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Teymi",
     "memberCount": "{{count}} meðlimur",
@@ -468,7 +473,6 @@
     "nameLabel": "Nafn",
     "roleLabel": "Hlutverk"
   },
-
   "epics": {
     "helpTitle": "Epics",
     "helpBody1": "Epics eru hópar á eiginleikastigi. Hvert Epic inniheldur tengdar stories sem saman skila viðskiptagetu.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Engin Epics ennþá. Epics flokka tengdar stories í afurðir á eiginleikastigi.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "epicDetail": {
     "backToEpics": "Til baka í Epics",
     "description": "Lýsing",
@@ -512,9 +515,20 @@
     "qeTesting": "QE-prófun",
     "bsaAnalysis": "BSA-greining",
     "creating": "Bý til...",
-    "createStory": "Búa til Story"
+    "createStory": "Búa til Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Til baka í Sprints",
     "start": "Byrjar:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Fjarlægja úr Sprint",
     "standaloneTasks": "Sjálfstæð verkefni",
     "adding": "Bæti við...",
-    "tasks": "{{count}} verkefni"
+    "tasks": "{{count}} verkefni",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Verkefnaskýrslur",
     "helpBody1": "Skýrslur gefa þér yfirsýn yfir afhendingu teymisins. Velocity sýnir hversu mörg stig þið ljúkið á hverju Sprint; hún stöðugast með tímanum.",
@@ -575,7 +599,6 @@
     "onTrack": "Á áætlun",
     "behind": "Á eftir"
   },
-
   "aiSettings": {
     "title": "Stilling gervigreindar",
     "description": "Stilltu gervigreindarveitanda til að virkja tillögur að samþykkisskilyrðum, sundurliðun stories og drög að útgáfuskýrslum. Þú notar þinn eigin API-lykil; PlanA geymir hann ekki né miðlar gegnum sameiginlegan aðgang.",
@@ -616,7 +639,6 @@
     "revoked": "Afturkallað",
     "revokedDate": "Afturkallað {{date}}"
   },
-
   "shareDashboard": {
     "title": "Stjórnborð hagsmunaaðila",
     "invalidLink": "Ógildur eða útrunninn tengill",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Framvinda stories"
   },
-
   "reportView": {
     "title": "Skýrslur",
     "generateProject": "Verkefnaskýrsla",
@@ -669,5 +690,72 @@
     "currentBlockers": "Núverandi hindranir",
     "velocityHistory": "Velocity-saga",
     "generatedBy": "Búin til af PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

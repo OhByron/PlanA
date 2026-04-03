@@ -25,14 +25,13 @@
     "error": "Fout: {{message}}",
     "thinking": "Bezig...",
     "generating": "Genereren...",
-    "language": "Taal"
+    "language": "Taal",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, echt waar."
   },
-
   "nav": {
     "board": "Bord",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Team",
     "settings": "Instellingen",
     "project": "Project",
-    "graph": "Graaf"
+    "graph": "Graaf",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Zijbalk uitvouwen",
     "collapseSidebar": "Zijbalk invouwen",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Nog geen organisaties",
     "toggle": "Schakel {{name}}"
   },
-
   "topBar": {
     "notifications": "Meldingen",
     "markAllRead": "Alles als gelezen markeren",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}}u geleden",
     "daysAgo": "{{count}}d geleden"
   },
-
   "notifications": {
     "assigned": "Je bent toegewezen aan \"{{title}}\"",
     "statusChanged": "Status gewijzigd voor \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Je bent genoemd in \"{{title}}\"",
     "default": "Melding: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Gereed",
@@ -95,33 +112,28 @@
     "done": "Afgerond",
     "cancelled": "Geannuleerd"
   },
-
   "priority": {
     "urgent": "Urgent",
     "high": "Hoog",
     "medium": "Gemiddeld",
     "low": "Laag"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Task"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Actief",
     "planned": "Gepland",
     "completed": "Afgerond",
     "cancelled": "Geannuleerd"
   },
-
   "roles": {
     "pm": "Projectmanager",
     "po": "Product Owner",
@@ -131,7 +143,6 @@
     "ux": "UX-ontwerper",
     "dev": "Ontwikkelaar"
   },
-
   "login": {
     "continueWithGitHub": "Doorgaan met GitHub",
     "continueWithGoogle": "Doorgaan met Google",
@@ -142,7 +153,6 @@
     "devOnly": "alleen dev",
     "devLogin": "Dev Login (OAuth overslaan)"
   },
-
   "authError": {
     "title": "Inloggen mislukt",
     "badState": "De inlogsessie is verlopen. Probeer het opnieuw.",
@@ -152,7 +162,6 @@
     "missingToken": "Er is geen authenticatietoken ontvangen.",
     "default": "Er is een onverwachte fout opgetreden tijdens het inloggen."
   },
-
   "myWork": {
     "title": "Mijn Werk",
     "itemCount": "{{count}} item aan jou toegewezen",
@@ -160,7 +169,6 @@
     "noItems": "Geen items aan jou toegewezen.",
     "noItemsHelp": "Items verschijnen hier wanneer je bent toegevoegd als projectteamlid en stories of tasks aan je zijn toegewezen. Zorg ervoor dat je account-e-mail overeenkomt met je teamlid-e-mail, of dat je een uitnodiging hebt geaccepteerd."
   },
-
   "orgs": {
     "title": "Organisaties",
     "orgCount": "{{count}} organisatie",
@@ -184,7 +192,6 @@
     "postalCode": "Postcode",
     "country": "Land"
   },
-
   "orgDetail": {
     "allOrganisations": "Alle organisaties",
     "editDetails": "Details Bewerken",
@@ -206,7 +213,6 @@
     "createProject": "Project Aanmaken",
     "whatIsThisProjectAbout": "Waar gaat dit project over?"
   },
-
   "invite": {
     "invalidInvitation": "Ongeldige Uitnodiging",
     "invalidLink": "Deze uitnodigingslink is niet geldig.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Heb je al een account?",
     "logIn": "Inloggen"
   },
-
   "board": {
     "helpTitle": "Jouw Kanban Board",
     "helpBody1": "Dit is het werk van je team gevisualiseerd als een stroom. Elke kolom vertegenwoordigt een fase in je workflow.",
@@ -242,7 +247,6 @@
     "noItems": "Geen items",
     "column": "{{status}} kolom"
   },
-
   "backlog": {
     "helpTitle": "Jouw Backlog",
     "helpBody1": "De backlog is je geprioriteerde lijst met werk. Items bovenaan hebben de hoogste prioriteit.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint Planning",
     "helpBody1": "Sprints zijn tijdsgebonden iteraties (meestal 2 weken). Trek stories uit de backlog naar een sprint om het werk van je team te plannen.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Nog geen sprints. Maak er een aan om te beginnen met plannen.",
     "pts": "{{count}} pts"
   },
-
   "workItemDetail": {
     "backToBoard": "Terug naar board",
     "partOf": "Onderdeel van:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Deze task omzetten naar een story? Er blijft een afhankelijkheidslink naar de oorspronkelijke story bestaan.",
     "convertToStoryHelp": "Promoveert deze task naar een onafhankelijke story met een afhankelijkheidslink",
     "created": "Aangemaakt op {{date}}",
-    "updated": "Bijgewerkt op {{date}}"
+    "updated": "Bijgewerkt op {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Tasks ({{count}})",
     "contextHelp": "Tasks splitsen een story op in werk per discipline, UX-ontwerp, backend-dev, frontend-dev, QE-testen, enz. Elke task kan worden toegewezen aan een teamlid.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} pts",
     "clarificationNeeded": "Verduidelijking nodig:"
   },
-
   "acceptanceCriteria": {
     "title": "Acceptatiecriteria",
     "contextHelp": "Acceptatiecriteria definiëren wanneer dit item echt \"afgerond\" is. Geschreven in Given / When / Then formaat (BDD), maken ze verwachtingen expliciet en testbaar. Elk criterium is een specifieke, verifieerbare voorwaarde, geen vaag verlangen.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI-suggesties, klik om toe te voegen:",
     "aiNeedsMoreInfo": "De AI heeft meer informatie nodig:"
   },
-
   "comments": {
     "title": "Opmerkingen",
     "noCommentsYet": "Nog geen opmerkingen.",
     "addComment": "Opmerking toevoegen..."
   },
-
   "dependencies": {
     "title": "Afhankelijkheden",
     "contextHelp": "Afhankelijkheden volgen relaties tussen items. \"Hangt af van\" betekent dat dit item niet kan doorgaan totdat het doel is afgerond. \"Gerelateerd aan\" is een informatieve link.",
@@ -348,7 +361,6 @@
     "removeDependency": "Afhankelijkheid verwijderen",
     "selectItem": "Selecteer een item..."
   },
-
   "links": {
     "title": "Links",
     "addLink": "+ Link Toevoegen",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Link verwijderen"
   },
-
   "testResults": {
     "retestRequired": "Hertest vereist",
     "retestMessage": "Dit defect heeft {{count}} falende test(s). Upload nieuwe testresultaten (JUnit XML of webhook) nadat de fix is uitgerold om de QE-controle te passeren en dit item te sluiten.",
@@ -373,12 +384,10 @@
     "source": "Bron: {{source}} | Gemeld: {{date}}",
     "generateDescAC": "Beschrijving en ACs Genereren"
   },
-
   "helpOverlay": {
     "dismiss": "Sluiten",
     "close": "Sluiten"
   },
-
   "richTextEditor": {
     "startTyping": "Begin met typen...",
     "bold": "Vetgedrukt",
@@ -391,7 +400,6 @@
     "quote": "Citaat",
     "codeBlock": "Codeblok"
   },
-
   "createEpic": {
     "button": "+ Nieuwe Epic",
     "title": "Epic Aanmaken",
@@ -402,7 +410,6 @@
     "priorityLabel": "Prioriteit",
     "assigneeLabel": "Toegewezen aan"
   },
-
   "createProject": {
     "button": "+ Nieuw Project",
     "title": "Project Aanmaken",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Waar gaat dit project over?",
     "methodologyLabel": "Methodologie"
   },
-
   "createSprint": {
     "button": "+ Nieuwe Sprint",
     "title": "Sprint Aanmaken",
@@ -427,7 +433,6 @@
     "startDateLabel": "Startdatum",
     "endDateLabel": "Einddatum"
   },
-
   "createTeam": {
     "button": "+ Nieuw Team",
     "title": "Team Aanmaken",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Teamnaam",
     "teamNamePlaceholder": "bijv. Backend Squad"
   },
-
   "quickCreate": {
-    "placeholder": "Wat moet er gedaan worden?"
+    "placeholder": "Wat moet er gedaan worden?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Open {{title}}",
     "taskCount": "{{count}} task",
-    "taskCount_other": "{{count}} tasks"
+    "taskCount_other": "{{count}} tasks",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "reports": {
     "helpTitle": "Projectrapporten",
     "helpBody1": "Rapporten geven je inzicht in de levering van je team. Velocity toont hoeveel punten je per sprint afrond; dit stabiliseert na verloop van tijd.",
@@ -486,7 +491,6 @@
     "onTrack": "Op schema",
     "behind": "Achter"
   },
-
   "team": {
     "title": "Team",
     "memberCount": "{{count}} lid",
@@ -508,7 +512,6 @@
     "nameLabel": "Naam",
     "roleLabel": "Rol"
   },
-
   "aiSettings": {
     "title": "AI-configuratie",
     "description": "Configureer een AI-provider om suggesties voor acceptatiecriteria, story-decompositie en release-notes in te schakelen. Je gebruikt je eigen API-sleutel; PlanA slaat niets op en routeert niet via een gedeeld account.",
@@ -549,7 +552,6 @@
     "revoked": "Ingetrokken",
     "revokedDate": "Ingetrokken op {{date}}"
   },
-
   "reportView": {
     "title": "Rapporten",
     "generateProject": "Projectrapport",
@@ -585,7 +587,6 @@
     "velocityHistory": "Velocity-geschiedenis",
     "generatedBy": "Gegenereerd door PlanA"
   },
-
   "shareDashboard": {
     "title": "Stakeholder Dashboard",
     "invalidLink": "Ongeldige of verlopen link",
@@ -603,7 +604,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Story Voortgang"
   },
-
   "sprintDetail": {
     "backToSprints": "Terug naar sprints",
     "start": "Start:",
@@ -622,9 +622,19 @@
     "removeFromSprint": "Uit sprint verwijderen",
     "standaloneTasks": "Losstaande Tasks",
     "adding": "Toevoegen...",
-    "tasks": "{{count}} tasks"
+    "tasks": "{{count}} tasks",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "epicDetail": {
     "backToEpics": "Terug naar epics",
     "description": "Beschrijving",
@@ -659,9 +669,20 @@
     "qeTesting": "QE-testen",
     "bsaAnalysis": "BSA-analyse",
     "creating": "Aanmaken...",
-    "createStory": "Story Aanmaken"
+    "createStory": "Story Aanmaken",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "epics": {
     "helpTitle": "Epics",
     "helpBody1": "Epics zijn groepen op functieniveau. Elke epic bevat gerelateerde stories die samen een bedrijfscapabiliteit opleveren.",
@@ -669,5 +690,72 @@
     "title": "Epics",
     "noEpicsYet": "Nog geen epics. Epics groeperen gerelateerde stories in functionele leveringen.",
     "storyProgress": "{{done}}/{{total}} stories"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

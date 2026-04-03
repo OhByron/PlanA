@@ -32,6 +32,10 @@ type WorkItem struct {
 	PointsUsed    *int            `json:"points_used"`
 	Labels        []string        `json:"labels"`
 	OrderIndex    float64         `json:"order_index"`
+	StartDate          *time.Time      `json:"start_date"`
+	DueDate            *time.Time      `json:"due_date"`
+	PreConditions      json.RawMessage `json:"pre_conditions"`
+	PostConditions     json.RawMessage `json:"post_conditions"`
 	IsBlocked          bool            `json:"is_blocked"`
 	BlockedReason      *string         `json:"blocked_reason"`
 	SourceTestResultID *string         `json:"source_test_result_id"`
@@ -110,7 +114,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-		status, priority, assignee_id, story_points, points_used, labels, order_index,
+		status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
 		is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
 	args = append(args, pp.PageSize, pp.Offset)
@@ -128,7 +132,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		var wi WorkItem
 		if err := rows.Scan(
 			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
+			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
 			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
 			slog.Error("workitems.List: scan failed", "error", err)
@@ -161,6 +165,8 @@ type createWorkItemRequest struct {
 	StoryPoints        *int            `json:"story_points"`
 	Labels             []string        `json:"labels"`
 	OrderIndex         *float64        `json:"order_index"`
+	StartDate          *string         `json:"start_date"`
+	DueDate            *string         `json:"due_date"`
 	SourceTestResultID *string         `json:"source_test_result_id"`
 }
 
@@ -224,13 +230,14 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	// If no epic_id provided, assign to the project's first epic (default epic).
 	// If the item has a parent, inherit the parent's epic_id.
 	epicID := body.EpicID
+	var inheritedStartDate, inheritedDueDate *time.Time
 	if epicID == nil || *epicID == "" {
 		if body.ParentID != nil && *body.ParentID != "" {
-			// Inherit from parent
+			// Inherit epic and dates from parent
 			var parentEpicID *string
 			h.db.QueryRow(r.Context(),
-				`SELECT epic_id FROM work_items WHERE id = $1`, *body.ParentID,
-			).Scan(&parentEpicID)
+				`SELECT epic_id, start_date, due_date FROM work_items WHERE id = $1`, *body.ParentID,
+			).Scan(&parentEpicID, &inheritedStartDate, &inheritedDueDate)
 			epicID = parentEpicID
 		}
 		if epicID == nil || *epicID == "" {
@@ -244,19 +251,34 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Resolve dates: explicit request > inherited from parent > nil
+	var startDate, dueDate *time.Time
+	if body.StartDate != nil && *body.StartDate != "" {
+		t, _ := time.Parse("2006-01-02", *body.StartDate)
+		startDate = &t
+	} else {
+		startDate = inheritedStartDate
+	}
+	if body.DueDate != nil && *body.DueDate != "" {
+		t, _ := time.Parse("2006-01-02", *body.DueDate)
+		dueDate = &t
+	} else {
+		dueDate = inheritedDueDate
+	}
+
 	var wi WorkItem
 	err = h.db.QueryRow(r.Context(),
 		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
-			priority, assignee_id, story_points, labels, order_index, created_by, item_number, source_test_result_id)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+			priority, assignee_id, story_points, labels, order_index, start_date, due_date, created_by, item_number, source_test_result_id)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		projectID, epicID, body.ParentID, body.Type, body.Title, body.Description,
-		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, claims.UserID, itemNumber, body.SourceTestResultID,
+		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, startDate, dueDate, claims.UserID, itemNumber, body.SourceTestResultID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -283,12 +305,12 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		 FROM work_items WHERE id = $1`, workItemID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -322,7 +344,11 @@ type updateWorkItemRequest struct {
 	PointsUsed    *int             `json:"points_used"`
 	Labels        *[]string        `json:"labels"`
 	OrderIndex    *float64         `json:"order_index"`
-	IsBlocked     *bool            `json:"is_blocked"`
+	StartDate      *string          `json:"start_date"`
+	DueDate        *string          `json:"due_date"`
+	PreConditions  *json.RawMessage `json:"pre_conditions"`
+	PostConditions *json.RawMessage `json:"post_conditions"`
+	IsBlocked      *bool            `json:"is_blocked"`
 	BlockedReason *string          `json:"blocked_reason"`
 }
 
@@ -424,6 +450,44 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		args = append(args, *body.OrderIndex)
 		argN++
 	}
+	if body.StartDate != nil {
+		if *body.StartDate == "" {
+			fields = append(fields, "start_date = NULL")
+		} else {
+			t, err := time.Parse("2006-01-02", *body.StartDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "start_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("start_date = $%d", argN))
+			args = append(args, t)
+			argN++
+		}
+	}
+	if body.DueDate != nil {
+		if *body.DueDate == "" {
+			fields = append(fields, "due_date = NULL")
+		} else {
+			t, err := time.Parse("2006-01-02", *body.DueDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "due_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("due_date = $%d", argN))
+			args = append(args, t)
+			argN++
+		}
+	}
+	if body.PreConditions != nil {
+		fields = append(fields, fmt.Sprintf("pre_conditions = $%d", argN))
+		args = append(args, *body.PreConditions)
+		argN++
+	}
+	if body.PostConditions != nil {
+		fields = append(fields, fmt.Sprintf("post_conditions = $%d", argN))
+		args = append(args, *body.PostConditions)
+		argN++
+	}
 	if body.IsBlocked != nil {
 		fields = append(fields, fmt.Sprintf("is_blocked = $%d", argN))
 		args = append(args, *body.IsBlocked)
@@ -506,7 +570,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(
 		`UPDATE work_items SET %s WHERE id = $%d
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		strings.Join(fields, ", "), argN,
 	)
@@ -514,7 +578,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {

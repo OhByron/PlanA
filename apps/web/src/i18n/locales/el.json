@@ -25,14 +25,13 @@
     "error": "Σφάλμα: {{message}}",
     "thinking": "Σκέφτομαι...",
     "generating": "Δημιουργία...",
-    "language": "Γλώσσα"
+    "language": "Γλώσσα",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, στ' αλήθεια."
   },
-
   "nav": {
     "board": "Πίνακας",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Ομάδα",
     "settings": "Ρυθμίσεις",
     "project": "Έργο",
-    "graph": "Γράφημα"
+    "graph": "Γράφημα",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Ανάπτυξη πλαϊνού πίνακα",
     "collapseSidebar": "Σύμπτυξη πλαϊνού πίνακα",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Δεν υπάρχουν οργανισμοί ακόμα",
     "toggle": "Εναλλαγή {{name}}"
   },
-
   "topBar": {
     "notifications": "Ειδοποιήσεις",
     "markAllRead": "Σήμανση όλων ως αναγνωσμένων",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} ω. πριν",
     "daysAgo": "{{count}} ημ. πριν"
   },
-
   "notifications": {
     "assigned": "Σας ανατέθηκε το \"{{title}}\"",
     "statusChanged": "Η κατάσταση άλλαξε στο \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Αναφερθήκατε στο \"{{title}}\"",
     "default": "Ειδοποίηση: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Έτοιμο",
@@ -95,33 +112,28 @@
     "done": "Ολοκληρωμένο",
     "cancelled": "Ακυρωμένο"
   },
-
   "priority": {
     "urgent": "Επείγον",
     "high": "Υψηλή",
     "medium": "Μεσαία",
     "low": "Χαμηλή"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Εργασία"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Ενεργό",
     "planned": "Προγραμματισμένο",
     "completed": "Ολοκληρωμένο",
     "cancelled": "Ακυρωμένο"
   },
-
   "roles": {
     "pm": "Υπεύθυνος Έργου",
     "po": "Ιδιοκτήτης Προϊόντος",
@@ -131,7 +143,6 @@
     "ux": "UX Designer",
     "dev": "Προγραμματιστής"
   },
-
   "login": {
     "continueWithGitHub": "Συνέχεια με GitHub",
     "continueWithGoogle": "Συνέχεια με Google",
@@ -142,7 +153,6 @@
     "devOnly": "μόνο για ανάπτυξη",
     "devLogin": "Σύνδεση ανάπτυξης (χωρίς OAuth)"
   },
-
   "authError": {
     "title": "Η σύνδεση απέτυχε",
     "badState": "Η συνεδρία έληξε. Δοκιμάστε ξανά.",
@@ -152,7 +162,6 @@
     "missingToken": "Δεν ελήφθη διακριτικό ταυτοποίησης.",
     "default": "Προέκυψε απρόσμενο σφάλμα κατά τη σύνδεση."
   },
-
   "myWork": {
     "title": "Η εργασία μου",
     "itemCount": "{{count}} στοιχείο σας έχει ανατεθεί",
@@ -160,7 +169,6 @@
     "noItems": "Δεν έχετε ανατεθειμένα στοιχεία.",
     "noItemsHelp": "Τα στοιχεία εμφανίζονται εδώ όταν προστεθείτε ως μέλος ομάδας έργου και σας ανατεθούν stories ή εργασίες. Βεβαιωθείτε ότι το email του λογαριασμού σας ταιριάζει με το email του μέλους ομάδας, ή ότι αποδεχτήκατε μια πρόσκληση."
   },
-
   "orgs": {
     "title": "Οργανισμοί",
     "orgCount": "{{count}} οργανισμός",
@@ -184,7 +192,6 @@
     "postalCode": "Ταχυδρομικός Κώδικας",
     "country": "Χώρα"
   },
-
   "orgDetail": {
     "allOrganisations": "Όλοι οι οργανισμοί",
     "editDetails": "Επεξεργασία",
@@ -206,7 +213,6 @@
     "createProject": "Δημιουργία Έργου",
     "whatIsThisProjectAbout": "Τι αφορά αυτό το έργο;"
   },
-
   "invite": {
     "invalidInvitation": "Μη έγκυρη πρόσκληση",
     "invalidLink": "Αυτός ο σύνδεσμος πρόσκλησης δεν είναι έγκυρος.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Έχετε ήδη λογαριασμό;",
     "logIn": "Σύνδεση"
   },
-
   "board": {
     "helpTitle": "Ο Kanban πίνακάς σας",
     "helpBody1": "Εδώ η εργασία της ομάδας σας απεικονίζεται ως ροή. Κάθε στήλη αντιπροσωπεύει ένα στάδιο της ροής εργασίας.",
@@ -242,7 +247,6 @@
     "noItems": "Κανένα στοιχείο",
     "column": "Στήλη {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Το Backlog σας",
     "helpBody1": "Το Backlog είναι η λίστα εργασιών κατά προτεραιότητα. Τα στοιχεία στην κορυφή έχουν την υψηλότερη προτεραιότητα.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Προγραμματισμός Sprint",
     "helpBody1": "Τα Sprints είναι χρονικά περιορισμένες επαναλήψεις (συνήθως 2 εβδομάδες). Τραβήξτε stories από το Backlog σε ένα Sprint για να προγραμματίσετε τη δουλειά της ομάδας.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Δεν υπάρχουν Sprints ακόμα. Δημιουργήστε ένα για να ξεκινήσετε τον προγραμματισμό.",
     "pts": "{{count}} πόντοι"
   },
-
   "workItemDetail": {
     "backToBoard": "Πίσω στον πίνακα",
     "partOf": "Μέρος του:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Μετατροπή αυτής της εργασίας σε story; Θα διατηρηθεί σύνδεσμος εξάρτησης με το αρχικό story.",
     "convertToStoryHelp": "Προάγει αυτή την εργασία σε ανεξάρτητο story με σύνδεσμο εξάρτησης",
     "created": "Δημιουργήθηκε {{date}}",
-    "updated": "Ενημερώθηκε {{date}}"
+    "updated": "Ενημερώθηκε {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Εργασίες ({{count}})",
     "contextHelp": "Οι εργασίες αναλύουν ένα story σε δουλειά κατά ειδικότητα, όπως UX design, backend dev, frontend dev και QE testing. Κάθε εργασία μπορεί να ανατεθεί σε μέλος ομάδας.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} πόντοι",
     "clarificationNeeded": "Απαιτείται διευκρίνιση:"
   },
-
   "acceptanceCriteria": {
     "title": "Κριτήρια αποδοχής",
     "contextHelp": "Τα κριτήρια αποδοχής ορίζουν πότε ένα στοιχείο είναι πραγματικά \"ολοκληρωμένο\". Γραμμένα σε μορφή Given / When / Then (BDD), κάνουν τις προσδοκίες σαφείς και ελέγξιμες. Κάθε κριτήριο είναι μια συγκεκριμένη, επαληθεύσιμη συνθήκη, όχι μια ασαφής ευχή.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "Προτάσεις AI, πατήστε για προσθήκη:",
     "aiNeedsMoreInfo": "Το AI χρειάζεται περισσότερες πληροφορίες:"
   },
-
   "comments": {
     "title": "Σχόλια",
     "noCommentsYet": "Δεν υπάρχουν σχόλια ακόμα.",
     "addComment": "Προσθέστε σχόλιο..."
   },
-
   "dependencies": {
     "title": "Εξαρτήσεις",
     "contextHelp": "Οι εξαρτήσεις παρακολουθούν σχέσεις μεταξύ στοιχείων. \"Εξαρτάται από\" σημαίνει ότι αυτό το στοιχείο δεν μπορεί να προχωρήσει μέχρι να ολοκληρωθεί ο στόχος. \"Σχετίζεται με\" είναι ενημερωτικός σύνδεσμος.",
@@ -348,7 +361,6 @@
     "removeDependency": "Αφαίρεση εξάρτησης",
     "selectItem": "Επιλέξτε στοιχείο..."
   },
-
   "links": {
     "title": "Σύνδεσμοι",
     "addLink": "+ Προσθήκη συνδέσμου",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Αφαίρεση συνδέσμου"
   },
-
   "testResults": {
     "retestRequired": "Απαιτείται επανέλεγχος",
     "retestMessage": "Αυτό το ελάττωμα έχει {{count}} αποτυχημένες δοκιμές. Ανεβάστε νέα αποτελέσματα δοκιμών (JUnit XML ή webhook) μετά την ανάπτυξη της διόρθωσης για να αρθεί το QE gate και να κλείσει αυτό το στοιχείο.",
@@ -373,12 +384,10 @@
     "source": "Πηγή: {{source}} | Αναφέρθηκε: {{date}}",
     "generateDescAC": "Δημιουργία περιγραφής και ΚΑ"
   },
-
   "helpOverlay": {
     "dismiss": "Απόρριψη",
     "close": "Κλείσιμο"
   },
-
   "richTextEditor": {
     "startTyping": "Ξεκινήστε να πληκτρολογείτε...",
     "bold": "Έντονο",
@@ -391,7 +400,6 @@
     "quote": "Παράθεση",
     "codeBlock": "Μπλοκ κώδικα"
   },
-
   "createEpic": {
     "button": "+ Νέο Epic",
     "title": "Δημιουργία Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Προτεραιότητα",
     "assigneeLabel": "Ανάθεση σε"
   },
-
   "createProject": {
     "button": "+ Νέο Έργο",
     "title": "Δημιουργία Έργου",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Τι αφορά αυτό το έργο;",
     "methodologyLabel": "Μεθοδολογία"
   },
-
   "createSprint": {
     "button": "+ Νέο Sprint",
     "title": "Δημιουργία Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "Ημερομηνία έναρξης",
     "endDateLabel": "Ημερομηνία λήξης"
   },
-
   "createTeam": {
     "button": "+ Νέα Ομάδα",
     "title": "Δημιουργία Ομάδας",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Όνομα Ομάδας",
     "teamNamePlaceholder": "π.χ. Backend Squad"
   },
-
   "quickCreate": {
-    "placeholder": "Τι πρέπει να γίνει;"
+    "placeholder": "Τι πρέπει να γίνει;",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Άνοιγμα {{title}}",
     "taskCount": "{{count}} εργασία",
-    "taskCount_other": "{{count}} εργασίες"
+    "taskCount_other": "{{count}} εργασίες",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Ομάδα",
     "memberCount": "{{count}} μέλος",
@@ -468,7 +473,6 @@
     "nameLabel": "Όνομα",
     "roleLabel": "Ρόλος"
   },
-
   "epics": {
     "helpTitle": "Epics",
     "helpBody1": "Τα Epics είναι ομαδοποιήσεις σε επίπεδο λειτουργικότητας. Κάθε Epic περιέχει σχετικά stories που μαζί παρέχουν μια επιχειρηματική δυνατότητα.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Δεν υπάρχουν Epics ακόμα. Τα Epics ομαδοποιούν σχετικά stories σε παραδοτέα επιπέδου λειτουργικότητας.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "epicDetail": {
     "backToEpics": "Πίσω στα Epics",
     "description": "Περιγραφή",
@@ -512,9 +515,20 @@
     "qeTesting": "QE Testing",
     "bsaAnalysis": "BSA Analysis",
     "creating": "Δημιουργία...",
-    "createStory": "Δημιουργία Story"
+    "createStory": "Δημιουργία Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Πίσω στα Sprints",
     "start": "Έναρξη:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Αφαίρεση από το Sprint",
     "standaloneTasks": "Ανεξάρτητες εργασίες",
     "adding": "Προσθήκη...",
-    "tasks": "{{count}} εργασίες"
+    "tasks": "{{count}} εργασίες",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Αναφορές έργου",
     "helpBody1": "Οι αναφορές σας δίνουν ορατότητα στην παράδοση της ομάδας σας. Η Velocity δείχνει πόσους πόντους ολοκληρώνετε ανά Sprint; σταθεροποιείται με τον χρόνο.",
@@ -575,7 +599,6 @@
     "onTrack": "Σε πορεία",
     "behind": "Καθυστέρηση"
   },
-
   "aiSettings": {
     "title": "Ρυθμίσεις AI",
     "description": "Ρυθμίστε έναν πάροχο AI για να ενεργοποιήσετε προτάσεις κριτηρίων αποδοχής, ανάλυση stories και σύνταξη σημειώσεων έκδοσης. Χρησιμοποιείτε το δικό σας API key; το PlanA δεν αποθηκεύει ούτε προωθεί μέσω κοινόχρηστου λογαριασμού.",
@@ -616,7 +639,6 @@
     "revoked": "Ανακλήθηκε",
     "revokedDate": "Ανακλήθηκε {{date}}"
   },
-
   "shareDashboard": {
     "title": "Πίνακας ενδιαφερομένων",
     "invalidLink": "Μη έγκυρος ή ληγμένος σύνδεσμος",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Πρόοδος Story"
   },
-
   "reportView": {
     "title": "Αναφορές",
     "generateProject": "Αναφορά έργου",
@@ -669,5 +690,72 @@
     "currentBlockers": "Τρέχοντα εμπόδια",
     "velocityHistory": "Ιστορικό Velocity",
     "generatedBy": "Δημιουργήθηκε από το PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

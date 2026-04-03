@@ -25,14 +25,13 @@
     "error": "Kļūda: {{message}}",
     "thinking": "Domāju...",
     "generating": "Ģenerēšana...",
-    "language": "Valoda"
+    "language": "Valoda",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, patiešām."
   },
-
   "nav": {
     "board": "Panelis",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Komanda",
     "settings": "Iestatījumi",
     "project": "Projekts",
-    "graph": "Grafs"
+    "graph": "Grafs",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Izvērst sānjoslu",
     "collapseSidebar": "Sakļaut sānjoslu",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Vēl nav organizāciju",
     "toggle": "Pārslēgt {{name}}"
   },
-
   "topBar": {
     "notifications": "Paziņojumi",
     "markAllRead": "Atzīmēt visus kā lasītus",
@@ -78,7 +97,6 @@
     "hoursAgo": "pirms {{count}} st",
     "daysAgo": "pirms {{count}} d"
   },
-
   "notifications": {
     "assigned": "Jums tika piešķirts \"{{title}}\"",
     "statusChanged": "Statuss mainīts \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Jūs tikāt pieminēts \"{{title}}\"",
     "default": "Paziņojums: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Gatavs",
@@ -95,33 +112,28 @@
     "done": "Pabeigts",
     "cancelled": "Atcelts"
   },
-
   "priority": {
     "urgent": "Steidzams",
     "high": "Augsts",
     "medium": "Vidējs",
     "low": "Zems"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Uzdevums"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktīvs",
     "planned": "Plānots",
     "completed": "Pabeigts",
     "cancelled": "Atcelts"
   },
-
   "roles": {
     "pm": "Projektu vadītājs",
     "po": "Produkta īpašnieks",
@@ -131,7 +143,6 @@
     "ux": "UX dizaineris",
     "dev": "Izstrādātājs"
   },
-
   "login": {
     "continueWithGitHub": "Turpināt ar GitHub",
     "continueWithGoogle": "Turpināt ar Google",
@@ -142,7 +153,6 @@
     "devOnly": "tikai izstrādei",
     "devLogin": "Izstrādes pieslēgšanās (bez OAuth)"
   },
-
   "authError": {
     "title": "Pieslēgšanās neizdevās",
     "badState": "Pieslēgšanās sesija beidzās. Lūdzu, mēģiniet vēlreiz.",
@@ -152,7 +162,6 @@
     "missingToken": "Autentifikācijas tokens netika saņemts.",
     "default": "Pieslēgšanās laikā radusies neparedzēta kļūda."
   },
-
   "myWork": {
     "title": "Mans darbs",
     "itemCount": "Jums piešķirts {{count}} elements",
@@ -160,7 +169,6 @@
     "noItems": "Nav piešķirtu elementu.",
     "noItemsHelp": "Elementi parādīsies šeit, kad jūs tiksiet pievienots kā projekta komandas dalībnieks un jums tiks piešķirtas stories vai uzdevumi. Pārliecinieties, ka jūsu konta e-pasts atbilst komandas dalībnieka e-pastam vai ka esat pieņēmis uzaicinājumu."
   },
-
   "orgs": {
     "title": "Organizācijas",
     "orgCount": "{{count}} organizācija",
@@ -184,7 +192,6 @@
     "postalCode": "Pasta indekss",
     "country": "Valsts"
   },
-
   "orgDetail": {
     "allOrganisations": "Visas organizācijas",
     "editDetails": "Rediģēt detaļas",
@@ -206,7 +213,6 @@
     "createProject": "Izveidot projektu",
     "whatIsThisProjectAbout": "Par ko ir šis projekts?"
   },
-
   "invite": {
     "invalidInvitation": "Nederīgs uzaicinājums",
     "invalidLink": "Šī uzaicinājuma saite nav derīga.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Jau ir konts?",
     "logIn": "Pieslēgties"
   },
-
   "board": {
     "helpTitle": "Jūsu Kanban panelis",
     "helpBody1": "Šajā panelī jūsu komandas darbs ir attēlots kā plūsma. Katra kolonna atbilst darba procesa posmam.",
@@ -242,7 +247,6 @@
     "noItems": "Nav elementu",
     "column": "{{status}} kolonna"
   },
-
   "backlog": {
     "helpTitle": "Jūsu Backlog",
     "helpBody1": "Backlog ir jūsu prioritizēts darbu saraksts. Elementi augšpusē ir ar augstāko prioritāti.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint'a plānošana",
     "helpBody1": "Sprint'i ir laika ierobežotas iterācijas (parasti 2 nedēļas). Velciet stories no Backlog uz Sprint'u, lai plānotu komandas darbu.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Vēl nav Sprint'u. Izveidojiet vienu, lai sāktu plānot.",
     "pts": "{{count}} punkti"
   },
-
   "workItemDetail": {
     "backToBoard": "Atpakaļ uz paneli",
     "partOf": "Daļa no:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Pārvērst šo uzdevumu par story? Tas saglabās atkarības saiti ar sākotnējo story.",
     "convertToStoryHelp": "Paaugstina šo uzdevumu par neatkarīgu story ar atkarības saiti",
     "created": "Izveidots {{date}}",
-    "updated": "Atjaunots {{date}}"
+    "updated": "Atjaunots {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Uzdevumi ({{count}})",
     "contextHelp": "Uzdevumi sadala story pa disciplīnām, piemēram, UX dizains, backend izstrāde, frontend izstrāde un QE testēšana. Katru uzdevumu var piešķirt komandas dalībniekam.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} punkti",
     "clarificationNeeded": "Nepieciešams precizējums:"
   },
-
   "acceptanceCriteria": {
     "title": "Pieņemšanas kritēriji",
     "contextHelp": "Pieņemšanas kritēriji nosaka, kad elements ir patiesi \"pabeigts\". Rakstīti Given / When / Then formātā (BDD), tie padara gaidas skaidras un pārbaudāmas. Katrs kritērijs ir konkrēts, pārbaudāms nosacījums, nevis neskaidra vēlme.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI ieteikumi, noklikšķiniet, lai pievienotu:",
     "aiNeedsMoreInfo": "AI nepieciešama papildu informācija:"
   },
-
   "comments": {
     "title": "Komentāri",
     "noCommentsYet": "Vēl nav komentāru.",
     "addComment": "Pievienot komentāru..."
   },
-
   "dependencies": {
     "title": "Atkarības",
     "contextHelp": "Atkarības seko saiknēm starp elementiem. \"Atkarīgs no\" nozīmē, ka šis elements nevar turpināties, kamēr mērķis nav pabeigts. \"Saistīts ar\" ir informatīva saite.",
@@ -348,7 +361,6 @@
     "removeDependency": "Noņemt atkarību",
     "selectItem": "Izvēlieties elementu..."
   },
-
   "links": {
     "title": "Saites",
     "addLink": "+ Pievienot saiti",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Noņemt saiti"
   },
-
   "testResults": {
     "retestRequired": "Nepieciešama atkārtota testēšana",
     "retestMessage": "Šim defektam ir {{count}} neizturētu testu. Augšupielādējiet jaunus testa rezultātus (JUnit XML vai webhook) pēc labojuma ieviešanas, lai noņemtu QE vārtus un aizvērtu šo elementu.",
@@ -373,12 +384,10 @@
     "source": "Avots: {{source}} | Ziņots: {{date}}",
     "generateDescAC": "Ģenerēt aprakstu un PK"
   },
-
   "helpOverlay": {
     "dismiss": "Noraidīt",
     "close": "Aizvērt"
   },
-
   "richTextEditor": {
     "startTyping": "Sāciet rakstīt...",
     "bold": "Treknraksts",
@@ -391,7 +400,6 @@
     "quote": "Citāts",
     "codeBlock": "Koda bloks"
   },
-
   "createEpic": {
     "button": "+ Jauns Epic",
     "title": "Izveidot Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Prioritāte",
     "assigneeLabel": "Piešķirts"
   },
-
   "createProject": {
     "button": "+ Jauns projekts",
     "title": "Izveidot projektu",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Par ko ir šis projekts?",
     "methodologyLabel": "Metodoloģija"
   },
-
   "createSprint": {
     "button": "+ Jauns Sprint",
     "title": "Izveidot Sprint'u",
@@ -427,7 +433,6 @@
     "startDateLabel": "Sākuma datums",
     "endDateLabel": "Beigu datums"
   },
-
   "createTeam": {
     "button": "+ Jauna komanda",
     "title": "Izveidot komandu",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Komandas nosaukums",
     "teamNamePlaceholder": "piem. Backend komanda"
   },
-
   "quickCreate": {
-    "placeholder": "Kas jādara?"
+    "placeholder": "Kas jādara?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Atvērt {{title}}",
     "taskCount": "{{count}} uzdevums",
-    "taskCount_other": "{{count}} uzdevumi"
+    "taskCount_other": "{{count}} uzdevumi",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Komanda",
     "memberCount": "{{count}} dalībnieks",
@@ -468,7 +473,6 @@
     "nameLabel": "Vārds",
     "roleLabel": "Loma"
   },
-
   "epics": {
     "helpTitle": "Epic'i",
     "helpBody1": "Epic'i ir funkcionalitātes līmeņa grupējumi. Katrs Epic satur saistītas stories, kas kopā nodrošina biznesa iespēju.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Vēl nav Epic'u. Epic'i grupē saistītas stories funkcionalitātes līmeņa piegādājumos.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "epicDetail": {
     "backToEpics": "Atpakaļ uz Epic'iem",
     "description": "Apraksts",
@@ -512,9 +515,20 @@
     "qeTesting": "QE testēšana",
     "bsaAnalysis": "BSA analīze",
     "creating": "Izveido...",
-    "createStory": "Izveidot Story"
+    "createStory": "Izveidot Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Atpakaļ uz Sprint'iem",
     "start": "Sākums:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Noņemt no Sprint'a",
     "standaloneTasks": "Atsevišķie uzdevumi",
     "adding": "Pievieno...",
-    "tasks": "{{count}} uzdevumi"
+    "tasks": "{{count}} uzdevumi",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Projekta atskaites",
     "helpBody1": "Atskaites sniedz pārlūku par jūsu komandas piegādi. Velocity rāda, cik punktu jūs pabeidzat katrā Sprint'ā; laika gaitā tas stabilizējas.",
@@ -575,7 +599,6 @@
     "onTrack": "Grafikā",
     "behind": "Atpaliek"
   },
-
   "aiSettings": {
     "title": "AI konfigurācija",
     "description": "Konfigurējiet AI pakalpojuma sniedzēju, lai iespējotu pieņemšanas kritēriju ieteikumus, story dekompozīciju un laidiena piezīmju melnrakstus. Jūs izmantojat savu API atslēgu; PlanA neglabā un netarpniecē caur kopīgu kontu.",
@@ -616,7 +639,6 @@
     "revoked": "Atsaukts",
     "revokedDate": "Atsaukts {{date}}"
   },
-
   "shareDashboard": {
     "title": "Iesaistīto pušu panelis",
     "invalidLink": "Nederīga vai beigusies saite",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint'a Velocity",
     "storyProgress": "Story progress"
   },
-
   "reportView": {
     "title": "Atskaites",
     "generateProject": "Projekta atskaite",
@@ -669,5 +690,72 @@
     "currentBlockers": "Pašreizējie bloķētāji",
     "velocityHistory": "Velocity vēsture",
     "generatedBy": "Ģenerējis PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

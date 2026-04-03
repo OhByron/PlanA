@@ -4,10 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@projecta/ui';
 import { api } from '../lib/api-client';
 import { toProject } from '../lib/api-transforms';
+import { useAuth } from '../auth/auth-context';
+import { useProjectMembers } from '../hooks/use-project-members';
 
 export function ProjectLayout() {
   const { t } = useTranslation();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { user } = useAuth();
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', projectId],
@@ -17,6 +20,10 @@ export function ProjectLayout() {
     },
     staleTime: 5 * 60_000,
   });
+
+  const { data: members = [] } = useProjectMembers(projectId);
+  const currentMember = members.find((m) => m.userId === user?.id);
+  const isPM = currentMember?.jobRole === 'pm' || currentMember?.jobRole === 'po';
 
   if (isLoading) {
     return (
@@ -32,6 +39,8 @@ export function ProjectLayout() {
     { label: t('nav.backlog'), to: '/p/$projectId/backlog' as const },
     { label: t('nav.epics'), to: '/p/$projectId/epics' as const },
     { label: t('nav.sprints'), to: '/p/$projectId/sprints' as const },
+    ...(isPM ? [{ label: t('nav.gantt'), to: '/p/$projectId/gantt' as const }] : []),
+    { label: t('nav.calendar'), to: '/p/$projectId/calendar' as const },
     { label: t('nav.reports'), to: '/p/$projectId/reports' as const },
     { label: t('nav.report'), to: '/p/$projectId/report' as const },
     { label: t('nav.team'), to: '/p/$projectId/team' as const },

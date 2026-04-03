@@ -25,14 +25,13 @@
     "error": "Klaida: {{message}}",
     "thinking": "Galvoju...",
     "generating": "Generuojama...",
-    "language": "Kalba"
+    "language": "Kalba",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile iš tikrųjų."
   },
-
   "nav": {
     "board": "Lenta",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Komanda",
     "settings": "Nustatymai",
     "project": "Projektas",
-    "graph": "Grafas"
+    "graph": "Grafas",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Išplėsti šoninę juostą",
     "collapseSidebar": "Sutraukti šoninę juostą",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Kol kas nėra organizacijų",
     "toggle": "Perjungti {{name}}"
   },
-
   "topBar": {
     "notifications": "Pranešimai",
     "markAllRead": "Pažymėti visus skaitytais",
@@ -78,7 +97,6 @@
     "hoursAgo": "prieš {{count}} val",
     "daysAgo": "prieš {{count}} d"
   },
-
   "notifications": {
     "assigned": "Jums priskirta \"{{title}}\"",
     "statusChanged": "Būsena pakeista \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Jūs paminėtas \"{{title}}\"",
     "default": "Pranešimas: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Paruošta",
@@ -95,33 +112,28 @@
     "done": "Atlikta",
     "cancelled": "Atšaukta"
   },
-
   "priority": {
     "urgent": "Skubus",
     "high": "Aukštas",
     "medium": "Vidutinis",
     "low": "Žemas"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Užduotis"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktyvus",
     "planned": "Suplanuotas",
     "completed": "Baigtas",
     "cancelled": "Atšauktas"
   },
-
   "roles": {
     "pm": "Projekto vadovas",
     "po": "Produkto savininkas",
@@ -131,7 +143,6 @@
     "ux": "UX dizaineris",
     "dev": "Programuotojas"
   },
-
   "login": {
     "continueWithGitHub": "Tęsti su GitHub",
     "continueWithGoogle": "Tęsti su Google",
@@ -142,7 +153,6 @@
     "devOnly": "tik kūrimo aplinkai",
     "devLogin": "Kūrimui skirtas prisijungimas (be OAuth)"
   },
-
   "authError": {
     "title": "Prisijungti nepavyko",
     "badState": "Prisijungimo sesija pasibaigė. Bandykite dar kartą.",
@@ -152,7 +162,6 @@
     "missingToken": "Negautas autentifikacijos žymeklis.",
     "default": "Prisijungimo metu įvyko netikėta klaida."
   },
-
   "myWork": {
     "title": "Mano darbai",
     "itemCount": "Jums priskirtas {{count}} elementas",
@@ -160,7 +169,6 @@
     "noItems": "Nėra priskirtų elementų.",
     "noItemsHelp": "Elementai čia pasirodys, kai būsite pridėtas kaip projekto komandos narys ir jums bus priskirtos stories arba užduotys. Įsitikinkite, kad jūsų paskyros el. paštas sutampa su komandos nario el. paštu arba kad priėmėte kvietimą."
   },
-
   "orgs": {
     "title": "Organizacijos",
     "orgCount": "{{count}} organizacija",
@@ -184,7 +192,6 @@
     "postalCode": "Pašto kodas",
     "country": "Šalis"
   },
-
   "orgDetail": {
     "allOrganisations": "Visos organizacijos",
     "editDetails": "Redaguoti detales",
@@ -206,7 +213,6 @@
     "createProject": "Sukurti projektą",
     "whatIsThisProjectAbout": "Apie ką šis projektas?"
   },
-
   "invite": {
     "invalidInvitation": "Negaliojantis kvietimas",
     "invalidLink": "Ši kvietimo nuoroda negalioja.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Jau turite paskyrą?",
     "logIn": "Prisijungti"
   },
-
   "board": {
     "helpTitle": "Jūsų Kanban lenta",
     "helpBody1": "Tai jūsų komandos darbas, atvaizduotas kaip srautų diagrama. Kiekvienas stulpelis atitinka darbo eigos etapą.",
@@ -242,7 +247,6 @@
     "noItems": "Nėra elementų",
     "column": "{{status}} stulpelis"
   },
-
   "backlog": {
     "helpTitle": "Jūsų Backlog",
     "helpBody1": "Backlog yra jūsų prioritetizuotas darbų sąrašas. Elementai viršuje turi aukščiausią prioritetą.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint'o planavimas",
     "helpBody1": "Sprint'ai yra laiko ribojamos iteracijos (paprastai 2 savaitės). Ištraukite stories iš Backlog į Sprint'ą, kad suplanuotumėte komandos darbą.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Kol kas nėra Sprint'ų. Sukurkite vieną, kad pradėtumėte planuoti.",
     "pts": "{{count}} tašk."
   },
-
   "workItemDetail": {
     "backToBoard": "Grįžti į lentą",
     "partOf": "Dalis:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Paversti šią užduotį į story? Priklausomybės saitas su originalia story bus išlaikytas.",
     "convertToStoryHelp": "Pakelia šią užduotį į nepriklausomą story su priklausomybės saitu",
     "created": "Sukurta {{date}}",
-    "updated": "Atnaujinta {{date}}"
+    "updated": "Atnaujinta {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Užduotys ({{count}})",
     "contextHelp": "Užduotys skaido story į darbus pagal discipliną: UX dizainas, backend kūrimas, frontend kūrimas ir QE testavimas. Kiekviena užduotis gali būti priskirta komandos nariui.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} tašk.",
     "clarificationNeeded": "Reikia patikslinimo:"
   },
-
   "acceptanceCriteria": {
     "title": "Priėmimo kriterijai",
     "contextHelp": "Priėmimo kriterijai apibrėžia, kada elementas tikrai \"baigtas\". Rašomi Given / When / Then formatu (BDD), jie padaro lūkesčius aiškius ir patikrinamus. Kiekvienas kriterijus yra konkretus, patikrinamas reikalavimas, o ne neaiškus pageidavimas.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI pasiūlymai, spauskite, kad pridėtumėte:",
     "aiNeedsMoreInfo": "AI reikia daugiau informacijos:"
   },
-
   "comments": {
     "title": "Komentarai",
     "noCommentsYet": "Kol kas nėra komentarų.",
     "addComment": "Pridėti komentarą..."
   },
-
   "dependencies": {
     "title": "Priklausomybės",
     "contextHelp": "Priklausomybės seka ryšius tarp elementų. \"Priklauso nuo\" reiškia, kad šis elementas negali judėti pirmyn, kol tikslas nebaigtas. \"Susiję su\" yra informacinė nuoroda.",
@@ -348,7 +361,6 @@
     "removeDependency": "Pašalinti priklausomybę",
     "selectItem": "Pasirinkite elementą..."
   },
-
   "links": {
     "title": "Nuorodos",
     "addLink": "+ Pridėti nuorodą",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Pašalinti nuorodą"
   },
-
   "testResults": {
     "retestRequired": "Reikalingas pakartotinis testavimas",
     "retestMessage": "Šis defektas turi {{count}} nepavykusių testų. Įkelkite naujus testų rezultatus (JUnit XML arba webhook) po pataisymo diegimo, kad panaikintumėte QE vartus ir uždarytumėte šį elementą.",
@@ -373,12 +384,10 @@
     "source": "Šaltinis: {{source}} | Pranešta: {{date}}",
     "generateDescAC": "Generuoti aprašymą ir PK"
   },
-
   "helpOverlay": {
     "dismiss": "Atmesti",
     "close": "Uždaryti"
   },
-
   "richTextEditor": {
     "startTyping": "Pradėkite rašyti...",
     "bold": "Paryškinta",
@@ -391,7 +400,6 @@
     "quote": "Citata",
     "codeBlock": "Kodo blokas"
   },
-
   "createEpic": {
     "button": "+ Naujas Epic",
     "title": "Sukurti Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Prioritetas",
     "assigneeLabel": "Priskirtas"
   },
-
   "createProject": {
     "button": "+ Naujas projektas",
     "title": "Sukurti projektą",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Apie ką šis projektas?",
     "methodologyLabel": "Metodologija"
   },
-
   "createSprint": {
     "button": "+ Naujas Sprint",
     "title": "Sukurti Sprint'ą",
@@ -427,7 +433,6 @@
     "startDateLabel": "Pradžios data",
     "endDateLabel": "Pabaigos data"
   },
-
   "createTeam": {
     "button": "+ Nauja komanda",
     "title": "Sukurti komandą",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Komandos pavadinimas",
     "teamNamePlaceholder": "pvz. Backend komanda"
   },
-
   "quickCreate": {
-    "placeholder": "Ką reikia padaryti?"
+    "placeholder": "Ką reikia padaryti?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Atidaryti {{title}}",
     "taskCount": "{{count}} užduotis",
-    "taskCount_other": "{{count}} užduočių"
+    "taskCount_other": "{{count}} užduočių",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Komanda",
     "memberCount": "{{count}} narys",
@@ -468,7 +473,6 @@
     "nameLabel": "Vardas",
     "roleLabel": "Rolė"
   },
-
   "epics": {
     "helpTitle": "Epic'ai",
     "helpBody1": "Epic'ai yra funkcionalumo lygio grupavimai. Kiekvienas Epic apima susijusias stories, kurios kartu pristato verslo galimybę.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Kol kas nėra Epic'ų. Epic'ai grupuoja susijusias stories į funkcionalumo lygio pateikinius.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "epicDetail": {
     "backToEpics": "Grįžti į Epic'us",
     "description": "Aprašymas",
@@ -512,9 +515,20 @@
     "qeTesting": "QE testavimas",
     "bsaAnalysis": "BSA analizė",
     "creating": "Kuriama...",
-    "createStory": "Sukurti Story"
+    "createStory": "Sukurti Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Grįžti į Sprint'us",
     "start": "Pradžia:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Pašalinti iš Sprint'o",
     "standaloneTasks": "Atskiros užduotys",
     "adding": "Pridedama...",
-    "tasks": "{{count}} užduočių"
+    "tasks": "{{count}} užduočių",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Projekto ataskaitos",
     "helpBody1": "Ataskaitos suteikia matomumą į jūsų komandos pristatymą. Velocity rodo, kiek taškų užbaigiate per Sprint'ą; laikui bėgant ji stabilizuojasi.",
@@ -575,7 +599,6 @@
     "onTrack": "Pagal planą",
     "behind": "Atsilieka"
   },
-
   "aiSettings": {
     "title": "AI konfigūracija",
     "description": "Sukonfigūruokite AI tiekėją, kad įgalintumėte priėmimo kriterijų pasiūlymus, story dekompoziciją ir laidos pastabų juodraščius. Naudojate savo API raktą; PlanA nesaugo ir netarpininkauja per bendrintą paskyrą.",
@@ -616,7 +639,6 @@
     "revoked": "Atšaukta",
     "revokedDate": "Atšaukta {{date}}"
   },
-
   "shareDashboard": {
     "title": "Suinteresuotų šalių informacinė lenta",
     "invalidLink": "Negaliojanti arba pasibaigusi nuoroda",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint'o Velocity",
     "storyProgress": "Story progresas"
   },
-
   "reportView": {
     "title": "Ataskaitos",
     "generateProject": "Projekto ataskaita",
@@ -669,5 +690,72 @@
     "currentBlockers": "Dabartiniai blokatoriai",
     "velocityHistory": "Velocity istorija",
     "generatedBy": "Sugeneruota PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

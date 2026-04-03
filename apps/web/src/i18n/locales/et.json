@@ -25,14 +25,13 @@
     "error": "Viga: {{message}}",
     "thinking": "Mõtlen...",
     "generating": "Genereerimine...",
-    "language": "Keel"
+    "language": "Keel",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, tegelikult."
   },
-
   "nav": {
     "board": "Tahvel",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Meeskond",
     "settings": "Seaded",
     "project": "Projekt",
-    "graph": "Graaf"
+    "graph": "Graaf",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Laienda külgriba",
     "collapseSidebar": "Ahenda külgriba",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Organisatsioone pole veel",
     "toggle": "Lülita {{name}}"
   },
-
   "topBar": {
     "notifications": "Teavitused",
     "markAllRead": "Märgi kõik loetuks",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} t tagasi",
     "daysAgo": "{{count}} p tagasi"
   },
-
   "notifications": {
     "assigned": "Teile määrati \"{{title}}\"",
     "statusChanged": "Olek muudeti \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Teid mainiti \"{{title}}\"",
     "default": "Teavitus: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Valmis",
@@ -95,33 +112,28 @@
     "done": "Valmis",
     "cancelled": "Tühistatud"
   },
-
   "priority": {
     "urgent": "Kiire",
     "high": "Kõrge",
     "medium": "Keskmine",
     "low": "Madal"
   },
-
   "type": {
     "story": "Story",
     "bug": "Viga",
     "task": "Ülesanne"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktiivne",
     "planned": "Planeeritud",
     "completed": "Lõpetatud",
     "cancelled": "Tühistatud"
   },
-
   "roles": {
     "pm": "Projektijuht",
     "po": "Tooteomanik",
@@ -131,7 +143,6 @@
     "ux": "UX disainer",
     "dev": "Arendaja"
   },
-
   "login": {
     "continueWithGitHub": "Jätka GitHubiga",
     "continueWithGoogle": "Jätka Google'iga",
@@ -142,7 +153,6 @@
     "devOnly": "ainult arenduseks",
     "devLogin": "Arendaja sisselogimine (ilma OAuthita)"
   },
-
   "authError": {
     "title": "Sisselogimine ebaõnnestus",
     "badState": "Sisselogimise sessioon aegus. Palun proovige uuesti.",
@@ -152,7 +162,6 @@
     "missingToken": "Autentimise tõendit ei saadud.",
     "default": "Sisselogimisel ilmnes ootamatu viga."
   },
-
   "myWork": {
     "title": "Minu töö",
     "itemCount": "Teile on määratud {{count}} element",
@@ -160,7 +169,6 @@
     "noItems": "Määratud elemente pole.",
     "noItemsHelp": "Elemendid ilmuvad siia, kui teid lisatakse projekti meeskonna liikmeks ja teile määratakse story'sid või ülesandeid. Veenduge, et teie konto e-post ühtib meeskonna liikme e-postiga või et olete kutse vastu võtnud."
   },
-
   "orgs": {
     "title": "Organisatsioonid",
     "orgCount": "{{count}} organisatsioon",
@@ -184,7 +192,6 @@
     "postalCode": "Postikood",
     "country": "Riik"
   },
-
   "orgDetail": {
     "allOrganisations": "Kõik organisatsioonid",
     "editDetails": "Muuda andmeid",
@@ -206,7 +213,6 @@
     "createProject": "Loo projekt",
     "whatIsThisProjectAbout": "Millest see projekt räägib?"
   },
-
   "invite": {
     "invalidInvitation": "Kehtetu kutse",
     "invalidLink": "See kutselink ei ole kehtiv.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Kas teil on juba konto?",
     "logIn": "Logi sisse"
   },
-
   "board": {
     "helpTitle": "Teie Kanban tahvel",
     "helpBody1": "See on teie meeskonna töö visualiseeritud voona. Iga veerg esindab töövoo etappi.",
@@ -242,7 +247,6 @@
     "noItems": "Elemente pole",
     "column": "{{status}} veerg"
   },
-
   "backlog": {
     "helpTitle": "Teie Backlog",
     "helpBody1": "Backlog on teie prioriseeritud tööde nimekiri. Ülal olevad elemendid on kõige kõrgema prioriteediga.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprindi planeerimine",
     "helpBody1": "Sprindid on ajaliselt piiratud iteratsioonid (tavaliselt 2 nädalat). Tooge story'sid backlogist sprinti, et planeerida meeskonna tööd.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Sprinte pole veel. Looge üks, et planeerimist alustada.",
     "pts": "{{count}} punkti"
   },
-
   "workItemDetail": {
     "backToBoard": "Tagasi tahvlile",
     "partOf": "Osa:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Teisendada see ülesanne story'ks? Sõltuvusseos algse story'ga säilib.",
     "convertToStoryHelp": "Edendab selle ülesande iseseisvaks story'ks koos sõltuvusseosega",
     "created": "Loodud {{date}}",
-    "updated": "Uuendatud {{date}}"
+    "updated": "Uuendatud {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Ülesanded ({{count}})",
     "contextHelp": "Ülesanded jagavad story töö valdkondade kaupa: UX disain, backend arendus, frontend arendus ja QE testimine. Iga ülesannet saab määrata meeskonna liikmele.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} punkti",
     "clarificationNeeded": "Vajalik täpsustus:"
   },
-
   "acceptanceCriteria": {
     "title": "Vastuvõtukriteeriumid",
     "contextHelp": "Vastuvõtukriteeriumid määravad, millal element on tõesti \"valmis\". Given / When / Then formaadis (BDD) kirjutatuna muudavad need ootused selgeks ja testitavaks. Iga kriteerium on konkreetne, kontrollitav tingimus, mitte ebamäärane soov.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI soovitused, klõpsake lisamiseks:",
     "aiNeedsMoreInfo": "AI vajab rohkem teavet:"
   },
-
   "comments": {
     "title": "Kommentaarid",
     "noCommentsYet": "Kommentaare pole veel.",
     "addComment": "Lisa kommentaar..."
   },
-
   "dependencies": {
     "title": "Sõltuvused",
     "contextHelp": "Sõltuvused jälgivad elementidevahelisi seoseid. \"Sõltub\" tähendab, et see element ei saa edasi minna enne sihtmärgi valmimist. \"Seotud\" on informatiivne link.",
@@ -348,7 +361,6 @@
     "removeDependency": "Eemalda sõltuvus",
     "selectItem": "Valige element..."
   },
-
   "links": {
     "title": "Lingid",
     "addLink": "+ Lisa link",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Eemalda link"
   },
-
   "testResults": {
     "retestRequired": "Vajalik uuesti testimine",
     "retestMessage": "Sellel defektil on {{count}} ebaõnnestunud testi. Laadige uued testitulemused üles (JUnit XML või webhook) pärast paranduse juurutamist, et QE värav eemaldada ja see element sulgeda.",
@@ -373,12 +384,10 @@
     "source": "Allikas: {{source}} | Teatatud: {{date}}",
     "generateDescAC": "Genereeri kirjeldus ja VK"
   },
-
   "helpOverlay": {
     "dismiss": "Sulge",
     "close": "Sulge"
   },
-
   "richTextEditor": {
     "startTyping": "Alustage tippimist...",
     "bold": "Paks",
@@ -391,7 +400,6 @@
     "quote": "Tsitaat",
     "codeBlock": "Koodiplokk"
   },
-
   "createEpic": {
     "button": "+ Uus Epic",
     "title": "Loo Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Prioriteet",
     "assigneeLabel": "Määratud"
   },
-
   "createProject": {
     "button": "+ Uus projekt",
     "title": "Loo projekt",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Millest see projekt räägib?",
     "methodologyLabel": "Metoodika"
   },
-
   "createSprint": {
     "button": "+ Uus Sprint",
     "title": "Loo Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "Alguskuupäev",
     "endDateLabel": "Lõpukuupäev"
   },
-
   "createTeam": {
     "button": "+ Uus meeskond",
     "title": "Loo meeskond",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Meeskonna nimi",
     "teamNamePlaceholder": "nt Backend meeskond"
   },
-
   "quickCreate": {
-    "placeholder": "Mida on vaja teha?"
+    "placeholder": "Mida on vaja teha?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Ava {{title}}",
     "taskCount": "{{count}} ülesanne",
-    "taskCount_other": "{{count}} ülesannet"
+    "taskCount_other": "{{count}} ülesannet",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Meeskond",
     "memberCount": "{{count}} liige",
@@ -468,7 +473,6 @@
     "nameLabel": "Nimi",
     "roleLabel": "Roll"
   },
-
   "epics": {
     "helpTitle": "Epic'ud",
     "helpBody1": "Epic'ud on funktsioonitaseme rühmitamised. Iga Epic sisaldab seotud story'sid, mis koos pakuvad ärivõimalust.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Epic'uid pole veel. Epic'ud rühmitavad seotud story'sid funktsioonitaseme väljunditeks.",
     "storyProgress": "{{done}}/{{total}} story'd"
   },
-
   "epicDetail": {
     "backToEpics": "Tagasi Epic'ute juurde",
     "description": "Kirjeldus",
@@ -512,9 +515,20 @@
     "qeTesting": "QE testimine",
     "bsaAnalysis": "BSA analüüs",
     "creating": "Loomine...",
-    "createStory": "Loo Story"
+    "createStory": "Loo Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Tagasi Sprintide juurde",
     "start": "Algus:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Eemalda sprindist",
     "standaloneTasks": "Eraldiseisvad ülesanded",
     "adding": "Lisamine...",
-    "tasks": "{{count}} ülesannet"
+    "tasks": "{{count}} ülesannet",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Projekti aruanded",
     "helpBody1": "Aruanded annavad ülevaate teie meeskonna tarnimisest. Velocity näitab, mitu punkti te sprindi kohta lõpetate; aja jooksul stabiliseerub.",
@@ -575,7 +599,6 @@
     "onTrack": "Graafikus",
     "behind": "Maas"
   },
-
   "aiSettings": {
     "title": "AI seadistamine",
     "description": "Seadistage AI teenusepakkuja, et lubada vastuvõtukriteeriumide soovitusi, story dekomponseerimist ja väljalaskemärkuste mustandi koostamist. Kasutate oma API võtit; PlanA ei salvesta ega proksi ühiskonto kaudu.",
@@ -616,7 +639,6 @@
     "revoked": "Tühistatud",
     "revokedDate": "Tühistatud {{date}}"
   },
-
   "shareDashboard": {
     "title": "Huvigruppide armataud",
     "invalidLink": "Kehtetu või aegunud link",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprindi Velocity",
     "storyProgress": "Story edenemine"
   },
-
   "reportView": {
     "title": "Aruanded",
     "generateProject": "Projekti aruanne",
@@ -669,5 +690,72 @@
     "currentBlockers": "Praegused blokeerijad",
     "velocityHistory": "Velocity ajalugu",
     "generatedBy": "Genereeris PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

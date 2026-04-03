@@ -167,16 +167,15 @@ export function WorkItemDetailPage() {
       {/* Main content */}
       <div className="flex-1 overflow-y-auto p-6">
         {/* Back link */}
-        <Link
-          to="/p/$projectId/board"
-          params={{ projectId }}
+        <button
+          onClick={() => window.history.back()}
           className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          {t('workItemDetail.backToBoard')}
-        </Link>
+          {t('common.back')}
+        </button>
 
         {/* Parent story link for tasks */}
         {item.parentId && (() => {
@@ -305,6 +304,24 @@ export function WorkItemDetailPage() {
             </div>
           )}
         </section>
+
+        {/* Pre-conditions */}
+        <ConditionsSection
+          label={t('workItemDetail.preConditions')}
+          help={t('workItemDetail.preConditionsHelp')}
+          content={item.preConditions}
+          onSave={(val) => patchField({ preConditions: val })}
+          placeholder={t('workItemDetail.preConditionsPlaceholder')}
+        />
+
+        {/* Post-conditions */}
+        <ConditionsSection
+          label={t('workItemDetail.postConditions')}
+          help={t('workItemDetail.postConditionsHelp')}
+          content={item.postConditions}
+          onSave={(val) => patchField({ postConditions: val })}
+          placeholder={t('workItemDetail.postConditionsPlaceholder')}
+        />
 
         {/* Acceptance Criteria */}
         <AcceptanceCriteriaSection
@@ -457,6 +474,27 @@ export function WorkItemDetailPage() {
               <option key={e.id} value={e.id}>{e.title}</option>
             ))}
           </Select>
+        </FieldGroup>
+
+        {/* Dates */}
+        <FieldGroup label={t('workItemDetail.startDate')}>
+          <Input
+            type="date"
+            value={item.startDate ? new Date(item.startDate).toISOString().slice(0, 10) : ''}
+            onChange={(e) => patchField({ startDate: e.target.value || '' })}
+            aria-label="Start date"
+          />
+        </FieldGroup>
+        <FieldGroup label={t('workItemDetail.dueDate')}>
+          <Input
+            type="date"
+            value={item.dueDate ? new Date(item.dueDate).toISOString().slice(0, 10) : ''}
+            onChange={(e) => patchField({ dueDate: e.target.value || '' })}
+            aria-label="Due date"
+          />
+          {item.dueDate && new Date(item.dueDate) < new Date() && item.status !== 'done' && item.status !== 'cancelled' && (
+            <p className="mt-1 text-xs font-medium text-red-500">{t('workItemDetail.overdue')}</p>
+          )}
         </FieldGroup>
 
         {/* Story Points */}
@@ -621,6 +659,92 @@ function FieldGroup({ label, children }: { label: React.ReactNode; children: Rea
       <label className="mb-1 block text-xs font-medium text-gray-500">{label}</label>
       {children}
     </div>
+  );
+}
+
+// --- Pre/Post conditions section ---
+
+function ConditionsSection({
+  label,
+  help,
+  content,
+  onSave,
+  placeholder,
+}: {
+  label: string;
+  help: string;
+  content: Record<string, unknown> | null;
+  onSave: (val: Record<string, unknown> | null) => void;
+  placeholder: string;
+}) {
+  const { t } = useTranslation();
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
+
+  return (
+    <section className="mb-6">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{label}</h2>
+          <ContextHelp>{help}</ContextHelp>
+        </div>
+        {!editing && (
+          <button
+            onClick={() => {
+              setDraft(content ? JSON.stringify(content) : '');
+              setEditing(true);
+            }}
+            className="text-xs text-brand-600 hover:text-brand-800"
+          >
+            {content ? t('common.edit') : t('common.add')}
+          </button>
+        )}
+      </div>
+
+      {editing ? (
+        <div className="space-y-2">
+          <RichTextEditor
+            content={draft ? JSON.parse(draft) : null}
+            onChange={(val) => setDraft(JSON.stringify(val))}
+            placeholder={placeholder}
+          />
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              onClick={() => {
+                onSave(draft ? JSON.parse(draft) : null);
+                setEditing(false);
+              }}
+            >
+              {t('common.save')}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
+              {t('common.cancel')}
+            </Button>
+          </div>
+        </div>
+      ) : content ? (
+        <div
+          className="cursor-pointer rounded-md border border-transparent p-2 text-sm text-gray-600 hover:border-gray-200 hover:bg-gray-50"
+          onClick={() => {
+            setDraft(JSON.stringify(content));
+            setEditing(true);
+          }}
+        >
+          <RichTextDisplay content={content} />
+        </div>
+      ) : (
+        <p
+          className="cursor-pointer rounded-md border border-transparent p-2 text-sm italic text-gray-400 hover:border-gray-200 hover:bg-gray-50"
+          onClick={() => {
+            setDraft('');
+            setEditing(true);
+          }}
+        >
+          {placeholder}
+        </p>
+      )}
+    </section>
   );
 }
 

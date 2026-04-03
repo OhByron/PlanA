@@ -25,14 +25,13 @@
     "error": "Greška: {{message}}",
     "thinking": "Razmišljam...",
     "generating": "Generišem...",
-    "language": "Jezik"
+    "language": "Jezik",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, zaista."
   },
-
   "nav": {
     "board": "Tabla",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Tim",
     "settings": "Podešavanja",
     "project": "Projekat",
-    "graph": "Граф"
+    "graph": "Граф",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Proširi bočnu traku",
     "collapseSidebar": "Skupi bočnu traku",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Još nema organizacija",
     "toggle": "Prebaci {{name}}"
   },
-
   "topBar": {
     "notifications": "Obaveštenja",
     "markAllRead": "Označi sve kao pročitano",
@@ -78,7 +97,6 @@
     "hoursAgo": "pre {{count}}h",
     "daysAgo": "pre {{count}}d"
   },
-
   "notifications": {
     "assigned": "Dodeljeni ste na \"{{title}}\"",
     "statusChanged": "Status promenjen na \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Pomenuti ste u \"{{title}}\"",
     "default": "Obaveštenje: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Spremno",
@@ -95,33 +112,28 @@
     "done": "Završeno",
     "cancelled": "Otkazano"
   },
-
   "priority": {
     "urgent": "Hitno",
     "high": "Visok",
     "medium": "Srednji",
     "low": "Nizak"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Zadatak"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktivan",
     "planned": "Planiran",
     "completed": "Završen",
     "cancelled": "Otkazan"
   },
-
   "roles": {
     "pm": "Projektni menadžer",
     "po": "Vlasnik proizvoda",
@@ -131,7 +143,6 @@
     "ux": "UX dizajner",
     "dev": "Programer"
   },
-
   "login": {
     "continueWithGitHub": "Nastavi sa GitHub-om",
     "continueWithGoogle": "Nastavi sa Google-om",
@@ -142,7 +153,6 @@
     "devOnly": "samo za razvoj",
     "devLogin": "Dev prijava (preskoči OAuth)"
   },
-
   "authError": {
     "title": "Prijava neuspešna",
     "badState": "Sesija za prijavu je istekla. Pokušajte ponovo.",
@@ -152,7 +162,6 @@
     "missingToken": "Nije primljen token za autentifikaciju.",
     "default": "Došlo je do neočekivane greške tokom prijave."
   },
-
   "myWork": {
     "title": "Moj rad",
     "itemCount": "{{count}} stavka dodeljena vama",
@@ -160,7 +169,6 @@
     "noItems": "Nemate dodeljene stavke.",
     "noItemsHelp": "Stavke se ovde pojavljuju kada ste dodati kao član projektnog tima i kada su vam dodeljene priče ili zadaci. Proverite da vaša e-adresa odgovara e-adresi člana tima, ili da ste prihvatili pozivnicu."
   },
-
   "orgs": {
     "title": "Organizacije",
     "orgCount": "{{count}} organizacija",
@@ -184,7 +192,6 @@
     "postalCode": "Poštanski broj",
     "country": "Država"
   },
-
   "orgDetail": {
     "allOrganisations": "Sve organizacije",
     "editDetails": "Izmeni detalje",
@@ -206,7 +213,6 @@
     "createProject": "Kreiraj projekat",
     "whatIsThisProjectAbout": "O čemu se radi u ovom projektu?"
   },
-
   "invite": {
     "invalidInvitation": "Nevažeća pozivnica",
     "invalidLink": "Ovaj link pozivnice nije važeći.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Već imate nalog?",
     "logIn": "Prijavite se"
   },
-
   "board": {
     "helpTitle": "Vaša Kanban tabla",
     "helpBody1": "Ovo je rad vašeg tima prikazan kao tok. Svaka kolona predstavlja fazu u vašem radnom procesu.",
@@ -242,7 +247,6 @@
     "noItems": "Nema stavki",
     "column": "Kolona {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Vaš Backlog",
     "helpBody1": "Backlog je vaša prioritizovana lista poslova. Stavke na vrhu imaju najviši prioritet.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint planiranje",
     "helpBody1": "Sprintovi su vremenski ograničene iteracije (obično 2 nedelje). Povucite priče iz Backlog-a u Sprint da biste planirali rad tima.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Još nema Sprintova. Kreirajte jedan da biste počeli sa planiranjem.",
     "pts": "{{count}} poena"
   },
-
   "workItemDetail": {
     "backToBoard": "Nazad na tablu",
     "partOf": "Deo:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Pretvoriti ovaj zadatak u priču? Zadržaće vezu zavisnosti sa originalnom pričom.",
     "convertToStoryHelp": "Promoviše ovaj zadatak u samostalnu priču sa vezom zavisnosti",
     "created": "Kreirano {{date}}",
-    "updated": "Ažurirano {{date}}"
+    "updated": "Ažurirano {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Zadaci ({{count}})",
     "contextHelp": "Zadaci raščlanjuju priču na posao po disciplini, kao što su UX dizajn, backend razvoj, frontend razvoj i QE testiranje. Svaki zadatak se može dodeliti članu tima.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} poena",
     "clarificationNeeded": "Potrebno pojašnjenje:"
   },
-
   "acceptanceCriteria": {
     "title": "Kriterijumi prihvatanja",
     "contextHelp": "Kriterijumi prihvatanja definišu kada je ova stavka zaista \"završena\". Napisani u formatu Dato / Kada / Onda (BDD), oni čine očekivanja eksplicitnim i proverljivim. Svaki kriterijum je specifičan, verifikovan uslov, ne nejasna želja.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI predlozi, kliknite da dodate:",
     "aiNeedsMoreInfo": "AI treba više informacija:"
   },
-
   "comments": {
     "title": "Komentari",
     "noCommentsYet": "Još nema komentara.",
     "addComment": "Dodajte komentar..."
   },
-
   "dependencies": {
     "title": "Zavisnosti",
     "contextHelp": "Zavisnosti prate odnose između stavki. \"Zavisi od\" znači da ova stavka ne može da napreduje dok ciljna stavka nije završena. \"Povezano sa\" je informativna veza.",
@@ -348,7 +361,6 @@
     "removeDependency": "Ukloni zavisnost",
     "selectItem": "Izaberite stavku..."
   },
-
   "links": {
     "title": "Linkovi",
     "addLink": "+ Dodaj link",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Ukloni link"
   },
-
   "testResults": {
     "retestRequired": "Potrebno ponovno testiranje",
     "retestMessage": "Ovaj defekt ima {{count}} neuspelih testova. Otpremite nove rezultate testova (JUnit XML ili webhook) nakon što je ispravka postavljena da biste otvorili QE prolaz i zatvorili ovu stavku.",
@@ -373,12 +384,10 @@
     "source": "Izvor: {{source}} | Prijavljeno: {{date}}",
     "generateDescAC": "Generiši opis i kriterijume"
   },
-
   "helpOverlay": {
     "dismiss": "Odbaci",
     "close": "Zatvori"
   },
-
   "richTextEditor": {
     "startTyping": "Počnite da kucate...",
     "bold": "Podebljano",
@@ -391,7 +400,6 @@
     "quote": "Citat",
     "codeBlock": "Blok koda"
   },
-
   "createEpic": {
     "button": "+ Novi ep",
     "title": "Kreiraj ep",
@@ -402,7 +410,6 @@
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Zadužen"
   },
-
   "createProject": {
     "button": "+ Novi projekat",
     "title": "Kreiraj projekat",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "O čemu se radi u ovom projektu?",
     "methodologyLabel": "Metodologija"
   },
-
   "createSprint": {
     "button": "+ Novi Sprint",
     "title": "Kreiraj Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "Datum početka",
     "endDateLabel": "Datum završetka"
   },
-
   "createTeam": {
     "button": "+ Novi tim",
     "title": "Kreiraj tim",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Naziv tima",
     "teamNamePlaceholder": "npr. Backend tim"
   },
-
   "quickCreate": {
-    "placeholder": "Šta treba da se uradi?"
+    "placeholder": "Šta treba da se uradi?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Otvori {{title}}",
     "taskCount": "{{count}} zadatak",
-    "taskCount_other": "{{count}} zadataka"
+    "taskCount_other": "{{count}} zadataka",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Tim",
     "memberCount": "{{count}} član",
@@ -468,7 +473,6 @@
     "nameLabel": "Ime",
     "roleLabel": "Uloga"
   },
-
   "epics": {
     "helpTitle": "Epovi",
     "helpBody1": "Epovi su grupisanja na nivou funkcionalnosti. Svaki ep sadrži povezane priče koje zajedno isporučuju poslovnu sposobnost.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Još nema epova. Epovi grupišu povezane priče u isporuke na nivou funkcionalnosti.",
     "storyProgress": "{{done}}/{{total}} priča"
   },
-
   "epicDetail": {
     "backToEpics": "Nazad na epove",
     "description": "Opis",
@@ -512,9 +515,20 @@
     "qeTesting": "QE testiranje",
     "bsaAnalysis": "BSA analiza",
     "creating": "Kreiranje...",
-    "createStory": "Kreiraj priču"
+    "createStory": "Kreiraj priču",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Nazad na Sprintove",
     "start": "Početak:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Ukloni iz Sprinta",
     "standaloneTasks": "Samostalni zadaci",
     "adding": "Dodavanje...",
-    "tasks": "{{count}} zadataka"
+    "tasks": "{{count}} zadataka",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Izveštaji projekta",
     "helpBody1": "Izveštaji vam daju uvid u isporuku tima. Brzina pokazuje koliko poena završite po Sprintu; stabilizuje se tokom vremena.",
@@ -575,7 +599,6 @@
     "onTrack": "U planu",
     "behind": "Zaostaje"
   },
-
   "aiSettings": {
     "title": "AI konfiguracija",
     "description": "Konfigurišite AI provajdera da omogućite predloge kriterijuma prihvatanja, dekompoziciju priča i izradu napomena o izdanju. Vi obezbeđujete sopstveni API ključ; PlanA ne skladišti niti prosleđuje preko deljenog naloga.",
@@ -616,7 +639,6 @@
     "revoked": "Opozvano",
     "revokedDate": "Opozvano {{date}}"
   },
-
   "shareDashboard": {
     "title": "Tabla za zainteresovane strane",
     "invalidLink": "Nevažeći ili istekli link",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Brzina Sprinta",
     "storyProgress": "Napredak priča"
   },
-
   "reportView": {
     "title": "Izveštaji",
     "generateProject": "Izveštaj projekta",
@@ -669,5 +690,72 @@
     "currentBlockers": "Trenutni blokeri",
     "velocityHistory": "Istorija brzine",
     "generatedBy": "Generisao PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

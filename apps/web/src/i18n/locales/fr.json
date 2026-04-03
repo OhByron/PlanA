@@ -25,7 +25,8 @@
     "error": "Erreur : {{message}}",
     "thinking": "Réflexion en cours...",
     "generating": "Génération en cours...",
-    "language": "Langue"
+    "language": "Langue",
+    "back": "Retour"
   },
 
   "brand": {
@@ -43,7 +44,9 @@
     "team": "Équipe",
     "settings": "Paramètres",
     "project": "Projet",
-    "graph": "Graphe"
+    "graph": "Graphe",
+    "gantt": "Gantt",
+    "calendar": "Calendrier"
   },
 
   "graph": {
@@ -57,7 +60,66 @@
     "committing": "Validation...",
     "discard": "Annuler",
     "errors": "erreurs",
-    "warnings": "avertissements"
+    "warnings": "avertissements",
+    "epic": "Epique",
+    "sprint": "Sprint",
+    "createEpic": "Créer un épique",
+    "createSprint": "Créer un sprint",
+    "epicTitle": "Titre",
+    "sprintName": "Nom",
+    "sprintGoal": "Objectif du sprint",
+    "description": "Description",
+    "priority": "Priorité",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "endDate": "Date de fin",
+    "endBeforeStart": "La date de fin est antérieure à la date de début",
+    "sprintOverlapWarning": "Les dates chevauchent : {{names}}",
+    "sprintDuration": "Par défaut : {{weeks}}s",
+    "epicDuration": "Par défaut : {{weeks}}s",
+    "cannotDropEpicOnEpic": "Les épiques ne peuvent pas être imbriqués dans d'autres épiques. Utilisez les dépendances pour les lier.",
+    "cannotDropSprintOnSprint": "Les sprints ne peuvent pas être placés dans d'autres sprints. Utilisez les dépendances pour les ordonner.",
+    "cannotDropSprintOnEpic": "Les sprints ne peuvent pas être placés dans des épiques. Assignez plutôt les éléments individuels aux épiques.",
+    "invalidDrop": "Cette action de glisser-déposer n'est pas prise en charge.",
+    "cannotDependParentChild": "Une tâche ne peut pas dépendre de sa story parente, et vice versa. Les dépendances fonctionnent entre éléments frères ou entre stories."
+  },
+
+  "gantt": {
+    "title": "Diagramme de Gantt",
+    "pmOnly": "Le diagramme de Gantt est disponible pour les chefs de projet et les Product Owners.",
+    "allItems": "Tous les éléments",
+    "epicsOnly": "Épiques uniquement",
+    "item": "Élément",
+    "status": "Statut"
+  },
+
+  "calendar": {
+    "today": "Aujourd'hui",
+    "everyone": "Tout le monde",
+    "myWork": "Mon travail",
+    "more": "plus",
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mer",
+    "thu": "Jeu",
+    "fri": "Ven",
+    "sat": "Sam",
+    "sun": "Dim"
+  },
+
+  "graphEdit": {
+    "edit": "Modifier",
+    "title": "Titre",
+    "name": "Nom",
+    "description": "Description",
+    "goal": "Objectif",
+    "status": "Statut",
+    "priority": "Priorité",
+    "assignee": "Assigné à",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "endDate": "Date de fin",
+    "confirmDelete": "Cliquez à nouveau pour confirmer"
   },
 
   "sidebar": {
@@ -285,6 +347,11 @@
     "priorityLabel": "Priorité",
     "assigneeLabel": "Assigné à",
     "unassigned": "Non assigné",
+    "epicLabel": "Épique",
+    "noEpic": "Aucun épique",
+    "startDate": "Date de début",
+    "dueDate": "Date d'échéance",
+    "overdue": "En retard",
     "totalPoints": "Points totaux",
     "storyPoints": "Points d'Histoire",
     "storyPointsHelp": "Pour les histoires, les points sont la somme de tous les points des tâches. Ajoutez des points aux tâches individuelles lors de l'affinage.",
@@ -299,6 +366,16 @@
     "convertToStory": "Convertir en Histoire",
     "convertToStoryConfirm": "Convertir cette tâche en histoire ? Elle conservera un lien de dépendance avec l'histoire d'origine.",
     "convertToStoryHelp": "Promeut cette tâche en histoire indépendante avec un lien de dépendance",
+    "pointsUsed": "Points utilisés",
+    "pointsUsedHelp": "Effort réel dépensé. Par défaut, correspond à l'estimation une fois terminé. Ajustez si la tâche a pris plus ou moins d'effort que prévu.",
+    "underEstimate": "{{diff}} pts sous l'estimation",
+    "overEstimate": "{{diff}} pts au-dessus de l'estimation",
+    "preConditions": "Pré-conditions",
+    "preConditionsHelp": "Ce qui doit être vrai avant de commencer — état de l'environnement, disponibilité des données, livrables en amont, permissions, feature flags.",
+    "preConditionsPlaceholder": "Cliquez pour ajouter des pré-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "Ce qui doit être vrai à la fin du travail — au-delà des critères d'acceptation. État du système, intégrité des données, objectifs de performance, documentation.",
+    "postConditionsPlaceholder": "Cliquez pour ajouter des post-conditions...",
     "created": "Créé le {{date}}",
     "updated": "Mis à jour le {{date}}"
   },
@@ -438,13 +515,16 @@
   },
 
   "quickCreate": {
-    "placeholder": "Que faut-il faire ?"
+    "placeholder": "Que faut-il faire ?",
+    "selectEpic": "Sélectionner un épique..."
   },
 
   "workItemCard": {
     "open": "Ouvrir {{title}}",
     "taskCount": "{{count}} tâche",
-    "taskCount_other": "{{count}} tâches"
+    "taskCount_other": "{{count}} tâches",
+    "unblocks": "Débloque {{count}}",
+    "unblocks_other": "Débloque {{count}}"
   },
 
   "reports": {
@@ -622,7 +702,18 @@
     "removeFromSprint": "Retirer du sprint",
     "standaloneTasks": "Tâches indépendantes",
     "adding": "Ajout...",
-    "tasks": "{{count}} tâches"
+    "tasks": "{{count}} tâches",
+    "properties": "Propriétés du sprint",
+    "nameLabel": "Nom",
+    "goalLabel": "Objectif",
+    "statusLabel": "Statut",
+    "startDateLabel": "Date de début",
+    "endDateLabel": "Date de fin",
+    "velocityLabel": "Vélocité",
+    "clickToSetGoal": "Cliquez pour définir un objectif...",
+    "totalItemCount": "{{count}} éléments",
+    "totalPointsLabel": "{{count}} points d'histoire",
+    "velocityStat": "Vélocité : {{velocity}} pts"
   },
 
   "epicDetail": {
@@ -659,7 +750,19 @@
     "qeTesting": "Tests QE",
     "bsaAnalysis": "Analyse BSA",
     "creating": "Création...",
-    "createStory": "Créer l'histoire"
+    "createStory": "Créer l'histoire",
+    "addExisting": "Ajouter existant",
+    "searchExisting": "Rechercher des histoires et tâches...",
+    "noItemsFound": "Aucun élément correspondant trouvé.",
+    "addToEpic": "+ Ajouter",
+    "removeFromEpic": "Retirer de l'épique",
+    "typeToSearch": "Affichage des 20 premiers sur {{count}} — tapez pour rechercher",
+    "startDateLabel": "Date de début",
+    "dueDateLabel": "Date d'échéance",
+    "overdue": "En retard",
+    "progress": "Progression",
+    "itemsDone": "éléments terminés",
+    "totalPts": "pts au total"
   },
 
   "epics": {
@@ -669,5 +772,40 @@
     "title": "Épiques",
     "noEpicsYet": "Aucun épique pour le moment. Les épiques regroupent des histoires liées en livrables fonctionnels.",
     "storyProgress": "{{done}}/{{total}} histoires"
+  },
+
+  "projectDetails": {
+    "title": "Détails du projet",
+    "description": "Informations principales sur ce projet.",
+    "name": "Nom du projet",
+    "desc": "Description",
+    "descPlaceholder": "Décrivez les objectifs et le périmètre du projet...",
+    "methodology": "Méthodologie",
+    "status": "Statut",
+    "dueDate": "Date d'échéance",
+    "contact": "Contact principal",
+    "contactName": "Nom",
+    "contactEmail": "E-mail",
+    "contactPhone": "Téléphone"
+  },
+
+  "projectStatus": {
+    "active": "Actif",
+    "on_hold": "En pause",
+    "completed": "Terminé",
+    "cancelled": "Annulé"
+  },
+
+  "settings": {
+    "projectSettings": "Paramètres de planification",
+    "projectSettingsDesc": "Définissez les horizons temporels par défaut pour ce projet. Ils remplissent automatiquement les dates lors de la création d'épiques et de sprints.",
+    "projectDuration": "Durée du projet / fonctionnalité",
+    "projectDurationHelp": "Calendrier global de livraison pour ce projet.",
+    "epicDuration": "Durée de l'épique",
+    "epicDurationHelp": "Remplit automatiquement les dates d'échéance des épiques.",
+    "sprintDuration": "Durée du sprint",
+    "sprintDurationHelp": "Remplit automatiquement les dates de fin de sprint.",
+    "months": "mois",
+    "weeks": "semaines"
   }
 }

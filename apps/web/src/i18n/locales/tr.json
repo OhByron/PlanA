@@ -25,14 +25,13 @@
     "error": "Hata: {{message}}",
     "thinking": "Düşünüyor...",
     "generating": "Oluşturuluyor...",
-    "language": "Dil"
+    "language": "Dil",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Gerçekten Agile."
   },
-
   "nav": {
     "board": "Pano",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Takım",
     "settings": "Ayarlar",
     "project": "Proje",
-    "graph": "Grafik"
+    "graph": "Grafik",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Kenar çubuğunu genişlet",
     "collapseSidebar": "Kenar çubuğunu daralt",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Henüz kuruluş yok",
     "toggle": "{{name}} değiştir"
   },
-
   "topBar": {
     "notifications": "Bildirimler",
     "markAllRead": "Tümünü okundu işaretle",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} sa önce",
     "daysAgo": "{{count}} gün önce"
   },
-
   "notifications": {
     "assigned": "\"{{title}}\" size atandı",
     "statusChanged": "\"{{title}}\" durumu değişti",
@@ -86,7 +104,6 @@
     "mentioned": "\"{{title}}\" içerisinde anıldınız",
     "default": "Bildirim: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Hazır",
@@ -95,33 +112,28 @@
     "done": "Tamamlandı",
     "cancelled": "İptal Edildi"
   },
-
   "priority": {
     "urgent": "Acil",
     "high": "Yüksek",
     "medium": "Orta",
     "low": "Düşük"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Görev"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktif",
     "planned": "Planlandı",
     "completed": "Tamamlandı",
     "cancelled": "İptal Edildi"
   },
-
   "roles": {
     "pm": "Proje Yöneticisi",
     "po": "Ürün Sahibi",
@@ -131,7 +143,6 @@
     "ux": "UX Tasarımcısı",
     "dev": "Geliştirici"
   },
-
   "login": {
     "continueWithGitHub": "GitHub ile devam et",
     "continueWithGoogle": "Google ile devam et",
@@ -142,7 +153,6 @@
     "devOnly": "sadece geliştirme",
     "devLogin": "Geliştirici Girişi (OAuth'suz)"
   },
-
   "authError": {
     "title": "Giriş başarısız",
     "badState": "Giriş oturumu süresi doldu. Lütfen tekrar deneyin.",
@@ -152,7 +162,6 @@
     "missingToken": "Kimlik doğrulama jetonu alınamadı.",
     "default": "Giriş sırasında beklenmeyen bir hata oluştu."
   },
-
   "myWork": {
     "title": "İşlerim",
     "itemCount": "Size atanmış {{count}} öge",
@@ -160,7 +169,6 @@
     "noItems": "Size atanmış öge yok.",
     "noItemsHelp": "Bir proje takımına eklendikten ve size story veya görev atandıktan sonra ögeler burada görünür. Hesap e-postanızın takım üyesi e-postanızla eşleştiğinden veya bir daveti kabul ettiğinizden emin olun."
   },
-
   "orgs": {
     "title": "Kuruluşlar",
     "orgCount": "{{count}} kuruluş",
@@ -184,7 +192,6 @@
     "postalCode": "Posta Kodu",
     "country": "Ülke"
   },
-
   "orgDetail": {
     "allOrganisations": "Tüm kuruluşlar",
     "editDetails": "Detayları Düzenle",
@@ -206,7 +213,6 @@
     "createProject": "Proje Oluştur",
     "whatIsThisProjectAbout": "Bu proje ne hakkında?"
   },
-
   "invite": {
     "invalidInvitation": "Geçersiz Davet",
     "invalidLink": "Bu davet bağlantısı geçerli değil.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Zaten hesabınız var mı?",
     "logIn": "Giriş yap"
   },
-
   "board": {
     "helpTitle": "Kanban Panonuz",
     "helpBody1": "Bu, takımınızın işinin akış olarak görselleştirilmesidir. Her sütun, iş akışınızdaki bir aşamayı temsil eder.",
@@ -242,7 +247,6 @@
     "noItems": "Öge yok",
     "column": "{{status}} sütunu"
   },
-
   "backlog": {
     "helpTitle": "Backlog'unuz",
     "helpBody1": "Backlog, önceliklendirilmiş iş listenizdir. Üstteki ögeler en yüksek önceliklidir.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint Planlaması",
     "helpBody1": "Sprint'ler zaman sınırlı yinelemelerdir (genellikle 2 hafta). Takımınızın işini planlamak için Backlog'dan story'leri Sprint'e çekin.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Henüz sprint yok. Planlamaya başlamak için bir tane oluşturun.",
     "pts": "{{count}} puan"
   },
-
   "workItemDetail": {
     "backToBoard": "Panoya dön",
     "partOf": "Parçası:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Bu görev Story'ye dönüştürülsün mü? Orijinal story ile bağımlılık bağlantısı korunacak.",
     "convertToStoryHelp": "Bu görevi bağımlılık bağlantısıyla bağımsız bir Story'ye yükseltir",
     "created": "Oluşturuldu: {{date}}",
-    "updated": "Güncellendi: {{date}}"
+    "updated": "Güncellendi: {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Görevler ({{count}})",
     "contextHelp": "Görevler bir story'yi UX tasarımı, backend geliştirme, frontend geliştirme ve QE testi gibi disiplinlere göre işe ayırır. Her görev bir takım üyesine atanabilir.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} puan",
     "clarificationNeeded": "Açıklama gerekli:"
   },
-
   "acceptanceCriteria": {
     "title": "Kabul Kriterleri",
     "contextHelp": "Kabul Kriterleri, bir ögenin gerçekten ne zaman \"tamamlandı\" sayılacağını tanımlar. Given / When / Then formatında (BDD) yazılarak beklentiler açık ve test edilebilir hale gelir. Her kriter belirli, doğrulanabilir bir koşuldur, belirsiz bir dilek değil.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI önerileri, eklemek için tıklayın:",
     "aiNeedsMoreInfo": "AI daha fazla bilgiye ihtiyaç duyuyor:"
   },
-
   "comments": {
     "title": "Yorumlar",
     "noCommentsYet": "Henüz yorum yok.",
     "addComment": "Yorum ekleyin..."
   },
-
   "dependencies": {
     "title": "Bağımlılıklar",
     "contextHelp": "Bağımlılıklar ögeler arasındaki ilişkileri izler. \"Bağımlı\" hedef tamamlanana kadar bu ögenin ilerleyemeyeceği anlamına gelir. \"İlişkili\" bilgilendirme amaçlıdır.",
@@ -348,7 +361,6 @@
     "removeDependency": "Bağımlılığı kaldır",
     "selectItem": "Bir öge seçin..."
   },
-
   "links": {
     "title": "Bağlantılar",
     "addLink": "+ Bağlantı Ekle",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Bağlantıyı kaldır"
   },
-
   "testResults": {
     "retestRequired": "Yeniden test gerekli",
     "retestMessage": "Bu hatanın {{count}} başarısız testi var. Düzeltme dağıtıldıktan sonra QE kapısını kaldırmak ve bu ögeyi kapatmak için yeni test sonuçları yükleyin (JUnit XML veya webhook).",
@@ -373,12 +384,10 @@
     "source": "Kaynak: {{source}} | Raporlandı: {{date}}",
     "generateDescAC": "Açıklama ve KK Oluştur"
   },
-
   "helpOverlay": {
     "dismiss": "Kapat",
     "close": "Kapat"
   },
-
   "richTextEditor": {
     "startTyping": "Yazmaya başlayın...",
     "bold": "Kalın",
@@ -391,7 +400,6 @@
     "quote": "Alıntı",
     "codeBlock": "Kod bloğu"
   },
-
   "createEpic": {
     "button": "+ Yeni Epic",
     "title": "Epic Oluştur",
@@ -402,7 +410,6 @@
     "priorityLabel": "Öncelik",
     "assigneeLabel": "Atanan"
   },
-
   "createProject": {
     "button": "+ Yeni Proje",
     "title": "Proje Oluştur",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "Bu proje ne hakkında?",
     "methodologyLabel": "Metodoloji"
   },
-
   "createSprint": {
     "button": "+ Yeni Sprint",
     "title": "Sprint Oluştur",
@@ -427,7 +433,6 @@
     "startDateLabel": "Başlangıç Tarihi",
     "endDateLabel": "Bitiş Tarihi"
   },
-
   "createTeam": {
     "button": "+ Yeni Takım",
     "title": "Takım Oluştur",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Takım Adı",
     "teamNamePlaceholder": "örn. Backend Ekibi"
   },
-
   "quickCreate": {
-    "placeholder": "Ne yapılması gerekiyor?"
+    "placeholder": "Ne yapılması gerekiyor?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "{{title}} aç",
     "taskCount": "{{count}} görev",
-    "taskCount_other": "{{count}} görev"
+    "taskCount_other": "{{count}} görev",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Takım",
     "memberCount": "{{count}} üye",
@@ -468,7 +473,6 @@
     "nameLabel": "Ad",
     "roleLabel": "Rol"
   },
-
   "epics": {
     "helpTitle": "Epic'ler",
     "helpBody1": "Epic'ler özellik düzeyinde gruplamalardır. Her Epic, birlikte bir iş yetkinliği sunan ilişkili story'leri içerir.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Henüz Epic yok. Epic'ler ilişkili story'leri özellik düzeyinde teslimat paketlerine gruplar.",
     "storyProgress": "{{done}}/{{total}} story"
   },
-
   "epicDetail": {
     "backToEpics": "Epic'lere dön",
     "description": "Açıklama",
@@ -512,9 +515,20 @@
     "qeTesting": "QE Test",
     "bsaAnalysis": "BSA Analiz",
     "creating": "Oluşturuluyor...",
-    "createStory": "Story Oluştur"
+    "createStory": "Story Oluştur",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Sprint'lere dön",
     "start": "Başlangıç:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Sprint'ten çıkar",
     "standaloneTasks": "Bağımsız Görevler",
     "adding": "Ekleniyor...",
-    "tasks": "{{count}} görev"
+    "tasks": "{{count}} görev",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Proje Raporları",
     "helpBody1": "Raporlar takımınızın teslimatı hakkında görünürlük sağlar. Velocity, sprint başına kaç puan tamamladığınızı gösterir; zamanla stabilize olur.",
@@ -575,7 +599,6 @@
     "onTrack": "Yolunda",
     "behind": "Geride"
   },
-
   "aiSettings": {
     "title": "AI Yapılandırması",
     "description": "Kabul kriteri önerileri, story ayrıştırma ve sürüm notu taslağı oluşturmayı etkinleştirmek için bir AI sağlayıcısı yapılandırın. Kendi API anahtarınızı kullanırsınız; PlanA ortak bir hesap üzerinden depolamaz veya yönlendirmez.",
@@ -616,7 +639,6 @@
     "revoked": "İptal Edildi",
     "revokedDate": "İptal edildi: {{date}}"
   },
-
   "shareDashboard": {
     "title": "Paydaş Panosu",
     "invalidLink": "Geçersiz veya süresi dolmuş bağlantı",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Story İlerlemesi"
   },
-
   "reportView": {
     "title": "Raporlar",
     "generateProject": "Proje Raporu",
@@ -669,5 +690,72 @@
     "currentBlockers": "Mevcut Engelleyiciler",
     "velocityHistory": "Velocity Geçmişi",
     "generatedBy": "PlanA tarafından oluşturuldu"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

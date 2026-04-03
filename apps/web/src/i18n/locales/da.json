@@ -5,34 +5,33 @@
     "create": "Opret",
     "delete": "Slet",
     "edit": "Rediger",
-    "add": "Tilf\u00f8j",
+    "add": "Tilføj",
     "remove": "Fjern",
     "dismiss": "Afvis",
     "close": "Luk",
-    "loading": "Indl\u00e6ser...",
+    "loading": "Indlæser...",
     "send": "Send",
-    "open": "\u00c5bn",
+    "open": "Åbn",
     "archive": "Arkiver",
     "restore": "Gendan",
     "report": "Rapport",
     "settings": "Indstillinger",
-    "gotIt": "Forst\u00e5et",
-    "tryAgain": "Pr\u00f8v igen",
+    "gotIt": "Forstået",
+    "tryAgain": "Prøv igen",
     "signOut": "Log ud",
     "signIn": "Log ind",
     "whatsThis": "Hvad er dette?",
-    "help": "Hj\u00e6lp",
+    "help": "Hjælp",
     "error": "Fejl: {{message}}",
-    "thinking": "T\u00e6nker...",
+    "thinking": "Tænker...",
     "generating": "Genererer...",
-    "language": "Sprog"
+    "language": "Sprog",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, for alvor."
   },
-
   "nav": {
     "board": "Bestyrelse",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Team",
     "settings": "Indstillinger",
     "project": "Projekt",
-    "graph": "Graf"
+    "graph": "Graf",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Udvid sidepanel",
     "collapseSidebar": "Skjul sidepanel",
@@ -68,60 +88,52 @@
     "noOrganisationsYet": "Ingen organisationer endnu",
     "toggle": "Skift {{name}}"
   },
-
   "topBar": {
     "notifications": "Notifikationer",
-    "markAllRead": "Marker alle som l\u00e6st",
+    "markAllRead": "Marker alle som læst",
     "noNotificationsYet": "Ingen notifikationer endnu",
     "justNow": "lige nu",
     "minutesAgo": "{{count}}m siden",
     "hoursAgo": "{{count}}t siden",
     "daysAgo": "{{count}}d siden"
   },
-
   "notifications": {
     "assigned": "Du blev tildelt \"{{title}}\"",
-    "statusChanged": "Status \u00e6ndret p\u00e5 \"{{title}}\"",
-    "commentAdded": "Ny kommentar p\u00e5 \"{{title}}\"",
-    "mentioned": "Du blev n\u00e6vnt i \"{{title}}\"",
+    "statusChanged": "Status ændret på \"{{title}}\"",
+    "commentAdded": "Ny kommentar på \"{{title}}\"",
+    "mentioned": "Du blev nævnt i \"{{title}}\"",
     "default": "Notifikation: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Klar",
     "in_progress": "I gang",
     "in_review": "Til review",
-    "done": "F\u00e6rdig",
+    "done": "Færdig",
     "cancelled": "Annulleret"
   },
-
   "priority": {
     "urgent": "Akut",
-    "high": "H\u00f8j",
+    "high": "Høj",
     "medium": "Middel",
     "low": "Lav"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Opgave"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktiv",
     "planned": "Planlagt",
     "completed": "Afsluttet",
     "cancelled": "Annulleret"
   },
-
   "roles": {
     "pm": "Projektleder",
     "po": "Product Owner",
@@ -131,10 +143,9 @@
     "ux": "UX-designer",
     "dev": "Udvikler"
   },
-
   "login": {
-    "continueWithGitHub": "Forts\u00e6t med GitHub",
-    "continueWithGoogle": "Forts\u00e6t med Google",
+    "continueWithGitHub": "Fortsæt med GitHub",
+    "continueWithGoogle": "Fortsæt med Google",
     "orSignInWithEmail": "eller log ind med e-mail",
     "emailAddress": "E-mailadresse",
     "password": "Adgangskode",
@@ -142,25 +153,22 @@
     "devOnly": "kun udvikling",
     "devLogin": "Dev-login (spring OAuth over)"
   },
-
   "authError": {
     "title": "Login fejlede",
-    "badState": "Login-sessionen er udl\u00f8bet. Pr\u00f8v venligst igen.",
-    "csrf": "Sikkerhedstjek mislykkedes. Pr\u00f8v venligst igen.",
-    "exchangeFailed": "Kunne ikke fuldf\u00f8re login hos udbyderen. Pr\u00f8v venligst igen.",
-    "dbError": "Der opstod en serverfejl. Pr\u00f8v venligst igen senere.",
+    "badState": "Login-sessionen er udløbet. Prøv venligst igen.",
+    "csrf": "Sikkerhedstjek mislykkedes. Prøv venligst igen.",
+    "exchangeFailed": "Kunne ikke fuldføre login hos udbyderen. Prøv venligst igen.",
+    "dbError": "Der opstod en serverfejl. Prøv venligst igen senere.",
     "missingToken": "Intet godkendelsestoken blev modtaget.",
     "default": "Der opstod en uventet fejl under login."
   },
-
   "myWork": {
     "title": "Mit arbejde",
     "itemCount": "{{count}} opgave tildelt dig",
     "itemCount_other": "{{count}} opgaver tildelt dig",
     "noItems": "Ingen opgaver tildelt dig.",
-    "noItemsHelp": "Opgaver vises her, n\u00e5r du er tilf\u00f8jet som teammedlem p\u00e5 et projekt og har stories eller opgaver tildelt. S\u00f8rg for, at din konto-e-mail matcher dit teammedlems e-mail, eller at du har accepteret en invitation."
+    "noItemsHelp": "Opgaver vises her, når du er tilføjet som teammedlem på et projekt og har stories eller opgaver tildelt. Sørg for, at din konto-e-mail matcher dit teammedlems e-mail, eller at du har accepteret en invitation."
   },
-
   "orgs": {
     "title": "Organisationer",
     "orgCount": "{{count}} organisation",
@@ -170,7 +178,7 @@
     "noOrgsYet": "Ingen organisationer endnu. Opret en for at komme i gang.",
     "archived": "Arkiveret",
     "confirmDelete": "Slet denne organisation og alle dens data permanent?",
-    "added": "Tilf\u00f8jet {{date}}",
+    "added": "Tilføjet {{date}}",
     "newOrg": "Ny organisation",
     "orgName": "Organisationsnavn",
     "orgNameRequired": "Organisationsnavn *",
@@ -184,11 +192,10 @@
     "postalCode": "Postnummer",
     "country": "Land"
   },
-
   "orgDetail": {
     "allOrganisations": "Alle organisationer",
     "editDetails": "Rediger detaljer",
-    "noContactDetails": "Ingen kontaktoplysninger endnu. Klik p\u00e5 \"Rediger detaljer\" for at tilf\u00f8je dem.",
+    "noContactDetails": "Ingen kontaktoplysninger endnu. Klik på \"Rediger detaljer\" for at tilføje dem.",
     "contact": "Kontakt:",
     "email": "E-mail:",
     "phone": "Telefon:",
@@ -206,35 +213,33 @@
     "createProject": "Opret projekt",
     "whatIsThisProjectAbout": "Hvad handler dette projekt om?"
   },
-
   "invite": {
     "invalidInvitation": "Ugyldig invitation",
     "invalidLink": "Dette invitationslink er ikke gyldigt.",
-    "goToLogin": "G\u00e5 til login",
+    "goToLogin": "Gå til login",
     "alreadyAccepted": "Allerede accepteret",
     "alreadyAcceptedMessage": "Denne invitation er allerede brugt. Du kan logge ind med dine oplysninger.",
-    "expired": "Invitation udl\u00f8bet",
-    "expiredMessage": "Denne invitation er udl\u00f8bet. Bed dit team om at sende en ny.",
+    "expired": "Invitation udløbet",
+    "expiredMessage": "Denne invitation er udløbet. Bed dit team om at sende en ny.",
     "invitedToJoin": "Du er inviteret til at deltage i et projekt",
     "emailLabel": "E-mail",
     "yourName": "Dit navn",
     "passwordLabel": "Adgangskode",
-    "confirmPassword": "Bekr\u00e6ft adgangskode",
+    "confirmPassword": "Bekræft adgangskode",
     "minChars": "Minimum 8 tegn",
     "repeatPassword": "Gentag din adgangskode",
-    "passwordTooShort": "Adgangskoden skal v\u00e6re mindst 8 tegn",
+    "passwordTooShort": "Adgangskoden skal være mindst 8 tegn",
     "passwordsMismatch": "Adgangskoderne stemmer ikke overens",
     "createAccountJoin": "Opret konto og deltag",
     "creatingAccount": "Opretter konto...",
     "alreadyHaveAccount": "Har du allerede en konto?",
     "logIn": "Log ind"
   },
-
   "board": {
     "helpTitle": "Dit Kanban-board",
-    "helpBody1": "Her ser du dit teams arbejde visualiseret som et flow. Hver kolonne repr\u00e6senterer et trin i jeres arbejdsgang.",
-    "helpBody2": "Tr\u00e6k kort mellem kolonner for at opdatere deres status \u00f8jeblikkeligt. N\u00e5r du flytter en story, f\u00f8lger dens underopgaver med.",
-    "helpBody3": "Hold kolonnen \"I gang\" lille; begr\u00e6nsning af igangv\u00e6rende arbejde hj\u00e6lper teamet med at f\u00e6rdigg\u00f8re ting i stedet for at starte nye.",
+    "helpBody1": "Her ser du dit teams arbejde visualiseret som et flow. Hver kolonne repræsenterer et trin i jeres arbejdsgang.",
+    "helpBody2": "Træk kort mellem kolonner for at opdatere deres status øjeblikkeligt. Når du flytter en story, følger dens underopgaver med.",
+    "helpBody3": "Hold kolonnen \"I gang\" lille; begrænsning af igangværende arbejde hjælper teamet med at færdiggøre ting i stedet for at starte nye.",
     "itemCount": "{{count}} element",
     "itemCount_other": "{{count}} elementer",
     "ptsInFlight": "{{inProgress}} / {{capacity}} pts i gang",
@@ -242,12 +247,11 @@
     "noItems": "Ingen elementer",
     "column": "{{status}}-kolonne"
   },
-
   "backlog": {
     "helpTitle": "Din Backlog",
-    "helpBody1": "Backloggen er din prioriterede liste over arbejde. Elementer \u00f8verst har h\u00f8jest prioritet.",
-    "helpBody2": "Tr\u00e6k elementer i griph\u00e5ndtaget for at \u00e6ndre prioritet. Brug filtrene til at fokusere p\u00e5 stories, bugs eller bestemte statusser.",
-    "helpBody3": "Klik p\u00e5 + Nyt element for hurtigt at tilf\u00f8je stories eller opgaver.",
+    "helpBody1": "Backloggen er din prioriterede liste over arbejde. Elementer øverst har højest prioritet.",
+    "helpBody2": "Træk elementer i griphåndtaget for at ændre prioritet. Brug filtrene til at fokusere på stories, bugs eller bestemte statusser.",
+    "helpBody3": "Klik på + Nyt element for hurtigt at tilføje stories eller opgaver.",
     "allStatuses": "Alle statusser",
     "allTypes": "Alle typer",
     "stories": "Stories",
@@ -256,29 +260,27 @@
     "itemCount": "{{count}} element",
     "itemCount_other": "{{count}} elementer",
     "newItem": "+ Nyt element",
-    "noItemsMatch": "Ingen elementer matcher dine filtre. Pr\u00f8v at justere eller opret et nyt element.",
+    "noItemsMatch": "Ingen elementer matcher dine filtre. Prøv at justere eller opret et nyt element.",
     "flowView": "Flow",
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
-    "helpTitle": "Sprintplanl\u00e6gning",
-    "helpBody1": "Sprints er tidsbegr\u00e6nsede iterationer (typisk 2 uger). Tr\u00e6k stories fra backloggen ind i en sprint for at planl\u00e6gge teamets arbejde.",
-    "helpBody2": "Hold \u00f8je med kapacitetsindikatoren for at undg\u00e5 at overbelaste teamet.",
+    "helpTitle": "Sprintplanlægning",
+    "helpBody1": "Sprints er tidsbegrænsede iterationer (typisk 2 uger). Træk stories fra backloggen ind i en sprint for at planlægge teamets arbejde.",
+    "helpBody2": "Hold øje med kapacitetsindikatoren for at undgå at overbelaste teamet.",
     "title": "Sprints",
-    "noSprintsYet": "Ingen sprints endnu. Opret en for at begynde planl\u00e6gningen.",
+    "noSprintsYet": "Ingen sprints endnu. Opret en for at begynde planlægningen.",
     "pts": "{{count}} pts"
   },
-
   "workItemDetail": {
     "backToBoard": "Tilbage til board",
     "partOf": "Del af:",
     "clickToEdit": "Klik for at redigere",
     "description": "Beskrivelse",
-    "descPlaceholder": "Beskriv krav, m\u00e5l og kontekst...",
-    "suggest": "Foresl\u00e5",
-    "clickToAddDescription": "Klik for at tilf\u00f8je en beskrivelse...",
+    "descPlaceholder": "Beskriv krav, mål og kontekst...",
+    "suggest": "Foreslå",
+    "clickToAddDescription": "Klik for at tilføje en beskrivelse...",
     "details": "Detaljer",
     "statusLabel": "Status",
     "typeLabel": "Type",
@@ -287,7 +289,7 @@
     "unassigned": "Ikke tildelt",
     "totalPoints": "Samlede point",
     "storyPoints": "Story Points",
-    "storyPointsHelp": "For stories er point summen af alle opgavepoint. Tilf\u00f8j point til de enkelte opgaver under refinement.",
+    "storyPointsHelp": "For stories er point summen af alle opgavepoint. Tilføj point til de enkelte opgaver under refinement.",
     "taskPointsHelp": "Estimer den relative indsats. Almindelige skalaer: 1, 2, 3, 5, 8, 13. Et \"1\" er det simpleste, dit team laver.",
     "sumOfTasks": "Sum af {{count}} opgave",
     "sumOfTasks_other": "Sum af {{count}} opgaver",
@@ -297,88 +299,95 @@
     "notBlocked": "Ikke blokeret",
     "labels": "Labels",
     "convertToStory": "Konverter til Story",
-    "convertToStoryConfirm": "Konverter denne opgave til en story? Den vil bevare en afh\u00e6ngighedslink til den oprindelige story.",
-    "convertToStoryHelp": "Forfremmer denne opgave til en selvst\u00e6ndig story med et afh\u00e6ngighedslink",
+    "convertToStoryConfirm": "Konverter denne opgave til en story? Den vil bevare en afhængighedslink til den oprindelige story.",
+    "convertToStoryHelp": "Forfremmer denne opgave til en selvstændig story med et afhængighedslink",
     "created": "Oprettet {{date}}",
-    "updated": "Opdateret {{date}}"
+    "updated": "Opdateret {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Opgaver ({{count}})",
-    "contextHelp": "Opgaver opdeler en story i arbejde efter fagomr\u00e5de, f.eks. UX-design, backend-udvikling, frontend-udvikling og QE-test. Hver opgave kan tildeles et teammedlem.",
-    "suggestTasks": "Foresl\u00e5 opgaver",
-    "addTask": "+ Tilf\u00f8j opgave",
+    "contextHelp": "Opgaver opdeler en story i arbejde efter fagområde, f.eks. UX-design, backend-udvikling, frontend-udvikling og QE-test. Hver opgave kan tildeles et teammedlem.",
+    "suggestTasks": "Foreslå opgaver",
+    "addTask": "+ Tilføj opgave",
     "noTasksYet": "Ingen opgaver endnu.",
-    "taskTitlePlaceholder": "Opgavetitel (f.eks. 'UX: Design loginsk\u00e6rm')",
-    "suggestedTasks": "Foresl\u00e5ede opgaver, klik for at tilf\u00f8je:",
+    "taskTitlePlaceholder": "Opgavetitel (f.eks. 'UX: Design loginskærm')",
+    "suggestedTasks": "Foreslåede opgaver, klik for at tilføje:",
     "pts": "{{count}} pts",
-    "clarificationNeeded": "Pr\u00e6cisering n\u00f8dvendig:"
+    "clarificationNeeded": "Præcisering nødvendig:"
   },
-
   "acceptanceCriteria": {
     "title": "Acceptkriterier",
-    "contextHelp": "Acceptkriterier definerer, hvorn\u00e5r dette element virkelig er 'f\u00e6rdigt'. Skrevet i Given / When / Then-format (BDD) g\u00f8r de forventninger eksplicitte og testbare. Hvert kriterium er en specifik, verificerbar betingelse, ikke et vagt \u00f8nske.",
-    "addButton": "+ Tilf\u00f8j",
-    "suggestAC": "Foresl\u00e5 AC",
-    "noCriteriaYet": "Ingen acceptkriterier endnu. Definer betingelserne for 'f\u00e6rdig'.",
+    "contextHelp": "Acceptkriterier definerer, hvornår dette element virkelig er 'færdigt'. Skrevet i Given / When / Then-format (BDD) gør de forventninger eksplicitte og testbare. Hvert kriterium er en specifik, verificerbar betingelse, ikke et vagt ønske.",
+    "addButton": "+ Tilføj",
+    "suggestAC": "Foreslå AC",
+    "noCriteriaYet": "Ingen acceptkriterier endnu. Definer betingelserne for 'færdig'.",
     "given": "Givet",
-    "when": "N\u00e5r",
-    "then": "S\u00e5",
+    "when": "Når",
+    "then": "Så",
     "deleteAC": "Slet acceptkriterium",
     "givenPlaceholder": "Givet...",
-    "whenPlaceholder": "N\u00e5r...",
-    "thenPlaceholder": "S\u00e5...",
-    "aiSuggestions": "AI-forslag, klik for at tilf\u00f8je:",
-    "aiNeedsMoreInfo": "AI'en beh\u00f8ver mere information:"
+    "whenPlaceholder": "Når...",
+    "thenPlaceholder": "Så...",
+    "aiSuggestions": "AI-forslag, klik for at tilføje:",
+    "aiNeedsMoreInfo": "AI'en behøver mere information:"
   },
-
   "comments": {
     "title": "Kommentarer",
     "noCommentsYet": "Ingen kommentarer endnu.",
-    "addComment": "Tilf\u00f8j en kommentar..."
+    "addComment": "Tilføj en kommentar..."
   },
-
   "dependencies": {
-    "title": "Afh\u00e6ngigheder",
-    "contextHelp": "Afh\u00e6ngigheder sporer relationer mellem elementer. 'Afh\u00e6nger af' betyder, at dette element ikke kan forts\u00e6tte, f\u00f8r m\u00e5let er f\u00e6rdigt. 'Relaterer til' er et informationslink.",
-    "noDependencies": "Ingen afh\u00e6ngigheder.",
-    "dependsOn": "Afh\u00e6nger af",
+    "title": "Afhængigheder",
+    "contextHelp": "Afhængigheder sporer relationer mellem elementer. 'Afhænger af' betyder, at dette element ikke kan fortsætte, før målet er færdigt. 'Relaterer til' er et informationslink.",
+    "noDependencies": "Ingen afhængigheder.",
+    "dependsOn": "Afhænger af",
     "relatesTo": "Relaterer til",
-    "dependedOnBy": "Afh\u00e6nges af",
-    "removeDependency": "Fjern afh\u00e6ngighed",
-    "selectItem": "V\u00e6lg et element..."
+    "dependedOnBy": "Afhænges af",
+    "removeDependency": "Fjern afhængighed",
+    "selectItem": "Vælg et element..."
   },
-
   "links": {
     "title": "Links",
-    "addLink": "+ Tilf\u00f8j link",
+    "addLink": "+ Tilføj link",
     "noLinksYet": "Ingen links endnu.",
     "labelPlaceholder": "Label (f.eks. GitHub PR, Figma, Testresultater, Docs)",
     "urlPlaceholder": "https://...",
     "removeLink": "Fjern link"
   },
-
   "testResults": {
-    "retestRequired": "Gentest p\u00e5kr\u00e6vet",
-    "retestMessage": "Denne defekt har {{count}} fejlende test(s). Upload nye testresultater (JUnit XML eller webhook) efter rettelsen er udrullet for at fjerne QE-g\u00e5rden og lukke dette element.",
+    "retestRequired": "Gentest påkrævet",
+    "retestMessage": "Denne defekt har {{count}} fejlende test(s). Upload nye testresultater (JUnit XML eller webhook) efter rettelsen er udrullet for at fjerne QE-gården og lukke dette element.",
     "title": "Testresultater",
-    "passed": "best\u00e5et",
+    "passed": "bestået",
     "failed": "fejlet",
     "errors": "fejl",
     "skipped": "sprunget over",
-    "lastRun": "Seneste k\u00f8rsel: {{date}}",
+    "lastRun": "Seneste kørsel: {{date}}",
     "sourceTestFailure": "Oprindelig testfejl",
     "suite": "Suite: {{name}}",
     "duration": "Varighed: {{ms}}ms",
     "source": "Kilde: {{source}} | Rapporteret: {{date}}",
-    "generateDescAC": "Gener\u00e9r beskrivelse og AC'er"
+    "generateDescAC": "Generér beskrivelse og AC'er"
   },
-
   "helpOverlay": {
     "dismiss": "Afvis",
     "close": "Luk"
   },
-
   "richTextEditor": {
     "startTyping": "Begynd at skrive...",
     "bold": "Fed",
@@ -391,74 +400,70 @@
     "quote": "Citat",
     "codeBlock": "Kodeblok"
   },
-
   "createEpic": {
     "button": "+ Ny Epic",
     "title": "Opret Epic",
     "titleLabel": "Titel",
     "titlePlaceholder": "f.eks. Brugergodkendelse",
     "descriptionLabel": "Beskrivelse",
-    "descriptionPlaceholder": "Forretningsm\u00e5l og omfang af denne epic...",
+    "descriptionPlaceholder": "Forretningsmål og omfang af denne epic...",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Ansvarlig"
   },
-
   "createProject": {
     "button": "+ Nyt projekt",
     "title": "Opret projekt",
     "organisationLabel": "Organisation",
-    "selectOrg": "V\u00e6lg organisation...",
+    "selectOrg": "Vælg organisation...",
     "teamLabel": "Team",
-    "selectTeam": "V\u00e6lg team...",
+    "selectTeam": "Vælg team...",
     "projectNameLabel": "Projektnavn",
     "projectNamePlaceholder": "f.eks. PlanA MVP",
     "descriptionLabel": "Beskrivelse",
     "descriptionPlaceholder": "Hvad handler dette projekt om?",
     "methodologyLabel": "Metodologi"
   },
-
   "createSprint": {
     "button": "+ Ny Sprint",
     "title": "Opret Sprint",
     "nameLabel": "Navn",
     "namePlaceholder": "Sprint 1",
-    "goalLabel": "M\u00e5l",
-    "goalPlaceholder": "Hvad skal denne sprint opn\u00e5?",
+    "goalLabel": "Mål",
+    "goalPlaceholder": "Hvad skal denne sprint opnå?",
     "startDateLabel": "Startdato",
     "endDateLabel": "Slutdato"
   },
-
   "createTeam": {
     "button": "+ Nyt team",
     "title": "Opret team",
     "organisationLabel": "Organisation",
-    "selectOrg": "V\u00e6lg organisation...",
+    "selectOrg": "Vælg organisation...",
     "teamNameLabel": "Teamnavn",
     "teamNamePlaceholder": "f.eks. Backend-holdet"
   },
-
   "quickCreate": {
-    "placeholder": "Hvad skal laves?"
+    "placeholder": "Hvad skal laves?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
-    "open": "\u00c5bn {{title}}",
+    "open": "Åbn {{title}}",
     "taskCount": "{{count}} opgave",
-    "taskCount_other": "{{count}} opgaver"
+    "taskCount_other": "{{count}} opgaver",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Team",
     "memberCount": "{{count}} medlem",
     "memberCount_other": "{{count}} medlemmer",
-    "addMember": "+ Tilf\u00f8j medlem",
-    "noMembersYet": "Ingen teammedlemmer endnu. Tilf\u00f8j personer for at begynde at tildele arbejde.",
+    "addMember": "+ Tilføj medlem",
+    "noMembersYet": "Ingen teammedlemmer endnu. Tilføj personer for at begynde at tildele arbejde.",
     "confirmRemove": "Fjern {{name}} fra teamet?",
     "invite": "Inviter",
     "inviteLink": "Invitationslink:",
     "copy": "Kopier",
     "ptsPerSprint": "{{count}} pts/sprint",
-    "addTeamMember": "Tilf\u00f8j teammedlem",
+    "addTeamMember": "Tilføj teammedlem",
     "nameRequired": "Navn *",
     "emailLabel": "E-mail",
     "phoneLabel": "Telefon",
@@ -468,43 +473,41 @@
     "nameLabel": "Navn",
     "roleLabel": "Rolle"
   },
-
   "epics": {
     "helpTitle": "Epics",
-    "helpBody1": "Epics er grupperinger p\u00e5 funktionsniveau. Hver epic indeholder relaterede stories, der tilsammen leverer en forretningskapabilitet.",
-    "helpBody2": "Klik p\u00e5 en epic for at se dens stories, tilf\u00f8je nye og f\u00f8lge fremskridt.",
+    "helpBody1": "Epics er grupperinger på funktionsniveau. Hver epic indeholder relaterede stories, der tilsammen leverer en forretningskapabilitet.",
+    "helpBody2": "Klik på en epic for at se dens stories, tilføje nye og følge fremskridt.",
     "title": "Epics",
-    "noEpicsYet": "Ingen epics endnu. Epics grupperer relaterede stories i leverancer p\u00e5 funktionsniveau.",
+    "noEpicsYet": "Ingen epics endnu. Epics grupperer relaterede stories i leverancer på funktionsniveau.",
     "storyProgress": "{{done}}/{{total}} stories"
   },
-
   "epicDetail": {
     "backToEpics": "Tilbage til epics",
     "description": "Beskrivelse",
-    "descPlaceholder": "Beskriv forretningsm\u00e5l og omfang...",
-    "clickToAddDescription": "Klik for at tilf\u00f8je en beskrivelse...",
+    "descPlaceholder": "Beskriv forretningsmål og omfang...",
+    "clickToAddDescription": "Klik for at tilføje en beskrivelse...",
     "stories": "Stories ({{count}})",
-    "storiesContextHelp": "Stories er de leverbare m\u00e5l for denne epic. Hver story repr\u00e6senterer et specifikt brugervendt resultat, der kan f\u00e6rdigg\u00f8res inden for en enkelt sprint.",
-    "addStory": "+ Tilf\u00f8j Story",
-    "noStoriesYet": "Ingen stories i denne epic endnu. Tilf\u00f8j en for at definere m\u00e5lene.",
+    "storiesContextHelp": "Stories er de leverbare mål for denne epic. Hver story repræsenterer et specifikt brugervendt resultat, der kan færdiggøres inden for en enkelt sprint.",
+    "addStory": "+ Tilføj Story",
+    "noStoriesYet": "Ingen stories i denne epic endnu. Tilføj en for at definere målene.",
     "details": "Detaljer",
     "statusLabel": "Status",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Ansvarlig",
-    "addStoryToEpic": "Tilf\u00f8j Story til Epic",
+    "addStoryToEpic": "Tilføj Story til Epic",
     "titleRequired": "Titel *",
-    "titleHint": "(\"Som [rolle] vil jeg [m\u00e5l], s\u00e5 [fordel]\")",
-    "titlePlaceholder": "Som [rolle] vil jeg [m\u00e5l], s\u00e5 [fordel]",
+    "titleHint": "(\"Som [rolle] vil jeg [mål], så [fordel]\")",
+    "titlePlaceholder": "Som [rolle] vil jeg [mål], så [fordel]",
     "descriptionLabel": "Beskrivelse",
     "descriptionPlaceholder": "Kontekst, krav og detaljer...",
     "storyPointsLabel": "Story Points",
-    "autoTaskHint": "En opgave oprettes automatisk til den ansvarlige med {{points}} point. Point h\u00f8rer altid til opgaver.",
-    "largeStoryWarning": "Stor story ({{points}} point). Overv\u00e6j at opdele den i mindre stories, der hver kan f\u00e6rdigg\u00f8res p\u00e5 en enkelt sprint. Mindre stories er nemmere at estimere, teste og levere.",
+    "autoTaskHint": "En opgave oprettes automatisk til den ansvarlige med {{points}} point. Point hører altid til opgaver.",
+    "largeStoryWarning": "Stor story ({{points}} point). Overvæj at opdele den i mindre stories, der hver kan færdiggøres på en enkelt sprint. Mindre stories er nemmere at estimere, teste og levere.",
     "acceptanceCriteria": "Acceptkriterier",
-    "acContextHelp": "Definer hvorn\u00e5r denne story er 'f\u00e6rdig'. Hvert kriterium skal v\u00e6re specifikt og testbart.",
-    "addCriterion": "+ Tilf\u00f8j kriterium",
-    "givenPlaceholder": "en foruds\u00e6tning eller kontekst...",
-    "whenPlaceholder": "en handling eller h\u00e6ndelse...",
+    "acContextHelp": "Definer hvornår denne story er 'færdig'. Hvert kriterium skal være specifikt og testbart.",
+    "addCriterion": "+ Tilføj kriterium",
+    "givenPlaceholder": "en forudsætning eller kontekst...",
+    "whenPlaceholder": "en handling eller hændelse...",
     "thenPlaceholder": "det forventede resultat...",
     "createRelatedTasks": "Opret relaterede opgaver?",
     "autoAssignHint": "(tildeles automatisk til teammedlemmer efter rolle)",
@@ -512,9 +515,20 @@
     "qeTesting": "QE-test",
     "bsaAnalysis": "BSA-analyse",
     "creating": "Opretter...",
-    "createStory": "Opret Story"
+    "createStory": "Opret Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Tilbage til sprints",
     "start": "Start:",
@@ -522,41 +536,51 @@
     "capacity": "{{points}} / {{capacity}} kapacitet",
     "storyPoints": "{{count}} story points",
     "storiesAndItems": "{{stories}} stories, {{items}} elementer i alt",
-    "done": "F\u00e6rdig",
-    "addStories": "+ Tilf\u00f8j Stories",
+    "done": "Færdig",
+    "addStories": "+ Tilføj Stories",
     "startSprint": "Start Sprint",
     "completeSprint": "Afslut Sprint",
-    "addStoriesToSprint": "Tilf\u00f8j stories til sprint ({{count}} tilg\u00e6ngelige)",
-    "allStoriesAssigned": "Alle stories er allerede i en sprint eller f\u00e6rdiggjort.",
-    "noItemsYet": "Ingen elementer i denne sprint endnu. Klik p\u00e5 \"+ Tilf\u00f8j Stories\" for at tr\u00e6kke fra backloggen.",
+    "addStoriesToSprint": "Tilføj stories til sprint ({{count}} tilgængelige)",
+    "allStoriesAssigned": "Alle stories er allerede i en sprint eller færdiggjort.",
+    "noItemsYet": "Ingen elementer i denne sprint endnu. Klik på \"+ Tilføj Stories\" for at trække fra backloggen.",
     "removeStoryAndTasks": "Fjern story og opgaver fra sprint",
     "removeFromSprint": "Fjern fra sprint",
-    "standaloneTasks": "Selvst\u00e6ndige opgaver",
-    "adding": "Tilf\u00f8jer...",
-    "tasks": "{{count}} opgaver"
+    "standaloneTasks": "Selvstændige opgaver",
+    "adding": "Tilføjer...",
+    "tasks": "{{count}} opgaver",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Projektrapporter",
-    "helpBody1": "Rapporter giver dig indsigt i teamets leverancer. Velocity viser, hvor mange point I f\u00e6rdigg\u00f8r per sprint; den stabiliseres over tid.",
+    "helpBody1": "Rapporter giver dig indsigt i teamets leverancer. Velocity viser, hvor mange point I færdiggør per sprint; den stabiliseres over tid.",
     "helpBody2": "Brug sprint-fremskridt og teambelastningsdiagrammer til at opdage flaskehalse tidligt.",
     "title": "Rapporter",
     "sprint": "Sprint:",
     "velocity": "Velocity",
-    "velocitySubtitle": "Story points f\u00e6rdiggjort per sprint",
-    "noCompletedSprints": "Ingen afsluttede sprints endnu. Velocity vises efter jeres f\u00f8rste sprint er afsluttet.",
+    "velocitySubtitle": "Story points færdiggjort per sprint",
+    "noCompletedSprints": "Ingen afsluttede sprints endnu. Velocity vises efter jeres første sprint er afsluttet.",
     "trend": "Tendens",
     "threeSprintAvg": "3-sprint gennemsnit",
     "avgVelocity": "Gennemsnitlig velocity:",
     "pointsPerSprint": "point/sprint",
     "sprintProgress": "Sprint: {{name}}",
-    "done": "F\u00e6rdig: {{points}} pts",
+    "done": "Færdig: {{points}} pts",
     "inProgress": "I gang: {{points}} pts",
     "inReview": "Til review: {{points}} pts",
     "remaining": "Resterende: {{points}} pts",
     "daysLeft": "{{count}} dage tilbage",
     "epicProgress": "Epic-fremskridt",
-    "epicProgressSubtitle": "Stories f\u00e6rdiggjort per epic",
+    "epicProgressSubtitle": "Stories færdiggjort per epic",
     "noEpics": "Ingen epics defineret endnu.",
     "stories": "{{done}}/{{total}} stories, {{pct}}%",
     "teamWorkload": "Teambelastning",
@@ -569,16 +593,15 @@
     "noBlocked": "Ingen blokerede elementer. Flot arbejde!",
     "burndown": "Burndown: {{name}}",
     "burndownSubtitle": "Resterende story points vs. ideelt",
-    "noBurndownData": "Ingen burndown-data endnu. Data vises, n\u00e5r elementer flytter gennem statusser i l\u00f8bet af sprinten.",
+    "noBurndownData": "Ingen burndown-data endnu. Data vises, når elementer flytter gennem statusser i løbet af sprinten.",
     "ideal": "Ideelt",
     "actual": "Faktisk",
-    "onTrack": "P\u00e5 sporet",
+    "onTrack": "På sporet",
     "behind": "Bagud"
   },
-
   "aiSettings": {
     "title": "AI-konfiguration",
-    "description": "Konfigurer en AI-udbyder for at aktivere forslag til acceptkriterier, story-nedbrydning og udkast til release notes. Du bruger din egen API-n\u00f8gle; PlanA gemmer eller proxyer ikke via en delt konto.",
+    "description": "Konfigurer en AI-udbyder for at aktivere forslag til acceptkriterier, story-nedbrydning og udkast til release notes. Du bruger din egen API-nøgle; PlanA gemmer eller proxyer ikke via en delt konto.",
     "provider": "Udbyder",
     "notConfigured": "Ikke konfigureret",
     "anthropic": "Anthropic (Claude)",
@@ -586,88 +609,153 @@
     "azureOpenai": "Azure OpenAI",
     "custom": "Brugerdefineret (OpenAI-kompatibel)",
     "model": "Model",
-    "selectModel": "V\u00e6lg model...",
+    "selectModel": "Vælg model...",
     "modelPlaceholder": "Model-ID (f.eks. my-custom-model)",
-    "apiKey": "API-n\u00f8gle",
+    "apiKey": "API-nøgle",
     "currentKey": "Aktuel: {{key}}",
-    "enterApiKey": "Indtast API-n\u00f8gle",
-    "apiKeyHelp": "Din n\u00f8gle gemmes krypteret per projekt. Lad feltet st\u00e5 tomt for at beholde den aktuelle n\u00f8gle.",
+    "enterApiKey": "Indtast API-nøgle",
+    "apiKeyHelp": "Din nøgle gemmes krypteret per projekt. Lad feltet stå tomt for at beholde den aktuelle nøgle.",
     "endpointUrl": "Endpoint-URL",
     "saving": "Gemmer...",
     "settingsSaved": "Indstillinger gemt",
     "stakeholderSharing": "Interessentdeling",
-    "sharingDescription": "Opret delbare links, s\u00e5 interessenter kan se et skrivebeskyttet projektdashboard. Intet login p\u00e5kr\u00e6vet; linket er adgangen.",
+    "sharingDescription": "Opret delbare links, så interessenter kan se et skrivebeskyttet projektdashboard. Intet login påkrævet; linket er adgangen.",
     "label": "Label",
     "labelPlaceholder": "f.eks. Kunde, Styregruppe",
-    "expiresIn": "Udl\u00f8ber om",
+    "expiresIn": "Udløber om",
     "days30": "30 dage",
     "days90": "90 dage",
     "days180": "180 dage",
-    "year1": "1 \u00e5r",
+    "year1": "1 år",
     "never": "Aldrig",
     "createLink": "Opret link",
     "creating": "Opretter...",
     "noActiveLinks": "Ingen aktive delelinks.",
     "created": "Oprettet {{date}}",
-    "expires": "Udl\u00f8ber {{date}}",
+    "expires": "Udløber {{date}}",
     "copyLink": "Kopier link",
     "copied": "Kopieret!",
     "revoke": "Tilbagekald",
     "revoked": "Tilbagekaldt",
     "revokedDate": "Tilbagekaldt {{date}}"
   },
-
   "shareDashboard": {
     "title": "Interessent-dashboard",
-    "invalidLink": "Ugyldigt eller udl\u00f8bet link",
+    "invalidLink": "Ugyldigt eller udløbet link",
     "poweredBy": "Drevet af PlanA",
     "activeSprint": "Aktiv Sprint",
     "noActiveSprint": "Ingen aktiv sprint",
-    "goal": "M\u00e5l:",
+    "goal": "Mål:",
     "items": "Elementer",
     "points": "Point",
-    "recentlyCompleted": "Nyligt f\u00e6rdiggjort",
-    "noCompletedItems": "Ingen f\u00e6rdiggjorte elementer endnu.",
+    "recentlyCompleted": "Nyligt færdiggjort",
+    "noCompletedItems": "Ingen færdiggjorte elementer endnu.",
     "defects": "Defekter",
-    "openDefects": "\u00c5bne",
+    "openDefects": "Åbne",
     "closedDefects": "Lukkede",
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Story-fremskridt"
   },
-
   "reportView": {
     "title": "Rapporter",
     "generateProject": "Projektrapport",
     "generateSprint": "Sprintrapport",
     "generating": "Genererer...",
-    "generateDescription": "Gener\u00e9r en omfattende rapport fra dine projektdata.",
+    "generateDescription": "Generér en omfattende rapport fra dine projektdata.",
     "exportPdf": "Eksporter PDF",
     "back": "Tilbage",
     "generated": "Genereret {{date}}",
-    "executiveSummary": "Ledelsesresum\u00e9",
+    "executiveSummary": "Ledelsesresumé",
     "metrics": "Metrikker",
     "items": "Elementer",
     "points": "Point",
-    "completion": "F\u00e6rdigg\u00f8relse",
+    "completion": "Færdiggørelse",
     "testPassRate": "Test-bestaelsesrate",
     "epicBreakdown": "Epic-opdeling",
     "epicColumn": "Epic",
     "storiesColumn": "Stories",
     "acceptanceCriteriaColumn": "Acceptkriterier",
-    "testCoverageColumn": "Testd\u00e6kning",
+    "testCoverageColumn": "Testdækning",
     "defects": "Defekter",
     "total": "I alt",
-    "open": "\u00c5bne",
-    "resolved": "L\u00f8st",
-    "criticalOpen": "Kritiske (\u00e5bne)",
+    "open": "Åbne",
+    "resolved": "Løst",
+    "criticalOpen": "Kritiske (åbne)",
     "testEvidence": "Testdokumentation",
     "totalTests": "Tests i alt",
-    "passed": "Best\u00e5et",
+    "passed": "Bestået",
     "failed": "Fejlet",
     "errors": "Fejl",
     "skipped": "Sprunget over",
     "currentBlockers": "Aktuelle blokeringer",
     "velocityHistory": "Velocity-historik",
     "generatedBy": "Genereret af PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

@@ -25,14 +25,13 @@
     "error": "त्रुटि: {{message}}",
     "thinking": "सोच रहा है...",
     "generating": "जनरेट हो रहा है...",
-    "language": "भाषा"
+    "language": "भाषा",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "असली एजाइल।"
   },
-
   "nav": {
     "board": "बोर्ड",
     "backlog": "बैकलॉग",
@@ -43,9 +42,10 @@
     "team": "टीम",
     "settings": "सेटिंग्स",
     "project": "प्रोजेक्ट",
-    "graph": "ग्राफ"
+    "graph": "ग्राफ",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "साइडबार विस्तृत करें",
     "collapseSidebar": "साइडबार संक्षिप्त करें",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "अभी तक कोई संगठन नहीं",
     "toggle": "{{name}} टॉगल करें"
   },
-
   "topBar": {
     "notifications": "सूचनाएं",
     "markAllRead": "सभी पढ़ा हुआ चिह्नित करें",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} घंटे पहले",
     "daysAgo": "{{count}} दिन पहले"
   },
-
   "notifications": {
     "assigned": "आपको \"{{title}}\" पर असाइन किया गया",
     "statusChanged": "\"{{title}}\" की स्थिति बदल गई",
@@ -86,7 +104,6 @@
     "mentioned": "\"{{title}}\" में आपका उल्लेख किया गया",
     "default": "सूचना: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "तैयार",
@@ -95,33 +112,28 @@
     "done": "पूर्ण",
     "cancelled": "रद्द"
   },
-
   "priority": {
     "urgent": "अत्यावश्यक",
     "high": "उच्च",
     "medium": "मध्यम",
     "low": "निम्न"
   },
-
   "type": {
     "story": "स्टोरी",
     "bug": "बग",
     "task": "टास्क"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "सक्रिय",
     "planned": "योजनाबद्ध",
     "completed": "पूर्ण",
     "cancelled": "रद्द"
   },
-
   "roles": {
     "pm": "प्रोजेक्ट मैनेजर",
     "po": "प्रोडक्ट ओनर",
@@ -131,7 +143,6 @@
     "ux": "UX डिज़ाइनर",
     "dev": "डेवलपर"
   },
-
   "login": {
     "continueWithGitHub": "GitHub से जारी रखें",
     "continueWithGoogle": "Google से जारी रखें",
@@ -142,7 +153,6 @@
     "devOnly": "केवल डेव",
     "devLogin": "डेव लॉगिन (OAuth छोड़ें)"
   },
-
   "authError": {
     "title": "लॉगिन विफल",
     "badState": "लॉगिन सत्र समाप्त हो गया है। कृपया पुनः प्रयास करें।",
@@ -152,7 +162,6 @@
     "missingToken": "कोई प्रमाणीकरण टोकन प्राप्त नहीं हुआ।",
     "default": "लॉगिन के दौरान एक अप्रत्याशित त्रुटि हुई।"
   },
-
   "myWork": {
     "title": "मेरा कार्य",
     "itemCount": "{{count}} आइटम आपको असाइन है",
@@ -160,7 +169,6 @@
     "noItems": "आपको कोई आइटम असाइन नहीं है।",
     "noItemsHelp": "जब आपको प्रोजेक्ट टीम सदस्य के रूप में जोड़ा जाता है और स्टोरी या टास्क असाइन होती हैं, तो वे यहां दिखाई देंगी। सुनिश्चित करें कि आपका अकाउंट ईमेल टीम सदस्य ईमेल से मेल खाता है, या आपने आमंत्रण स्वीकार किया है।"
   },
-
   "orgs": {
     "title": "संगठन",
     "orgCount": "{{count}} संगठन",
@@ -184,7 +192,6 @@
     "postalCode": "पिन कोड",
     "country": "देश"
   },
-
   "orgDetail": {
     "allOrganisations": "सभी संगठन",
     "editDetails": "विवरण संपादित करें",
@@ -206,7 +213,6 @@
     "createProject": "प्रोजेक्ट बनाएं",
     "whatIsThisProjectAbout": "यह प्रोजेक्ट किस बारे में है?"
   },
-
   "invite": {
     "invalidInvitation": "अमान्य आमंत्रण",
     "invalidLink": "यह आमंत्रण लिंक मान्य नहीं है।",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "पहले से अकाउंट है?",
     "logIn": "लॉगिन"
   },
-
   "board": {
     "helpTitle": "आपका Kanban बोर्ड",
     "helpBody1": "यह आपकी टीम के कार्य का प्रवाह के रूप में दृश्य है। प्रत्येक कॉलम आपके वर्कफ़्लो का एक चरण दर्शाता है।",
@@ -242,7 +247,6 @@
     "noItems": "कोई आइटम नहीं",
     "column": "{{status}} कॉलम"
   },
-
   "backlog": {
     "helpTitle": "आपका Backlog",
     "helpBody1": "Backlog आपकी प्राथमिकता के अनुसार क्रमबद्ध कार्य सूची है। शीर्ष पर मौजूद आइटम सर्वोच्च प्राथमिकता वाले हैं।",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint योजना",
     "helpBody1": "Sprint समय-बद्ध पुनरावृत्तियां हैं (आमतौर पर 2 सप्ताह)। अपनी टीम के कार्य की योजना बनाने के लिए Backlog से स्टोरी को Sprint में लाएं।",
@@ -270,7 +273,6 @@
     "noSprintsYet": "अभी तक कोई Sprint नहीं। योजना शुरू करने के लिए एक बनाएं।",
     "pts": "{{count}} पॉइंट"
   },
-
   "workItemDetail": {
     "backToBoard": "बोर्ड पर वापस",
     "partOf": "का हिस्सा:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "इस टास्क को स्टोरी में बदलें? यह मूल स्टोरी के साथ निर्भरता लिंक बनाए रखेगा।",
     "convertToStoryHelp": "इस टास्क को निर्भरता लिंक के साथ एक स्वतंत्र स्टोरी में प्रमोट करता है",
     "created": "बनाया गया {{date}}",
-    "updated": "अपडेट किया गया {{date}}"
+    "updated": "अपडेट किया गया {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "टास्क ({{count}})",
     "contextHelp": "टास्क एक स्टोरी को विषय-विशेषज्ञता के अनुसार कार्य में विभाजित करते हैं, UX डिज़ाइन, बैकएंड डेव, फ्रंटएंड डेव, QE टेस्टिंग, आदि। प्रत्येक टास्क किसी टीम सदस्य को असाइन किया जा सकता है।",
@@ -314,7 +330,6 @@
     "pts": "{{count}} पॉइंट",
     "clarificationNeeded": "स्पष्टीकरण आवश्यक:"
   },
-
   "acceptanceCriteria": {
     "title": "स्वीकृति मानदंड",
     "contextHelp": "स्वीकृति मानदंड परिभाषित करते हैं कि यह आइटम वास्तव में कब \"पूर्ण\" है। Given / When / Then प्रारूप (BDD) में लिखे गए, ये अपेक्षाओं को स्पष्ट और परीक्षण योग्य बनाते हैं। प्रत्येक मानदंड एक विशिष्ट, सत्यापन योग्य शर्त है, अस्पष्ट इच्छा नहीं।",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI सुझाव, जोड़ने के लिए क्लिक करें:",
     "aiNeedsMoreInfo": "AI को अधिक जानकारी चाहिए:"
   },
-
   "comments": {
     "title": "टिप्पणियां",
     "noCommentsYet": "अभी तक कोई टिप्पणी नहीं।",
     "addComment": "टिप्पणी जोड़ें..."
   },
-
   "dependencies": {
     "title": "निर्भरताएं",
     "contextHelp": "निर्भरताएं आइटम के बीच संबंधों को ट्रैक करती हैं। \"निर्भर है\" का अर्थ है कि लक्ष्य पूरा होने तक यह आइटम आगे नहीं बढ़ सकता। \"संबंधित\" एक सूचनात्मक लिंक है।",
@@ -348,7 +361,6 @@
     "removeDependency": "निर्भरता हटाएं",
     "selectItem": "एक आइटम चुनें..."
   },
-
   "links": {
     "title": "लिंक",
     "addLink": "+ लिंक जोड़ें",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "लिंक हटाएं"
   },
-
   "testResults": {
     "retestRequired": "पुनः परीक्षण आवश्यक",
     "retestMessage": "इस दोष में {{count}} विफल परीक्षण हैं। QE गेट पास करने और इस आइटम को बंद करने के लिए फ़िक्स के डिप्लॉय होने के बाद नए परीक्षण परिणाम (JUnit XML या Webhook) अपलोड करें।",
@@ -373,12 +384,10 @@
     "source": "स्रोत: {{source}} | रिपोर्ट: {{date}}",
     "generateDescAC": "विवरण और स्वीकृति मानदंड जनरेट करें"
   },
-
   "helpOverlay": {
     "dismiss": "खारिज करें",
     "close": "बंद करें"
   },
-
   "richTextEditor": {
     "startTyping": "टाइप करना शुरू करें...",
     "bold": "बोल्ड",
@@ -391,7 +400,6 @@
     "quote": "उद्धरण",
     "codeBlock": "कोड ब्लॉक"
   },
-
   "createEpic": {
     "button": "+ नया एपिक",
     "title": "एपिक बनाएं",
@@ -402,7 +410,6 @@
     "priorityLabel": "प्राथमिकता",
     "assigneeLabel": "असाइनी"
   },
-
   "createProject": {
     "button": "+ नया प्रोजेक्ट",
     "title": "प्रोजेक्ट बनाएं",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "यह प्रोजेक्ट किस बारे में है?",
     "methodologyLabel": "कार्यप्रणाली"
   },
-
   "createSprint": {
     "button": "+ नया Sprint",
     "title": "Sprint बनाएं",
@@ -427,7 +433,6 @@
     "startDateLabel": "आरंभ तिथि",
     "endDateLabel": "समाप्ति तिथि"
   },
-
   "createTeam": {
     "button": "+ नई टीम",
     "title": "टीम बनाएं",
@@ -436,17 +441,17 @@
     "teamNameLabel": "टीम का नाम",
     "teamNamePlaceholder": "उदा. बैकएंड स्क्वाड"
   },
-
   "quickCreate": {
-    "placeholder": "क्या करना है?"
+    "placeholder": "क्या करना है?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "{{title}} खोलें",
     "taskCount": "{{count}} टास्क",
-    "taskCount_other": "{{count}} टास्क"
+    "taskCount_other": "{{count}} टास्क",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "reports": {
     "helpTitle": "प्रोजेक्ट रिपोर्ट्स",
     "helpBody1": "रिपोर्ट्स आपकी टीम की डिलीवरी की दृश्यता प्रदान करती हैं। Velocity दिखाता है कि आप प्रति Sprint कितने पॉइंट पूरे करते हैं; यह समय के साथ स्थिर होता है।",
@@ -486,7 +491,6 @@
     "onTrack": "सही रास्ते पर",
     "behind": "पिछड़ रहा है"
   },
-
   "team": {
     "title": "टीम",
     "memberCount": "{{count}} सदस्य",
@@ -508,7 +512,6 @@
     "nameLabel": "नाम",
     "roleLabel": "भूमिका"
   },
-
   "aiSettings": {
     "title": "AI कॉन्फ़िगरेशन",
     "description": "स्वीकृति मानदंड सुझाव, स्टोरी विभाजन और रिलीज़ नोट ड्राफ्टिंग सक्षम करने के लिए AI प्रदाता कॉन्फ़िगर करें। आप अपनी API कुंजी का उपयोग करते हैं; PlanA किसी साझा खाते में संग्रहीत या प्रॉक्सी नहीं करता।",
@@ -549,7 +552,6 @@
     "revoked": "रद्द किया गया",
     "revokedDate": "रद्द किया गया {{date}}"
   },
-
   "reportView": {
     "title": "रिपोर्ट्स",
     "generateProject": "प्रोजेक्ट रिपोर्ट",
@@ -585,7 +587,6 @@
     "velocityHistory": "Velocity इतिहास",
     "generatedBy": "PlanA द्वारा जनरेट किया गया"
   },
-
   "shareDashboard": {
     "title": "हितधारक डैशबोर्ड",
     "invalidLink": "अमान्य या समाप्त लिंक",
@@ -603,7 +604,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "स्टोरी प्रगति"
   },
-
   "sprintDetail": {
     "backToSprints": "Sprint पर वापस",
     "start": "शुरू:",
@@ -622,9 +622,19 @@
     "removeFromSprint": "Sprint से हटाएं",
     "standaloneTasks": "स्वतंत्र टास्क",
     "adding": "जोड़ा जा रहा है...",
-    "tasks": "{{count}} टास्क"
+    "tasks": "{{count}} टास्क",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "epicDetail": {
     "backToEpics": "एपिक्स पर वापस",
     "description": "विवरण",
@@ -659,9 +669,20 @@
     "qeTesting": "QE परीक्षण",
     "bsaAnalysis": "BSA विश्लेषण",
     "creating": "बनाया जा रहा है...",
-    "createStory": "स्टोरी बनाएं"
+    "createStory": "स्टोरी बनाएं",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "epics": {
     "helpTitle": "एपिक्स",
     "helpBody1": "एपिक्स फ़ीचर-स्तरीय समूह हैं। प्रत्येक एपिक में संबंधित स्टोरीज़ होती हैं जो मिलकर एक व्यावसायिक क्षमता प्रदान करती हैं।",
@@ -669,5 +690,72 @@
     "title": "एपिक्स",
     "noEpicsYet": "अभी तक कोई एपिक नहीं। एपिक्स संबंधित स्टोरीज़ को फ़ीचर-स्तरीय डिलीवरेबल्स में समूहित करते हैं।",
     "storyProgress": "{{done}}/{{total}} स्टोरीज़"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

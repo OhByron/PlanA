@@ -25,14 +25,13 @@
     "error": "Ошибка: {{message}}",
     "thinking": "Думаю...",
     "generating": "Генерация...",
-    "language": "Язык"
+    "language": "Язык",
+    "back": "Назад"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile как он есть."
   },
-
   "nav": {
     "board": "Доска",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Команда",
     "settings": "Настройки",
     "project": "Проект",
-    "graph": "Граф"
+    "graph": "Граф",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Жёсткая зависимость",
     "softDependency": "Мягкая зависимость",
@@ -57,9 +57,29 @@
     "committing": "Применение...",
     "discard": "Отменить",
     "errors": "ошибки",
-    "warnings": "предупреждения"
+    "warnings": "предупреждения",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Развернуть боковую панель",
     "collapseSidebar": "Свернуть боковую панель",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Пока нет организаций",
     "toggle": "Переключить {{name}}"
   },
-
   "topBar": {
     "notifications": "Уведомления",
     "markAllRead": "Прочитать все",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} ч. назад",
     "daysAgo": "{{count}} дн. назад"
   },
-
   "notifications": {
     "assigned": "Вам назначена задача \"{{title}}\"",
     "statusChanged": "Статус изменён: \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Вас упомянули в \"{{title}}\"",
     "default": "Уведомление: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Готово к работе",
@@ -95,33 +112,28 @@
     "done": "Готово",
     "cancelled": "Отменено"
   },
-
   "priority": {
     "urgent": "Срочный",
     "high": "Высокий",
     "medium": "Средний",
     "low": "Низкий"
   },
-
   "type": {
     "story": "Story",
     "bug": "Баг",
     "task": "Задача"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Активный",
     "planned": "Запланирован",
     "completed": "Завершён",
     "cancelled": "Отменён"
   },
-
   "roles": {
     "pm": "Менеджер проекта",
     "po": "Владелец продукта",
@@ -131,7 +143,6 @@
     "ux": "UX-дизайнер",
     "dev": "Разработчик"
   },
-
   "login": {
     "continueWithGitHub": "Продолжить через GitHub",
     "continueWithGoogle": "Продолжить через Google",
@@ -142,7 +153,6 @@
     "devOnly": "только для разработки",
     "devLogin": "Вход для разработки (без OAuth)"
   },
-
   "authError": {
     "title": "Не удалось войти",
     "badState": "Сессия входа истекла. Попробуйте снова.",
@@ -152,7 +162,6 @@
     "missingToken": "Токен аутентификации не получен.",
     "default": "Произошла непредвиденная ошибка при входе."
   },
-
   "myWork": {
     "title": "Мои задачи",
     "itemCount": "{{count}} задача назначена вам",
@@ -160,7 +169,6 @@
     "noItems": "Нет назначенных задач.",
     "noItemsHelp": "Задачи появятся здесь, когда вас добавят в команду проекта и назначат вам story или задачи. Убедитесь, что email вашего аккаунта совпадает с email участника команды, или что вы приняли приглашение."
   },
-
   "orgs": {
     "title": "Организации",
     "orgCount": "{{count}} организация",
@@ -184,7 +192,6 @@
     "postalCode": "Почтовый индекс",
     "country": "Страна"
   },
-
   "orgDetail": {
     "allOrganisations": "Все организации",
     "editDetails": "Редактировать",
@@ -206,7 +213,6 @@
     "createProject": "Создать проект",
     "whatIsThisProjectAbout": "О чём этот проект?"
   },
-
   "invite": {
     "invalidInvitation": "Недействительное приглашение",
     "invalidLink": "Эта ссылка-приглашение недействительна.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Уже есть аккаунт?",
     "logIn": "Войти"
   },
-
   "board": {
     "helpTitle": "Ваша Kanban-доска",
     "helpBody1": "Здесь работа вашей команды представлена в виде потока. Каждый столбец соответствует этапу рабочего процесса.",
@@ -242,7 +247,6 @@
     "noItems": "Нет элементов",
     "column": "Столбец {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Ваш Backlog",
     "helpBody1": "Backlog, это приоритизированный список работ. Элементы вверху имеют наивысший приоритет.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Планирование спринтов",
     "helpBody1": "Спринты; это ограниченные по времени итерации (обычно 2 недели). Перемещайте story из backlog в спринт, чтобы спланировать работу команды.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Пока нет спринтов. Создайте первый, чтобы начать планирование.",
     "pts": "{{count}} очков"
   },
-
   "workItemDetail": {
     "backToBoard": "Назад к доске",
     "partOf": "Часть:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Преобразовать эту задачу в story? Связь зависимости с исходной story сохранится.",
     "convertToStoryHelp": "Повышает задачу до самостоятельной story со связью зависимости",
     "created": "Создано {{date}}",
-    "updated": "Обновлено {{date}}"
+    "updated": "Обновлено {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Задачи ({{count}})",
     "contextHelp": "Задачи разбивают story на работу по дисциплинам: UX-дизайн, бэкенд, фронтенд и тестирование. Каждая задача может быть назначена участнику команды.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} очков",
     "clarificationNeeded": "Требуется уточнение:"
   },
-
   "acceptanceCriteria": {
     "title": "Критерии приёмки",
     "contextHelp": "Критерии приёмки определяют, когда задача действительно \"готова\". Написанные в формате Given / When / Then (BDD), они делают ожидания явными и проверяемыми. Каждый критерий; это конкретное, верифицируемое условие, а не расплывчатое пожелание.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "Предложения ИИ, нажмите для добавления:",
     "aiNeedsMoreInfo": "ИИ нужно больше информации:"
   },
-
   "comments": {
     "title": "Комментарии",
     "noCommentsYet": "Пока нет комментариев.",
     "addComment": "Добавить комментарий..."
   },
-
   "dependencies": {
     "title": "Зависимости",
     "contextHelp": "Зависимости отслеживают связи между элементами. \"Зависит от\" означает, что этот элемент не может продвигаться, пока целевой не завершён. \"Связан с\", информационная ссылка.",
@@ -348,7 +361,6 @@
     "removeDependency": "Удалить зависимость",
     "selectItem": "Выберите элемент..."
   },
-
   "links": {
     "title": "Ссылки",
     "addLink": "+ Добавить ссылку",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Удалить ссылку"
   },
-
   "testResults": {
     "retestRequired": "Требуется повторное тестирование",
     "retestMessage": "У этого дефекта {{count}} проваленных тестов. Загрузите новые результаты тестов (JUnit XML или webhook) после развёртывания исправления, чтобы снять блокировку QE и закрыть этот элемент.",
@@ -373,12 +384,10 @@
     "source": "Источник: {{source}} | Зарегистрировано: {{date}}",
     "generateDescAC": "Сгенерировать описание и КП"
   },
-
   "helpOverlay": {
     "dismiss": "Скрыть",
     "close": "Закрыть"
   },
-
   "richTextEditor": {
     "startTyping": "Начните вводить текст...",
     "bold": "Жирный",
@@ -391,7 +400,6 @@
     "quote": "Цитата",
     "codeBlock": "Блок кода"
   },
-
   "createEpic": {
     "button": "+ Новый эпик",
     "title": "Создать эпик",
@@ -402,7 +410,6 @@
     "priorityLabel": "Приоритет",
     "assigneeLabel": "Исполнитель"
   },
-
   "createProject": {
     "button": "+ Новый проект",
     "title": "Создать проект",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "О чём этот проект?",
     "methodologyLabel": "Методология"
   },
-
   "createSprint": {
     "button": "+ Новый спринт",
     "title": "Создать спринт",
@@ -427,7 +433,6 @@
     "startDateLabel": "Дата начала",
     "endDateLabel": "Дата окончания"
   },
-
   "createTeam": {
     "button": "+ Новая команда",
     "title": "Создать команду",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Название команды",
     "teamNamePlaceholder": "напр. Backend Squad"
   },
-
   "quickCreate": {
-    "placeholder": "Что нужно сделать?"
+    "placeholder": "Что нужно сделать?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Открыть {{title}}",
     "taskCount": "{{count}} задача",
-    "taskCount_other": "{{count}} задач"
+    "taskCount_other": "{{count}} задач",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "Команда",
     "memberCount": "{{count}} участник",
@@ -468,7 +473,6 @@
     "nameLabel": "Имя",
     "roleLabel": "Роль"
   },
-
   "epics": {
     "helpTitle": "Эпики",
     "helpBody1": "Эпики, это группировка на уровне функциональности. Каждый эпик содержит связанные story, которые вместе реализуют бизнес-возможность.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "Пока нет эпиков. Эпики группируют связанные story в функциональные блоки.",
     "storyProgress": "{{done}}/{{total}} story"
   },
-
   "epicDetail": {
     "backToEpics": "Назад к эпикам",
     "description": "Описание",
@@ -512,9 +515,20 @@
     "qeTesting": "QE-тестирование",
     "bsaAnalysis": "BSA-анализ",
     "creating": "Создание...",
-    "createStory": "Создать Story"
+    "createStory": "Создать Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "Назад к спринтам",
     "start": "Начало:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "Убрать из спринта",
     "standaloneTasks": "Отдельные задачи",
     "adding": "Добавление...",
-    "tasks": "{{count}} задач"
+    "tasks": "{{count}} задач",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "Отчёты по проекту",
     "helpBody1": "Отчёты дают представление о поставке вашей команды. Velocity показывает, сколько очков вы завершаете за спринт; со временем показатель стабилизируется.",
@@ -575,7 +599,6 @@
     "onTrack": "По плану",
     "behind": "Отставание"
   },
-
   "aiSettings": {
     "title": "Настройки ИИ",
     "description": "Настройте провайдера ИИ, чтобы включить предложения критериев приёмки, декомпозицию story и создание черновиков примечаний к релизу. Вы используете собственный API-ключ; PlanA не хранит и не проксирует через общий аккаунт.",
@@ -616,7 +639,6 @@
     "revoked": "Отозвано",
     "revokedDate": "Отозвано {{date}}"
   },
-
   "shareDashboard": {
     "title": "Панель для заинтересованных сторон",
     "invalidLink": "Недействительная или просроченная ссылка",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Velocity спринта",
     "storyProgress": "Прогресс Story"
   },
-
   "reportView": {
     "title": "Отчёты",
     "generateProject": "Отчёт по проекту",
@@ -669,5 +690,72 @@
     "currentBlockers": "Текущие блокировки",
     "velocityHistory": "История Velocity",
     "generatedBy": "Сгенерировано PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

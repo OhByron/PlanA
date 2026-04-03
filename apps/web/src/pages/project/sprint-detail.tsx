@@ -127,6 +127,15 @@ export function SprintDetailPage() {
     qc.invalidateQueries({ queryKey: ['sprint-assigned', projectId] });
   };
 
+  const [editName, setEditName] = useState(false);
+  const [nameDraft, setNameDraft] = useState('');
+  const [editGoal, setEditGoal] = useState(false);
+  const [goalDraft, setGoalDraft] = useState('');
+
+  const patchSprint = (data: Record<string, unknown>) => {
+    updateSprint.mutate({ sprintId, data });
+  };
+
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -136,18 +145,18 @@ export function SprintDetailPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="flex h-full">
+      <div className="flex-1 overflow-y-auto p-6">
       {/* Header */}
-      <Link
-        to="/p/$projectId/sprints"
-        params={{ projectId }}
+      <button
+        onClick={() => window.history.back()}
         className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        {t('sprintDetail.backToSprints')}
-      </Link>
+        {t('common.back')}
+      </button>
 
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -341,6 +350,128 @@ export function SprintDetailPage() {
           </div>
         )}
       </div>
+      </div>
+
+      {/* Sidebar — editable sprint properties */}
+      {sprint && (
+        <aside className="w-64 shrink-0 border-l border-gray-200 bg-white p-4 overflow-y-auto">
+          <h2 className="mb-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            {t('sprintDetail.properties')}
+          </h2>
+
+          {/* Name */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.nameLabel')}</label>
+            {editName ? (
+              <Input
+                autoFocus
+                value={nameDraft}
+                onChange={(e) => setNameDraft(e.target.value)}
+                onBlur={() => {
+                  if (nameDraft.trim() && nameDraft !== sprint.name) patchSprint({ name: nameDraft.trim() });
+                  setEditName(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { if (nameDraft.trim() && nameDraft !== sprint.name) patchSprint({ name: nameDraft.trim() }); setEditName(false); }
+                  if (e.key === 'Escape') setEditName(false);
+                }}
+              />
+            ) : (
+              <p
+                className="cursor-pointer rounded border border-transparent px-2 py-1 text-sm text-gray-900 hover:border-gray-200"
+                onClick={() => { setNameDraft(sprint.name); setEditName(true); }}
+              >
+                {sprint.name}
+              </p>
+            )}
+          </div>
+
+          {/* Goal */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.goalLabel')}</label>
+            {editGoal ? (
+              <div className="space-y-1">
+                <Input
+                  autoFocus
+                  value={goalDraft}
+                  onChange={(e) => setGoalDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') { patchSprint({ goal: goalDraft.trim() || null }); setEditGoal(false); }
+                    if (e.key === 'Escape') setEditGoal(false);
+                  }}
+                />
+                <div className="flex gap-1">
+                  <Button size="xs" onClick={() => { patchSprint({ goal: goalDraft.trim() || null }); setEditGoal(false); }}>{t('common.save')}</Button>
+                  <Button size="xs" variant="ghost" onClick={() => setEditGoal(false)}>{t('common.cancel')}</Button>
+                </div>
+              </div>
+            ) : (
+              <p
+                className="cursor-pointer rounded border border-transparent px-2 py-1 text-sm text-gray-600 hover:border-gray-200"
+                onClick={() => { setGoalDraft(sprint.goal ?? ''); setEditGoal(true); }}
+              >
+                {sprint.goal || <span className="italic text-gray-400">{t('sprintDetail.clickToSetGoal')}</span>}
+              </p>
+            )}
+          </div>
+
+          {/* Status */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.statusLabel')}</label>
+            <Select
+              value={sprint.status}
+              onChange={(e) => patchSprint({ status: e.target.value })}
+            >
+              <option value="planned">{t('sprintStatus.planned')}</option>
+              <option value="active">{t('sprintStatus.active')}</option>
+              <option value="completed">{t('sprintStatus.completed')}</option>
+              <option value="cancelled">{t('sprintStatus.cancelled')}</option>
+            </Select>
+          </div>
+
+          {/* Start Date */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.startDateLabel')}</label>
+            <Input
+              type="date"
+              value={sprint.startDate ? new Date(sprint.startDate).toISOString().slice(0, 10) : ''}
+              onChange={(e) => patchSprint({ start_date: e.target.value || null })}
+            />
+          </div>
+
+          {/* End Date */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.endDateLabel')}</label>
+            <Input
+              type="date"
+              value={sprint.endDate ? new Date(sprint.endDate).toISOString().slice(0, 10) : ''}
+              onChange={(e) => patchSprint({ end_date: e.target.value || null })}
+            />
+          </div>
+
+          {/* Velocity (for completed sprints) */}
+          {sprint.status === 'completed' && (
+            <div className="mb-4">
+              <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.velocityLabel')}</label>
+              <Input
+                type="number"
+                min={0}
+                value={sprint.velocity ?? ''}
+                onChange={(e) => patchSprint({ velocity: e.target.value ? Number(e.target.value) : null })}
+              />
+            </div>
+          )}
+
+          {/* Summary stats */}
+          <div className="mt-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-400">
+            <p>{t('sprintDetail.totalItemCount', { count: sprintItems.length })}</p>
+            <p>{t('sprintDetail.totalPointsLabel', { count: totalPoints })}</p>
+            {sprint.velocity != null && (
+              <p>{t('sprintDetail.velocityStat', { velocity: sprint.velocity })}</p>
+            )}
+          </div>
+        </aside>
+      )}
     </div>
   );
 }

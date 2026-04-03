@@ -46,6 +46,10 @@ export interface WorkItem {
   pointsUsed: number | null;
   labels: string[];
   orderIndex: number;
+  startDate: string | null;
+  dueDate: string | null;
+  preConditions: Record<string, unknown> | null;
+  postConditions: Record<string, unknown> | null;
   isBlocked: boolean;
   blockedReason: string | null;
   sourceTestResultId: string | null;

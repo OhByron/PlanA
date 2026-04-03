@@ -25,14 +25,13 @@
     "error": "Błąd: {{message}}",
     "thinking": "Przetwarzanie...",
     "generating": "Generowanie...",
-    "language": "Język"
+    "language": "Język",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "Agile, naprawdę."
   },
-
   "nav": {
     "board": "Tablica",
     "backlog": "Backlog",
@@ -43,9 +42,10 @@
     "team": "Zespół",
     "settings": "Ustawienia",
     "project": "Projekt",
-    "graph": "Graf"
+    "graph": "Graf",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "Rozwiń panel boczny",
     "collapseSidebar": "Zwiń panel boczny",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "Brak organizacji",
     "toggle": "Przełącz {{name}}"
   },
-
   "topBar": {
     "notifications": "Powiadomienia",
     "markAllRead": "Oznacz wszystkie jako przeczytane",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}} godz. temu",
     "daysAgo": "{{count}} dni temu"
   },
-
   "notifications": {
     "assigned": "Zostałeś przypisany do \"{{title}}\"",
     "statusChanged": "Zmieniono status \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "Wspomniano o Tobie w \"{{title}}\"",
     "default": "Powiadomienie: {{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "Gotowe",
@@ -95,33 +112,28 @@
     "done": "Ukończone",
     "cancelled": "Anulowane"
   },
-
   "priority": {
     "urgent": "Pilne",
     "high": "Wysoki",
     "medium": "Średni",
     "low": "Niski"
   },
-
   "type": {
     "story": "Story",
     "bug": "Bug",
     "task": "Task"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "Aktywny",
     "planned": "Zaplanowany",
     "completed": "Ukończony",
     "cancelled": "Anulowany"
   },
-
   "roles": {
     "pm": "Kierownik Projektu",
     "po": "Product Owner",
@@ -131,7 +143,6 @@
     "ux": "Projektant UX",
     "dev": "Programista"
   },
-
   "login": {
     "continueWithGitHub": "Kontynuuj przez GitHub",
     "continueWithGoogle": "Kontynuuj przez Google",
@@ -142,7 +153,6 @@
     "devOnly": "tylko dev",
     "devLogin": "Logowanie Dev (pomiń OAuth)"
   },
-
   "authError": {
     "title": "Logowanie nie powiodło się",
     "badState": "Sesja logowania wygasła. Spróbuj ponownie.",
@@ -152,7 +162,6 @@
     "missingToken": "Nie otrzymano tokenu uwierzytelniania.",
     "default": "Wystąpił nieoczekiwany błąd podczas logowania."
   },
-
   "myWork": {
     "title": "Moja Praca",
     "itemCount": "{{count}} element przypisany do Ciebie",
@@ -160,7 +169,6 @@
     "noItems": "Brak elementów przypisanych do Ciebie.",
     "noItemsHelp": "Elementy pojawiają się tutaj, gdy zostaniesz dodany jako członek zespołu projektowego i masz przypisane story lub taski. Upewnij się, że e-mail Twojego konta odpowiada e-mailowi członka zespołu lub że zaakceptowałeś zaproszenie."
   },
-
   "orgs": {
     "title": "Organizacje",
     "orgCount": "{{count}} organizacja",
@@ -184,7 +192,6 @@
     "postalCode": "Kod Pocztowy",
     "country": "Kraj"
   },
-
   "orgDetail": {
     "allOrganisations": "Wszystkie organizacje",
     "editDetails": "Edytuj Szczegóły",
@@ -206,7 +213,6 @@
     "createProject": "Utwórz Projekt",
     "whatIsThisProjectAbout": "O czym jest ten projekt?"
   },
-
   "invite": {
     "invalidInvitation": "Nieprawidłowe Zaproszenie",
     "invalidLink": "Ten link zaproszenia jest nieprawidłowy.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "Masz już konto?",
     "logIn": "Zaloguj się"
   },
-
   "board": {
     "helpTitle": "Twoja Kanban Board",
     "helpBody1": "To jest praca Twojego zespołu zwizualizowana jako przepływ. Każda kolumna reprezentuje etap w Twoim workflow.",
@@ -242,7 +247,6 @@
     "noItems": "Brak elementów",
     "column": "Kolumna {{status}}"
   },
-
   "backlog": {
     "helpTitle": "Twój Backlog",
     "helpBody1": "Backlog to Twoja lista priorytetowych zadań. Elementy na górze mają najwyższy priorytet.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint Planning",
     "helpBody1": "Sprinty to iteracje ograniczone czasowo (zwykle 2 tygodnie). Przenieś story z backlogu do sprintu, aby zaplanować pracę zespołu.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "Brak sprintów. Utwórz jeden, aby rozpocząć planowanie.",
     "pts": "{{count}} pkt"
   },
-
   "workItemDetail": {
     "backToBoard": "Powrót do board",
     "partOf": "Część:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "Przekonwertować ten task na story? Zachowa link zależności do oryginalnej story.",
     "convertToStoryHelp": "Awansuje ten task do niezależnej story z linkiem zależności",
     "created": "Utworzono {{date}}",
-    "updated": "Zaktualizowano {{date}}"
+    "updated": "Zaktualizowano {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "Taski ({{count}})",
     "contextHelp": "Taski dzielą story na pracę według dyscypliny, projektowanie UX, dev backend, dev frontend, testy QE itp. Każdy task można przypisać do członka zespołu.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} pkt",
     "clarificationNeeded": "Potrzebne wyjaśnienie:"
   },
-
   "acceptanceCriteria": {
     "title": "Kryteria Akceptacji",
     "contextHelp": "Kryteria Akceptacji definiują, kiedy ten element jest naprawdę \"ukończony\". Napisane w formacie Given / When / Then (BDD), czynią oczekiwania jednoznacznymi i weryfikowalnymi. Każde kryterium to konkretny, sprawdzalny warunek, nie mglisty postulat.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "Sugestie AI, kliknij, aby dodać:",
     "aiNeedsMoreInfo": "AI potrzebuje więcej informacji:"
   },
-
   "comments": {
     "title": "Komentarze",
     "noCommentsYet": "Brak komentarzy.",
     "addComment": "Dodaj komentarz..."
   },
-
   "dependencies": {
     "title": "Zależności",
     "contextHelp": "Zależności śledzą relacje między elementami. \"Zależy od\" oznacza, że ten element nie może być kontynuowany, dopóki cel nie zostanie ukończony. \"Powiązane z\" to link informacyjny.",
@@ -348,7 +361,6 @@
     "removeDependency": "Usuń zależność",
     "selectItem": "Wybierz element..."
   },
-
   "links": {
     "title": "Linki",
     "addLink": "+ Dodaj Link",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "Usuń link"
   },
-
   "testResults": {
     "retestRequired": "Wymagany ponowny test",
     "retestMessage": "Ten defekt ma {{count}} nieudany(ch) test(ów). Prześlij nowe wyniki testów (JUnit XML lub webhook) po wdrożeniu poprawki, aby przejść kontrolę QE i zamknąć ten element.",
@@ -373,12 +384,10 @@
     "source": "Źródło: {{source}} | Zgłoszono: {{date}}",
     "generateDescAC": "Generuj Opis i AC"
   },
-
   "helpOverlay": {
     "dismiss": "Odrzuć",
     "close": "Zamknij"
   },
-
   "richTextEditor": {
     "startTyping": "Zacznij pisać...",
     "bold": "Pogrubienie",
@@ -391,7 +400,6 @@
     "quote": "Cytat",
     "codeBlock": "Blok kodu"
   },
-
   "createEpic": {
     "button": "+ Nowa Epic",
     "title": "Utwórz Epic",
@@ -402,7 +410,6 @@
     "priorityLabel": "Priorytet",
     "assigneeLabel": "Przypisany do"
   },
-
   "createProject": {
     "button": "+ Nowy Projekt",
     "title": "Utwórz Projekt",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "O czym jest ten projekt?",
     "methodologyLabel": "Metodologia"
   },
-
   "createSprint": {
     "button": "+ Nowy Sprint",
     "title": "Utwórz Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "Data Rozpoczęcia",
     "endDateLabel": "Data Zakończenia"
   },
-
   "createTeam": {
     "button": "+ Nowy Zespół",
     "title": "Utwórz Zespół",
@@ -436,17 +441,17 @@
     "teamNameLabel": "Nazwa Zespołu",
     "teamNamePlaceholder": "np. Backend Squad"
   },
-
   "quickCreate": {
-    "placeholder": "Co trzeba zrobić?"
+    "placeholder": "Co trzeba zrobić?",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "Otwórz {{title}}",
     "taskCount": "{{count}} task",
-    "taskCount_other": "{{count}} tasków"
+    "taskCount_other": "{{count}} tasków",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "reports": {
     "helpTitle": "Raporty Projektu",
     "helpBody1": "Raporty dają widoczność dostarczania pracy przez zespół. Velocity pokazuje, ile punktów realizujecie na sprint; stabilizuje się z czasem.",
@@ -486,7 +491,6 @@
     "onTrack": "Na dobrej drodze",
     "behind": "Opóźnienie"
   },
-
   "team": {
     "title": "Zespół",
     "memberCount": "{{count}} członek",
@@ -508,7 +512,6 @@
     "nameLabel": "Imię",
     "roleLabel": "Rola"
   },
-
   "aiSettings": {
     "title": "Konfiguracja AI",
     "description": "Skonfiguruj dostawcę AI, aby włączyć sugestie kryteriów akceptacji, dekompozycję story i tworzenie notatek wydania. Używasz własnego klucza API; PlanA nie przechowuje ani nie przekierowuje przez wspólne konto.",
@@ -549,7 +552,6 @@
     "revoked": "Unieważniony",
     "revokedDate": "Unieważniony {{date}}"
   },
-
   "reportView": {
     "title": "Raporty",
     "generateProject": "Raport Projektu",
@@ -585,7 +587,6 @@
     "velocityHistory": "Historia Velocity",
     "generatedBy": "Wygenerowano przez PlanA"
   },
-
   "shareDashboard": {
     "title": "Pulpit dla Interesariuszy",
     "invalidLink": "Nieprawidłowy lub wygasły link",
@@ -603,7 +604,6 @@
     "sprintVelocity": "Sprint Velocity",
     "storyProgress": "Postęp Story"
   },
-
   "sprintDetail": {
     "backToSprints": "Powrót do sprintów",
     "start": "Start:",
@@ -622,9 +622,19 @@
     "removeFromSprint": "Usun ze sprintu",
     "standaloneTasks": "Samodzielne Taski",
     "adding": "Dodawanie...",
-    "tasks": "{{count}} tasków"
+    "tasks": "{{count}} tasków",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "epicDetail": {
     "backToEpics": "Powrót do epiców",
     "description": "Opis",
@@ -659,9 +669,20 @@
     "qeTesting": "Testowanie QE",
     "bsaAnalysis": "Analiza BSA",
     "creating": "Tworzenie...",
-    "createStory": "Utworz Story"
+    "createStory": "Utworz Story",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "epics": {
     "helpTitle": "Epiki",
     "helpBody1": "Epiki to grupowania na poziomie funkcjonalności. Każda epic zawiera powiązane story, które razem dostarczają zdolność biznesową.",
@@ -669,5 +690,72 @@
     "title": "Epiki",
     "noEpicsYet": "Brak epiców. Epiki grupują powiązane story w dostarczalne funkcjonalności.",
     "storyProgress": "{{done}}/{{total}} story"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

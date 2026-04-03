@@ -25,7 +25,8 @@
     "error": "Errore: {{message}}",
     "thinking": "Elaborazione...",
     "generating": "Generazione...",
-    "language": "Lingua"
+    "language": "Lingua",
+    "back": "Indietro"
   },
 
   "brand": {
@@ -43,7 +44,9 @@
     "team": "Team",
     "settings": "Impostazioni",
     "project": "Progetto",
-    "graph": "Grafico"
+    "graph": "Grafico",
+    "gantt": "Gantt",
+    "calendar": "Calendario"
   },
 
   "graph": {
@@ -57,7 +60,66 @@
     "committing": "Conferma...",
     "discard": "Annulla",
     "errors": "errori",
-    "warnings": "avvisi"
+    "warnings": "avvisi",
+    "epic": "Epica",
+    "sprint": "Sprint",
+    "createEpic": "Crea Epica",
+    "createSprint": "Crea Sprint",
+    "epicTitle": "Titolo",
+    "sprintName": "Nome",
+    "sprintGoal": "Obiettivo dello Sprint",
+    "description": "Descrizione",
+    "priority": "Priorità",
+    "startDate": "Data di Inizio",
+    "dueDate": "Data di Scadenza",
+    "endDate": "Data di Fine",
+    "endBeforeStart": "La data di fine è precedente alla data di inizio",
+    "sprintOverlapWarning": "Le date si sovrappongono con: {{names}}",
+    "sprintDuration": "Predefinito: {{weeks}}s",
+    "epicDuration": "Predefinito: {{weeks}}s",
+    "cannotDropEpicOnEpic": "Le epiche non possono essere nidificate in altre epiche. Usa le dipendenze per collegarle.",
+    "cannotDropSprintOnSprint": "Gli sprint non possono essere inseriti in altri sprint. Usa le dipendenze per ordinarli.",
+    "cannotDropSprintOnEpic": "Gli sprint non possono essere inseriti nelle epiche. Assegna invece i singoli elementi alle epiche.",
+    "invalidDrop": "Questa azione di trascinamento non è supportata.",
+    "cannotDependParentChild": "Un task non può dipendere dalla propria story genitore e viceversa. Le dipendenze funzionano tra elementi fratelli o tra story."
+  },
+
+  "gantt": {
+    "title": "Diagramma di Gantt",
+    "pmOnly": "Il diagramma di Gantt è disponibile per Project Manager e Product Owner.",
+    "allItems": "Tutti gli elementi",
+    "epicsOnly": "Solo epiche",
+    "item": "Elemento",
+    "status": "Stato"
+  },
+
+  "calendar": {
+    "today": "Oggi",
+    "everyone": "Tutti",
+    "myWork": "Il mio lavoro",
+    "more": "altro",
+    "mon": "Lun",
+    "tue": "Mar",
+    "wed": "Mer",
+    "thu": "Gio",
+    "fri": "Ven",
+    "sat": "Sab",
+    "sun": "Dom"
+  },
+
+  "graphEdit": {
+    "edit": "Modifica",
+    "title": "Titolo",
+    "name": "Nome",
+    "description": "Descrizione",
+    "goal": "Obiettivo",
+    "status": "Stato",
+    "priority": "Priorità",
+    "assignee": "Assegnato a",
+    "startDate": "Data di Inizio",
+    "dueDate": "Data di Scadenza",
+    "endDate": "Data di Fine",
+    "confirmDelete": "Clicca di nuovo per confermare"
   },
 
   "sidebar": {
@@ -285,6 +347,11 @@
     "priorityLabel": "Priorità",
     "assigneeLabel": "Assegnatario",
     "unassigned": "Non assegnato",
+    "epicLabel": "Epica",
+    "noEpic": "Nessuna epica",
+    "startDate": "Data di Inizio",
+    "dueDate": "Data di Scadenza",
+    "overdue": "In ritardo",
     "totalPoints": "Punti Totali",
     "storyPoints": "Story Point",
     "storyPointsHelp": "Per le story, i punti sono la somma di tutti i punti dei task. Aggiungi i punti ai singoli task durante il refinement.",
@@ -299,6 +366,16 @@
     "convertToStory": "Converti in Story",
     "convertToStoryConfirm": "Convertire questo task in una story? Manterrà un link di dipendenza alla story originale.",
     "convertToStoryHelp": "Promuove questo task a story indipendente con un link di dipendenza",
+    "pointsUsed": "Punti Utilizzati",
+    "pointsUsedHelp": "Sforzo effettivo speso. Predefinito alla stima quando contrassegnato come completato. Regola se il task ha richiesto più o meno sforzo del previsto.",
+    "underEstimate": "{{diff}} pts sotto la stima",
+    "overEstimate": "{{diff}} pts sopra la stima",
+    "preConditions": "Precondizioni",
+    "preConditionsHelp": "Cosa deve essere vero prima di iniziare il lavoro — stato dell'ambiente, disponibilità dei dati, deliverable a monte, permessi, feature flag.",
+    "preConditionsPlaceholder": "Clicca per aggiungere precondizioni...",
+    "postConditions": "Postcondizioni",
+    "postConditionsHelp": "Cosa deve essere vero quando il lavoro è completato — oltre i criteri di accettazione. Stato del sistema, integrità dei dati, obiettivi di performance, documentazione.",
+    "postConditionsPlaceholder": "Clicca per aggiungere postcondizioni...",
     "created": "Creato il {{date}}",
     "updated": "Aggiornato il {{date}}"
   },
@@ -438,13 +515,16 @@
   },
 
   "quickCreate": {
-    "placeholder": "Cosa deve essere fatto?"
+    "placeholder": "Cosa deve essere fatto?",
+    "selectEpic": "Seleziona epica..."
   },
 
   "workItemCard": {
     "open": "Apri {{title}}",
     "taskCount": "{{count}} task",
-    "taskCount_other": "{{count}} task"
+    "taskCount_other": "{{count}} task",
+    "unblocks": "Sblocca {{count}}",
+    "unblocks_other": "Sblocca {{count}}"
   },
 
   "reports": {
@@ -622,7 +702,18 @@
     "removeFromSprint": "Rimuovi dallo sprint",
     "standaloneTasks": "Task Indipendenti",
     "adding": "Aggiunta...",
-    "tasks": "{{count}} task"
+    "tasks": "{{count}} task",
+    "properties": "Proprietà dello Sprint",
+    "nameLabel": "Nome",
+    "goalLabel": "Obiettivo",
+    "statusLabel": "Stato",
+    "startDateLabel": "Data di Inizio",
+    "endDateLabel": "Data di Fine",
+    "velocityLabel": "Velocità",
+    "clickToSetGoal": "Clicca per impostare un obiettivo...",
+    "totalItemCount": "{{count}} elementi",
+    "totalPointsLabel": "{{count}} story point",
+    "velocityStat": "Velocità: {{velocity}} pts"
   },
 
   "epicDetail": {
@@ -659,7 +750,19 @@
     "qeTesting": "Test QE",
     "bsaAnalysis": "Analisi BSA",
     "creating": "Creazione...",
-    "createStory": "Crea Story"
+    "createStory": "Crea Story",
+    "addExisting": "Aggiungi Esistente",
+    "searchExisting": "Cerca storie e task...",
+    "noItemsFound": "Nessun elemento corrispondente trovato.",
+    "addToEpic": "+ Aggiungi",
+    "removeFromEpic": "Rimuovi dall'epica",
+    "typeToSearch": "Mostro i primi 20 di {{count}} — digita per cercare",
+    "startDateLabel": "Data di Inizio",
+    "dueDateLabel": "Data di Scadenza",
+    "overdue": "In ritardo",
+    "progress": "Progresso",
+    "itemsDone": "elementi completati",
+    "totalPts": "pts totali"
   },
 
   "epics": {
@@ -669,5 +772,40 @@
     "title": "Epiche",
     "noEpicsYet": "Nessuna epic. Le epiche raggruppano story correlate in deliverable funzionali.",
     "storyProgress": "{{done}}/{{total}} story"
+  },
+
+  "projectDetails": {
+    "title": "Dettagli Progetto",
+    "description": "Informazioni principali su questo progetto.",
+    "name": "Nome Progetto",
+    "desc": "Descrizione",
+    "descPlaceholder": "Descrivi gli obiettivi e l'ambito del progetto...",
+    "methodology": "Metodologia",
+    "status": "Stato",
+    "dueDate": "Data di Scadenza",
+    "contact": "Contatto Principale",
+    "contactName": "Nome",
+    "contactEmail": "Email",
+    "contactPhone": "Telefono"
+  },
+
+  "projectStatus": {
+    "active": "Attivo",
+    "on_hold": "In Pausa",
+    "completed": "Completato",
+    "cancelled": "Annullato"
+  },
+
+  "settings": {
+    "projectSettings": "Impostazioni Predefinite di Pianificazione",
+    "projectSettingsDesc": "Imposta gli orizzonti temporali predefiniti per questo progetto. Compilano automaticamente le date alla creazione di epiche e sprint.",
+    "projectDuration": "Durata Progetto / Funzionalità",
+    "projectDurationHelp": "Timeline complessiva di consegna per questo progetto.",
+    "epicDuration": "Durata Epica",
+    "epicDurationHelp": "Compila automaticamente le date di scadenza delle epiche.",
+    "sprintDuration": "Durata Sprint",
+    "sprintDurationHelp": "Compila automaticamente le date di fine sprint.",
+    "months": "mesi",
+    "weeks": "settimane"
   }
 }

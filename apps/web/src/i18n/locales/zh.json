@@ -25,14 +25,13 @@
     "error": "错误：{{message}}",
     "thinking": "思考中...",
     "generating": "生成中...",
-    "language": "语言"
+    "language": "语言",
+    "back": "返回"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "真正的敏捷。"
   },
-
   "nav": {
     "board": "看板",
     "backlog": "待办列表",
@@ -43,9 +42,10 @@
     "team": "团队",
     "settings": "设置",
     "project": "项目",
-    "graph": "图表"
+    "graph": "图表",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "强依赖",
     "softDependency": "弱依赖",
@@ -57,9 +57,29 @@
     "committing": "提交中...",
     "discard": "丢弃",
     "errors": "错误",
-    "warnings": "警告"
+    "warnings": "警告",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "展开侧边栏",
     "collapseSidebar": "折叠侧边栏",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "暂无组织",
     "toggle": "切换 {{name}}"
   },
-
   "topBar": {
     "notifications": "通知",
     "markAllRead": "全部标为已读",
@@ -78,7 +97,6 @@
     "hoursAgo": "{{count}}小时前",
     "daysAgo": "{{count}}天前"
   },
-
   "notifications": {
     "assigned": "你被分配到了「{{title}}」",
     "statusChanged": "「{{title}}」的状态已更改",
@@ -86,7 +104,6 @@
     "mentioned": "你在「{{title}}」中被提及",
     "default": "通知：{{type}}"
   },
-
   "status": {
     "backlog": "Backlog",
     "ready": "就绪",
@@ -95,33 +112,28 @@
     "done": "已完成",
     "cancelled": "已取消"
   },
-
   "priority": {
     "urgent": "紧急",
     "high": "高",
     "medium": "中",
     "low": "低"
   },
-
   "type": {
     "story": "用户故事",
     "bug": "缺陷",
     "task": "任务"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "进行中",
     "planned": "已计划",
     "completed": "已完成",
     "cancelled": "已取消"
   },
-
   "roles": {
     "pm": "项目经理",
     "po": "产品负责人",
@@ -131,7 +143,6 @@
     "ux": "UX 设计师",
     "dev": "开发人员"
   },
-
   "login": {
     "continueWithGitHub": "使用 GitHub 继续",
     "continueWithGoogle": "使用 Google 继续",
@@ -142,7 +153,6 @@
     "devOnly": "仅开发用",
     "devLogin": "开发登录（跳过 OAuth）"
   },
-
   "authError": {
     "title": "登录失败",
     "badState": "登录会话已过期，请重试。",
@@ -152,7 +162,6 @@
     "missingToken": "未收到认证令牌。",
     "default": "登录过程中发生意外错误。"
   },
-
   "myWork": {
     "title": "我的工作",
     "itemCount": "{{count}} 个项目分配给你",
@@ -160,7 +169,6 @@
     "noItems": "没有分配给你的项目。",
     "noItemsHelp": "当你被添加为项目团队成员并分配了用户故事或任务时，它们会显示在这里。请确保你的账户邮箱与团队成员邮箱一致，或者你已接受邀请。"
   },
-
   "orgs": {
     "title": "组织",
     "orgCount": "{{count}} 个组织",
@@ -184,7 +192,6 @@
     "postalCode": "邮政编码",
     "country": "国家"
   },
-
   "orgDetail": {
     "allOrganisations": "所有组织",
     "editDetails": "编辑详情",
@@ -206,7 +213,6 @@
     "createProject": "创建项目",
     "whatIsThisProjectAbout": "这个项目是关于什么的？"
   },
-
   "invite": {
     "invalidInvitation": "无效邀请",
     "invalidLink": "此邀请链接无效。",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "已有账户？",
     "logIn": "登录"
   },
-
   "board": {
     "helpTitle": "你的 Kanban 看板",
     "helpBody1": "这是将团队工作可视化为流程的看板。每一列代表工作流中的一个阶段。",
@@ -242,7 +247,6 @@
     "noItems": "无项目",
     "column": "{{status}} 列"
   },
-
   "backlog": {
     "helpTitle": "你的 Backlog",
     "helpBody1": "Backlog 是按优先级排列的工作列表。顶部的项目优先级最高。",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "Sprint 计划",
     "helpBody1": "Sprint 是时间盒化的迭代（通常为2周）。从 Backlog 中拉取用户故事到 Sprint 中来计划团队工作。",
@@ -270,7 +273,6 @@
     "noSprintsYet": "暂无 Sprint。创建一个以开始计划。",
     "pts": "{{count}} 点"
   },
-
   "workItemDetail": {
     "backToBoard": "返回看板",
     "partOf": "所属：",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "将此任务转换为用户故事？它将保留与原用户故事的依赖链接。",
     "convertToStoryHelp": "将此任务提升为带有依赖链接的独立用户故事",
     "created": "创建于 {{date}}",
-    "updated": "更新于 {{date}}"
+    "updated": "更新于 {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "任务 ({{count}})",
     "contextHelp": "任务将用户故事按专业分工分解为具体工作, UX 设计、后端开发、前端开发、QE 测试等。每个任务可分配给团队成员。",
@@ -314,7 +330,6 @@
     "pts": "{{count}} 点",
     "clarificationNeeded": "需要澄清："
   },
-
   "acceptanceCriteria": {
     "title": "验收标准",
     "contextHelp": "验收标准定义了此项目何时真正'完成'。以 Given / When / Then 格式（BDD）编写，使期望明确且可测试。每条标准都是具体的、可验证的条件，而非模糊的期望。",
@@ -331,13 +346,11 @@
     "aiSuggestions": "AI 建议, 点击添加：",
     "aiNeedsMoreInfo": "AI 需要更多信息："
   },
-
   "comments": {
     "title": "评论",
     "noCommentsYet": "暂无评论。",
     "addComment": "添加评论..."
   },
-
   "dependencies": {
     "title": "依赖关系",
     "contextHelp": "依赖关系追踪项目之间的关系。'依赖于'表示在目标完成之前此项目无法继续。'关联'是信息性链接。",
@@ -348,7 +361,6 @@
     "removeDependency": "移除依赖",
     "selectItem": "选择一个项目..."
   },
-
   "links": {
     "title": "链接",
     "addLink": "+ 添加链接",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "移除链接"
   },
-
   "testResults": {
     "retestRequired": "需要重新测试",
     "retestMessage": "此缺陷有 {{count}} 个失败的测试。修复部署后请上传新的测试结果（JUnit XML 或 Webhook）以清除 QE 关卡并关闭此项目。",
@@ -373,12 +384,10 @@
     "source": "来源：{{source}} | 报告于：{{date}}",
     "generateDescAC": "生成描述和验收标准"
   },
-
   "helpOverlay": {
     "dismiss": "关闭",
     "close": "关闭"
   },
-
   "richTextEditor": {
     "startTyping": "开始输入...",
     "bold": "加粗",
@@ -391,7 +400,6 @@
     "quote": "引用",
     "codeBlock": "代码块"
   },
-
   "createEpic": {
     "button": "+ 新建史诗",
     "title": "创建史诗",
@@ -402,7 +410,6 @@
     "priorityLabel": "优先级",
     "assigneeLabel": "负责人"
   },
-
   "createProject": {
     "button": "+ 新建项目",
     "title": "创建项目",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "这个项目是关于什么的？",
     "methodologyLabel": "方法论"
   },
-
   "createSprint": {
     "button": "+ 新建 Sprint",
     "title": "创建 Sprint",
@@ -427,7 +433,6 @@
     "startDateLabel": "开始日期",
     "endDateLabel": "结束日期"
   },
-
   "createTeam": {
     "button": "+ 新建团队",
     "title": "创建团队",
@@ -436,17 +441,17 @@
     "teamNameLabel": "团队名称",
     "teamNamePlaceholder": "例如：后端小组"
   },
-
   "quickCreate": {
-    "placeholder": "需要完成什么？"
+    "placeholder": "需要完成什么？",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "打开 {{title}}",
     "taskCount": "{{count}} 个任务",
-    "taskCount_other": "{{count}} 个任务"
+    "taskCount_other": "{{count}} 个任务",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "团队",
     "memberCount": "{{count}} 名成员",
@@ -468,7 +473,6 @@
     "nameLabel": "姓名",
     "roleLabel": "角色"
   },
-
   "epics": {
     "helpTitle": "史诗",
     "helpBody1": "史诗是功能级别的分组。每个史诗包含相关的用户故事，它们共同交付一个业务能力。",
@@ -477,7 +481,6 @@
     "noEpicsYet": "暂无史诗。史诗将相关用户故事组织为功能级别的交付物。",
     "storyProgress": "{{done}}/{{total}} 个故事"
   },
-
   "epicDetail": {
     "backToEpics": "返回史诗列表",
     "description": "描述",
@@ -512,9 +515,20 @@
     "qeTesting": "QE 测试",
     "bsaAnalysis": "BSA 分析",
     "creating": "创建中...",
-    "createStory": "创建故事"
+    "createStory": "创建故事",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "返回 Sprint 列表",
     "start": "开始：",
@@ -533,9 +547,19 @@
     "removeFromSprint": "从 Sprint 中移除",
     "standaloneTasks": "独立任务",
     "adding": "添加中...",
-    "tasks": "{{count}} 个任务"
+    "tasks": "{{count}} 个任务",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "项目报告",
     "helpBody1": "报告让你了解团队的交付情况。速率显示每个 Sprint 完成的点数，会随时间趋于稳定。",
@@ -575,7 +599,6 @@
     "onTrack": "正常",
     "behind": "落后"
   },
-
   "aiSettings": {
     "title": "AI 配置",
     "description": "配置 AI 提供商以启用验收标准建议、故事分解和发布说明撰写。你提供自己的 API 密钥；PlanA 不会通过任何共享账户存储或代理。",
@@ -616,7 +639,6 @@
     "revoked": "已撤销",
     "revokedDate": "撤销于 {{date}}"
   },
-
   "shareDashboard": {
     "title": "利益相关者仪表板",
     "invalidLink": "链接无效或已过期",
@@ -634,7 +656,6 @@
     "sprintVelocity": "Sprint 速率",
     "storyProgress": "故事进度"
   },
-
   "reportView": {
     "title": "报告",
     "generateProject": "项目报告",
@@ -669,5 +690,72 @@
     "currentBlockers": "当前阻塞项",
     "velocityHistory": "速率历史",
     "generatedBy": "由 PlanA 生成"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }

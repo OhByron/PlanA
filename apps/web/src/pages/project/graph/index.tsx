@@ -171,8 +171,10 @@ function GraphPageInner() {
   const allLayoutNodes = epicAndItemNodes;
 
   // Node state management
-  const layoutKey = useMemo(
-    () => items.map((i) => i.id).join(',') + '|' + persistedDeps.map((d) => d.id).join(',')
+  // Structural key: triggers full position reset when items/deps/epics are added or removed
+  const structuralKey = useMemo(
+    () => items.map((i) => i.id).join(',')
+      + '|' + persistedDeps.map((d) => d.id).join(',')
       + '|' + epics.map((e) => e.id).join(','),
     [items, persistedDeps, epics],
   );
@@ -183,14 +185,28 @@ function GraphPageInner() {
   const isDirty = draft.isDirty;
 
   useEffect(() => {
-    const keyChanged = appliedKeyRef.current !== layoutKey;
+    const keyChanged = appliedKeyRef.current !== structuralKey;
     const justCommitted = wasDirtyRef.current && !isDirty;
     wasDirtyRef.current = isDirty;
+
     if (keyChanged || justCommitted) {
-      appliedKeyRef.current = layoutKey;
+      // Structural change or commit/discard — full position reset
+      appliedKeyRef.current = structuralKey;
       setNodes(allLayoutNodes);
+    } else {
+      // Data-only change (status, points, etc.) — update node data but keep positions
+      setNodes((prev) => {
+        const layoutMap = new Map(allLayoutNodes.map((n) => [n.id, n]));
+        return prev.map((n) => {
+          const updated = layoutMap.get(n.id);
+          if (updated && updated.data !== n.data) {
+            return { ...n, data: updated.data };
+          }
+          return n;
+        });
+      });
     }
-  }, [layoutKey, isDirty, allLayoutNodes]);
+  }, [structuralKey, isDirty, allLayoutNodes]);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((prev) => applyNodeChanges(changes, prev));

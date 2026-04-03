@@ -25,14 +25,13 @@
     "error": "خطأ: {{message}}",
     "thinking": "جارٍ التفكير...",
     "generating": "جارٍ التوليد...",
-    "language": "اللغة"
+    "language": "اللغة",
+    "back": "Back"
   },
-
   "brand": {
     "name": "PlanA",
     "tagline": "أجايل، فعلاً."
   },
-
   "nav": {
     "board": "اللوحة",
     "backlog": "قائمة الانتظار",
@@ -43,9 +42,10 @@
     "team": "الفريق",
     "settings": "الإعدادات",
     "project": "المشروع",
-    "graph": "رسم بياني"
+    "graph": "رسم بياني",
+    "gantt": "Gantt",
+    "calendar": "Calendar"
   },
-
   "graph": {
     "hardDependency": "Hard Dependency",
     "softDependency": "Soft Dependency",
@@ -57,9 +57,29 @@
     "committing": "Committing...",
     "discard": "Discard",
     "errors": "errors",
-    "warnings": "warnings"
+    "warnings": "warnings",
+    "epic": "Epic",
+    "sprint": "Sprint",
+    "createEpic": "Create Epic",
+    "createSprint": "Create Sprint",
+    "epicTitle": "Title",
+    "sprintName": "Name",
+    "sprintGoal": "Sprint Goal",
+    "description": "Description",
+    "priority": "Priority",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "endBeforeStart": "End date is before start date",
+    "sprintOverlapWarning": "Dates overlap with: {{names}}",
+    "sprintDuration": "Default: {{weeks}}w",
+    "epicDuration": "Default: {{weeks}}w",
+    "cannotDropEpicOnEpic": "Epics cannot be nested inside other epics. Use dependencies to link them instead.",
+    "cannotDropSprintOnSprint": "Sprints cannot be placed inside other sprints. Use dependencies to order them.",
+    "cannotDropSprintOnEpic": "Sprints cannot be placed inside epics. Assign individual items to epics instead.",
+    "invalidDrop": "This drop action is not supported.",
+    "cannotDependParentChild": "A task cannot depend on its own parent story, or vice versa. Dependencies work between siblings or across stories."
   },
-
   "sidebar": {
     "expandSidebar": "توسيع الشريط الجانبي",
     "collapseSidebar": "طي الشريط الجانبي",
@@ -68,7 +88,6 @@
     "noOrganisationsYet": "لا توجد مؤسسات بعد",
     "toggle": "تبديل {{name}}"
   },
-
   "topBar": {
     "notifications": "الإشعارات",
     "markAllRead": "تعيين الكل كمقروء",
@@ -78,7 +97,6 @@
     "hoursAgo": "منذ {{count}} س",
     "daysAgo": "منذ {{count}} ي"
   },
-
   "notifications": {
     "assigned": "تم تعيينك على \"{{title}}\"",
     "statusChanged": "تم تغيير الحالة على \"{{title}}\"",
@@ -86,7 +104,6 @@
     "mentioned": "تمت الإشارة إليك في \"{{title}}\"",
     "default": "إشعار: {{type}}"
   },
-
   "status": {
     "backlog": "قائمة الانتظار",
     "ready": "جاهز",
@@ -95,33 +112,28 @@
     "done": "مكتمل",
     "cancelled": "ملغى"
   },
-
   "priority": {
     "urgent": "عاجل",
     "high": "عالي",
     "medium": "متوسط",
     "low": "منخفض"
   },
-
   "type": {
     "story": "قصة مستخدم",
     "bug": "خلل",
     "task": "مهمة"
   },
-
   "methodology": {
     "scrum": "Scrum",
     "kanban": "Kanban",
     "shape_up": "Shape Up"
   },
-
   "sprintStatus": {
     "active": "نشط",
     "planned": "مخطط",
     "completed": "مكتمل",
     "cancelled": "ملغى"
   },
-
   "roles": {
     "pm": "مدير المشروع",
     "po": "مالك المنتج",
@@ -131,7 +143,6 @@
     "ux": "مصمم تجربة المستخدم",
     "dev": "مطوّر"
   },
-
   "login": {
     "continueWithGitHub": "المتابعة عبر GitHub",
     "continueWithGoogle": "المتابعة عبر Google",
@@ -142,7 +153,6 @@
     "devOnly": "للتطوير فقط",
     "devLogin": "دخول المطوّر (تخطي OAuth)"
   },
-
   "authError": {
     "title": "فشل تسجيل الدخول",
     "badState": "انتهت صلاحية جلسة تسجيل الدخول. يرجى المحاولة مجدداً.",
@@ -152,7 +162,6 @@
     "missingToken": "لم يتم استلام رمز المصادقة.",
     "default": "حدث خطأ غير متوقع أثناء تسجيل الدخول."
   },
-
   "myWork": {
     "title": "أعمالي",
     "itemCount": "{{count}} عنصر مسند إليك",
@@ -160,7 +169,6 @@
     "noItems": "لا توجد عناصر مسندة إليك.",
     "noItemsHelp": "تظهر العناصر هنا عندما تُضاف كعضو في فريق المشروع ويتم إسناد قصص أو مهام إليك. تأكد من أن بريدك الإلكتروني يطابق بريد عضو الفريق، أو أنك قبلت الدعوة."
   },
-
   "orgs": {
     "title": "المؤسسات",
     "orgCount": "{{count}} مؤسسة",
@@ -184,7 +192,6 @@
     "postalCode": "الرمز البريدي",
     "country": "البلد"
   },
-
   "orgDetail": {
     "allOrganisations": "جميع المؤسسات",
     "editDetails": "تعديل التفاصيل",
@@ -206,7 +213,6 @@
     "createProject": "إنشاء المشروع",
     "whatIsThisProjectAbout": "ما موضوع هذا المشروع؟"
   },
-
   "invite": {
     "invalidInvitation": "دعوة غير صالحة",
     "invalidLink": "رابط الدعوة هذا غير صالح.",
@@ -229,7 +235,6 @@
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "logIn": "تسجيل الدخول"
   },
-
   "board": {
     "helpTitle": "لوحة كانبان",
     "helpBody1": "هذه لوحة عمل فريقك مُصوَّرة كتدفق. يمثل كل عمود مرحلة في سير العمل.",
@@ -242,7 +247,6 @@
     "noItems": "لا توجد عناصر",
     "column": "عمود {{status}}"
   },
-
   "backlog": {
     "helpTitle": "قائمة الانتظار",
     "helpBody1": "قائمة الانتظار هي قائمتك المرتبة حسب الأولوية. العناصر في الأعلى هي الأعلى أولوية.",
@@ -261,7 +265,6 @@
     "priorityView": "Priority",
     "showInGraph": "Show in graph"
   },
-
   "sprints": {
     "helpTitle": "تخطيط السبرنت",
     "helpBody1": "السبرنتات هي دورات محددة زمنياً (عادةً أسبوعان). اسحب القصص من قائمة الانتظار إلى السبرنت لتخطيط عمل فريقك.",
@@ -270,7 +273,6 @@
     "noSprintsYet": "لا توجد سبرنتات بعد. أنشئ واحداً لبدء التخطيط.",
     "pts": "{{count}} نقطة"
   },
-
   "workItemDetail": {
     "backToBoard": "العودة إلى اللوحة",
     "partOf": "جزء من:",
@@ -300,9 +302,23 @@
     "convertToStoryConfirm": "هل تريد تحويل هذه المهمة إلى قصة؟ سيتم الاحتفاظ برابط تبعية مع القصة الأصلية.",
     "convertToStoryHelp": "يرقّي هذه المهمة إلى قصة مستقلة مع رابط تبعية",
     "created": "أُنشئ {{date}}",
-    "updated": "آخر تحديث {{date}}"
+    "updated": "آخر تحديث {{date}}",
+    "epicLabel": "Epic",
+    "noEpic": "No epic",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "overdue": "Overdue",
+    "pointsUsed": "Points Used",
+    "pointsUsedHelp": "Actual effort spent. Defaults to the estimate when marked done. Adjust if the task took more or less effort than estimated.",
+    "underEstimate": "{{diff}} pts under estimate",
+    "overEstimate": "{{diff}} pts over estimate",
+    "preConditions": "Pre-conditions",
+    "preConditionsHelp": "What must be true before work can start — environment state, data availability, upstream deliverables, permissions, feature flags.",
+    "preConditionsPlaceholder": "Click to add pre-conditions...",
+    "postConditions": "Post-conditions",
+    "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
+    "postConditionsPlaceholder": "Click to add post-conditions..."
   },
-
   "childTasks": {
     "title": "المهام ({{count}})",
     "contextHelp": "المهام تقسّم القصة إلى أعمال حسب التخصص, تصميم تجربة المستخدم، تطوير الواجهة الخلفية، تطوير الواجهة الأمامية، اختبار الجودة، إلخ. كل مهمة يمكن إسنادها لعضو في الفريق.",
@@ -314,7 +330,6 @@
     "pts": "{{count}} نقطة",
     "clarificationNeeded": "يلزم توضيح:"
   },
-
   "acceptanceCriteria": {
     "title": "معايير القبول",
     "contextHelp": "معايير القبول تحدد متى يكون هذا العنصر \"مكتملاً\" فعلاً. تُكتب بصيغة بافتراض / عندما / فإن (BDD)، وتجعل التوقعات واضحة وقابلة للاختبار. كل معيار هو شرط محدد وقابل للتحقق, وليس أمنية غامضة.",
@@ -331,13 +346,11 @@
     "aiSuggestions": "اقتراحات الذكاء الاصطناعي, انقر للإضافة:",
     "aiNeedsMoreInfo": "يحتاج الذكاء الاصطناعي إلى مزيد من المعلومات:"
   },
-
   "comments": {
     "title": "التعليقات",
     "noCommentsYet": "لا توجد تعليقات بعد.",
     "addComment": "أضف تعليقاً..."
   },
-
   "dependencies": {
     "title": "التبعيات",
     "contextHelp": "التبعيات تتبع العلاقات بين العناصر. \"يعتمد على\" تعني أن هذا العنصر لا يمكنه المضي قدماً حتى يكتمل الهدف. \"مرتبط بـ\" هو رابط معلوماتي.",
@@ -348,7 +361,6 @@
     "removeDependency": "إزالة التبعية",
     "selectItem": "اختر عنصراً..."
   },
-
   "links": {
     "title": "الروابط",
     "addLink": "+ إضافة رابط",
@@ -357,7 +369,6 @@
     "urlPlaceholder": "https://...",
     "removeLink": "إزالة الرابط"
   },
-
   "testResults": {
     "retestRequired": "يلزم إعادة الاختبار",
     "retestMessage": "يحتوي هذا الخلل على {{count}} اختبار(ات) فاشلة. ارفع نتائج اختبار جديدة (JUnit XML أو webhook) بعد نشر الإصلاح لإزالة بوابة الجودة وإغلاق هذا العنصر.",
@@ -373,12 +384,10 @@
     "source": "المصدر: {{source}} | التاريخ: {{date}}",
     "generateDescAC": "توليد الوصف ومعايير القبول"
   },
-
   "helpOverlay": {
     "dismiss": "تجاهل",
     "close": "إغلاق"
   },
-
   "richTextEditor": {
     "startTyping": "ابدأ الكتابة...",
     "bold": "عريض",
@@ -391,7 +400,6 @@
     "quote": "اقتباس",
     "codeBlock": "كتلة رمز برمجي"
   },
-
   "createEpic": {
     "button": "+ ملحمة جديدة",
     "title": "إنشاء ملحمة",
@@ -402,7 +410,6 @@
     "priorityLabel": "الأولوية",
     "assigneeLabel": "المسند إليه"
   },
-
   "createProject": {
     "button": "+ مشروع جديد",
     "title": "إنشاء مشروع",
@@ -416,7 +423,6 @@
     "descriptionPlaceholder": "ما موضوع هذا المشروع؟",
     "methodologyLabel": "المنهجية"
   },
-
   "createSprint": {
     "button": "+ سبرنت جديد",
     "title": "إنشاء سبرنت",
@@ -427,7 +433,6 @@
     "startDateLabel": "تاريخ البدء",
     "endDateLabel": "تاريخ الانتهاء"
   },
-
   "createTeam": {
     "button": "+ فريق جديد",
     "title": "إنشاء فريق",
@@ -436,17 +441,17 @@
     "teamNameLabel": "اسم الفريق",
     "teamNamePlaceholder": "مثال: فريق الواجهة الخلفية"
   },
-
   "quickCreate": {
-    "placeholder": "ما الذي يجب إنجازه؟"
+    "placeholder": "ما الذي يجب إنجازه؟",
+    "selectEpic": "Select epic..."
   },
-
   "workItemCard": {
     "open": "فتح {{title}}",
     "taskCount": "{{count}} مهمة",
-    "taskCount_other": "{{count}} مهام"
+    "taskCount_other": "{{count}} مهام",
+    "unblocks": "Unblocks {{count}}",
+    "unblocks_other": "Unblocks {{count}}"
   },
-
   "team": {
     "title": "الفريق",
     "memberCount": "{{count}} عضو",
@@ -468,7 +473,6 @@
     "nameLabel": "الاسم",
     "roleLabel": "الدور"
   },
-
   "epics": {
     "helpTitle": "الملاحم",
     "helpBody1": "الملاحم هي تجميعات على مستوى الميزة. تحتوي كل ملحمة على قصص مترابطة تقدم معاً قدرة تجارية.",
@@ -477,7 +481,6 @@
     "noEpicsYet": "لا توجد ملاحم بعد. الملاحم تجمع القصص المترابطة في مخرجات على مستوى الميزة.",
     "storyProgress": "{{done}}/{{total}} قصة"
   },
-
   "epicDetail": {
     "backToEpics": "العودة إلى الملاحم",
     "description": "الوصف",
@@ -512,9 +515,20 @@
     "qeTesting": "اختبار QE",
     "bsaAnalysis": "تحليل BSA",
     "creating": "جارٍ الإنشاء...",
-    "createStory": "إنشاء قصة"
+    "createStory": "إنشاء قصة",
+    "addExisting": "Add Existing",
+    "searchExisting": "Search stories and tasks...",
+    "noItemsFound": "No matching items found.",
+    "addToEpic": "+ Add",
+    "removeFromEpic": "Remove from epic",
+    "typeToSearch": "Showing first 20 of {{count}} — type to search",
+    "startDateLabel": "Start Date",
+    "dueDateLabel": "Due Date",
+    "overdue": "Overdue",
+    "progress": "Progress",
+    "itemsDone": "items done",
+    "totalPts": "pts total"
   },
-
   "sprintDetail": {
     "backToSprints": "العودة إلى السبرنتات",
     "start": "البدء:",
@@ -533,9 +547,19 @@
     "removeFromSprint": "إزالة من السبرنت",
     "standaloneTasks": "مهام مستقلة",
     "adding": "جارٍ الإضافة...",
-    "tasks": "{{count}} مهمة"
+    "tasks": "{{count}} مهمة",
+    "properties": "Sprint Properties",
+    "nameLabel": "Name",
+    "goalLabel": "Goal",
+    "statusLabel": "Status",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "velocityLabel": "Velocity",
+    "clickToSetGoal": "Click to set a goal...",
+    "totalItemCount": "{{count}} items",
+    "totalPointsLabel": "{{count}} story points",
+    "velocityStat": "Velocity: {{velocity}} pts"
   },
-
   "reports": {
     "helpTitle": "تقارير المشروع",
     "helpBody1": "التقارير تمنحك رؤية واضحة لتسليم فريقك. السرعة تُظهر عدد النقاط المكتملة في كل سبرنت وتستقر مع الوقت.",
@@ -575,7 +599,6 @@
     "onTrack": "على المسار",
     "behind": "متأخر"
   },
-
   "aiSettings": {
     "title": "إعدادات الذكاء الاصطناعي",
     "description": "قم بإعداد مزود ذكاء اصطناعي لتفعيل اقتراحات معايير القبول وتفكيك القصص وصياغة ملاحظات الإصدار. أنت تقدم مفتاح API الخاص بك؛ PlanA لا يخزن أو يمرر عبر أي حساب مشترك.",
@@ -616,7 +639,6 @@
     "revoked": "تم الإلغاء",
     "revokedDate": "أُلغي {{date}}"
   },
-
   "shareDashboard": {
     "title": "لوحة معلومات أصحاب المصلحة",
     "invalidLink": "رابط غير صالح أو منتهي الصلاحية",
@@ -634,7 +656,6 @@
     "sprintVelocity": "سرعة السبرنت",
     "storyProgress": "تقدم القصص"
   },
-
   "reportView": {
     "title": "التقارير",
     "generateProject": "تقرير المشروع",
@@ -669,5 +690,72 @@
     "currentBlockers": "العوائق الحالية",
     "velocityHistory": "سجل السرعة",
     "generatedBy": "تم التوليد بواسطة PlanA"
+  },
+  "gantt": {
+    "title": "Gantt Chart",
+    "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
+    "allItems": "All items",
+    "epicsOnly": "Epics only",
+    "item": "Item",
+    "status": "Status"
+  },
+  "calendar": {
+    "today": "Today",
+    "everyone": "Everyone",
+    "myWork": "My Work",
+    "more": "more",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "graphEdit": {
+    "edit": "Edit",
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "goal": "Goal",
+    "status": "Status",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "endDate": "End Date",
+    "confirmDelete": "Click again to confirm"
+  },
+  "projectDetails": {
+    "title": "Project Details",
+    "description": "Core information about this project.",
+    "name": "Project Name",
+    "desc": "Description",
+    "descPlaceholder": "Describe the project goals and scope...",
+    "methodology": "Methodology",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "contact": "Primary Contact",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactPhone": "Phone"
+  },
+  "projectStatus": {
+    "active": "Active",
+    "on_hold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "settings": {
+    "projectSettings": "Planning Defaults",
+    "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
+    "projectDuration": "Feature / Project Duration",
+    "projectDurationHelp": "Overall delivery timeline for this project.",
+    "epicDuration": "Epic Duration",
+    "epicDurationHelp": "Auto-fills epic due dates from start date.",
+    "sprintDuration": "Sprint Duration",
+    "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
+    "months": "months",
+    "weeks": "weeks"
   }
 }
