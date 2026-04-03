@@ -355,6 +355,30 @@ function ProjectDetailsSection({ projectId }: { projectId: string }) {
             </Button>
           )}
         </div>
+
+        {/* Export / Import */}
+        <div className="mt-8 border-t border-gray-100 pt-6">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">{t('projectDetails.exportImport')}</h3>
+          <div className="flex items-center gap-3">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={async () => {
+                const data = await api.get(`/projects/${projectId}/export`);
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `project-${project?.name ?? projectId}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              {t('projectDetails.exportProject')}
+            </Button>
+            <p className="text-xs text-gray-400">{t('projectDetails.exportHelp')}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

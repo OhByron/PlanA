@@ -126,9 +126,43 @@ export function OrgDetailPage() {
           <h2 className="text-base font-semibold text-gray-900">
             {t('orgDetail.projects', { count: projects.length })}
           </h2>
-          <Button size="sm" onClick={() => setShowCreateProject(true)} disabled={showCreateProject}>
-            {t('orgDetail.newProject')}
-          </Button>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={() => setShowCreateProject(true)} disabled={showCreateProject}>
+              {t('orgDetail.newProject')}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (!file) return;
+                  try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    const teamId = teams[0]?.id;
+                    if (!teamId) { alert('No team found to import into'); return; }
+                    const asTemplate = window.confirm('Import as template? (OK = template with reset statuses, Cancel = full import)');
+                    await api.post(`/orgs/${orgId}/teams/${teamId}/projects/import`, {
+                      team_id: teamId,
+                      as_template: asTemplate,
+                      data,
+                    });
+                    qc.invalidateQueries({ queryKey: ['nav-tree'] });
+                    window.location.reload();
+                  } catch (err) {
+                    alert('Import failed: ' + (err instanceof Error ? err.message : 'Unknown error'));
+                  }
+                };
+                input.click();
+              }}
+            >
+              {t('orgDetail.importProject')}
+            </Button>
+          </div>
         </div>
 
         {showCreateProject && (

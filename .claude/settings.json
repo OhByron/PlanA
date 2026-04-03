@@ -136,7 +136,9 @@
       "Bash(rm _fix.js)",
       "Bash(mv F:/Coding/ProjectA/apps/web/src/i18n/locales/_fix.js F:/Coding/ProjectA/apps/web/src/i18n/locales/_fix.cjs)",
       "Bash(node _fix.cjs)",
-      "Bash(rm _fix.cjs)"
+      "Bash(rm _fix.cjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/health)",
+      "Bash(curl -s -X POST http://localhost:8080/api/orgs/9d97aad9-f39d-48f2-80b1-533fd51c778f/teams/5d7e10b1-0ea0-4429-afb1-3e46659e5808/projects/import -H \"Content-Type: application/json\" -d '{\"team_id\":\"test\",\"data\":{\"version\":\"1.0\",\"project\":{}}}')"
     ]
   }
 }

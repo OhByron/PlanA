@@ -152,6 +152,7 @@ func New(deps *Dependencies) http.Handler {
 							r.Route("/projects", func(r chi.Router) {
 								r.Get("/", projH.List)
 								r.Post("/", projH.Create)
+								r.Post("/import", projH.Import)
 								r.Route("/{projectID}", func(r chi.Router) {
 									r.Get("/", projH.Get)
 									r.Patch("/", projH.Update)
@@ -169,6 +170,7 @@ func New(deps *Dependencies) http.Handler {
 				r.Patch("/", projH.Update)
 				r.Post("/archive", projH.Archive)
 				r.Post("/unarchive", projH.Unarchive)
+				r.Get("/export", projH.Export)
 				r.Get("/dependencies", depH.ListByProject)
 				r.Post("/dependencies/bulk", depH.BulkCommit)
 				r.Get("/sprint-assigned", siH.AssignedItemIDs)

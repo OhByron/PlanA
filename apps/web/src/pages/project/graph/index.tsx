@@ -182,31 +182,21 @@ function GraphPageInner() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const appliedKeyRef = useRef('');
   const wasDirtyRef = useRef(false);
+  const layoutRef = useRef(allLayoutNodes);
+  layoutRef.current = allLayoutNodes;
   const isDirty = draft.isDirty;
 
+  // Full position reset on structural changes or commit/discard
   useEffect(() => {
     const keyChanged = appliedKeyRef.current !== structuralKey;
     const justCommitted = wasDirtyRef.current && !isDirty;
     wasDirtyRef.current = isDirty;
 
     if (keyChanged || justCommitted) {
-      // Structural change or commit/discard — full position reset
       appliedKeyRef.current = structuralKey;
-      setNodes(allLayoutNodes);
-    } else {
-      // Data-only change (status, points, etc.) — update node data but keep positions
-      setNodes((prev) => {
-        const layoutMap = new Map(allLayoutNodes.map((n) => [n.id, n]));
-        return prev.map((n) => {
-          const updated = layoutMap.get(n.id);
-          if (updated && updated.data !== n.data) {
-            return { ...n, data: updated.data };
-          }
-          return n;
-        });
-      });
+      setNodes(layoutRef.current);
     }
-  }, [structuralKey, isDirty, allLayoutNodes]);
+  }, [structuralKey, isDirty]);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((prev) => applyNodeChanges(changes, prev));
