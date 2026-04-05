@@ -24,6 +24,7 @@ export interface Epic {
   orderIndex: number;
   startDate: string | null;
   dueDate: string | null;
+  targetDate: string | null;
   initiativeId: string | null;
   assigneeId: string | null;
   createdBy: string;
@@ -48,8 +49,11 @@ export interface WorkItem {
   orderIndex: number;
   startDate: string | null;
   dueDate: string | null;
+  targetDate: string | null;
   preConditions: Record<string, unknown> | null;
   postConditions: Record<string, unknown> | null;
+  designReady: boolean;
+  designLink: string | null;
   isBlocked: boolean;
   blockedReason: string | null;
   sourceTestResultId: string | null;

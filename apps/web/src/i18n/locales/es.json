@@ -86,7 +86,15 @@
     "allItems": "Todos los elementos",
     "epicsOnly": "Solo épicas",
     "item": "Elemento",
-    "status": "Estado"
+    "status": "Estado",
+    "zoom_day": "Day",
+    "zoom_week": "Week",
+    "zoom_month": "Month",
+    "resourceAllocation": "Resource Allocation",
+    "member": "Member",
+    "role": "Role",
+    "totalPts": "Points",
+    "capacity": "Cap."
   },
   "calendar": {
     "today": "Hoy",
@@ -361,7 +369,20 @@
     "postConditionsHelp": "Lo que debe ser verdad al completar el trabajo — más allá de los criterios de aceptación. Estado del sistema, integridad de datos, objetivos de rendimiento, documentación.",
     "postConditionsPlaceholder": "Haz clic para agregar postcondiciones...",
     "created": "Creado {{date}}",
-    "updated": "Actualizado {{date}}"
+    "updated": "Actualizado {{date}}",
+    "targetDate": "Target Date",
+    "pastTarget": "Due date exceeds target",
+    "definitionOfReady": "Definition of Ready",
+    "dorDescription": "Description provided",
+    "dorAC": "At least one acceptance criterion",
+    "dorTasks": "At least one child task",
+    "dorEstimates": "All tasks estimated",
+    "dorDesign": "Design approved",
+    "dorReady": "Ready",
+    "designComplete": "Design complete",
+    "designLinkPlaceholder": "Link to Figma, Azure DevOps, etc.",
+    "designLinkRequired": "A design link is required when design is marked complete",
+    "viewDesign": "View design"
   },
   "childTasks": {
     "title": "Tareas ({{count}})",
@@ -791,5 +812,15 @@
     "projects": "Archived Projects ({{count}})",
     "archivedOn": "Archived {{date}}",
     "restore": "Restore"
+  },
+  "estimation": {
+    "title": "Estimation",
+    "reset": "Reset votes",
+    "votes": "{{count}} vote(s)",
+    "average": "Avg: {{value}}",
+    "consensus": "Consensus!",
+    "lock": "Lock at {{value}} pts",
+    "nearestFib": "nearest Fibonacci",
+    "currentEstimate": "Current estimate: {{points}} pts"
   }
 }

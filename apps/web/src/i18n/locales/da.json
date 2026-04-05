@@ -326,7 +326,20 @@
     "preConditionsPlaceholder": "Click to add pre-conditions...",
     "postConditions": "Post-conditions",
     "postConditionsHelp": "What must be true when work is complete — beyond acceptance criteria. System state, data integrity, performance targets, documentation.",
-    "postConditionsPlaceholder": "Click to add post-conditions..."
+    "postConditionsPlaceholder": "Click to add post-conditions...",
+    "targetDate": "Target Date",
+    "pastTarget": "Due date exceeds target",
+    "definitionOfReady": "Definition of Ready",
+    "dorDescription": "Description provided",
+    "dorAC": "At least one acceptance criterion",
+    "dorTasks": "At least one child task",
+    "dorEstimates": "All tasks estimated",
+    "dorDesign": "Design approved",
+    "dorReady": "Ready",
+    "designComplete": "Design complete",
+    "designLinkPlaceholder": "Link to Figma, Azure DevOps, etc.",
+    "designLinkRequired": "A design link is required when design is marked complete",
+    "viewDesign": "View design"
   },
   "childTasks": {
     "title": "Opgaver ({{count}})",
@@ -706,7 +719,15 @@
     "allItems": "All items",
     "epicsOnly": "Epics only",
     "item": "Item",
-    "status": "Status"
+    "status": "Status",
+    "zoom_day": "Day",
+    "zoom_week": "Week",
+    "zoom_month": "Month",
+    "resourceAllocation": "Resource Allocation",
+    "member": "Member",
+    "role": "Role",
+    "totalPts": "Points",
+    "capacity": "Cap."
   },
   "calendar": {
     "today": "Today",
@@ -791,5 +812,15 @@
     "projects": "Archived Projects ({{count}})",
     "archivedOn": "Archived {{date}}",
     "restore": "Restore"
+  },
+  "estimation": {
+    "title": "Estimation",
+    "reset": "Reset votes",
+    "votes": "{{count}} vote(s)",
+    "average": "Avg: {{value}}",
+    "consensus": "Consensus!",
+    "lock": "Lock at {{value}} pts",
+    "nearestFib": "nearest Fibonacci",
+    "currentEstimate": "Current estimate: {{points}} pts"
   }
 }

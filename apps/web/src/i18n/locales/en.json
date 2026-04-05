@@ -94,13 +94,32 @@
     "restore": "Restore"
   },
 
+  "estimation": {
+    "title": "Estimation",
+    "reset": "Reset votes",
+    "votes": "{{count}} vote(s)",
+    "average": "Avg: {{value}}",
+    "consensus": "Consensus!",
+    "lock": "Lock at {{value}} pts",
+    "nearestFib": "nearest Fibonacci",
+    "currentEstimate": "Current estimate: {{points}} pts"
+  },
+
   "gantt": {
     "title": "Gantt Chart",
     "pmOnly": "The Gantt chart is available to Project Managers and Product Owners.",
     "allItems": "All items",
     "epicsOnly": "Epics only",
     "item": "Item",
-    "status": "Status"
+    "status": "Status",
+    "zoom_day": "Day",
+    "zoom_week": "Week",
+    "zoom_month": "Month",
+    "resourceAllocation": "Resource Allocation",
+    "member": "Member",
+    "role": "Role",
+    "totalPts": "Points",
+    "capacity": "Cap."
   },
 
   "calendar": {
@@ -371,6 +390,19 @@
     "startDate": "Start Date",
     "dueDate": "Due Date",
     "overdue": "Overdue",
+    "targetDate": "Target Date",
+    "pastTarget": "Due date exceeds target",
+    "definitionOfReady": "Definition of Ready",
+    "dorDescription": "Description provided",
+    "dorAC": "At least one acceptance criterion",
+    "dorTasks": "At least one child task",
+    "dorEstimates": "All tasks estimated",
+    "dorDesign": "Design approved",
+    "dorReady": "Ready",
+    "designComplete": "Design complete",
+    "designLinkPlaceholder": "Link to Figma, Azure DevOps, etc.",
+    "designLinkRequired": "A design link is required when design is marked complete",
+    "viewDesign": "View design",
     "totalPoints": "Total Points",
     "storyPoints": "Story Points",
     "storyPointsHelp": "For stories, points are the sum of all task points. Add points to individual tasks during refinement.",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, Badge, Select, Input } from '@projecta/ui';
+import { Button, Badge, Select, Input, cn } from '@projecta/ui';
 import type { WorkItemStatus, Priority, WorkItemType } from '@projecta/types';
 import { useWorkItem } from '../../hooks/use-work-item';
 import { useUpdateWorkItem, useWorkItems, useCreateWorkItem } from '../../hooks/use-work-items';
@@ -16,6 +16,7 @@ import { RichTextEditor } from '../../components/rich-text-editor';
 import { RichTextDisplay } from '../../components/rich-text-display';
 import { ContextHelp } from '../../components/context-help';
 import { useDependencies, useCreateDependency, useDeleteDependency } from '../../hooks/use-dependencies';
+import { EstimationVotes } from '../../components/estimation-votes';
 import { useLinks, useCreateLink, useDeleteLink } from '../../hooks/use-links';
 import { useTestSummary, useTestResult } from '../../hooks/use-test-results';
 import { useQueryClient } from '@tanstack/react-query';
@@ -305,6 +306,99 @@ export function WorkItemDetailPage() {
           )}
         </section>
 
+        {/* Definition of Ready (stories only) */}
+        {item.type === 'story' && (
+          <section className="mb-6">
+            <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+              {t('workItemDetail.definitionOfReady')}
+            </h2>
+            <div className="space-y-1.5">
+              {(() => {
+                const childTasks = allItems.filter((i) => i.parentId === item.id);
+                const hasDescription = item.description != null;
+                const hasAC = criteria.length > 0;
+                const hasTasks = childTasks.length > 0;
+                const hasEstimates = childTasks.length > 0 && childTasks.every((t) => t.storyPoints != null && t.storyPoints > 0);
+                const designOk = item.designReady;
+                const checks = [
+                  { label: t('workItemDetail.dorDescription'), ok: hasDescription },
+                  { label: t('workItemDetail.dorAC'), ok: hasAC },
+                  { label: t('workItemDetail.dorTasks'), ok: hasTasks },
+                  { label: t('workItemDetail.dorEstimates'), ok: hasEstimates },
+                  { label: t('workItemDetail.dorDesign'), ok: designOk },
+                ];
+                const passCount = checks.filter((c) => c.ok).length;
+                const allPass = passCount === checks.length;
+
+                return (
+                  <>
+                    {checks.map((check) => (
+                      <div key={check.label} className="flex items-center gap-2 text-xs">
+                        <span className={check.ok ? 'text-emerald-500' : 'text-gray-300'}>
+                          {check.ok ? '✓' : '○'}
+                        </span>
+                        <span className={check.ok ? 'text-gray-700' : 'text-gray-400'}>{check.label}</span>
+                      </div>
+                    ))}
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="h-1.5 flex-1 rounded-full bg-gray-100">
+                        <div
+                          className={cn('h-full rounded-full transition-all',
+                            allPass ? 'bg-emerald-400' : passCount >= 3 ? 'bg-amber-400' : 'bg-gray-300')}
+                          style={{ width: `${(passCount / checks.length) * 100}%` }}
+                        />
+                      </div>
+                      <span className={cn('text-xs font-medium',
+                        allPass ? 'text-emerald-600' : passCount >= 3 ? 'text-amber-600' : 'text-gray-400')}>
+                        {allPass ? t('workItemDetail.dorReady') : `${passCount}/${checks.length}`}
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </section>
+        )}
+
+        {/* Design readiness */}
+        <section className="mb-6">
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={item.designReady}
+                onChange={(e) => patchField({ designReady: e.target.checked })}
+                className="rounded border-gray-300"
+              />
+              {t('workItemDetail.designComplete')}
+            </label>
+          </div>
+          {item.designReady && (
+            <div className="mt-2">
+              <Input
+                value={item.designLink ?? ''}
+                onChange={(e) => patchField({ designLink: e.target.value || null })}
+                placeholder={t('workItemDetail.designLinkPlaceholder')}
+                aria-label="Design link"
+              />
+              {item.designReady && !item.designLink && (
+                <p className="mt-1 text-xs text-amber-500">{t('workItemDetail.designLinkRequired')}</p>
+              )}
+            </div>
+          )}
+          {item.designLink && (
+            <a href={item.designLink} target="_blank" rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-800">
+              {t('workItemDetail.viewDesign')} ↗
+            </a>
+          )}
+        </section>
+
+        {/* Estimation votes (tasks/bugs in backlog only — once work starts, estimation is done) */}
+        {item.type !== 'story' && item.status === 'backlog' && (
+          <EstimationVotes workItemId={workItemId} projectId={projectId} currentPoints={item.storyPoints} />
+        )}
+
         {/* Pre-conditions */}
         <ConditionsSection
           label={t('workItemDetail.preConditions')}
@@ -496,6 +590,17 @@ export function WorkItemDetailPage() {
             <p className="mt-1 text-xs font-medium text-red-500">{t('workItemDetail.overdue')}</p>
           )}
         </FieldGroup>
+        <FieldGroup label={t('workItemDetail.targetDate')}>
+          <Input
+            type="date"
+            value={item.targetDate ? new Date(item.targetDate).toISOString().slice(0, 10) : ''}
+            onChange={(e) => patchField({ targetDate: e.target.value || '' })}
+            aria-label="Target date"
+          />
+          {item.targetDate && item.dueDate && new Date(item.dueDate) > new Date(item.targetDate) && (
+            <p className="mt-1 text-xs font-medium text-amber-500">{t('workItemDetail.pastTarget')}</p>
+          )}
+        </FieldGroup>
 
         {/* Story Points */}
         <FieldGroup label={
@@ -521,17 +626,19 @@ export function WorkItemDetailPage() {
               )}
             </div>
           ) : (
-            <Input
-              type="number"
-              min={0}
-              value={item.storyPoints ?? ''}
+            <Select
+              value={item.storyPoints != null ? String(item.storyPoints) : ''}
               onChange={(e) => {
                 const val = e.target.value === '' ? null : Number(e.target.value);
                 patchField({ storyPoints: val });
               }}
-              placeholder="—"
               aria-label="Story points"
-            />
+            >
+              <option value="">—</option>
+              {[0, 1, 2, 3, 5, 8, 13, 21].map((v) => (
+                <option key={v} value={v}>{v}</option>
+              ))}
+            </Select>
           )}
         </FieldGroup>
 

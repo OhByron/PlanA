@@ -1,0 +1,2 @@
+ALTER TABLE work_items DROP COLUMN IF EXISTS target_date;
+ALTER TABLE epics DROP COLUMN IF EXISTS target_date;

@@ -26,6 +26,7 @@ type Epic struct {
 	OrderIndex   float64    `json:"order_index"`
 	StartDate    *time.Time `json:"start_date"`
 	DueDate      *time.Time `json:"due_date"`
+	TargetDate   *time.Time `json:"target_date"`
 	InitiativeID *string    `json:"initiative_id"`
 	AssigneeID   *string    `json:"assignee_id"`
 	CreatedBy    string     `json:"created_by"`
@@ -33,10 +34,10 @@ type Epic struct {
 	UpdatedAt    time.Time  `json:"updated_at"`
 }
 
-const epicColumns = `id, item_number, project_id, title, description, status, priority, order_index, start_date, due_date, initiative_id, assignee_id, created_by, created_at, updated_at`
+const epicColumns = `id, item_number, project_id, title, description, status, priority, order_index, start_date, due_date, target_date, initiative_id, assignee_id, created_by, created_at, updated_at`
 
 func scanEpic(row interface{ Scan(dest ...any) error }, e *Epic) error {
-	return row.Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
+	return row.Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.TargetDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 }
 
 // EpicHandlers handles CRUD for epics within a project.
@@ -103,6 +104,7 @@ type createEpicRequest struct {
 	OrderIndex   *float64 `json:"order_index"`
 	StartDate    *string  `json:"start_date"`
 	DueDate      *string  `json:"due_date"`
+	TargetDate   *string  `json:"target_date"`
 	InitiativeID *string  `json:"initiative_id"`
 	AssigneeID   *string  `json:"assignee_id"`
 }
@@ -177,11 +179,11 @@ func (h *EpicHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	var e Epic
 	err = h.db.QueryRow(r.Context(),
-		`INSERT INTO epics (project_id, title, description, status, priority, order_index, start_date, due_date, initiative_id, assignee_id, created_by, item_number)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+		`INSERT INTO epics (project_id, title, description, status, priority, order_index, start_date, due_date, target_date, initiative_id, assignee_id, created_by, item_number)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
 		 RETURNING `+epicColumns,
-		projectID, body.Title, body.Description, status, priority, orderIndex, startDate, dueDate, body.InitiativeID, body.AssigneeID, claims.UserID, itemNumber,
-	).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
+		projectID, body.Title, body.Description, status, priority, orderIndex, startDate, dueDate, nil, body.InitiativeID, body.AssigneeID, claims.UserID, itemNumber,
+	).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.TargetDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 	if err != nil {
 		slog.Error("epics.Create: insert failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create epic")
@@ -201,7 +203,7 @@ func (h *EpicHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 	var e Epic
 	err := h.db.QueryRow(r.Context(),
-		`SELECT `+epicColumns+` FROM epics WHERE id = $1`, epicID).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
+		`SELECT `+epicColumns+` FROM epics WHERE id = $1`, epicID).Scan(&e.ID, &e.ItemNumber, &e.ProjectID, &e.Title, &e.Description, &e.Status, &e.Priority, &e.OrderIndex, &e.StartDate, &e.DueDate, &e.TargetDate, &e.InitiativeID, &e.AssigneeID, &e.CreatedBy, &e.CreatedAt, &e.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Epic not found")
@@ -224,6 +226,7 @@ type updateEpicRequest struct {
 	OrderIndex   *float64 `json:"order_index"`
 	StartDate    *string  `json:"start_date"`
 	DueDate      *string  `json:"due_date"`
+	TargetDate   *string  `json:"target_date"`
 	InitiativeID *string  `json:"initiative_id"`
 	AssigneeID   *string  `json:"assignee_id"`
 }
@@ -309,6 +312,20 @@ func (h *EpicHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			args = append(args, t)
 		}
 		argN++
+	}
+	if body.TargetDate != nil {
+		if *body.TargetDate == "" {
+			fields = append(fields, "target_date = NULL")
+		} else {
+			t, err := time.Parse("2006-01-02", *body.TargetDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "target_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("target_date = $%d", argN))
+			args = append(args, t)
+			argN++
+		}
 	}
 	if body.InitiativeID != nil {
 		fields = append(fields, fmt.Sprintf("initiative_id = $%d", argN))

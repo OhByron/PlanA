@@ -34,8 +34,11 @@ type WorkItem struct {
 	OrderIndex    float64         `json:"order_index"`
 	StartDate          *time.Time      `json:"start_date"`
 	DueDate            *time.Time      `json:"due_date"`
+	TargetDate         *time.Time      `json:"target_date"`
 	PreConditions      json.RawMessage `json:"pre_conditions"`
 	PostConditions     json.RawMessage `json:"post_conditions"`
+	DesignReady        bool            `json:"design_ready"`
+	DesignLink         *string         `json:"design_link"`
 	IsBlocked          bool            `json:"is_blocked"`
 	BlockedReason      *string         `json:"blocked_reason"`
 	SourceTestResultID *string         `json:"source_test_result_id"`
@@ -114,7 +117,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-		status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
+		status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
 		is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
 	args = append(args, pp.PageSize, pp.Offset)
@@ -132,7 +135,7 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 		var wi WorkItem
 		if err := rows.Scan(
 			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
+			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
 			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 		); err != nil {
 			slog.Error("workitems.List: scan failed", "error", err)
@@ -272,13 +275,13 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 			priority, assignee_id, story_points, labels, order_index, start_date, due_date, created_by, item_number, source_test_result_id)
 		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		projectID, epicID, body.ParentID, body.Type, body.Title, body.Description,
 		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, startDate, dueDate, claims.UserID, itemNumber, body.SourceTestResultID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -305,12 +308,12 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
 		 FROM work_items WHERE id = $1`, workItemID,
 	).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -346,8 +349,11 @@ type updateWorkItemRequest struct {
 	OrderIndex    *float64         `json:"order_index"`
 	StartDate      *string          `json:"start_date"`
 	DueDate        *string          `json:"due_date"`
+	TargetDate     *string          `json:"target_date"`
 	PreConditions  *json.RawMessage `json:"pre_conditions"`
 	PostConditions *json.RawMessage `json:"post_conditions"`
+	DesignReady    *bool            `json:"design_ready"`
+	DesignLink     *string          `json:"design_link"`
 	IsBlocked      *bool            `json:"is_blocked"`
 	BlockedReason *string          `json:"blocked_reason"`
 }
@@ -478,6 +484,20 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			argN++
 		}
 	}
+	if body.TargetDate != nil {
+		if *body.TargetDate == "" {
+			fields = append(fields, "target_date = NULL")
+		} else {
+			t, err := time.Parse("2006-01-02", *body.TargetDate)
+			if err != nil {
+				writeError(w, http.StatusBadRequest, "validation_error", "target_date must be YYYY-MM-DD")
+				return
+			}
+			fields = append(fields, fmt.Sprintf("target_date = $%d", argN))
+			args = append(args, t)
+			argN++
+		}
+	}
 	if body.PreConditions != nil {
 		fields = append(fields, fmt.Sprintf("pre_conditions = $%d", argN))
 		args = append(args, *body.PreConditions)
@@ -486,6 +506,16 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	if body.PostConditions != nil {
 		fields = append(fields, fmt.Sprintf("post_conditions = $%d", argN))
 		args = append(args, *body.PostConditions)
+		argN++
+	}
+	if body.DesignReady != nil {
+		fields = append(fields, fmt.Sprintf("design_ready = $%d", argN))
+		args = append(args, *body.DesignReady)
+		argN++
+	}
+	if body.DesignLink != nil {
+		fields = append(fields, fmt.Sprintf("design_link = $%d", argN))
+		args = append(args, *body.DesignLink)
 		argN++
 	}
 	if body.IsBlocked != nil {
@@ -570,7 +600,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(
 		`UPDATE work_items SET %s WHERE id = $%d
 		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, pre_conditions, post_conditions,
+			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
 			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
 		strings.Join(fields, ", "), argN,
 	)
@@ -578,7 +608,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	var wi WorkItem
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
 		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.PreConditions, &wi.PostConditions,
+		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
 		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
 	)
 	if err != nil {
@@ -621,13 +651,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, *body.Status, claims.UserID, wi.ID)
 		}
 
-		// Default points_used to story_points when moving to done (if not explicitly set)
-		if *body.Status == "done" && wi.PointsUsed == nil && wi.StoryPoints != nil {
-			h.db.Exec(r.Context(),
-				`UPDATE work_items SET points_used = story_points WHERE id = $1 AND points_used IS NULL`,
-				workItemID)
-			wi.PointsUsed = wi.StoryPoints
-		}
+		// points_used is set independently by the user — no auto-default from story_points
 
 		// Auto-promote parent story: when a task moves to done, check if all
 		// sibling tasks under the same parent are now done/cancelled. If so,
@@ -649,8 +673,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 				).Scan(&parentStatus)
 				if parentStatus != "done" && parentStatus != "cancelled" {
 					h.db.Exec(r.Context(),
-						`UPDATE work_items SET status = 'done', updated_at = NOW(),
-						 points_used = COALESCE(points_used, story_points)
+						`UPDATE work_items SET status = 'done', updated_at = NOW()
 						 WHERE id = $1`,
 						*wi.ParentID)
 					// Log the parent status change too
