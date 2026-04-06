@@ -14,9 +14,9 @@ import (
 	"github.com/redis/go-redis/v9"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/OhByron/ProjectA/internal/auth"
-	"github.com/OhByron/ProjectA/internal/config"
-	"github.com/OhByron/ProjectA/internal/oauth"
+	"github.com/OhByron/PlanA/internal/auth"
+	"github.com/OhByron/PlanA/internal/config"
+	"github.com/OhByron/PlanA/internal/oauth"
 )
 
 const sessionDuration = 7 * 24 * time.Hour

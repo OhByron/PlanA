@@ -9,7 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/OhByron/ProjectA/internal/auth"
+	"github.com/OhByron/PlanA/internal/auth"
 )
 
 // ProjectExport is the top-level JSON structure for a project export.

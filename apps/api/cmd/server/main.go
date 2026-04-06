@@ -13,13 +13,13 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
 
-	"github.com/OhByron/ProjectA/internal/auth"
-	"github.com/OhByron/ProjectA/internal/config"
-	"github.com/OhByron/ProjectA/internal/db"
-	"github.com/OhByron/ProjectA/internal/email"
-	"github.com/OhByron/ProjectA/internal/migrations"
-	"github.com/OhByron/ProjectA/internal/oauth"
-	"github.com/OhByron/ProjectA/internal/server"
+	"github.com/OhByron/PlanA/internal/auth"
+	"github.com/OhByron/PlanA/internal/config"
+	"github.com/OhByron/PlanA/internal/db"
+	"github.com/OhByron/PlanA/internal/email"
+	"github.com/OhByron/PlanA/internal/migrations"
+	"github.com/OhByron/PlanA/internal/oauth"
+	"github.com/OhByron/PlanA/internal/server"
 )
 
 func main() {

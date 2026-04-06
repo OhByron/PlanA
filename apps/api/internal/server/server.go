@@ -8,9 +8,9 @@ import (
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/rs/cors"
 
-	"github.com/OhByron/ProjectA/internal/email"
-	"github.com/OhByron/ProjectA/internal/handlers"
-	"github.com/OhByron/ProjectA/internal/server/middleware"
+	"github.com/OhByron/PlanA/internal/email"
+	"github.com/OhByron/PlanA/internal/handlers"
+	"github.com/OhByron/PlanA/internal/server/middleware"
 )
 
 // New builds and returns the complete HTTP handler tree.

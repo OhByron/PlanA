@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/OhByron/ProjectA/internal/auth"
+	"github.com/OhByron/PlanA/internal/auth"
 )
 
 // SprintItem represents a sprint_items row returned to clients.

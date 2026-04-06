@@ -6,9 +6,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 
-	"github.com/OhByron/ProjectA/internal/auth"
-	"github.com/OhByron/ProjectA/internal/config"
-	"github.com/OhByron/ProjectA/internal/oauth"
+	"github.com/OhByron/PlanA/internal/auth"
+	"github.com/OhByron/PlanA/internal/config"
+	"github.com/OhByron/PlanA/internal/oauth"
 )
 
 // Dependencies holds all services required to build the HTTP handler tree.

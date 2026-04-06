@@ -6,7 +6,7 @@ import (
 	"time"
 
 
-	"github.com/OhByron/ProjectA/internal/auth"
+	"github.com/OhByron/PlanA/internal/auth"
 )
 
 // UserHandlers handles requests for the authenticated user's own profile.

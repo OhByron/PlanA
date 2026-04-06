@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/OhByron/ProjectA/internal/auth"
+	"github.com/OhByron/PlanA/internal/auth"
 )
 
 const projectMemberColumns = `id, project_id, user_id, name, email, phone, job_role, capacity, created_at, updated_at`

@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"github.com/OhByron/ProjectA/internal/config"
+	"github.com/OhByron/PlanA/internal/config"
 )
 
 const (

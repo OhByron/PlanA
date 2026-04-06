@@ -12,9 +12,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/OhByron/ProjectA/internal/auth"
-	"github.com/OhByron/ProjectA/internal/config"
-	"github.com/OhByron/ProjectA/internal/email"
+	"github.com/OhByron/PlanA/internal/auth"
+	"github.com/OhByron/PlanA/internal/config"
+	"github.com/OhByron/PlanA/internal/email"
 )
 
 type InvitationHandlers struct {

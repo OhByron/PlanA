@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/OhByron/ProjectA/internal/auth"
+	"github.com/OhByron/PlanA/internal/auth"
 )
 
 // containerDepResponse is the shared response shape for epic and sprint dependencies.

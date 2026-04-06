@@ -10,7 +10,7 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
-	"github.com/OhByron/ProjectA/internal/config"
+	"github.com/OhByron/PlanA/internal/config"
 )
 
 // GoogleUser is the user profile returned by the Google userinfo endpoint.

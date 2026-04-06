@@ -1,4 +1,4 @@
-module github.com/OhByron/ProjectA
+module github.com/OhByron/PlanA
 
 go 1.24.0
 
