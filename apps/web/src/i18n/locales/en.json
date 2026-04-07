@@ -525,6 +525,29 @@
     "generateDescAC": "Generate Description & ACs"
   },
 
+  "vcs": {
+    "title": "Version Control",
+    "branches": "Branches",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "more commits",
+    "connections": "Repository Connections",
+    "addConnection": "Add Repository",
+    "provider": "Provider",
+    "repository": "Repository",
+    "authMethod": "Authentication Method",
+    "token": "Access Token",
+    "testConnection": "Test Connection",
+    "testSuccess": "Connection successful",
+    "testFailed": "Connection failed",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "noConnections": "No repositories connected to this project.",
+    "mergeTransition": "Auto-transition on merge",
+    "mergeTransitionDesc": "Automatically move work items when a linked pull request is merged.",
+    "mergeTargetStatus": "Target status"
+  },
+
   "helpOverlay": {
     "dismiss": "Dismiss",
     "close": "Close"

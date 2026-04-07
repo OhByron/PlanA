@@ -24,6 +24,7 @@ import { api, ApiError } from '../../lib/api-client';
 import { AcceptanceCriteriaSection } from '../../components/acceptance-criteria-section';
 import { CommentsSection } from '../../components/comments-section';
 import { TestResultsSection } from '../../components/test-results-section';
+import { VCSSection } from '../../components/vcs-section';
 import { DependenciesSection } from '../../components/dependencies-section';
 
 const STATUSES: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review', 'done', 'cancelled'];
@@ -462,6 +463,9 @@ export function WorkItemDetailPage() {
           onSuggestFromTest={suggestFromTest}
           itemType={item.type}
         />
+
+        {/* VCS Activity (branches, PRs, commits) */}
+        <VCSSection workItemId={workItemId} />
 
         {/* Comments */}
         <CommentsSection

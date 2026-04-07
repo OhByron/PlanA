@@ -68,6 +68,7 @@ func New(deps *Dependencies) http.Handler {
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB)
+	vcsActH  := handlers.NewVCSActivityHandlers(deps.DB)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -316,6 +317,11 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/lock", estH.Lock)
 					r.Delete("/", estH.Reset)
 				})
+				// VCS activity (branches, PRs, commits linked to this work item)
+				r.Get("/vcs-summary", vcsActH.VCSSummary)
+				r.Get("/branches", vcsActH.ListBranches)
+				r.Get("/pull-requests", vcsActH.ListPRs)
+				r.Get("/commits", vcsActH.ListCommits)
 			})
 		})
 	})
