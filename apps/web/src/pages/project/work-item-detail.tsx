@@ -62,6 +62,7 @@ export function WorkItemDetailPage() {
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleDraft, setTitleDraft] = useState('');
+  const [copiedBranch, setCopiedBranch] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
   const [descDraft, setDescDraft] = useState('');
 
@@ -201,6 +202,25 @@ export function WorkItemDetailPage() {
           <TypeIcon type={item.type} />
           {(item as unknown as { itemNumber?: number | null }).itemNumber != null && (
             <span className="text-sm text-gray-400">#{(item as unknown as { itemNumber: number }).itemNumber}</span>
+          )}
+          {(item as unknown as { itemNumber?: number | null }).itemNumber != null && (
+            <button
+              onClick={() => {
+                const num = (item as unknown as { itemNumber: number }).itemNumber;
+                const slug = item.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, '-')
+                  .replace(/^-|-$/g, '')
+                  .slice(0, 40);
+                navigator.clipboard.writeText(`feature/#${num}-${slug}`);
+                setCopiedBranch(true);
+                setTimeout(() => setCopiedBranch(false), 2000);
+              }}
+              className="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+              title={t('vcs.copyBranch') ?? 'Copy branch name'}
+            >
+              {copiedBranch ? (t('vcs.copied') ?? 'Copied!') : (t('vcs.copyBranch') ?? 'Copy branch name')}
+            </button>
           )}
           {editingTitle ? (
             <Input

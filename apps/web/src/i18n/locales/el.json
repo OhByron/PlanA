@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Αποθήκευση",
+    "saved": "Αποθηκεύτηκε",
     "cancel": "Ακύρωση",
     "create": "Δημιουργία",
     "delete": "Διαγραφή",
@@ -44,7 +45,8 @@
     "project": "Έργο",
     "graph": "Γράφημα",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Έλεγχος Εκδόσεων"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Διάρκεια: {{ms}}ms",
     "source": "Πηγή: {{source}} | Αναφέρθηκε: {{date}}",
     "generateDescAC": "Δημιουργία περιγραφής και ΚΑ"
+  },
+  "vcs": {
+    "title": "Έλεγχος Εκδόσεων",
+    "branches": "Κλάδοι",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "περισσότερα commits",
+    "connections": "Συνδέσεις αποθετηρίων",
+    "addConnection": "Προσθήκη αποθετηρίου",
+    "provider": "Πάροχος",
+    "repository": "Αποθετήριο",
+    "authMethod": "Μέθοδος πιστοποίησης",
+    "token": "Token πρόσβασης",
+    "testConnection": "Δοκιμή σύνδεσης",
+    "testSuccess": "Η σύνδεση πέτυχε",
+    "testFailed": "Η σύνδεση απέτυχε",
+    "enabled": "Ενεργοποιημένο",
+    "disabled": "Απενεργοποιημένο",
+    "noConnections": "Δεν υπάρχουν αποθετήρια συνδεδεμένα σε αυτό το έργο.",
+    "mergeTransition": "Αυτόματη μετάβαση κατά το merge",
+    "mergeTransitionDesc": "Αυτόματη μετακίνηση στοιχείων εργασίας όταν γίνεται merge ένα συνδεδεμένο pull request.",
+    "mergeTargetStatus": "Κατάσταση στόχος",
+    "copyBranch": "Αντιγραφή ονόματος κλάδου",
+    "copied": "Αντιγράφηκε!",
+    "saveWarning": "Αποθηκεύστε αυτές τις τιμές τώρα. Το webhook secret δεν θα εμφανιστεί ξανά.",
+    "tunnelHint": "Για τοπική ανάπτυξη, χρησιμοποιήστε ένα tunnel (ngrok, cloudflared) για να εκθέσετε τη θύρα 8080 και ενημερώστε το webhook URL στον πάροχο Git."
   },
   "helpOverlay": {
     "dismiss": "Απόρριψη",

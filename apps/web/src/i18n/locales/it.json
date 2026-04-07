@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Salva",
+    "saved": "Salvato",
     "cancel": "Annulla",
     "create": "Crea",
     "delete": "Elimina",
@@ -44,7 +45,8 @@
     "project": "Progetto",
     "graph": "Grafico",
     "gantt": "Gantt",
-    "calendar": "Calendario"
+    "calendar": "Calendario",
+    "vcs": "Controllo versione"
   },
   "graph": {
     "hardDependency": "Dipendenza forte",
@@ -455,6 +457,32 @@
     "duration": "Durata: {{ms}}ms",
     "source": "Origine: {{source}} | Segnalato: {{date}}",
     "generateDescAC": "Genera Descrizione e AC"
+  },
+  "vcs": {
+    "title": "Controllo versione",
+    "branches": "Branch",
+    "pullRequests": "Pull Request",
+    "commits": "Commit",
+    "moreCommits": "altri commit",
+    "connections": "Connessioni repository",
+    "addConnection": "Aggiungi repository",
+    "provider": "Provider",
+    "repository": "Repository",
+    "authMethod": "Metodo di autenticazione",
+    "token": "Token di accesso",
+    "testConnection": "Testa connessione",
+    "testSuccess": "Connessione riuscita",
+    "testFailed": "Connessione fallita",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "noConnections": "Nessun repository collegato a questo progetto.",
+    "mergeTransition": "Transizione automatica al merge",
+    "mergeTransitionDesc": "Sposta automaticamente gli elementi di lavoro quando una pull request collegata viene unita.",
+    "mergeTargetStatus": "Stato di destinazione",
+    "copyBranch": "Copia nome branch",
+    "copied": "Copiato!",
+    "saveWarning": "Salva questi valori ora. Il segreto webhook non verrà mostrato di nuovo.",
+    "tunnelHint": "Per lo sviluppo locale, usa un tunnel (ngrok, cloudflared) per esporre la porta 8080 e aggiorna l'URL del webhook nel tuo provider Git."
   },
   "helpOverlay": {
     "dismiss": "Ignora",

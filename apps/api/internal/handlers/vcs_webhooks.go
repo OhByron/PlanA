@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,37 +17,42 @@ import (
 
 // VCSWebhookHandlers receives and processes inbound webhooks from GitHub/GitLab.
 type VCSWebhookHandlers struct {
-	db     DBPOOL
-	github vcs.Provider
-	gitlab vcs.Provider
+	db        DBPOOL
+	encryptor *vcs.TokenEncryptor
+	appURL    string
+	github    vcs.Provider
+	gitlab    vcs.Provider
 }
 
-func NewVCSWebhookHandlers(db DBPOOL) *VCSWebhookHandlers {
+func NewVCSWebhookHandlers(db DBPOOL, encryptor *vcs.TokenEncryptor, appURL string) *VCSWebhookHandlers {
 	return &VCSWebhookHandlers{
-		db:     db,
-		github: vcs.NewGitHubProvider(),
-		gitlab: vcs.NewGitLabProvider(),
+		db:        db,
+		encryptor: encryptor,
+		appURL:    appURL,
+		github:    vcs.NewGitHubProvider(),
+		gitlab:    vcs.NewGitLabProvider(),
 	}
 }
 
 // ---------- connection lookup ----------
 
 type connRecord struct {
-	ID        string
-	ProjectID string
-	Provider  string
-	Owner     string
-	Repo      string
-	Secret    string
-	Enabled   bool
+	ID             string
+	ProjectID      string
+	Provider       string
+	Owner          string
+	Repo           string
+	Secret         string
+	Enabled        bool
+	EncryptedToken []byte
 }
 
 func (h *VCSWebhookHandlers) getConnection(ctx context.Context, connectionID string) (*connRecord, error) {
 	var c connRecord
 	err := h.db.QueryRow(ctx,
-		`SELECT id, project_id, provider, owner, repo, webhook_secret, enabled
+		`SELECT id, project_id, provider, owner, repo, webhook_secret, enabled, encrypted_token
 		   FROM vcs_connections WHERE id = $1`, connectionID,
-	).Scan(&c.ID, &c.ProjectID, &c.Provider, &c.Owner, &c.Repo, &c.Secret, &c.Enabled)
+	).Scan(&c.ID, &c.ProjectID, &c.Provider, &c.Owner, &c.Repo, &c.Secret, &c.Enabled, &c.EncryptedToken)
 	if err != nil {
 		return nil, err
 	}
@@ -271,6 +277,16 @@ func (h *VCSWebhookHandlers) processPullRequest(ctx context.Context, conn *connR
 		h.autoTransition(ctx, conn.ProjectID, *workItemID, evt.ExternalID)
 	}
 
+	// Auto-transition to in_review when a non-draft PR is opened
+	if evt.State == "open" && !evt.Draft && workItemID != nil {
+		h.transitionToInReview(ctx, *workItemID, evt.ExternalID)
+	}
+
+	// Post a bot comment linking back to PlanA on new PRs
+	if evt.State == "open" && workItemID != nil {
+		h.postPRComment(ctx, conn, *workItemID, evt.ExternalID)
+	}
+
 	return nil
 }
 
@@ -343,6 +359,124 @@ func (h *VCSWebhookHandlers) autoTransition(ctx context.Context, projectID, work
 				 VALUES ($1, 'status_change', $2, $3)`,
 				*assigneeID, msg, workItemID)
 		}
+	}
+}
+
+// transitionToInReview moves a work item to in_review when a PR is opened,
+// but only if the item is currently in backlog, ready, or in_progress.
+func (h *VCSWebhookHandlers) transitionToInReview(ctx context.Context, workItemID string, prNumber int64) {
+	tag, err := h.db.Exec(ctx,
+		`UPDATE work_items SET status = 'in_review'
+		  WHERE id = $1 AND status IN ('backlog', 'ready', 'in_progress')`,
+		workItemID)
+	if err != nil {
+		slog.Error("vcs_webhooks: transition to in_review failed", "workItemID", workItemID, "error", err)
+		return
+	}
+
+	if tag.RowsAffected() > 0 {
+		slog.Info("vcs_webhooks: moved to in_review on PR open",
+			"workItemID", workItemID, "pr", prNumber)
+
+		var assigneeID *string
+		var itemNumber *int
+		_ = h.db.QueryRow(ctx,
+			`SELECT assignee_id, item_number FROM work_items WHERE id = $1`, workItemID,
+		).Scan(&assigneeID, &itemNumber)
+
+		if assigneeID != nil && itemNumber != nil {
+			msg := fmt.Sprintf("PR #%d opened. Work item #%d moved to in review.",
+				prNumber, *itemNumber)
+			_, _ = h.db.Exec(ctx,
+				`INSERT INTO notifications (user_id, type, message, work_item_id)
+				 VALUES ($1, 'status_change', $2, $3)`,
+				*assigneeID, msg, workItemID)
+		}
+	}
+}
+
+// ---------- Bot comment on PR ----------
+
+// postPRComment adds a comment to the PR linking back to the work item in PlanA.
+// Only posts once per PR (checks for existing comment before posting).
+func (h *VCSWebhookHandlers) postPRComment(ctx context.Context, conn *connRecord, workItemID string, prNumber int64) {
+	if conn.EncryptedToken == nil || h.encryptor == nil {
+		return
+	}
+
+	token, err := h.encryptor.Decrypt(conn.EncryptedToken)
+	if err != nil {
+		slog.Error("vcs_webhooks: failed to decrypt token for PR comment", "error", err)
+		return
+	}
+
+	// Look up work item details for the comment
+	var itemNumber *int
+	var title, projectID string
+	err = h.db.QueryRow(ctx,
+		`SELECT item_number, title, project_id FROM work_items WHERE id = $1`, workItemID,
+	).Scan(&itemNumber, &title, &projectID)
+	if err != nil || itemNumber == nil {
+		return
+	}
+
+	itemURL := fmt.Sprintf("%s/p/%s/items/%s", h.appURL, projectID, workItemID)
+	body := fmt.Sprintf("**PlanA** linked this PR to work item [#%d - %s](%s)", *itemNumber, title, itemURL)
+
+	switch conn.Provider {
+	case "github":
+		h.postGitHubComment(ctx, token, conn.Owner, conn.Repo, prNumber, body)
+	case "gitlab":
+		h.postGitLabComment(ctx, token, conn.Owner, conn.Repo, prNumber, body)
+	}
+}
+
+func (h *VCSWebhookHandlers) postGitHubComment(ctx context.Context, token, owner, repo string, prNumber int64, body string) {
+	payload, _ := json.Marshal(map[string]string{"body": body})
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/issues/%d/comments", owner, repo, prNumber)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
+	if err != nil {
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Accept", "application/vnd.github+json")
+	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+	req.Header.Set("User-Agent", "PlanA/1.0")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		slog.Error("vcs_webhooks: GitHub comment failed", "error", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		slog.Warn("vcs_webhooks: GitHub comment returned non-201", "status", resp.StatusCode)
+	}
+}
+
+func (h *VCSWebhookHandlers) postGitLabComment(ctx context.Context, token, owner, repo string, mrIID int64, body string) {
+	payload, _ := json.Marshal(map[string]string{"body": body})
+	url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/merge_requests/%d/notes", owner, repo, mrIID)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
+	if err != nil {
+		return
+	}
+	req.Header.Set("PRIVATE-TOKEN", token)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-Agent", "PlanA/1.0")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		slog.Error("vcs_webhooks: GitLab comment failed", "error", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		slog.Warn("vcs_webhooks: GitLab comment returned non-201", "status", resp.StatusCode)
 	}
 }
 

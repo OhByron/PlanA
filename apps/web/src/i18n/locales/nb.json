@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Lagre",
+    "saved": "Lagret",
     "cancel": "Avbryt",
     "create": "Opprett",
     "delete": "Slett",
@@ -44,7 +45,8 @@
     "project": "Prosjekt",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versjonskontroll"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Varighet: {{ms}}ms",
     "source": "Kilde: {{source}} | Rapportert: {{date}}",
     "generateDescAC": "Generer beskrivelse og AC-er"
+  },
+  "vcs": {
+    "title": "Versjonskontroll",
+    "branches": "Grener",
+    "pullRequests": "Pull-forespørsler",
+    "commits": "Commiter",
+    "moreCommits": "flere commiter",
+    "connections": "Repositorietilkoblinger",
+    "addConnection": "Legg til repositorie",
+    "provider": "Leverandør",
+    "repository": "Repositorie",
+    "authMethod": "Autentiseringsmetode",
+    "token": "Tilgangstoken",
+    "testConnection": "Test tilkobling",
+    "testSuccess": "Tilkobling vellykket",
+    "testFailed": "Tilkobling mislyktes",
+    "enabled": "Aktivert",
+    "disabled": "Deaktivert",
+    "noConnections": "Ingen repositorier er koblet til dette prosjektet.",
+    "mergeTransition": "Automatisk overgang ved sammenslåing",
+    "mergeTransitionDesc": "Flytt arbeidselementer automatisk når en tilknyttet pull-forespørsel slås sammen.",
+    "mergeTargetStatus": "Målstatus",
+    "copyBranch": "Kopier grennavn",
+    "copied": "Kopiert!",
+    "saveWarning": "Lagre disse verdiene nå. Webhook-hemmeligheten vises ikke igjen.",
+    "tunnelHint": "For lokal utvikling, bruk en tunnel (ngrok, cloudflared) for å eksponere port 8080 og oppdater webhook-URL-en hos Git-leverandøren din."
   },
   "helpOverlay": {
     "dismiss": "Avvis",

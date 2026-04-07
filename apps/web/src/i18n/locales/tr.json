@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Kaydet",
+    "saved": "Kaydedildi",
     "cancel": "İptal",
     "create": "Oluştur",
     "delete": "Sil",
@@ -44,7 +45,8 @@
     "project": "Proje",
     "graph": "Grafik",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Sürüm Kontrolü"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Süre: {{ms}}ms",
     "source": "Kaynak: {{source}} | Raporlandı: {{date}}",
     "generateDescAC": "Açıklama ve KK Oluştur"
+  },
+  "vcs": {
+    "title": "Sürüm Kontrolü",
+    "branches": "Dallar",
+    "pullRequests": "Pull Request'ler",
+    "commits": "Commit'ler",
+    "moreCommits": "daha fazla commit",
+    "connections": "Depo Bağlantıları",
+    "addConnection": "Depo Ekle",
+    "provider": "Sağlayıcı",
+    "repository": "Depo",
+    "authMethod": "Kimlik Doğrulama Yöntemi",
+    "token": "Erişim Anahtarı",
+    "testConnection": "Bağlantıyı Test Et",
+    "testSuccess": "Bağlantı başarılı",
+    "testFailed": "Bağlantı başarısız",
+    "enabled": "Etkin",
+    "disabled": "Devre Dışı",
+    "noConnections": "Bu projeye bağlı depo bulunmuyor.",
+    "mergeTransition": "Merge'de otomatik geçiş",
+    "mergeTransitionDesc": "Bağlantılı bir pull request merge edildiğinde iş öğelerini otomatik olarak taşı.",
+    "mergeTargetStatus": "Hedef durum",
+    "copyBranch": "Dal adını kopyala",
+    "copied": "Kopyalandı!",
+    "saveWarning": "Bu değerleri şimdi kaydedin. Webhook sırrı tekrar gösterilmeyecektir.",
+    "tunnelHint": "Yerel geliştirme için bir tünel (ngrok, cloudflared) kullanarak 8080 portunu açın ve Git sağlayıcınızdaki webhook URL'sini güncelleyin."
   },
   "helpOverlay": {
     "dismiss": "Kapat",

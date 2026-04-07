@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "保存",
+    "saved": "已保存",
     "cancel": "取消",
     "create": "创建",
     "delete": "删除",
@@ -44,7 +45,8 @@
     "project": "项目",
     "graph": "图表",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "版本控制"
   },
   "graph": {
     "hardDependency": "强依赖",
@@ -412,6 +414,32 @@
     "duration": "耗时：{{ms}}ms",
     "source": "来源：{{source}} | 报告于：{{date}}",
     "generateDescAC": "生成描述和验收标准"
+  },
+  "vcs": {
+    "title": "版本控制",
+    "branches": "分支",
+    "pullRequests": "拉取请求",
+    "commits": "提交",
+    "moreCommits": "更多提交",
+    "connections": "仓库连接",
+    "addConnection": "添加仓库",
+    "provider": "提供商",
+    "repository": "仓库",
+    "authMethod": "认证方式",
+    "token": "访问令牌",
+    "testConnection": "测试连接",
+    "testSuccess": "连接成功",
+    "testFailed": "连接失败",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "noConnections": "此项目未连接任何仓库。",
+    "mergeTransition": "合并时自动转换",
+    "mergeTransitionDesc": "当关联的拉取请求被合并时，自动移动工作项。",
+    "mergeTargetStatus": "目标状态",
+    "copyBranch": "复制分支名称",
+    "copied": "已复制！",
+    "saveWarning": "请立即保存这些值。Webhook 密钥将不再显示。",
+    "tunnelHint": "本地开发时，请使用隧道工具（ngrok、cloudflared）暴露 8080 端口，并在 Git 提供商处更新 webhook URL。"
   },
   "helpOverlay": {
     "dismiss": "关闭",

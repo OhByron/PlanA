@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Spremi",
+    "saved": "Spremljeno",
     "cancel": "Odustani",
     "create": "Kreiraj",
     "delete": "Obriši",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Upravljanje verzijama"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Trajanje: {{ms}}ms",
     "source": "Izvor: {{source}} | Prijavljeno: {{date}}",
     "generateDescAC": "Generiraj opis i kriterije"
+  },
+  "vcs": {
+    "title": "Upravljanje verzijama",
+    "branches": "Grane",
+    "pullRequests": "Pull zahtjevi",
+    "commits": "Commitovi",
+    "moreCommits": "više commitova",
+    "connections": "Veze repozitorija",
+    "addConnection": "Dodaj repozitorij",
+    "provider": "Pružatelj",
+    "repository": "Repozitorij",
+    "authMethod": "Metoda autentifikacije",
+    "token": "Pristupni token",
+    "testConnection": "Testiraj vezu",
+    "testSuccess": "Veza uspješna",
+    "testFailed": "Veza neuspješna",
+    "enabled": "Omogućeno",
+    "disabled": "Onemogućeno",
+    "noConnections": "Nema repozitorija povezanih s ovim projektom.",
+    "mergeTransition": "Automatski prijelaz pri spajanju",
+    "mergeTransitionDesc": "Automatski premjesti radne stavke kada se povezani pull zahtjev spoji.",
+    "mergeTargetStatus": "Ciljni status",
+    "copyBranch": "Kopiraj naziv grane",
+    "copied": "Kopirano!",
+    "saveWarning": "Spremite ove vrijednosti sada. Webhook tajna neće biti ponovno prikazana.",
+    "tunnelHint": "Za lokalni razvoj koristite tunel (ngrok, cloudflared) za izlaganje porta 8080 i ažurirajte webhook URL kod svog Git pružatelja."
   },
   "helpOverlay": {
     "dismiss": "Odbaci",

@@ -67,7 +67,7 @@ func New(deps *Dependencies) http.Handler {
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
-	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB)
+	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
 	vcsActH  := handlers.NewVCSActivityHandlers(deps.DB)
 
 	// Public routes

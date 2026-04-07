@@ -136,6 +136,11 @@ function ConnectionsSection({
 
 // ---------- Add Connection Form ----------
 
+interface WebhookInfo {
+  webhookUrl: string;
+  webhookSecret: string;
+}
+
 function AddConnectionForm({
   projectId,
   onDone,
@@ -150,6 +155,7 @@ function AddConnectionForm({
   const [repo, setRepo] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
+  const [webhookInfo, setWebhookInfo] = useState<WebhookInfo | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,18 +167,61 @@ function AddConnectionForm({
     }
 
     try {
-      await createConn.mutateAsync({
+      const result = await createConn.mutateAsync({
         provider,
         owner,
         repo,
         auth_method: 'pat',
         token,
       });
-      onDone();
+      const baseUrl = window.location.origin.replace(':5173', ':8080').replace(':5174', ':8080');
+      setWebhookInfo({
+        webhookUrl: `${baseUrl}${(result as Record<string, unknown>).webhook_url as string}`,
+        webhookSecret: (result as Record<string, unknown>).webhook_secret as string,
+      });
     } catch {
       setError('Failed to create connection. Check your credentials.');
     }
   };
+
+  if (webhookInfo) {
+    return (
+      <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 space-y-3">
+        <h3 className="text-sm font-semibold text-green-800">Repository connected. Configure webhook in GitHub/GitLab:</h3>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-600">Webhook URL</label>
+          <div className="flex gap-2">
+            <code className="flex-1 rounded bg-white border border-gray-200 px-3 py-2 text-xs font-mono text-gray-800 break-all">
+              {webhookInfo.webhookUrl}
+            </code>
+            <Button size="sm" variant="ghost" onClick={() => navigator.clipboard.writeText(webhookInfo.webhookUrl)}>
+              Copy
+            </Button>
+          </div>
+        </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-600">Webhook Secret</label>
+          <div className="flex gap-2">
+            <code className="flex-1 rounded bg-white border border-gray-200 px-3 py-2 text-xs font-mono text-gray-800 break-all">
+              {webhookInfo.webhookSecret}
+            </code>
+            <Button size="sm" variant="ghost" onClick={() => navigator.clipboard.writeText(webhookInfo.webhookSecret)}>
+              Copy
+            </Button>
+          </div>
+        </div>
+        <p className="text-xs text-gray-500">
+          {t('vcs.saveWarning')}
+        </p>
+        <p className="text-xs text-gray-400">
+          {t('vcs.tunnelHint')}
+        </p>
+        <div className="flex justify-end">
+          <Button size="sm" onClick={onDone}>{t('common.done') ?? 'Done'}</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mb-4 rounded-lg border border-gray-200 bg-white p-4 space-y-3">

@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "حفظ",
+    "saved": "تم الحفظ",
     "cancel": "إلغاء",
     "create": "إنشاء",
     "delete": "حذف",
@@ -44,7 +45,8 @@
     "project": "المشروع",
     "graph": "رسم بياني",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "التحكم بالإصدارات"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "المدة: {{ms}} مللي ثانية",
     "source": "المصدر: {{source}} | التاريخ: {{date}}",
     "generateDescAC": "توليد الوصف ومعايير القبول"
+  },
+  "vcs": {
+    "title": "التحكم بالإصدارات",
+    "branches": "الفروع",
+    "pullRequests": "طلبات السحب",
+    "commits": "الالتزامات",
+    "moreCommits": "التزامات إضافية",
+    "connections": "اتصالات المستودعات",
+    "addConnection": "إضافة مستودع",
+    "provider": "المزود",
+    "repository": "المستودع",
+    "authMethod": "طريقة المصادقة",
+    "token": "رمز الوصول",
+    "testConnection": "اختبار الاتصال",
+    "testSuccess": "تم الاتصال بنجاح",
+    "testFailed": "فشل الاتصال",
+    "enabled": "مفعّل",
+    "disabled": "معطّل",
+    "noConnections": "لا توجد مستودعات متصلة بهذا المشروع.",
+    "mergeTransition": "نقل تلقائي عند الدمج",
+    "mergeTransitionDesc": "نقل عناصر العمل تلقائيًا عند دمج طلب سحب مرتبط.",
+    "mergeTargetStatus": "الحالة المستهدفة",
+    "copyBranch": "نسخ اسم الفرع",
+    "copied": "تم النسخ!",
+    "saveWarning": "احفظ هذه القيم الآن. لن يظهر سر webhook مرة أخرى.",
+    "tunnelHint": "للتطوير المحلي، استخدم نفقًا (ngrok أو cloudflared) لكشف المنفذ 8080 وتحديث عنوان webhook في مزود Git الخاص بك."
   },
   "helpOverlay": {
     "dismiss": "تجاهل",
