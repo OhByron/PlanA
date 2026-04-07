@@ -109,6 +109,44 @@ Browser → Caddy (HTTPS) → API (Go :8080) → PostgreSQL
 
 The API runs database migrations on startup. No separate migration step needed.
 
+## Roadmap
+
+Development goals for PlanA, informed by competitive analysis against Jira, Linear, Plane, and other Agile tools.
+
+### Tier 1: Must-Have (Blocking Adoption)
+
+These are the features evaluators look for in the first 10 minutes. Without them, developer teams are likely to pass.
+
+- **Git Integration (GitHub / GitLab)** - Branch tracking on work items, PR status display, auto-transition on merge, commit linking. This is the single most important missing feature for developer adoption.
+- **Real-Time Collaboration** - Live presence indicators, real-time board updates via WebSockets, co-editing support. Replaces the current polling approach with instant sync.
+- **Custom Workflow States** - Allow teams to define their own status pipeline beyond the fixed six statuses. Required by teams with regulated or non-standard processes.
+
+### Tier 2: Competitive Parity (Expected by Evaluators)
+
+Features that established tools already offer. Their absence signals immaturity during evaluation.
+
+- **Activity Feed & Audit Trail** - A filterable stream showing who changed what and when. Supports compliance needs and team awareness.
+- **Command Palette (Keyboard-First UX)** - Cmd+K / Ctrl+K to search, create, and navigate. Linear set this expectation for developer tools.
+- **Public API Documentation & Webhooks** - A documented REST API and outbound webhooks for custom integrations. The path to an ecosystem without needing a plugin marketplace.
+
+### Tier 3: Differentiation (Win Deals)
+
+Features that lean into PlanA's unique strengths and create separation from competitors.
+
+- **Sprint Goal AI** - AI-assisted sprint goal generation. Backend groundwork is already in place.
+- **Release Management** - Group completed stories into releases with auto-generated release notes. Bridges the gap between "work done" and "shipped to users."
+- **Portfolio / Initiative Dashboard** - Cross-project initiative tracking with health indicators, cross-team dependency visibility, and roll-up metrics for programme-level oversight.
+- **Mobile Access (PWA)** - A progressive web app covering standup check-ins, quick status updates, and notifications. Covers the majority of mobile use cases without the cost of a native app.
+
+### Deprioritized (Not Now)
+
+- Plugin marketplace (too early, focus on core)
+- Whiteboards / embedded docs (not our fight)
+- Time tracking (commodity feature, many dedicated tools exist)
+- Deep Figma integration (nice-to-have, not a deal-maker)
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions, project structure, and development workflow.
