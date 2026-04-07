@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Save",
+    "saved": "Saved",
     "cancel": "Cancel",
     "create": "Create",
     "delete": "Delete",
@@ -46,7 +47,8 @@
     "project": "Project",
     "graph": "Graph",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Repositories"
   },
 
   "graph": {
