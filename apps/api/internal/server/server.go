@@ -67,6 +67,7 @@ func New(deps *Dependencies) http.Handler {
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
+	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -104,6 +105,14 @@ func New(deps *Dependencies) http.Handler {
 		// Public — stakeholder dashboard (token-authenticated, no login)
 		// ----------------------------------------------------------------
 		r.Get("/share/{token}/dashboard", shareH.Dashboard)
+
+		// ----------------------------------------------------------------
+		// Public — VCS webhooks (signature/token-validated, no login)
+		// ----------------------------------------------------------------
+		r.Route("/webhooks", func(r chi.Router) {
+			r.Post("/github/{connectionID}", vcsWebH.HandleGitHub)
+			r.Post("/gitlab/{connectionID}", vcsWebH.HandleGitLab)
+		})
 
 		// ----------------------------------------------------------------
 		// Protected — all routes below require a valid session JWT
