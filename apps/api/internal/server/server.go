@@ -11,6 +11,7 @@ import (
 	"github.com/OhByron/PlanA/internal/email"
 	"github.com/OhByron/PlanA/internal/handlers"
 	"github.com/OhByron/PlanA/internal/server/middleware"
+	"github.com/OhByron/PlanA/internal/vcs"
 )
 
 // New builds and returns the complete HTTP handler tree.
@@ -64,6 +65,8 @@ func New(deps *Dependencies) http.Handler {
 	sprintDepH := handlers.NewSprintDepHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
+	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
+	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -237,6 +240,18 @@ func New(deps *Dependencies) http.Handler {
 					r.Get("/{resultID}", testH.Get)
 					r.Post("/junit", testH.ImportJUnit)
 					r.Post("/webhook", testH.Webhook)
+				})
+
+				// VCS connections (repository linking)
+				r.Route("/vcs/connections", func(r chi.Router) {
+					r.Get("/", vcsConnH.List)
+					r.Post("/", vcsConnH.Create)
+					r.Route("/{connectionID}", func(r chi.Router) {
+						r.Get("/", vcsConnH.Get)
+						r.Patch("/", vcsConnH.Update)
+						r.Delete("/", vcsConnH.Delete)
+						r.Post("/test", vcsConnH.TestConnection)
+					})
 				})
 
 				// Share tokens (stakeholder dashboard links)
