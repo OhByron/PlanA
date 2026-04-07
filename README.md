@@ -117,7 +117,7 @@ Development goals for PlanA, informed by competitive analysis against Jira, Line
 
 These are the features evaluators look for in the first 10 minutes. Without them, developer teams are likely to pass.
 
-- **Git Integration (GitHub / GitLab)** - Branch tracking on work items, PR status display, auto-transition on merge, commit linking. This is the single most important missing feature for developer adoption.
+- ~~**Git Integration (GitHub / GitLab)**~~ **SHIPPED** - Repository linking with encrypted token storage, webhook processing for push/branch/PR/review/CI events, automatic work item linking via item number patterns, PR status badges with clickable CI links, auto-transition on PR open (to in review) and merge (configurable), bot comments on PRs linking back to PlanA, copy/create branch buttons, bulk VCS summary on board cards, admin settings page, 27 languages.
 - **Real-Time Collaboration** - Live presence indicators, real-time board updates via WebSockets, co-editing support. Replaces the current polling approach with instant sync.
 - **Custom Workflow States** - Allow teams to define their own status pipeline beyond the fixed six statuses. Required by teams with regulated or non-standard processes.
 
