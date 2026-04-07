@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Guardar",
+    "saved": "Guardado",
     "cancel": "Cancelar",
     "create": "Crear",
     "delete": "Eliminar",
@@ -44,7 +45,8 @@
     "project": "Proyecto",
     "graph": "Grafo",
     "gantt": "Gantt",
-    "calendar": "Calendario"
+    "calendar": "Calendario",
+    "vcs": "Control de Versiones"
   },
   "graph": {
     "hardDependency": "Dependencia fuerte",
@@ -455,6 +457,32 @@
     "duration": "Duración: {{ms}}ms",
     "source": "Origen: {{source}} | Reportado: {{date}}",
     "generateDescAC": "Generar Descripción y CAs"
+  },
+  "vcs": {
+    "title": "Control de Versiones",
+    "branches": "Ramas",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "más commits",
+    "connections": "Conexiones de repositorios",
+    "addConnection": "Agregar repositorio",
+    "provider": "Proveedor",
+    "repository": "Repositorio",
+    "authMethod": "Método de autenticación",
+    "token": "Token de acceso",
+    "testConnection": "Probar conexión",
+    "testSuccess": "Conexión exitosa",
+    "testFailed": "Conexión fallida",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "noConnections": "No hay repositorios conectados a este proyecto.",
+    "mergeTransition": "Transición automática al fusionar",
+    "mergeTransitionDesc": "Mover automáticamente los elementos de trabajo cuando se fusiona un pull request vinculado.",
+    "mergeTargetStatus": "Estado de destino",
+    "copyBranch": "Copiar nombre de rama",
+    "copied": "¡Copiado!",
+    "saveWarning": "Guarde estos valores ahora. El secreto del webhook no se mostrará de nuevo.",
+    "tunnelHint": "Para desarrollo local, use un túnel (ngrok, cloudflared) para exponer el puerto 8080 y actualice la URL del webhook en su proveedor de Git."
   },
   "helpOverlay": {
     "dismiss": "Descartar",

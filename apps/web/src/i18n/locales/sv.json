@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Spara",
+    "saved": "Sparat",
     "cancel": "Avbryt",
     "create": "Skapa",
     "delete": "Ta bort",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versionshantering"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Varaktighet: {{ms}}ms",
     "source": "Källa: {{source}} | Rapporterad: {{date}}",
     "generateDescAC": "Generera beskrivning och AC:er"
+  },
+  "vcs": {
+    "title": "Versionshantering",
+    "branches": "Grenar",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "fler commits",
+    "connections": "Repositoryanslutningar",
+    "addConnection": "Lägg till repository",
+    "provider": "Leverantör",
+    "repository": "Repository",
+    "authMethod": "Autentiseringsmetod",
+    "token": "Åtkomsttoken",
+    "testConnection": "Testa anslutning",
+    "testSuccess": "Anslutningen lyckades",
+    "testFailed": "Anslutningen misslyckades",
+    "enabled": "Aktiverad",
+    "disabled": "Inaktiverad",
+    "noConnections": "Inga repositoryer anslutna till detta projekt.",
+    "mergeTransition": "Automatisk övergång vid merge",
+    "mergeTransitionDesc": "Flytta arbetsuppgifter automatiskt när en länkad pull request mergas.",
+    "mergeTargetStatus": "Målstatus",
+    "copyBranch": "Kopiera grennamn",
+    "copied": "Kopierat!",
+    "saveWarning": "Spara dessa värden nu. Webhook-hemligheten kommer inte att visas igen.",
+    "tunnelHint": "För lokal utveckling, använd en tunnel (ngrok, cloudflared) för att exponera port 8080 och uppdatera webhook-URL:en hos din Git-leverantör."
   },
   "helpOverlay": {
     "dismiss": "Avfärda",

@@ -17,6 +17,7 @@ import { ApiError } from '../../lib/api-client';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus, useProjectDependencies } from '../../hooks/use-project-dependencies';
+import { useVCSBulkSummary } from '../../hooks/use-vcs';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
 import { HelpOverlay } from '../../components/help-overlay';
@@ -31,6 +32,7 @@ export function BoardPage() {
   const updateItem = useUpdateWorkItem(projectId);
   const { blockedItems } = useProjectBlockedStatus(projectId, items);
   const { data: deps = [] } = useProjectDependencies(projectId);
+  const { data: vcsSummaries } = useVCSBulkSummary(projectId);
 
   // Compute enabler map: for each item, count how many not-yet-done items
   // are waiting on it (directly or transitively via depends_on chains).
@@ -308,6 +310,7 @@ export function BoardPage() {
               memberNames={memberNames}
               unblocksMap={unblocksMap}
               childDoneCounts={childDoneCounts}
+              vcsSummaries={vcsSummaries}
             />
           ))}
 

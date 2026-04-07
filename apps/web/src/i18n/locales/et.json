@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Salvesta",
+    "saved": "Salvestatud",
     "cancel": "Tühista",
     "create": "Loo",
     "delete": "Kustuta",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graaf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versioonihaldus"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Kestus: {{ms}}ms",
     "source": "Allikas: {{source}} | Teatatud: {{date}}",
     "generateDescAC": "Genereeri kirjeldus ja VK"
+  },
+  "vcs": {
+    "title": "Versioonihaldus",
+    "branches": "Harud",
+    "pullRequests": "Pull Request'id",
+    "commits": "Commit'id",
+    "moreCommits": "rohkem commite",
+    "connections": "Hoidla ühendused",
+    "addConnection": "Lisa hoidla",
+    "provider": "Pakkuja",
+    "repository": "Hoidla",
+    "authMethod": "Autentimismeetod",
+    "token": "Juurdepääsuluba",
+    "testConnection": "Testi ühendust",
+    "testSuccess": "Ühendus õnnestus",
+    "testFailed": "Ühendus ebaõnnestus",
+    "enabled": "Lubatud",
+    "disabled": "Keelatud",
+    "noConnections": "Selle projektiga pole ühtegi hoidlat ühendatud.",
+    "mergeTransition": "Automaatne üleminek ühendamisel",
+    "mergeTransitionDesc": "Liiguta tööüksused automaatselt, kui seotud pull request ühendatakse.",
+    "mergeTargetStatus": "Sihtstaatus",
+    "copyBranch": "Kopeeri haru nimi",
+    "copied": "Kopeeritud!",
+    "saveWarning": "Salvesta need väärtused kohe. Webhook'i saladust ei kuvata enam.",
+    "tunnelHint": "Kohalikuks arenduseks kasuta tunnelit (ngrok, cloudflared), et avada port 8080, ja uuenda webhook'i URL-i oma Git pakkuja juures."
   },
   "helpOverlay": {
     "dismiss": "Sulge",

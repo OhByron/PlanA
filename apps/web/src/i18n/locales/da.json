@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Gem",
+    "saved": "Gemt",
     "cancel": "Annuller",
     "create": "Opret",
     "delete": "Slet",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versionsstyring"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Varighed: {{ms}}ms",
     "source": "Kilde: {{source}} | Rapporteret: {{date}}",
     "generateDescAC": "Generér beskrivelse og AC'er"
+  },
+  "vcs": {
+    "title": "Versionsstyring",
+    "branches": "Grene",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "flere commits",
+    "connections": "Repository-forbindelser",
+    "addConnection": "Tilføj repository",
+    "provider": "Udbyder",
+    "repository": "Repository",
+    "authMethod": "Godkendelsesmetode",
+    "token": "Adgangstoken",
+    "testConnection": "Test forbindelse",
+    "testSuccess": "Forbindelse lykkedes",
+    "testFailed": "Forbindelse fejlede",
+    "enabled": "Aktiveret",
+    "disabled": "Deaktiveret",
+    "noConnections": "Ingen repositories forbundet til dette projekt.",
+    "mergeTransition": "Auto-overgang ved merge",
+    "mergeTransitionDesc": "Flyt automatisk arbejdsemner, når en tilknyttet pull request merges.",
+    "mergeTargetStatus": "Målstatus",
+    "copyBranch": "Kopiér grennavn",
+    "copied": "Kopieret!",
+    "saveWarning": "Gem disse værdier nu. Webhook-hemmeligheden vises ikke igen.",
+    "tunnelHint": "Til lokal udvikling skal du bruge en tunnel (ngrok, cloudflared) til at eksponere port 8080 og opdatere webhook-URL'en hos din Git-udbyder."
   },
   "helpOverlay": {
     "dismiss": "Afvis",

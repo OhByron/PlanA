@@ -11,6 +11,7 @@ import (
 	"github.com/OhByron/PlanA/internal/email"
 	"github.com/OhByron/PlanA/internal/handlers"
 	"github.com/OhByron/PlanA/internal/server/middleware"
+	"github.com/OhByron/PlanA/internal/vcs"
 )
 
 // New builds and returns the complete HTTP handler tree.
@@ -64,6 +65,10 @@ func New(deps *Dependencies) http.Handler {
 	sprintDepH := handlers.NewSprintDepHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
+	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
+	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
+	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
+	vcsActH  := handlers.NewVCSActivityHandlers(deps.DB, vcsEncryptor)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -101,6 +106,14 @@ func New(deps *Dependencies) http.Handler {
 		// Public — stakeholder dashboard (token-authenticated, no login)
 		// ----------------------------------------------------------------
 		r.Get("/share/{token}/dashboard", shareH.Dashboard)
+
+		// ----------------------------------------------------------------
+		// Public — VCS webhooks (signature/token-validated, no login)
+		// ----------------------------------------------------------------
+		r.Route("/webhooks", func(r chi.Router) {
+			r.Post("/github/{connectionID}", vcsWebH.HandleGitHub)
+			r.Post("/gitlab/{connectionID}", vcsWebH.HandleGitLab)
+		})
 
 		// ----------------------------------------------------------------
 		// Protected — all routes below require a valid session JWT
@@ -239,6 +252,21 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/webhook", testH.Webhook)
 				})
 
+				// VCS bulk summary for board cards
+				r.Get("/vcs/summary", vcsActH.BulkSummary)
+
+				// VCS connections (repository linking)
+				r.Route("/vcs/connections", func(r chi.Router) {
+					r.Get("/", vcsConnH.List)
+					r.Post("/", vcsConnH.Create)
+					r.Route("/{connectionID}", func(r chi.Router) {
+						r.Get("/", vcsConnH.Get)
+						r.Patch("/", vcsConnH.Update)
+						r.Delete("/", vcsConnH.Delete)
+						r.Post("/test", vcsConnH.TestConnection)
+					})
+				})
+
 				// Share tokens (stakeholder dashboard links)
 				r.Route("/share-tokens", func(r chi.Router) {
 					r.Get("/", shareH.List)
@@ -292,6 +320,12 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/lock", estH.Lock)
 					r.Delete("/", estH.Reset)
 				})
+				// VCS activity (branches, PRs, commits linked to this work item)
+				r.Get("/vcs-summary", vcsActH.VCSSummary)
+				r.Get("/branches", vcsActH.ListBranches)
+				r.Get("/pull-requests", vcsActH.ListPRs)
+				r.Get("/commits", vcsActH.ListCommits)
+				r.Post("/create-branch", vcsActH.CreateBranch)
 			})
 		})
 	})

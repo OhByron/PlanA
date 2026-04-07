@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "저장",
+    "saved": "저장됨",
     "cancel": "취소",
     "create": "생성",
     "delete": "삭제",
@@ -44,7 +45,8 @@
     "project": "프로젝트",
     "graph": "그래프",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "버전 관리"
   },
   "graph": {
     "hardDependency": "강한 의존성",
@@ -412,6 +414,32 @@
     "duration": "소요 시간: {{ms}}ms",
     "source": "소스: {{source}} | 보고일: {{date}}",
     "generateDescAC": "설명 및 인수 기준 생성"
+  },
+  "vcs": {
+    "title": "버전 관리",
+    "branches": "브랜치",
+    "pullRequests": "풀 리퀘스트",
+    "commits": "커밋",
+    "moreCommits": "개의 추가 커밋",
+    "connections": "저장소 연결",
+    "addConnection": "저장소 추가",
+    "provider": "제공자",
+    "repository": "저장소",
+    "authMethod": "인증 방법",
+    "token": "액세스 토큰",
+    "testConnection": "연결 테스트",
+    "testSuccess": "연결 성공",
+    "testFailed": "연결 실패",
+    "enabled": "활성화됨",
+    "disabled": "비활성화됨",
+    "noConnections": "이 프로젝트에 연결된 저장소가 없습니다.",
+    "mergeTransition": "병합 시 자동 전환",
+    "mergeTransitionDesc": "연결된 풀 리퀘스트가 병합되면 작업 항목을 자동으로 이동합니다.",
+    "mergeTargetStatus": "대상 상태",
+    "copyBranch": "브랜치 이름 복사",
+    "copied": "복사됨!",
+    "saveWarning": "이 값을 지금 저장하세요. webhook 시크릿은 다시 표시되지 않습니다.",
+    "tunnelHint": "로컬 개발 시 터널(ngrok, cloudflared)을 사용하여 포트 8080을 노출하고 Git 제공자에서 webhook URL을 업데이트하세요."
   },
   "helpOverlay": {
     "dismiss": "닫기",

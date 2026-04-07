@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Speichern",
+    "saved": "Gespeichert",
     "cancel": "Abbrechen",
     "create": "Erstellen",
     "delete": "Löschen",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graph",
     "gantt": "Gantt",
-    "calendar": "Kalender"
+    "calendar": "Kalender",
+    "vcs": "Versionsverwaltung"
   },
   "graph": {
     "hardDependency": "Harte Abhängigkeit",
@@ -455,6 +457,32 @@
     "duration": "Dauer: {{ms}}ms",
     "source": "Quelle: {{source}} | Gemeldet: {{date}}",
     "generateDescAC": "Beschreibung & AK generieren"
+  },
+  "vcs": {
+    "title": "Versionsverwaltung",
+    "branches": "Branches",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "weitere Commits",
+    "connections": "Repository-Verbindungen",
+    "addConnection": "Repository hinzufügen",
+    "provider": "Anbieter",
+    "repository": "Repository",
+    "authMethod": "Authentifizierungsmethode",
+    "token": "Zugriffstoken",
+    "testConnection": "Verbindung testen",
+    "testSuccess": "Verbindung erfolgreich",
+    "testFailed": "Verbindung fehlgeschlagen",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "noConnections": "Keine Repositories mit diesem Projekt verbunden.",
+    "mergeTransition": "Automatischer Übergang bei Merge",
+    "mergeTransitionDesc": "Arbeitselemente automatisch verschieben, wenn ein verknüpfter Pull Request gemergt wird.",
+    "mergeTargetStatus": "Zielstatus",
+    "copyBranch": "Branch-Namen kopieren",
+    "copied": "Kopiert!",
+    "saveWarning": "Speichern Sie diese Werte jetzt. Das Webhook-Secret wird nicht erneut angezeigt.",
+    "tunnelHint": "Für die lokale Entwicklung verwenden Sie einen Tunnel (ngrok, cloudflared), um Port 8080 freizugeben, und aktualisieren Sie die Webhook-URL bei Ihrem Git-Anbieter."
   },
   "helpOverlay": {
     "dismiss": "Verwerfen",

@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Mentés",
+    "saved": "Mentve",
     "cancel": "Mégse",
     "create": "Létrehozás",
     "delete": "Törlés",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Gráf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Verziókezelés"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Időtartam: {{ms}}ms",
     "source": "Forrás: {{source}} | Jelentés: {{date}}",
     "generateDescAC": "Leírás és EK generálása"
+  },
+  "vcs": {
+    "title": "Verziókezelés",
+    "branches": "Ágak",
+    "pullRequests": "Pull kérelmek",
+    "commits": "Commitok",
+    "moreCommits": "további commitok",
+    "connections": "Tároló kapcsolatok",
+    "addConnection": "Tároló hozzáadása",
+    "provider": "Szolgáltató",
+    "repository": "Tároló",
+    "authMethod": "Hitelesítési módszer",
+    "token": "Hozzáférési token",
+    "testConnection": "Kapcsolat tesztelése",
+    "testSuccess": "Sikeres kapcsolódás",
+    "testFailed": "Sikertelen kapcsolódás",
+    "enabled": "Engedélyezve",
+    "disabled": "Letiltva",
+    "noConnections": "Nincsenek tárolók csatlakoztatva ehhez a projekthez.",
+    "mergeTransition": "Automatikus átmenet összevonáskor",
+    "mergeTransitionDesc": "Munkaelemek automatikus áthelyezése, amikor egy kapcsolt pull kérelem összevonásra kerül.",
+    "mergeTargetStatus": "Cél állapot",
+    "copyBranch": "Ágnév másolása",
+    "copied": "Másolva!",
+    "saveWarning": "Mentse el ezeket az értékeket most. A webhook titok nem jelenik meg újra.",
+    "tunnelHint": "Helyi fejlesztéshez használjon alagutat (ngrok, cloudflared) a 8080-as port elérhetővé tételéhez, és frissítse a webhook URL-t a Git szolgáltatónál."
   },
   "helpOverlay": {
     "dismiss": "Elvetés",

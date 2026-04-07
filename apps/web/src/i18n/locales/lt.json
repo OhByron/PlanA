@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Išsaugoti",
+    "saved": "Išsaugota",
     "cancel": "Atsisakyti",
     "create": "Sukurti",
     "delete": "Ištrinti",
@@ -44,7 +45,8 @@
     "project": "Projektas",
     "graph": "Grafas",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versijų valdymas"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Trukmė: {{ms}}ms",
     "source": "Šaltinis: {{source}} | Pranešta: {{date}}",
     "generateDescAC": "Generuoti aprašymą ir PK"
+  },
+  "vcs": {
+    "title": "Versijų valdymas",
+    "branches": "Šakos",
+    "pullRequests": "Pull užklausos",
+    "commits": "Commitai",
+    "moreCommits": "daugiau commitų",
+    "connections": "Saugyklų jungtys",
+    "addConnection": "Pridėti saugyklą",
+    "provider": "Tiekėjas",
+    "repository": "Saugykla",
+    "authMethod": "Autentifikacijos metodas",
+    "token": "Prieigos raktas",
+    "testConnection": "Testuoti jungtį",
+    "testSuccess": "Prisijungimas sėkmingas",
+    "testFailed": "Prisijungimas nepavyko",
+    "enabled": "Įjungta",
+    "disabled": "Išjungta",
+    "noConnections": "Prie šio projekto neprijungta jokia saugykla.",
+    "mergeTransition": "Automatinis perėjimas sujungiant",
+    "mergeTransitionDesc": "Automatiškai perkelti darbo elementus, kai susieta pull užklausa yra sujungiama.",
+    "mergeTargetStatus": "Tikslinė būsena",
+    "copyBranch": "Kopijuoti šakos pavadinimą",
+    "copied": "Nukopijuota!",
+    "saveWarning": "Išsaugokite šias reikšmes dabar. Webhook paslaptis nebus rodoma pakartotinai.",
+    "tunnelHint": "Vietiniam kūrimui naudokite tunelį (ngrok, cloudflared), kad atvertumėte 8080 prievadą, ir atnaujinkite webhook URL savo Git tiekėjo nustatymuose."
   },
   "helpOverlay": {
     "dismiss": "Atmesti",

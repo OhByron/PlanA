@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "सहेजें",
+    "saved": "सहेजा गया",
     "cancel": "रद्द करें",
     "create": "बनाएं",
     "delete": "हटाएं",
@@ -44,7 +45,8 @@
     "project": "प्रोजेक्ट",
     "graph": "ग्राफ",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "संस्करण नियंत्रण"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "अवधि: {{ms}}ms",
     "source": "स्रोत: {{source}} | रिपोर्ट: {{date}}",
     "generateDescAC": "विवरण और स्वीकृति मानदंड जनरेट करें"
+  },
+  "vcs": {
+    "title": "संस्करण नियंत्रण",
+    "branches": "शाखाएं",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "और commits",
+    "connections": "रिपॉजिटरी कनेक्शन",
+    "addConnection": "रिपॉजिटरी जोड़ें",
+    "provider": "प्रदाता",
+    "repository": "रिपॉजिटरी",
+    "authMethod": "प्रमाणीकरण विधि",
+    "token": "एक्सेस टोकन",
+    "testConnection": "कनेक्शन जांचें",
+    "testSuccess": "कनेक्शन सफल",
+    "testFailed": "कनेक्शन विफल",
+    "enabled": "सक्रिय",
+    "disabled": "निष्क्रिय",
+    "noConnections": "इस प्रोजेक्ट से कोई रिपॉजिटरी कनेक्ट नहीं है।",
+    "mergeTransition": "मर्ज पर स्वतः संक्रमण",
+    "mergeTransitionDesc": "लिंक किए गए pull request के मर्ज होने पर कार्य आइटम स्वचालित रूप से स्थानांतरित करें।",
+    "mergeTargetStatus": "लक्ष्य स्थिति",
+    "copyBranch": "शाखा का नाम कॉपी करें",
+    "copied": "कॉपी किया गया!",
+    "saveWarning": "ये मान अभी सहेजें। Webhook सीक्रेट दोबारा नहीं दिखाया जाएगा।",
+    "tunnelHint": "स्थानीय विकास के लिए, पोर्ट 8080 को एक्सपोज़ करने के लिए एक टनल (ngrok, cloudflared) का उपयोग करें और अपने Git प्रदाता में webhook URL अपडेट करें।"
   },
   "helpOverlay": {
     "dismiss": "खारिज करें",

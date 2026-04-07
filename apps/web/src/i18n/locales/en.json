@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Save",
+    "saved": "Saved",
     "cancel": "Cancel",
     "create": "Create",
     "delete": "Delete",
@@ -46,7 +47,8 @@
     "project": "Project",
     "graph": "Graph",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Repositories"
   },
 
   "graph": {
@@ -523,6 +525,34 @@
     "duration": "Duration: {{ms}}ms",
     "source": "Source: {{source}} | Reported: {{date}}",
     "generateDescAC": "Generate Description & ACs"
+  },
+
+  "vcs": {
+    "title": "Version Control",
+    "branches": "Branches",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "more commits",
+    "connections": "Repository Connections",
+    "addConnection": "Add Repository",
+    "provider": "Provider",
+    "repository": "Repository",
+    "authMethod": "Authentication Method",
+    "token": "Access Token",
+    "testConnection": "Test Connection",
+    "testSuccess": "Connection successful",
+    "testFailed": "Connection failed",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "noConnections": "No repositories connected to this project.",
+    "mergeTransition": "Auto-transition on merge",
+    "mergeTransitionDesc": "Automatically move work items when a linked pull request is merged.",
+    "mergeTargetStatus": "Target status",
+    "copyBranch": "Copy branch name",
+    "createBranch": "Create branch",
+    "copied": "Copied!",
+    "saveWarning": "Save these values now. The webhook secret will not be shown again.",
+    "tunnelHint": "For local development, use a tunnel (ngrok, cloudflared) to expose port 8080 and update the webhook URL in your Git provider."
   },
 
   "helpOverlay": {

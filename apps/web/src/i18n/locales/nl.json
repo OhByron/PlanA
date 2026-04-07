@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Opslaan",
+    "saved": "Opgeslagen",
     "cancel": "Annuleren",
     "create": "Aanmaken",
     "delete": "Verwijderen",
@@ -44,7 +45,8 @@
     "project": "Project",
     "graph": "Graaf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versiebeheer"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Duur: {{ms}}ms",
     "source": "Bron: {{source}} | Gemeld: {{date}}",
     "generateDescAC": "Beschrijving en ACs Genereren"
+  },
+  "vcs": {
+    "title": "Versiebeheer",
+    "branches": "Branches",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "meer commits",
+    "connections": "Repository-verbindingen",
+    "addConnection": "Repository toevoegen",
+    "provider": "Provider",
+    "repository": "Repository",
+    "authMethod": "Authenticatiemethode",
+    "token": "Toegangstoken",
+    "testConnection": "Verbinding testen",
+    "testSuccess": "Verbinding geslaagd",
+    "testFailed": "Verbinding mislukt",
+    "enabled": "Ingeschakeld",
+    "disabled": "Uitgeschakeld",
+    "noConnections": "Geen repositories verbonden met dit project.",
+    "mergeTransition": "Automatische overgang bij merge",
+    "mergeTransitionDesc": "Verplaats werkitems automatisch wanneer een gekoppeld pull request wordt gemerged.",
+    "mergeTargetStatus": "Doelstatus",
+    "copyBranch": "Branchnaam kopiëren",
+    "copied": "Gekopieerd!",
+    "saveWarning": "Sla deze waarden nu op. Het webhook-geheim wordt niet opnieuw getoond.",
+    "tunnelHint": "Gebruik voor lokale ontwikkeling een tunnel (ngrok, cloudflared) om poort 8080 beschikbaar te maken en werk de webhook-URL bij in je Git-provider."
   },
   "helpOverlay": {
     "dismiss": "Sluiten",

@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Saglabāt",
+    "saved": "Saglabāts",
     "cancel": "Atcelt",
     "create": "Izveidot",
     "delete": "Dzēst",
@@ -44,7 +45,8 @@
     "project": "Projekts",
     "graph": "Grafs",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Versiju kontrole"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Ilgums: {{ms}}ms",
     "source": "Avots: {{source}} | Ziņots: {{date}}",
     "generateDescAC": "Ģenerēt aprakstu un PK"
+  },
+  "vcs": {
+    "title": "Versiju kontrole",
+    "branches": "Zari",
+    "pullRequests": "Pull pieprasījumi",
+    "commits": "Commitī",
+    "moreCommits": "vairāk commitu",
+    "connections": "Repozitoriju savienojumi",
+    "addConnection": "Pievienot repozitoriju",
+    "provider": "Pakalpojumu sniedzējs",
+    "repository": "Repozitorijs",
+    "authMethod": "Autentifikācijas metode",
+    "token": "Piekļuves tokens",
+    "testConnection": "Testēt savienojumu",
+    "testSuccess": "Savienojums veiksmīgs",
+    "testFailed": "Savienojums neizdevās",
+    "enabled": "Iespējots",
+    "disabled": "Atspējots",
+    "noConnections": "Šim projektam nav pievienotu repozitoriju.",
+    "mergeTransition": "Automātiska pāreja apvienojot",
+    "mergeTransitionDesc": "Automātiski pārvietot darba vienumus, kad saistītais pull pieprasījums tiek apvienots.",
+    "mergeTargetStatus": "Mērķa statuss",
+    "copyBranch": "Kopēt zara nosaukumu",
+    "copied": "Nokopēts!",
+    "saveWarning": "Saglabājiet šīs vērtības tagad. Webhook noslēpums vairs netiks rādīts.",
+    "tunnelHint": "Lokālai izstrādei izmantojiet tuneli (ngrok, cloudflared), lai atvērtu portu 8080, un atjauniniet webhook URL savā Git pakalpojumu sniedzējā."
   },
   "helpOverlay": {
     "dismiss": "Noraidīt",

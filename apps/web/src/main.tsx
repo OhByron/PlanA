@@ -36,6 +36,7 @@ import { ReportViewPage } from './pages/project/report-view';
 import { GraphPage } from './pages/project/graph';
 import { GanttPage } from './pages/project/gantt';
 import { CalendarPage } from './pages/project/calendar';
+import { VCSSettingsPage } from './pages/project/vcs-settings';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -217,6 +218,12 @@ const calendarRoute = createRoute({
   component: CalendarPage,
 });
 
+const vcsSettingsRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/vcs',
+  component: VCSSettingsPage,
+});
+
 const workItemDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/p/$projectId/items/$workItemId',
@@ -237,7 +244,7 @@ const routeTree = rootRoute.addChildren([
     orgsRoute,
     orgDetailRoute,
     archiveRoute,
-    projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, teamRoute, settingsRoute, reportViewRoute]),
+    projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, teamRoute, settingsRoute, vcsSettingsRoute, reportViewRoute]),
     epicDetailRoute,
     sprintDetailRoute,
     workItemDetailRoute,

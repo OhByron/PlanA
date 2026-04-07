@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Vista",
+    "saved": "Vistað",
     "cancel": "Hætta við",
     "create": "Búa til",
     "delete": "Eyða",
@@ -44,7 +45,8 @@
     "project": "Verkefni",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Útgáfustýring"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Lengd: {{ms}}ms",
     "source": "Uppruni: {{source}} | Tilkynnt: {{date}}",
     "generateDescAC": "Búa til lýsingu og samþykkisskilyrði"
+  },
+  "vcs": {
+    "title": "Útgáfustýring",
+    "branches": "Greinar",
+    "pullRequests": "Pull beiðnir",
+    "commits": "Commits",
+    "moreCommits": "fleiri commits",
+    "connections": "Geymslutengingar",
+    "addConnection": "Bæta við geymslu",
+    "provider": "Þjónustuaðili",
+    "repository": "Geymsla",
+    "authMethod": "Auðkenningaraðferð",
+    "token": "Aðgangslykill",
+    "testConnection": "Prófa tengingu",
+    "testSuccess": "Tenging tókst",
+    "testFailed": "Tenging mistókst",
+    "enabled": "Virkt",
+    "disabled": "Óvirkt",
+    "noConnections": "Engar geymslur tengdar þessu verkefni.",
+    "mergeTransition": "Sjálfvirk færsla við sameiningu",
+    "mergeTransitionDesc": "Færa verkliði sjálfvirkt þegar tengd pull beiðni er sameinuð.",
+    "mergeTargetStatus": "Markstaða",
+    "copyBranch": "Afrita greinanafn",
+    "copied": "Afritað!",
+    "saveWarning": "Vistaðu þessi gildi núna. Webhook leyniorðið birtist ekki aftur.",
+    "tunnelHint": "Fyrir staðbundna þróun, notaðu göng (ngrok, cloudflared) til að opna port 8080 og uppfærðu webhook slóðina hjá Git þjónustuaðilanum."
   },
   "helpOverlay": {
     "dismiss": "Hunsa",

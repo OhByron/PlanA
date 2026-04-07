@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Enregistrer",
+    "saved": "Enregistré",
     "cancel": "Annuler",
     "create": "Créer",
     "delete": "Supprimer",
@@ -44,7 +45,8 @@
     "project": "Projet",
     "graph": "Graphe",
     "gantt": "Gantt",
-    "calendar": "Calendrier"
+    "calendar": "Calendrier",
+    "vcs": "Gestion de versions"
   },
   "graph": {
     "hardDependency": "Dépendance forte",
@@ -455,6 +457,32 @@
     "duration": "Durée : {{ms}} ms",
     "source": "Source : {{source}} | Signalé : {{date}}",
     "generateDescAC": "Générer description et CA"
+  },
+  "vcs": {
+    "title": "Gestion de versions",
+    "branches": "Branches",
+    "pullRequests": "Pull Requests",
+    "commits": "Commits",
+    "moreCommits": "commits supplémentaires",
+    "connections": "Connexions de dépôts",
+    "addConnection": "Ajouter un dépôt",
+    "provider": "Fournisseur",
+    "repository": "Dépôt",
+    "authMethod": "Méthode d'authentification",
+    "token": "Jeton d'accès",
+    "testConnection": "Tester la connexion",
+    "testSuccess": "Connexion réussie",
+    "testFailed": "Connexion échouée",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "noConnections": "Aucun dépôt connecté à ce projet.",
+    "mergeTransition": "Transition automatique lors du merge",
+    "mergeTransitionDesc": "Déplacer automatiquement les éléments de travail lorsqu'un pull request lié est mergé.",
+    "mergeTargetStatus": "Statut cible",
+    "copyBranch": "Copier le nom de branche",
+    "copied": "Copié !",
+    "saveWarning": "Enregistrez ces valeurs maintenant. Le secret du webhook ne sera plus affiché.",
+    "tunnelHint": "Pour le développement local, utilisez un tunnel (ngrok, cloudflared) pour exposer le port 8080 et mettez à jour l'URL du webhook chez votre fournisseur Git."
   },
   "helpOverlay": {
     "dismiss": "Fermer",

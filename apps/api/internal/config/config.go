@@ -31,8 +31,13 @@ type Config struct {
 	// FrontendURL is the base URL of the web app; used for OAuth post-login redirects.
 	FrontendURL string
 
-	// Resend API key for email delivery (optional — invites work without it, just no email sent)
+	// Resend API key for email delivery (optional -- invites work without it, just no email sent)
 	ResendAPIKey string
+
+	// VCS integration -- AES-256 key for encrypting repository access tokens at rest.
+	// Required in production, optional in development (tokens stored as plaintext if empty).
+	// Must be exactly 32 bytes, hex-encoded (64 hex chars).
+	VCSEncryptionKey string
 }
 
 func Load() (*Config, error) {
@@ -53,6 +58,8 @@ func Load() (*Config, error) {
 		AllowedOrigins: os.Getenv("ALLOWED_ORIGINS"),
 		FrontendURL:    getEnv("FRONTEND_URL", "http://localhost:5173"),
 		ResendAPIKey:   os.Getenv("RESEND_API_KEY"),
+
+		VCSEncryptionKey: os.Getenv("VCS_ENCRYPTION_KEY"),
 	}
 
 	if cfg.DatabaseURL == "" {
@@ -63,6 +70,10 @@ func Load() (*Config, error) {
 	}
 	if len(cfg.JWTSecret) < 32 {
 		return nil, fmt.Errorf("JWT_SECRET must be at least 32 characters")
+	}
+
+	if cfg.Environment == "production" && cfg.VCSEncryptionKey != "" && len(cfg.VCSEncryptionKey) != 64 {
+		return nil, fmt.Errorf("VCS_ENCRYPTION_KEY must be exactly 64 hex characters (32 bytes)")
 	}
 
 	return cfg, nil

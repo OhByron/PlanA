@@ -8,13 +8,13 @@ import (
 	"log/slog"
 	"math"
 	"net/http"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
+
+	"github.com/OhByron/PlanA/internal/vcs"
 )
 
 // TestResultHandlers handles test result ingestion and querying.
@@ -61,33 +61,8 @@ type junitError struct {
 	Body    string `xml:",chardata"`
 }
 
-// ---------- Regex for item number extraction ----------
-
-var itemNumberRe = regexp.MustCompile(`(?:#(\d+)|([A-Z][A-Z0-9]+-(\d+)))`)
-
-// extractItemNumber tries to find a work-item item_number from a test name.
-// Returns the number and true if found.
-func extractItemNumber(testName string) (int, bool) {
-	m := itemNumberRe.FindStringSubmatch(testName)
-	if m == nil {
-		return 0, false
-	}
-	// Group 1: #(\d+)
-	if m[1] != "" {
-		n, err := strconv.Atoi(m[1])
-		if err == nil {
-			return n, true
-		}
-	}
-	// Group 3: the digits after SLUG-
-	if m[3] != "" {
-		n, err := strconv.Atoi(m[3])
-		if err == nil {
-			return n, true
-		}
-	}
-	return 0, false
-}
+// extractItemNumber delegates to the shared vcs.ExtractItemNumber.
+var extractItemNumber = vcs.ExtractItemNumber
 
 // newUUID generates a v4 UUID string without external dependencies.
 func newUUID() string {

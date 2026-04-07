@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "保存",
+    "saved": "保存済み",
     "cancel": "キャンセル",
     "create": "作成",
     "delete": "削除",
@@ -44,7 +45,8 @@
     "project": "プロジェクト",
     "graph": "グラフ",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "バージョン管理"
   },
   "graph": {
     "hardDependency": "強い依存関係",
@@ -412,6 +414,32 @@
     "duration": "所要時間: {{ms}}ms",
     "source": "ソース: {{source}} | 報告日: {{date}}",
     "generateDescAC": "説明と受け入れ基準を生成"
+  },
+  "vcs": {
+    "title": "バージョン管理",
+    "branches": "ブランチ",
+    "pullRequests": "プルリクエスト",
+    "commits": "コミット",
+    "moreCommits": "件のコミット",
+    "connections": "リポジトリ接続",
+    "addConnection": "リポジトリを追加",
+    "provider": "プロバイダー",
+    "repository": "リポジトリ",
+    "authMethod": "認証方法",
+    "token": "アクセストークン",
+    "testConnection": "接続テスト",
+    "testSuccess": "接続成功",
+    "testFailed": "接続失敗",
+    "enabled": "有効",
+    "disabled": "無効",
+    "noConnections": "このプロジェクトに接続されたリポジトリはありません。",
+    "mergeTransition": "マージ時の自動遷移",
+    "mergeTransitionDesc": "リンクされたプルリクエストがマージされたとき、作業アイテムを自動的に移動します。",
+    "mergeTargetStatus": "遷移先ステータス",
+    "copyBranch": "ブランチ名をコピー",
+    "copied": "コピーしました！",
+    "saveWarning": "これらの値を今すぐ保存してください。webhookシークレットは再表示されません。",
+    "tunnelHint": "ローカル開発では、トンネル（ngrok、cloudflared）を使用してポート8080を公開し、Gitプロバイダーでwebhook URLを更新してください。"
   },
   "helpOverlay": {
     "dismiss": "閉じる",

@@ -4,6 +4,7 @@ import type { WorkItem } from '@projecta/types';
 import { Avatar, cn } from '@projecta/ui';
 import { TypeIcon } from './type-icon';
 import { PriorityIndicator } from './priority-indicator';
+import { VCSCardBadge } from './vcs-status-badge';
 
 interface WorkItemCardProps {
   item: WorkItem;
@@ -17,6 +18,8 @@ interface WorkItemCardProps {
   onClick?: () => void;
   /** Number of items this card unblocks when completed */
   unblocksCount?: number | undefined;
+  /** VCS summary for PR badge display */
+  vcsSummary?: { openPrCount: number; mergedPrs: number; checksStatus: string | null } | undefined;
 }
 
 export function WorkItemCard({
@@ -30,6 +33,7 @@ export function WorkItemCard({
   onClick: onClickProp,
   unblocksCount,
   childDoneCount,
+  vcsSummary,
 }: WorkItemCardProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -110,6 +114,13 @@ export function WorkItemCard({
             <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
               {t('workItemCard.unblocks', { count: unblocksCount })}
             </span>
+          )}
+          {vcsSummary && (
+            <VCSCardBadge
+              openPrCount={vcsSummary.openPrCount}
+              mergedPrs={vcsSummary.mergedPrs}
+              checksStatus={vcsSummary.checksStatus}
+            />
           )}
         </div>
 

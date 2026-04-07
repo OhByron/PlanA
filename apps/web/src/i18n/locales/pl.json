@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Zapisz",
+    "saved": "Zapisano",
     "cancel": "Anuluj",
     "create": "Utwórz",
     "delete": "Usuń",
@@ -44,7 +45,8 @@
     "project": "Projekt",
     "graph": "Graf",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Kontrola wersji"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -412,6 +414,32 @@
     "duration": "Czas trwania: {{ms}}ms",
     "source": "Źródło: {{source}} | Zgłoszono: {{date}}",
     "generateDescAC": "Generuj Opis i AC"
+  },
+  "vcs": {
+    "title": "Kontrola wersji",
+    "branches": "Gałęzie",
+    "pullRequests": "Pull Requesty",
+    "commits": "Commity",
+    "moreCommits": "więcej commitów",
+    "connections": "Połączenia z repozytoriami",
+    "addConnection": "Dodaj repozytorium",
+    "provider": "Dostawca",
+    "repository": "Repozytorium",
+    "authMethod": "Metoda uwierzytelniania",
+    "token": "Token dostępu",
+    "testConnection": "Testuj połączenie",
+    "testSuccess": "Połączenie udane",
+    "testFailed": "Połączenie nieudane",
+    "enabled": "Włączone",
+    "disabled": "Wyłączone",
+    "noConnections": "Brak repozytoriów połączonych z tym projektem.",
+    "mergeTransition": "Automatyczna zmiana statusu po merge",
+    "mergeTransitionDesc": "Automatycznie przenoś elementy pracy, gdy powiązany pull request zostanie zmergowany.",
+    "mergeTargetStatus": "Status docelowy",
+    "copyBranch": "Kopiuj nazwę gałęzi",
+    "copied": "Skopiowano!",
+    "saveWarning": "Zapisz te wartości teraz. Sekret webhooka nie zostanie ponownie wyświetlony.",
+    "tunnelHint": "Do lokalnego rozwoju użyj tunelu (ngrok, cloudflared), aby udostępnić port 8080 i zaktualizuj adres URL webhooka u dostawcy Git."
   },
   "helpOverlay": {
     "dismiss": "Odrzuć",

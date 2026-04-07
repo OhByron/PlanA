@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Сохранить",
+    "saved": "Сохранено",
     "cancel": "Отмена",
     "create": "Создать",
     "delete": "Удалить",
@@ -44,7 +45,8 @@
     "project": "Проект",
     "graph": "Граф",
     "gantt": "Gantt",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "vcs": "Контроль версий"
   },
   "graph": {
     "hardDependency": "Жёсткая зависимость",
@@ -412,6 +414,32 @@
     "duration": "Длительность: {{ms}} мс",
     "source": "Источник: {{source}} | Зарегистрировано: {{date}}",
     "generateDescAC": "Сгенерировать описание и КП"
+  },
+  "vcs": {
+    "title": "Контроль версий",
+    "branches": "Ветки",
+    "pullRequests": "Pull-запросы",
+    "commits": "Коммиты",
+    "moreCommits": "ещё коммитов",
+    "connections": "Подключения репозиториев",
+    "addConnection": "Добавить репозиторий",
+    "provider": "Провайдер",
+    "repository": "Репозиторий",
+    "authMethod": "Метод аутентификации",
+    "token": "Токен доступа",
+    "testConnection": "Проверить подключение",
+    "testSuccess": "Подключение успешно",
+    "testFailed": "Подключение не удалось",
+    "enabled": "Включено",
+    "disabled": "Отключено",
+    "noConnections": "К этому проекту не подключены репозитории.",
+    "mergeTransition": "Автоматический переход при merge",
+    "mergeTransitionDesc": "Автоматически перемещать рабочие элементы при слиянии связанного pull-запроса.",
+    "mergeTargetStatus": "Целевой статус",
+    "copyBranch": "Копировать имя ветки",
+    "copied": "Скопировано!",
+    "saveWarning": "Сохраните эти значения сейчас. Секрет webhook больше не будет показан.",
+    "tunnelHint": "Для локальной разработки используйте туннель (ngrok, cloudflared), чтобы открыть порт 8080, и обновите URL webhook в вашем Git-провайдере."
   },
   "helpOverlay": {
     "dismiss": "Скрыть",
