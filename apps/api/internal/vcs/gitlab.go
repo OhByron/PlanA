@@ -299,6 +299,7 @@ func (g *GitLabProvider) parseMergeRequest(payload []byte) (Event, error) {
 type glPipelinePayload struct {
 	ObjectAttributes struct {
 		Status string `json:"status"` // pending, running, success, failed, canceled, skipped
+		URL    string `json:"url"`
 	} `json:"object_attributes"`
 	MergeRequest *struct {
 		IID int64 `json:"iid"`
@@ -332,6 +333,7 @@ func (g *GitLabProvider) parsePipeline(payload []byte) (Event, error) {
 		Checks: &ChecksEvent{
 			PRExternalID: p.MergeRequest.IID,
 			Status:       status,
+			URL:          p.ObjectAttributes.URL,
 		},
 	}, nil
 }

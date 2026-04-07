@@ -68,7 +68,7 @@ func New(deps *Dependencies) http.Handler {
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
-	vcsActH  := handlers.NewVCSActivityHandlers(deps.DB)
+	vcsActH  := handlers.NewVCSActivityHandlers(deps.DB, vcsEncryptor)
 
 	// Public routes
 	r.Get("/health", handlers.Health)
@@ -252,6 +252,9 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/webhook", testH.Webhook)
 				})
 
+				// VCS bulk summary for board cards
+				r.Get("/vcs/summary", vcsActH.BulkSummary)
+
 				// VCS connections (repository linking)
 				r.Route("/vcs/connections", func(r chi.Router) {
 					r.Get("/", vcsConnH.List)
@@ -322,6 +325,7 @@ func New(deps *Dependencies) http.Handler {
 				r.Get("/branches", vcsActH.ListBranches)
 				r.Get("/pull-requests", vcsActH.ListPRs)
 				r.Get("/commits", vcsActH.ListCommits)
+				r.Post("/create-branch", vcsActH.CreateBranch)
 			})
 		})
 	})

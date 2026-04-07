@@ -80,6 +80,7 @@ type ReviewEvent struct {
 type ChecksEvent struct {
 	PRExternalID int64
 	Status       string // pending, success, failure, neutral
+	URL          string // link to the check run/pipeline
 }
 
 type Commit struct {

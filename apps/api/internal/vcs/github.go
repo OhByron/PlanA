@@ -324,6 +324,7 @@ type ghCheckSuitePayload struct {
 	CheckSuite struct {
 		Conclusion  *string `json:"conclusion"` // success, failure, neutral, etc.
 		Status      string  `json:"status"`     // queued, in_progress, completed
+		HTMLURL     string  `json:"html_url"`
 		PullRequests []struct {
 			Number int64 `json:"number"`
 		} `json:"pull_requests"`
@@ -361,6 +362,7 @@ func (g *GitHubProvider) parseCheckSuite(payload []byte) (Event, error) {
 		Checks: &ChecksEvent{
 			PRExternalID: p.CheckSuite.PullRequests[0].Number,
 			Status:       status,
+			URL:          p.CheckSuite.HTMLURL,
 		},
 	}, nil
 }

@@ -1,34 +1,84 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { VCSBranch, VCSPullRequest, VCSCommit } from '../hooks/use-vcs';
-import { useVCSBranches, useVCSPullRequests, useVCSCommits } from '../hooks/use-vcs';
+import { useVCSBranches, useVCSPullRequests, useVCSCommits, useCreateBranch, useVCSConnections } from '../hooks/use-vcs';
 import { VCSStatusBadge } from './vcs-status-badge';
 
 interface VCSSectionProps {
   workItemId: string;
+  projectId: string;
+  itemNumber: number | null;
+  itemTitle: string;
 }
 
-export function VCSSection({ workItemId }: VCSSectionProps) {
+export function VCSSection({ workItemId, projectId, itemNumber, itemTitle }: VCSSectionProps) {
   const { t } = useTranslation();
   const { data: branches } = useVCSBranches(workItemId);
   const { data: prs } = useVCSPullRequests(workItemId);
   const { data: commits } = useVCSCommits(workItemId);
+  const { data: vcsConns } = useVCSConnections(projectId);
+  const createBranch = useCreateBranch(workItemId);
+  const [copiedBranch, setCopiedBranch] = useState(false);
 
   const hasBranches = branches && branches.length > 0;
   const hasPRs = prs && prs.length > 0;
   const hasCommits = commits && commits.length > 0;
+  const hasConnection = (vcsConns?.length ?? 0) > 0;
+  const hasData = hasBranches || hasPRs || hasCommits;
 
-  if (!hasBranches && !hasPRs && !hasCommits) return null;
+  if (!hasData && !hasConnection) return null;
+
+  const handleCopyBranch = () => {
+    if (itemNumber == null) return;
+    const slug = itemTitle
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 40);
+    navigator.clipboard.writeText(`feature/#${itemNumber}-${slug}`);
+    setCopiedBranch(true);
+    setTimeout(() => setCopiedBranch(false), 2000);
+  };
 
   return (
     <section className="mb-8">
-      <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-        {t('vcs.title')}
-      </h2>
-      <div className="space-y-3">
-        {hasBranches && <BranchList branches={branches} />}
-        {hasPRs && <PRList prs={prs} />}
-        {hasCommits && <CommitList commits={commits} />}
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+          {t('vcs.title')}
+        </h2>
+        {itemNumber != null && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopyBranch}
+              className="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+              title={t('vcs.copyBranch') ?? 'Copy branch name'}
+            >
+              {copiedBranch ? (t('vcs.copied') ?? 'Copied!') : (t('vcs.copyBranch') ?? 'Copy branch name')}
+            </button>
+            {hasConnection && (
+              <button
+                onClick={() => createBranch.mutate()}
+                disabled={createBranch.isPending}
+                className="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors disabled:opacity-50"
+                title={t('vcs.createBranch') ?? 'Create branch in repository'}
+              >
+                {createBranch.isPending
+                  ? (t('common.creating') ?? 'Creating...')
+                  : createBranch.isSuccess
+                    ? createBranch.data?.branch
+                    : (t('vcs.createBranch') ?? 'Create branch')}
+              </button>
+            )}
+          </div>
+        )}
       </div>
+      {hasData && (
+        <div className="space-y-3">
+          {hasBranches && <BranchList branches={branches} />}
+          {hasPRs && <PRList prs={prs} />}
+          {hasCommits && <CommitList commits={commits} />}
+        </div>
+      )}
     </section>
   );
 }
@@ -84,6 +134,7 @@ function PRList({ prs }: { prs: VCSPullRequest[] }) {
                 <VCSStatusBadge
                   state={pr.state}
                   checksStatus={pr.checksStatus}
+                  checksUrl={pr.checksUrl}
                   draft={pr.draft}
                 />
                 {pr.reviewStatus && (

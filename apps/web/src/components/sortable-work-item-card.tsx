@@ -13,6 +13,7 @@ interface Props {
   assigneeName?: string | undefined;
   unblocksCount?: number | undefined;
   childDoneCount?: number | undefined;
+  vcsSummary?: { openPrCount: number; mergedPrs: number; checksStatus: string | null } | undefined;
 }
 
 export function SortableWorkItemCard({
@@ -25,6 +26,7 @@ export function SortableWorkItemCard({
   assigneeName,
   unblocksCount,
   childDoneCount,
+  vcsSummary,
 }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id });
@@ -47,6 +49,7 @@ export function SortableWorkItemCard({
         assigneeName={assigneeName}
         unblocksCount={unblocksCount}
         childDoneCount={childDoneCount}
+        vcsSummary={vcsSummary}
       />
     </div>
   );

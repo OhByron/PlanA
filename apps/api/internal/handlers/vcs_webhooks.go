@@ -300,6 +300,38 @@ func (h *VCSWebhookHandlers) processReview(ctx context.Context, conn *connRecord
 	if err != nil {
 		return fmt.Errorf("update review status: %w", err)
 	}
+
+	// Notify the work item assignee about the review
+	var workItemID, assigneeID *string
+	var itemNumber *int
+	_ = h.db.QueryRow(ctx,
+		`SELECT pr.work_item_id, wi.assignee_id, wi.item_number
+		   FROM vcs_pull_requests pr
+		   JOIN work_items wi ON wi.id = pr.work_item_id
+		  WHERE pr.connection_id = $1 AND pr.external_id = $2
+		    AND pr.work_item_id IS NOT NULL`,
+		conn.ID, evt.PRExternalID,
+	).Scan(&workItemID, &assigneeID, &itemNumber)
+
+	if assigneeID != nil && workItemID != nil && itemNumber != nil {
+		var msg string
+		switch evt.State {
+		case "approved":
+			msg = fmt.Sprintf("PR #%d for work item #%d was approved by %s.",
+				evt.PRExternalID, *itemNumber, evt.Reviewer)
+		case "changes_requested":
+			msg = fmt.Sprintf("PR #%d for work item #%d has changes requested by %s.",
+				evt.PRExternalID, *itemNumber, evt.Reviewer)
+		default:
+			msg = fmt.Sprintf("PR #%d for work item #%d received a review from %s.",
+				evt.PRExternalID, *itemNumber, evt.Reviewer)
+		}
+		_, _ = h.db.Exec(ctx,
+			`INSERT INTO notifications (user_id, type, message, work_item_id)
+			 VALUES ($1, 'status_change', $2, $3)`,
+			*assigneeID, msg, *workItemID)
+	}
+
 	return nil
 }
 
@@ -307,9 +339,9 @@ func (h *VCSWebhookHandlers) processReview(ctx context.Context, conn *connRecord
 
 func (h *VCSWebhookHandlers) processCheckSuite(ctx context.Context, conn *connRecord, evt *vcs.ChecksEvent) error {
 	_, err := h.db.Exec(ctx,
-		`UPDATE vcs_pull_requests SET checks_status = $1, updated_at = NOW()
-		  WHERE connection_id = $2 AND external_id = $3`,
-		evt.Status, conn.ID, evt.PRExternalID)
+		`UPDATE vcs_pull_requests SET checks_status = $1, checks_url = $2, updated_at = NOW()
+		  WHERE connection_id = $3 AND external_id = $4`,
+		evt.Status, nilIfEmpty(evt.URL), conn.ID, evt.PRExternalID)
 	if err != nil {
 		return fmt.Errorf("update checks status: %w", err)
 	}

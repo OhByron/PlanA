@@ -44,6 +44,7 @@ export interface VCSPullRequest {
   authorAvatar: string | null;
   url: string;
   checksStatus: 'pending' | 'success' | 'failure' | 'neutral' | null;
+  checksUrl: string | null;
   reviewStatus: 'pending' | 'approved' | 'changes_requested' | 'commented' | null;
   mergedAt: string | null;
   closedAt: string | null;
@@ -125,6 +126,7 @@ function toPullRequest(r: Record<string, unknown>): VCSPullRequest {
     authorAvatar: r.author_avatar as string | null,
     url: r.url as string,
     checksStatus: r.checks_status as VCSPullRequest['checksStatus'],
+    checksUrl: r.checks_url as string | null,
     reviewStatus: r.review_status as VCSPullRequest['reviewStatus'],
     mergedAt: r.merged_at as string | null,
     closedAt: r.closed_at as string | null,
@@ -238,6 +240,38 @@ export function useTestVCSConnection(projectId: string) {
   });
 }
 
+// ---------- Bulk summary (project-scoped, for board cards) ----------
+
+export interface VCSBulkItem {
+  workItemId: string;
+  openPrCount: number;
+  mergedPrs: number;
+  checksStatus: string | null;
+}
+
+export function useVCSBulkSummary(projectId: string) {
+  return useQuery({
+    queryKey: ['vcs-bulk-summary', projectId],
+    queryFn: async (): Promise<Map<string, VCSBulkItem>> => {
+      const raw = await api.get<Record<string, unknown>[]>(
+        `/projects/${projectId}/vcs/summary`
+      );
+      const map = new Map<string, VCSBulkItem>();
+      for (const r of raw) {
+        const item: VCSBulkItem = {
+          workItemId: r.work_item_id as string,
+          openPrCount: r.open_pr_count as number,
+          mergedPrs: r.merged_prs as number,
+          checksStatus: r.checks_status as string | null,
+        };
+        map.set(item.workItemId, item);
+      }
+      return map;
+    },
+    enabled: !!projectId,
+  });
+}
+
 // ---------- Activity hooks (work-item-scoped) ----------
 
 export function useVCSSummary(workItemId: string) {
@@ -276,6 +310,20 @@ export function useVCSPullRequests(workItemId: string) {
       return raw.map(toPullRequest);
     },
     enabled: !!workItemId,
+  });
+}
+
+export function useCreateBranch(workItemId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const raw = await api.post(`/work-items/${workItemId}/create-branch`);
+      return raw as { branch: string; provider: string; repo: string };
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ['vcs-branches', workItemId] });
+      qc.invalidateQueries({ queryKey: ['vcs-summary', workItemId] });
+    },
   });
 }
 

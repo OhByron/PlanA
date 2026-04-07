@@ -4,6 +4,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import type { WorkItem, WorkItemStatus } from '@projecta/types';
 import { cn } from '@projecta/ui';
 import { SortableWorkItemCard } from './sortable-work-item-card';
+import type { VCSBulkItem } from '../hooks/use-vcs';
 
 const columnColors: Record<string, string> = {
   backlog: 'border-t-gray-300',
@@ -27,6 +28,8 @@ interface BoardColumnProps {
   unblocksMap?: Map<string, number> | undefined;
   /** Map of story ID → number of child tasks that are done */
   childDoneCounts?: Map<string, number> | undefined;
+  /** VCS summaries keyed by work item ID */
+  vcsSummaries?: Map<string, VCSBulkItem> | undefined;
 }
 
 export function BoardColumn({
@@ -41,6 +44,7 @@ export function BoardColumn({
   memberNames,
   unblocksMap,
   childDoneCounts,
+  vcsSummaries,
 }: BoardColumnProps) {
   const { t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: status });
@@ -88,6 +92,7 @@ export function BoardColumn({
               assigneeName={memberNames?.get(item.assigneeId ?? '')}
               unblocksCount={unblocksMap?.get(item.id)}
               childDoneCount={childDoneCounts?.get(item.id)}
+              vcsSummary={vcsSummaries?.get(item.id)}
             />
           ))}
         </SortableContext>

@@ -3,11 +3,12 @@ import { cn } from '@projecta/ui';
 interface VCSStatusBadgeProps {
   state: 'open' | 'closed' | 'merged';
   checksStatus?: string | null;
+  checksUrl?: string | null;
   draft?: boolean;
   className?: string;
 }
 
-export function VCSStatusBadge({ state, checksStatus, draft, className }: VCSStatusBadgeProps) {
+export function VCSStatusBadge({ state, checksStatus, checksUrl, draft, className }: VCSStatusBadgeProps) {
   return (
     <span
       className={cn(
@@ -21,7 +22,7 @@ export function VCSStatusBadge({ state, checksStatus, draft, className }: VCSSta
     >
       <PRStateIcon state={state} draft={draft ?? false} />
       {draft ? 'Draft' : state === 'open' ? 'Open' : state === 'merged' ? 'Merged' : 'Closed'}
-      {checksStatus && state === 'open' && <ChecksIndicator status={checksStatus} />}
+      {checksStatus && state === 'open' && <ChecksIndicator status={checksStatus} url={checksUrl} />}
     </span>
   );
 }
@@ -39,17 +40,29 @@ function PRStateIcon({ state, draft }: { state: string; draft?: boolean }) {
   return <span className="text-green-600">&#9679;</span>;
 }
 
-function ChecksIndicator({ status }: { status: string }) {
+function ChecksIndicator({ status, url }: { status: string; url?: string | null | undefined }) {
+  let icon: string;
+  let color: string;
+  let title: string;
+
   if (status === 'success') {
-    return <span className="text-green-600" title="Checks passing">&#10003;</span>;
+    icon = '\u2713'; color = 'text-green-600'; title = 'Checks passing';
+  } else if (status === 'failure') {
+    icon = '\u2717'; color = 'text-red-500'; title = 'Checks failing';
+  } else if (status === 'pending') {
+    icon = '\u25CF'; color = 'text-amber-500'; title = 'Checks pending';
+  } else {
+    return null;
   }
-  if (status === 'failure') {
-    return <span className="text-red-500" title="Checks failing">&#10005;</span>;
+
+  if (url) {
+    return (
+      <a href={url} target="_blank" rel="noopener noreferrer" className={`${color} hover:underline`} title={title}>
+        {icon}
+      </a>
+    );
   }
-  if (status === 'pending') {
-    return <span className="text-amber-500" title="Checks pending">&#9679;</span>;
-  }
-  return null;
+  return <span className={color} title={title}>{icon}</span>;
 }
 
 // Compact badge for board cards - shows just the PR count and overall status

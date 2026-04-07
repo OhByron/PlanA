@@ -549,6 +549,7 @@
     "mergeTransitionDesc": "Automatically move work items when a linked pull request is merged.",
     "mergeTargetStatus": "Target status",
     "copyBranch": "Copy branch name",
+    "createBranch": "Create branch",
     "copied": "Copied!",
     "saveWarning": "Save these values now. The webhook secret will not be shown again.",
     "tunnelHint": "For local development, use a tunnel (ngrok, cloudflared) to expose port 8080 and update the webhook URL in your Git provider."
