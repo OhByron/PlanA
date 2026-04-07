@@ -5,6 +5,7 @@ import { Button, Input, Select, Textarea } from '@projecta/ui';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
 import { toProject } from '../../lib/api-transforms';
+import { useLicence, useActivateLicence } from '../../hooks/use-licence';
 
 interface ShareToken {
   id: string;
@@ -78,6 +79,7 @@ export function AISettingsPage() {
 
   return (
     <div className="p-6 max-w-2xl">
+      <LicenceSection />
       <ProjectDetailsSection projectId={projectId} />
       <ProjectSettingsSection projectId={projectId} />
 
@@ -154,6 +156,90 @@ export function AISettingsPage() {
 
       {/* Stakeholder Sharing */}
       <ShareTokensSection projectId={projectId} />
+    </div>
+  );
+}
+
+function LicenceSection() {
+  const { t } = useTranslation();
+  const { data: licence } = useLicence();
+  const activate = useActivateLicence();
+  const [keyInput, setKeyInput] = useState('');
+  const [showInput, setShowInput] = useState(false);
+
+  const tierColors: Record<string, string> = {
+    community: 'bg-gray-100 text-gray-700',
+    professional: 'bg-brand-100 text-brand-700',
+    enterprise: 'bg-indigo-100 text-indigo-700',
+  };
+
+  return (
+    <div className="mb-10 border-b border-gray-200 pb-8">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900 mb-0.5">{t('licence.title')}</h2>
+          <p className="text-sm text-gray-500">{t('licence.description')}</p>
+        </div>
+        {licence && (
+          <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${tierColors[licence.tier] ?? tierColors.community}`}>
+            {licence.tier}
+          </span>
+        )}
+      </div>
+
+      {licence && (
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center gap-4 text-sm text-gray-600">
+            <span>{t('licence.organisation')}: <strong>{licence.organisation}</strong></span>
+            {licence.expiresAt && (
+              <span className={licence.expired ? 'text-red-500 font-medium' : ''}>
+                {licence.expired ? t('licence.expired') : t('licence.expiresOn', { date: new Date(licence.expiresAt).toLocaleDateString() })}
+              </span>
+            )}
+            {licence.tier === 'community' && !licence.expiresAt && (
+              <span className="text-gray-400">{t('licence.neverExpires')}</span>
+            )}
+          </div>
+          {licence.expired && (
+            <p className="text-xs text-amber-600">{t('licence.expiredNote')}</p>
+          )}
+        </div>
+      )}
+
+      {showInput ? (
+        <div className="space-y-2">
+          <Textarea
+            rows={3}
+            value={keyInput}
+            onChange={(e) => setKeyInput(e.target.value)}
+            placeholder={t('licence.keyPlaceholder')}
+            className="font-mono text-xs"
+          />
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              onClick={async () => {
+                await activate.mutateAsync(keyInput.trim());
+                setKeyInput('');
+                setShowInput(false);
+              }}
+              disabled={!keyInput.trim() || activate.isPending}
+            >
+              {activate.isPending ? t('licence.activating') : t('licence.activate')}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => { setShowInput(false); setKeyInput(''); }}>
+              {t('common.cancel')}
+            </Button>
+          </div>
+          {activate.isError && (
+            <p className="text-xs text-red-500">{t('licence.invalidKey')}</p>
+          )}
+        </div>
+      ) : (
+        <Button size="sm" variant="outline" onClick={() => setShowInput(true)}>
+          {licence?.tier === 'community' ? t('licence.enterKey') : t('licence.changeKey')}
+        </Button>
+      )}
     </div>
   );
 }

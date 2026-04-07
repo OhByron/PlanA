@@ -52,6 +52,7 @@ func New(deps *Dependencies) http.Handler {
 	siH      := handlers.NewSprintItemHandlers(deps.DB)
 	depH     := handlers.NewDependencyHandlers(deps.DB)
 	estH     := handlers.NewEstimationHandlers(deps.DB)
+	licH     := handlers.NewLicenceHandlers(deps.DB)
 	linkH    := handlers.NewLinkHandlers(deps.DB)
 	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
 	notifH   := handlers.NewNotificationHandlers(deps.DB)
@@ -104,9 +105,12 @@ func New(deps *Dependencies) http.Handler {
 		// ----------------------------------------------------------------
 		// Protected — all routes below require a valid session JWT
 		// ----------------------------------------------------------------
+		// Licence — both read and activate are public (needed on login page before auth)
+		r.Get("/licence", licH.Get)
+		r.Post("/licence", licH.Activate)
+
 		r.Group(func(r chi.Router) {
 			r.Use(deps.Auth.RequireAuth)
-
 			r.Get("/me", userH.Me)
 			r.Get("/me/work-items", userH.MyWorkItems)
 			r.Patch("/me/preferences", userH.UpdatePreferences)

@@ -195,7 +195,14 @@
     "password": "Passwort",
     "loginFailed": "Anmeldung fehlgeschlagen",
     "devOnly": "nur Entwicklung",
-    "devLogin": "Dev-Login (OAuth überspringen)"
+    "devLogin": "Dev-Login (OAuth überspringen)",
+    "licenceRequired": "Enter your licence key to get started",
+    "licenceExplainer": "Every PlanA installation needs a licence key. Community keys are free.",
+    "keyPlaceholder": "Paste your licence key here...",
+    "activateKey": "Activate Key",
+    "activating": "Activating...",
+    "invalidKey": "Invalid licence key. Check that you copied the full key.",
+    "getFreeKey": "Get a free community key at plana.dev"
   },
   "authError": {
     "title": "Anmeldung fehlgeschlagen",
@@ -822,5 +829,20 @@
     "lock": "Lock at {{value}} pts",
     "nearestFib": "nearest Fibonacci",
     "currentEstimate": "Current estimate: {{points}} pts"
+  },
+  "licence": {
+    "title": "Licence",
+    "description": "Your PlanA licence determines your support tier. All features are available on all tiers.",
+    "organisation": "Organisation",
+    "expired": "Expired",
+    "expiresOn": "Expires {{date}}",
+    "neverExpires": "Never expires",
+    "expiredNote": "Your licence has expired. The app continues to work on the Community tier. Renew for priority support.",
+    "keyPlaceholder": "Paste your licence key here...",
+    "activate": "Activate",
+    "activating": "Activating...",
+    "enterKey": "Enter Licence Key",
+    "changeKey": "Change Licence Key",
+    "invalidKey": "Invalid licence key. Check that you copied the full key."
   }
 }
