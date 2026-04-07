@@ -30,8 +30,8 @@ services:
       dockerfile: infra/docker/api.Dockerfile
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-plana}:${POSTGRES_PASSWORD:-plana}@postgres:5432/${POSTGRES_DB:-plana}?sslmode=disable
-      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER:?Set POSTGRES_USER in .env.prod}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.prod}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB in .env.prod}?sslmode=disable
+      REDIS_URL: redis://:${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env.prod}@redis:6379
       JWT_SECRET: ${JWT_SECRET}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       APP_BASE_URL: ${PUBLIC_URL:-http://localhost}
@@ -75,6 +75,7 @@ services:
       - "127.0.0.1:5432:5432"
 
   redis:
+    command: redis-server --requirepass ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env.prod}
     ports: !override
       - "127.0.0.1:6379:6379"
 
@@ -86,9 +87,9 @@ services:
     environment:
       PGHOST: postgres
       PGPORT: "5432"
-      PGUSER: ${POSTGRES_USER:-plana}
-      PGPASSWORD: ${POSTGRES_PASSWORD:-plana}
-      PGDATABASE: ${POSTGRES_DB:-plana}
+      PGUSER: ${POSTGRES_USER:?Set POSTGRES_USER in .env.prod}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.prod}
+      PGDATABASE: ${POSTGRES_DB:?Set POSTGRES_DB in .env.prod}
       BACKUP_DIR: /backups
       RETENTION_DAYS: "30"
     volumes:
