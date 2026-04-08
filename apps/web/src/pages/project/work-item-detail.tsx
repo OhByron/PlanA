@@ -503,6 +503,21 @@ export function WorkItemDetailPage() {
               </option>
             ))}
           </Select>
+          {!item.isCancelled ? (
+            <button
+              onClick={() => patchField({ isCancelled: true })}
+              className="mt-1 text-xs text-red-500 hover:text-red-700"
+            >
+              {t('workItemDetail.cancel') ?? 'Cancel item'}
+            </button>
+          ) : (
+            <button
+              onClick={() => patchField({ isCancelled: false })}
+              className="mt-1 text-xs text-gray-500 hover:text-gray-700"
+            >
+              {t('workItemDetail.uncancel') ?? 'Restore item'}
+            </button>
+          )}
         </FieldGroup>
 
         {/* Type */}

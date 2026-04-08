@@ -71,6 +71,20 @@ export function OrgDetailPage() {
               {t('orgDetail.archive')}
             </Button>
           )}
+          <Link
+            to="/orgs/$orgId/workflow"
+            params={{ orgId }}
+            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {t('workflow.title') ?? 'Workflow'}
+          </Link>
+          <Link
+            to="/orgs/$orgId/hooks"
+            params={{ orgId }}
+            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {t('workflow.hooksTitle') ?? 'Hooks'}
+          </Link>
           <Button size="sm" variant="outline" onClick={() => setEditing(!editing)}>
             {editing ? t('common.cancel') : t('orgDetail.editDetails')}
           </Button>

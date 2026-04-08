@@ -14,6 +14,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import type { WorkItem, WorkItemType } from '@projecta/types';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useProjectDependencies } from '../../hooks/use-project-dependencies';
+import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 import { SortableWorkItemRow } from '../../components/sortable-work-item-row';
 import { QuickCreateWorkItem } from '../../components/quick-create-work-item';
 import { HelpOverlay } from '../../components/help-overlay';
@@ -34,6 +35,7 @@ export function BacklogPage() {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const search = useSearch({ strict: false }) as { highlight?: string };
   const navigate = useNavigate();
+  const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
   const [statusFilter, setStatusFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [showCreate, setShowCreate] = useState(false);
@@ -65,12 +67,11 @@ export function BacklogPage() {
 
   const STATUS_OPTIONS: { value: string; label: string }[] = [
     { value: '', label: t('backlog.allStatuses') },
-    { value: 'backlog', label: t('status.backlog') },
-    { value: 'ready', label: t('status.ready') },
-    { value: 'in_progress', label: t('status.in_progress') },
-    { value: 'in_review', label: t('status.in_review') },
-    { value: 'done', label: t('status.done') },
-  ]; // values match stateSlug
+    ...workflowStates.map((s) => ({
+      value: s.slug,
+      label: t(`status.${s.slug}`, { defaultValue: s.name }),
+    })),
+  ];
 
   const TYPE_OPTIONS: { value: string; label: string }[] = [
     { value: '', label: t('backlog.allTypes') },
