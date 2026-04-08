@@ -184,7 +184,7 @@ export function ReleaseDetailPage() {
               }
             }}
           >
-            <pre className="whitespace-pre-wrap text-sm text-gray-700">{release.notes}</pre>
+            <div className="whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">{release.notes}</div>
           </div>
         ) : (
           <p className="text-sm text-gray-400 italic">
