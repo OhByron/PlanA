@@ -1,0 +1,19 @@
+{
+  "name": "PlanA",
+  "short_name": "PlanA",
+  "description": "Agile project management built for how teams actually work.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a2e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "business"]
+}
