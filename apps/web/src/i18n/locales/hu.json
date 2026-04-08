@@ -301,6 +301,8 @@
     "clickToAddDescription": "Kattintson a leírás hozzáadásához...",
     "details": "Részletek",
     "statusLabel": "Állapot",
+    "cancel": "Elem törlése",
+    "uncancel": "Elem visszaállítása",
     "typeLabel": "Típus",
     "priorityLabel": "Prioritás",
     "assigneeLabel": "Hozzárendelt",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Cél állapot",
     "copyBranch": "Ágnév másolása",
     "copied": "Másolva!",
+    "createBranch": "Ág létrehozása",
+    "onPROpen": "PR megnyitásakor:",
+    "onPRMerge": "PR összevonásakor:",
     "saveWarning": "Mentse el ezeket az értékeket most. A webhook titok nem jelenik meg újra.",
     "tunnelHint": "Helyi fejlesztéshez használjon alagutat (ngrok, cloudflared) a 8080-as port elérhetővé tételéhez, és frissítse a webhook URL-t a Git szolgáltatónál."
+  },
+  "workflow": {
+    "title": "Munkafolyamat állapotok",
+    "description": "Határozza meg az állapotokat, amelyeken a munkaelemek áthaladnak. A Backlog és Done mindig jelen vannak.",
+    "addState": "Állapot hozzáadása",
+    "stateName": "Állapot neve",
+    "changeColor": "Szín módosítása",
+    "locked": "Zárolva",
+    "moveUp": "Felfelé mozgatás",
+    "moveDown": "Lefelé mozgatás",
+    "createFailed": "Az állapot létrehozása sikertelen",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Értesítse a csapattagokat, amikor a munkaelemek egy adott állapotba lépnek.",
+    "noHooks": "Nincsenek konfigurált hookok.",
+    "addHook": "Hook hozzáadása",
+    "whenEnters": "Amikor az elem belép",
+    "notify": "értesítés",
+    "selectState": "Állapot kiválasztása...",
+    "hookRule": "Amikor az elem belép: {{state}}, értesítés: {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 néző",
+    "multipleViewers": "{{count}} nézi"
   },
   "helpOverlay": {
     "dismiss": "Elvetés",

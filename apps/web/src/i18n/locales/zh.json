@@ -301,6 +301,8 @@
     "clickToAddDescription": "点击添加描述...",
     "details": "详情",
     "statusLabel": "状态",
+    "cancel": "取消项目",
+    "uncancel": "恢复项目",
     "typeLabel": "类型",
     "priorityLabel": "优先级",
     "assigneeLabel": "负责人",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "目标状态",
     "copyBranch": "复制分支名称",
     "copied": "已复制！",
+    "createBranch": "创建 branch",
+    "onPROpen": "PR 打开时：",
+    "onPRMerge": "PR 合并时：",
     "saveWarning": "请立即保存这些值。Webhook 密钥将不再显示。",
     "tunnelHint": "本地开发时，请使用隧道工具（ngrok、cloudflared）暴露 8080 端口，并在 Git 提供商处更新 webhook URL。"
+  },
+  "workflow": {
+    "title": "工作流状态",
+    "description": "定义工作项经过的状态。Backlog 和 Done 始终存在。",
+    "addState": "添加状态",
+    "stateName": "状态名称",
+    "changeColor": "更改颜色",
+    "locked": "已锁定",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "createFailed": "创建状态失败",
+    "hooksTitle": "转换钩子",
+    "hooksDescription": "当工作项进入特定状态时通知团队成员。",
+    "noHooks": "未配置钩子。",
+    "addHook": "添加钩子",
+    "whenEnters": "当项目进入",
+    "notify": "通知",
+    "selectState": "选择状态...",
+    "hookRule": "当项目进入 {{state}} 时，通知 {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 位查看者",
+    "multipleViewers": "{{count}} 人正在查看"
   },
   "helpOverlay": {
     "dismiss": "关闭",

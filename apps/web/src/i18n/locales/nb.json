@@ -301,6 +301,8 @@
     "clickToAddDescription": "Klikk for å legge til en beskrivelse...",
     "details": "Detaljer",
     "statusLabel": "Status",
+    "cancel": "Avbryt element",
+    "uncancel": "Gjenopprett element",
     "typeLabel": "Type",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Ansvarlig",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Målstatus",
     "copyBranch": "Kopier grennavn",
     "copied": "Kopiert!",
+    "createBranch": "Opprett gren",
+    "onPROpen": "Når PR åpnes:",
+    "onPRMerge": "Når PR slås sammen:",
     "saveWarning": "Lagre disse verdiene nå. Webhook-hemmeligheten vises ikke igjen.",
     "tunnelHint": "For lokal utvikling, bruk en tunnel (ngrok, cloudflared) for å eksponere port 8080 og oppdater webhook-URL-en hos Git-leverandøren din."
+  },
+  "workflow": {
+    "title": "Arbeidsflytstatus",
+    "description": "Definer statusene som arbeidselementer beveger seg gjennom. Backlog og Done er alltid til stede.",
+    "addState": "Legg til status",
+    "stateName": "Statusnavn",
+    "changeColor": "Endre farge",
+    "locked": "Låst",
+    "moveUp": "Flytt opp",
+    "moveDown": "Flytt ned",
+    "createFailed": "Kunne ikke opprette status",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Varsle teammedlemmer når arbeidselementer går inn i en bestemt status.",
+    "noHooks": "Ingen hooks konfigurert.",
+    "addHook": "Legg til Hook",
+    "whenEnters": "Når element går inn i",
+    "notify": "varsle",
+    "selectState": "Velg status...",
+    "hookRule": "Når element går inn i {{state}}, varsle {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 ser på",
+    "multipleViewers": "{{count}} ser på"
   },
   "helpOverlay": {
     "dismiss": "Avvis",

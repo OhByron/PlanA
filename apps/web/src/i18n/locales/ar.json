@@ -301,6 +301,8 @@
     "clickToAddDescription": "انقر لإضافة وصف...",
     "details": "التفاصيل",
     "statusLabel": "الحالة",
+    "cancel": "إلغاء العنصر",
+    "uncancel": "استعادة العنصر",
     "typeLabel": "النوع",
     "priorityLabel": "الأولوية",
     "assigneeLabel": "المسند إليه",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "الحالة المستهدفة",
     "copyBranch": "نسخ اسم الفرع",
     "copied": "تم النسخ!",
+    "createBranch": "إنشاء فرع",
+    "onPROpen": "عند فتح PR:",
+    "onPRMerge": "عند دمج PR:",
     "saveWarning": "احفظ هذه القيم الآن. لن يظهر سر webhook مرة أخرى.",
     "tunnelHint": "للتطوير المحلي، استخدم نفقًا (ngrok أو cloudflared) لكشف المنفذ 8080 وتحديث عنوان webhook في مزود Git الخاص بك."
+  },
+  "workflow": {
+    "title": "حالات سير العمل",
+    "description": "حدد الحالات التي تمر بها عناصر العمل. الأعمال المتراكمة ومنجز موجودتان دائمًا.",
+    "addState": "إضافة حالة",
+    "stateName": "اسم الحالة",
+    "changeColor": "تغيير اللون",
+    "locked": "مقفل",
+    "moveUp": "نقل للأعلى",
+    "moveDown": "نقل للأسفل",
+    "createFailed": "فشل إنشاء الحالة",
+    "hooksTitle": "خطافات الانتقال",
+    "hooksDescription": "إشعار أعضاء الفريق عند دخول عناصر العمل حالة معينة.",
+    "noHooks": "لا توجد خطافات مُعدّة.",
+    "addHook": "إضافة خطاف",
+    "whenEnters": "عند دخول العنصر",
+    "notify": "إشعار",
+    "selectState": "اختر حالة...",
+    "hookRule": "عند دخول العنصر {{state}}، إشعار {{role}}"
+  },
+  "presence": {
+    "oneViewer": "مشاهد واحد",
+    "multipleViewers": "{{count}} يشاهدون"
   },
   "helpOverlay": {
     "dismiss": "تجاهل",

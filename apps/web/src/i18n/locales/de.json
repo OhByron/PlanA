@@ -344,6 +344,8 @@
     "clickToAddDescription": "Klicke, um eine Beschreibung hinzuzufügen...",
     "details": "Details",
     "statusLabel": "Status",
+    "cancel": "Element abbrechen",
+    "uncancel": "Element wiederherstellen",
     "typeLabel": "Typ",
     "priorityLabel": "Priorität",
     "assigneeLabel": "Zugewiesen an",
@@ -481,8 +483,34 @@
     "mergeTargetStatus": "Zielstatus",
     "copyBranch": "Branch-Namen kopieren",
     "copied": "Kopiert!",
+    "createBranch": "Branch erstellen",
+    "onPROpen": "Wenn PR geöffnet wird:",
+    "onPRMerge": "Wenn PR gemergt wird:",
     "saveWarning": "Speichern Sie diese Werte jetzt. Das Webhook-Secret wird nicht erneut angezeigt.",
     "tunnelHint": "Für die lokale Entwicklung verwenden Sie einen Tunnel (ngrok, cloudflared), um Port 8080 freizugeben, und aktualisieren Sie die Webhook-URL bei Ihrem Git-Anbieter."
+  },
+  "workflow": {
+    "title": "Workflow-Status",
+    "description": "Definieren Sie die Status, die Arbeitselemente durchlaufen. Backlog und Erledigt sind immer vorhanden.",
+    "addState": "Status hinzufügen",
+    "stateName": "Statusname",
+    "changeColor": "Farbe ändern",
+    "locked": "Gesperrt",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten",
+    "createFailed": "Status konnte nicht erstellt werden",
+    "hooksTitle": "Übergangshooks",
+    "hooksDescription": "Teammitglieder benachrichtigen, wenn Arbeitselemente einen bestimmten Status erreichen.",
+    "noHooks": "Keine Hooks konfiguriert.",
+    "addHook": "Hook hinzufügen",
+    "whenEnters": "Wenn Element eintritt in",
+    "notify": "benachrichtigen",
+    "selectState": "Status auswählen...",
+    "hookRule": "Wenn Element {{state}} erreicht, {{role}} benachrichtigen"
+  },
+  "presence": {
+    "oneViewer": "1 Betrachter",
+    "multipleViewers": "{{count}} sehen zu"
   },
   "helpOverlay": {
     "dismiss": "Verwerfen",

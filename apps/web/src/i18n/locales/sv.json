@@ -301,6 +301,8 @@
     "clickToAddDescription": "Klicka för att lägga till en beskrivning...",
     "details": "Detaljer",
     "statusLabel": "Status",
+    "cancel": "Avbryt objekt",
+    "uncancel": "Återställ objekt",
     "typeLabel": "Typ",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Tilldelad",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Målstatus",
     "copyBranch": "Kopiera grennamn",
     "copied": "Kopierat!",
+    "createBranch": "Skapa branch",
+    "onPROpen": "Vid PR-öppning:",
+    "onPRMerge": "Vid PR-merge:",
     "saveWarning": "Spara dessa värden nu. Webhook-hemligheten kommer inte att visas igen.",
     "tunnelHint": "För lokal utveckling, använd en tunnel (ngrok, cloudflared) för att exponera port 8080 och uppdatera webhook-URL:en hos din Git-leverantör."
+  },
+  "workflow": {
+    "title": "Workflow-tillstånd",
+    "description": "Definiera tillstånden som arbetsobjekt passerar genom. Backlog och Done finns alltid.",
+    "addState": "Lägg till tillstånd",
+    "stateName": "Tillståndsnamn",
+    "changeColor": "Ändra färg",
+    "locked": "Låst",
+    "moveUp": "Flytta upp",
+    "moveDown": "Flytta ner",
+    "createFailed": "Det gick inte att skapa tillstånd",
+    "hooksTitle": "Övergångshookar",
+    "hooksDescription": "Meddela teammedlemmar när arbetsobjekt går in i ett specifikt tillstånd.",
+    "noHooks": "Inga hookar konfigurerade.",
+    "addHook": "Lägg till hook",
+    "whenEnters": "När objekt går in i",
+    "notify": "meddela",
+    "selectState": "Välj tillstånd...",
+    "hookRule": "När objekt går in i {{state}}, meddela {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 tittare",
+    "multipleViewers": "{{count}} tittar"
   },
   "helpOverlay": {
     "dismiss": "Avfärda",

@@ -301,6 +301,8 @@
     "clickToAddDescription": "Spauskite, kad pridėtumėte aprašymą...",
     "details": "Detalės",
     "statusLabel": "Būsena",
+    "cancel": "Atšaukti elementą",
+    "uncancel": "Atkurti elementą",
     "typeLabel": "Tipas",
     "priorityLabel": "Prioritetas",
     "assigneeLabel": "Priskirtas",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Tikslinė būsena",
     "copyBranch": "Kopijuoti šakos pavadinimą",
     "copied": "Nukopijuota!",
+    "createBranch": "Sukurti šaką",
+    "onPROpen": "Kai PR atidaromas:",
+    "onPRMerge": "Kai PR sujungiamas:",
     "saveWarning": "Išsaugokite šias reikšmes dabar. Webhook paslaptis nebus rodoma pakartotinai.",
     "tunnelHint": "Vietiniam kūrimui naudokite tunelį (ngrok, cloudflared), kad atvertumėte 8080 prievadą, ir atnaujinkite webhook URL savo Git tiekėjo nustatymuose."
+  },
+  "workflow": {
+    "title": "Darbo eigos būsenos",
+    "description": "Apibrėžkite būsenas, per kurias pereina darbo elementai. Backlog ir Done visada yra.",
+    "addState": "Pridėti būseną",
+    "stateName": "Būsenos pavadinimas",
+    "changeColor": "Keisti spalvą",
+    "locked": "Užrakinta",
+    "moveUp": "Perkelti aukštyn",
+    "moveDown": "Perkelti žemyn",
+    "createFailed": "Nepavyko sukurti būsenos",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Pranešti komandos nariams, kai darbo elementai patenka į konkrečią būseną.",
+    "noHooks": "Nėra sukonfigūruotų hookų.",
+    "addHook": "Pridėti Hook",
+    "whenEnters": "Kai elementas patenka į",
+    "notify": "pranešti",
+    "selectState": "Pasirinkite būseną...",
+    "hookRule": "Kai elementas patenka į {{state}}, pranešti {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 žiūrintysis",
+    "multipleViewers": "{{count}} žiūri"
   },
   "helpOverlay": {
     "dismiss": "Atmesti",

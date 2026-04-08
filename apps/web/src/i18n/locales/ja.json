@@ -301,6 +301,8 @@
     "clickToAddDescription": "クリックして説明を追加...",
     "details": "詳細",
     "statusLabel": "ステータス",
+    "cancel": "アイテムをキャンセル",
+    "uncancel": "アイテムを復元",
     "typeLabel": "種類",
     "priorityLabel": "優先度",
     "assigneeLabel": "担当者",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "遷移先ステータス",
     "copyBranch": "ブランチ名をコピー",
     "copied": "コピーしました！",
+    "createBranch": "ブランチを作成",
+    "onPROpen": "PR作成時:",
+    "onPRMerge": "PRマージ時:",
     "saveWarning": "これらの値を今すぐ保存してください。webhookシークレットは再表示されません。",
     "tunnelHint": "ローカル開発では、トンネル（ngrok、cloudflared）を使用してポート8080を公開し、Gitプロバイダーでwebhook URLを更新してください。"
+  },
+  "workflow": {
+    "title": "ワークフロー状態",
+    "description": "作業アイテムが通過する状態を定義します。BacklogとDoneは常に存在します。",
+    "addState": "状態を追加",
+    "stateName": "状態名",
+    "changeColor": "色を変更",
+    "locked": "ロック済み",
+    "moveUp": "上に移動",
+    "moveDown": "下に移動",
+    "createFailed": "状態の作成に失敗しました",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "作業アイテムが特定の状態に入ったときにチームメンバーに通知します。",
+    "noHooks": "設定されたhookはありません。",
+    "addHook": "Hookを追加",
+    "whenEnters": "アイテムが入ったとき",
+    "notify": "通知",
+    "selectState": "状態を選択...",
+    "hookRule": "アイテムが{{state}}に入ったとき、{{role}}に通知"
+  },
+  "presence": {
+    "oneViewer": "1人が閲覧中",
+    "multipleViewers": "{{count}}人が閲覧中"
   },
   "helpOverlay": {
     "dismiss": "閉じる",

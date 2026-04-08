@@ -301,6 +301,8 @@
     "clickToAddDescription": "클릭하여 설명 추가...",
     "details": "상세 정보",
     "statusLabel": "상태",
+    "cancel": "항목 취소",
+    "uncancel": "항목 복원",
     "typeLabel": "유형",
     "priorityLabel": "우선순위",
     "assigneeLabel": "담당자",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "대상 상태",
     "copyBranch": "브랜치 이름 복사",
     "copied": "복사됨!",
+    "createBranch": "브랜치 생성",
+    "onPROpen": "PR 생성 시:",
+    "onPRMerge": "PR 병합 시:",
     "saveWarning": "이 값을 지금 저장하세요. webhook 시크릿은 다시 표시되지 않습니다.",
     "tunnelHint": "로컬 개발 시 터널(ngrok, cloudflared)을 사용하여 포트 8080을 노출하고 Git 제공자에서 webhook URL을 업데이트하세요."
+  },
+  "workflow": {
+    "title": "워크플로 상태",
+    "description": "작업 항목이 거치는 상태를 정의합니다. Backlog과 Done은 항상 존재합니다.",
+    "addState": "상태 추가",
+    "stateName": "상태 이름",
+    "changeColor": "색상 변경",
+    "locked": "잠김",
+    "moveUp": "위로 이동",
+    "moveDown": "아래로 이동",
+    "createFailed": "상태 생성에 실패했습니다",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "작업 항목이 특정 상태에 들어갈 때 팀원에게 알립니다.",
+    "noHooks": "구성된 hook이 없습니다.",
+    "addHook": "Hook 추가",
+    "whenEnters": "항목이 진입할 때",
+    "notify": "알림",
+    "selectState": "상태 선택...",
+    "hookRule": "항목이 {{state}}에 진입하면 {{role}}에게 알림"
+  },
+  "presence": {
+    "oneViewer": "1명 보는 중",
+    "multipleViewers": "{{count}}명 보는 중"
   },
   "helpOverlay": {
     "dismiss": "닫기",

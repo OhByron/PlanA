@@ -301,6 +301,8 @@
     "clickToAddDescription": "Noklikšķiniet, lai pievienotu aprakstu...",
     "details": "Detaļas",
     "statusLabel": "Statuss",
+    "cancel": "Atcelt vienumu",
+    "uncancel": "Atjaunot vienumu",
     "typeLabel": "Tips",
     "priorityLabel": "Prioritāte",
     "assigneeLabel": "Piešķirts",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Mērķa statuss",
     "copyBranch": "Kopēt zara nosaukumu",
     "copied": "Nokopēts!",
+    "createBranch": "Izveidot zaru",
+    "onPROpen": "Kad PR tiek atvērts:",
+    "onPRMerge": "Kad PR tiek apvienots:",
     "saveWarning": "Saglabājiet šīs vērtības tagad. Webhook noslēpums vairs netiks rādīts.",
     "tunnelHint": "Lokālai izstrādei izmantojiet tuneli (ngrok, cloudflared), lai atvērtu portu 8080, un atjauniniet webhook URL savā Git pakalpojumu sniedzējā."
+  },
+  "workflow": {
+    "title": "Darbplūsmas stāvokļi",
+    "description": "Definējiet stāvokļus, caur kuriem darba vienumi pārvietojas. Backlog un Done vienmēr ir klāt.",
+    "addState": "Pievienot stāvokli",
+    "stateName": "Stāvokļa nosaukums",
+    "changeColor": "Mainīt krāsu",
+    "locked": "Bloķēts",
+    "moveUp": "Pārvietot augšup",
+    "moveDown": "Pārvietot lejup",
+    "createFailed": "Neizdevās izveidot stāvokli",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Paziņot komandas locekļiem, kad darba vienumi nonāk noteiktā stāvoklī.",
+    "noHooks": "Nav konfigurētu hooku.",
+    "addHook": "Pievienot Hook",
+    "whenEnters": "Kad vienums nonāk",
+    "notify": "paziņot",
+    "selectState": "Izvēlieties stāvokli...",
+    "hookRule": "Kad vienums nonāk {{state}}, paziņot {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 skatītājs",
+    "multipleViewers": "{{count}} skatās"
   },
   "helpOverlay": {
     "dismiss": "Noraidīt",

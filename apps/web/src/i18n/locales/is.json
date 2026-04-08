@@ -301,6 +301,8 @@
     "clickToAddDescription": "Smelltu til að bæta við lýsingu...",
     "details": "Nánar",
     "statusLabel": "Staða",
+    "cancel": "Hætta við atriði",
+    "uncancel": "Endurheimta atriði",
     "typeLabel": "Gerð",
     "priorityLabel": "Forgangur",
     "assigneeLabel": "Ábyrgðaraðili",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Markstaða",
     "copyBranch": "Afrita greinanafn",
     "copied": "Afritað!",
+    "createBranch": "Búa til grein",
+    "onPROpen": "Þegar PR opnast:",
+    "onPRMerge": "Þegar PR er sameinað:",
     "saveWarning": "Vistaðu þessi gildi núna. Webhook leyniorðið birtist ekki aftur.",
     "tunnelHint": "Fyrir staðbundna þróun, notaðu göng (ngrok, cloudflared) til að opna port 8080 og uppfærðu webhook slóðina hjá Git þjónustuaðilanum."
+  },
+  "workflow": {
+    "title": "Verkflæðisstöður",
+    "description": "Skilgreindu stöðurnar sem verkliðir fara í gegnum. Backlog og Done eru alltaf til staðar.",
+    "addState": "Bæta við stöðu",
+    "stateName": "Heiti stöðu",
+    "changeColor": "Breyta lit",
+    "locked": "Læst",
+    "moveUp": "Færa upp",
+    "moveDown": "Færa niður",
+    "createFailed": "Ekki tókst að búa til stöðu",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Tilkynna liðsmönnum þegar verkliðir fara í tiltekna stöðu.",
+    "noHooks": "Engir hookar stilltir.",
+    "addHook": "Bæta við Hook",
+    "whenEnters": "Þegar atriði fer í",
+    "notify": "tilkynna",
+    "selectState": "Veldu stöðu...",
+    "hookRule": "Þegar atriði fer í {{state}}, tilkynna {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 áhorfandi",
+    "multipleViewers": "{{count}} skoða"
   },
   "helpOverlay": {
     "dismiss": "Hunsa",

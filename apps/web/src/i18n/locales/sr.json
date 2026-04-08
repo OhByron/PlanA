@@ -301,6 +301,8 @@
     "clickToAddDescription": "Kliknite da dodate opis...",
     "details": "Detalji",
     "statusLabel": "Status",
+    "cancel": "Otkaži stavku",
+    "uncancel": "Vrati stavku",
     "typeLabel": "Tip",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Zadužen",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Ciljni status",
     "copyBranch": "Kopiraj naziv grane",
     "copied": "Kopirano!",
+    "createBranch": "Kreiraj branch",
+    "onPROpen": "Pri otvaranju PR:",
+    "onPRMerge": "Pri merge-u PR:",
     "saveWarning": "Sačuvajte ove vrednosti sada. Webhook tajna neće biti ponovo prikazana.",
     "tunnelHint": "Za lokalni razvoj koristite tunel (ngrok, cloudflared) da izložite port 8080 i ažurirajte webhook URL kod vašeg Git provajdera."
+  },
+  "workflow": {
+    "title": "Stanja workflow-a",
+    "description": "Definišite stanja kroz koja prolaze radne stavke. Backlog i Done su uvek prisutni.",
+    "addState": "Dodaj stanje",
+    "stateName": "Naziv stanja",
+    "changeColor": "Promeni boju",
+    "locked": "Zaključano",
+    "moveUp": "Pomeri gore",
+    "moveDown": "Pomeri dole",
+    "createFailed": "Kreiranje stanja nije uspelo",
+    "hooksTitle": "Hookovi prelaza",
+    "hooksDescription": "Obavestite članove tima kada radne stavke uđu u određeno stanje.",
+    "noHooks": "Nema konfigurisanih hookova.",
+    "addHook": "Dodaj hook",
+    "whenEnters": "Kada stavka uđe u",
+    "notify": "obavesti",
+    "selectState": "Izaberite stanje...",
+    "hookRule": "Kada stavka uđe u {{state}}, obavesti {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 gledalac",
+    "multipleViewers": "{{count}} gleda"
   },
   "helpOverlay": {
     "dismiss": "Odbaci",

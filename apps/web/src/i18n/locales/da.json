@@ -301,6 +301,8 @@
     "clickToAddDescription": "Klik for at tilføje en beskrivelse...",
     "details": "Detaljer",
     "statusLabel": "Status",
+    "cancel": "Annullér element",
+    "uncancel": "Gendan element",
     "typeLabel": "Type",
     "priorityLabel": "Prioritet",
     "assigneeLabel": "Ansvarlig",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Målstatus",
     "copyBranch": "Kopiér grennavn",
     "copied": "Kopieret!",
+    "createBranch": "Opret gren",
+    "onPROpen": "Når PR åbnes:",
+    "onPRMerge": "Når PR merges:",
     "saveWarning": "Gem disse værdier nu. Webhook-hemmeligheden vises ikke igen.",
     "tunnelHint": "Til lokal udvikling skal du bruge en tunnel (ngrok, cloudflared) til at eksponere port 8080 og opdatere webhook-URL'en hos din Git-udbyder."
+  },
+  "workflow": {
+    "title": "Arbejdsgangens tilstande",
+    "description": "Definér de tilstande, som arbejdsemner bevæger sig igennem. Backlog og Færdig er altid til stede.",
+    "addState": "Tilføj tilstand",
+    "stateName": "Tilstandsnavn",
+    "changeColor": "Skift farve",
+    "locked": "Låst",
+    "moveUp": "Flyt op",
+    "moveDown": "Flyt ned",
+    "createFailed": "Kunne ikke oprette tilstand",
+    "hooksTitle": "Overgangshooks",
+    "hooksDescription": "Giv teammedlemmer besked, når arbejdsemner går ind i en bestemt tilstand.",
+    "noHooks": "Ingen hooks konfigureret.",
+    "addHook": "Tilføj hook",
+    "whenEnters": "Når emne går ind i",
+    "notify": "underret",
+    "selectState": "Vælg tilstand...",
+    "hookRule": "Når emne går ind i {{state}}, underret {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 seer",
+    "multipleViewers": "{{count}} ser med"
   },
   "helpOverlay": {
     "dismiss": "Afvis",

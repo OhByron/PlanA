@@ -344,6 +344,8 @@
     "clickToAddDescription": "Cliquez pour ajouter une description...",
     "details": "Détails",
     "statusLabel": "Statut",
+    "cancel": "Annuler l'élément",
+    "uncancel": "Restaurer l'élément",
     "typeLabel": "Type",
     "priorityLabel": "Priorité",
     "assigneeLabel": "Assigné à",
@@ -481,8 +483,34 @@
     "mergeTargetStatus": "Statut cible",
     "copyBranch": "Copier le nom de branche",
     "copied": "Copié !",
+    "createBranch": "Créer une branche",
+    "onPROpen": "Quand une PR est ouverte :",
+    "onPRMerge": "Quand une PR est fusionnée :",
     "saveWarning": "Enregistrez ces valeurs maintenant. Le secret du webhook ne sera plus affiché.",
     "tunnelHint": "Pour le développement local, utilisez un tunnel (ngrok, cloudflared) pour exposer le port 8080 et mettez à jour l'URL du webhook chez votre fournisseur Git."
+  },
+  "workflow": {
+    "title": "États du workflow",
+    "description": "Définissez les états par lesquels passent les éléments de travail. Backlog et Terminé sont toujours présents.",
+    "addState": "Ajouter un état",
+    "stateName": "Nom de l'état",
+    "changeColor": "Changer la couleur",
+    "locked": "Verrouillé",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "createFailed": "Échec de la création de l'état",
+    "hooksTitle": "Hooks de transition",
+    "hooksDescription": "Notifier les membres de l'équipe lorsque des éléments de travail entrent dans un état spécifique.",
+    "noHooks": "Aucun hook configuré.",
+    "addHook": "Ajouter un hook",
+    "whenEnters": "Quand l'élément entre dans",
+    "notify": "notifier",
+    "selectState": "Sélectionner un état...",
+    "hookRule": "Quand l'élément entre dans {{state}}, notifier {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 spectateur",
+    "multipleViewers": "{{count}} en train de voir"
   },
   "helpOverlay": {
     "dismiss": "Fermer",

@@ -1,4 +1,5 @@
 import { Avatar } from '@projecta/ui';
+import { useTranslation } from 'react-i18next';
 import type { PresenceEntry } from '../hooks/use-presence';
 
 interface PresenceBarProps {
@@ -6,9 +7,9 @@ interface PresenceBarProps {
 }
 
 export function PresenceBar({ viewers }: PresenceBarProps) {
+  const { t } = useTranslation();
   if (viewers.length === 0) return null;
 
-  // Show up to 5 avatars, then "+N more"
   const shown = viewers.slice(0, 5);
   const overflow = viewers.length - shown.length;
 
@@ -27,7 +28,9 @@ export function PresenceBar({ viewers }: PresenceBarProps) {
         )}
       </div>
       <span className="text-xs text-gray-400 ml-1">
-        {viewers.length === 1 ? '1 viewer' : `${viewers.length} viewing`}
+        {viewers.length === 1
+          ? t('presence.oneViewer')
+          : t('presence.multipleViewers', { count: viewers.length })}
       </span>
     </div>
   );

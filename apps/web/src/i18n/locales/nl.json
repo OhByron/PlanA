@@ -301,6 +301,8 @@
     "clickToAddDescription": "Klik om een beschrijving toe te voegen...",
     "details": "Details",
     "statusLabel": "Status",
+    "cancel": "Item annuleren",
+    "uncancel": "Item herstellen",
     "typeLabel": "Type",
     "priorityLabel": "Prioriteit",
     "assigneeLabel": "Toegewezen aan",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Doelstatus",
     "copyBranch": "Branchnaam kopiëren",
     "copied": "Gekopieerd!",
+    "createBranch": "Branch aanmaken",
+    "onPROpen": "Bij openen van PR:",
+    "onPRMerge": "Bij mergen van PR:",
     "saveWarning": "Sla deze waarden nu op. Het webhook-geheim wordt niet opnieuw getoond.",
     "tunnelHint": "Gebruik voor lokale ontwikkeling een tunnel (ngrok, cloudflared) om poort 8080 beschikbaar te maken en werk de webhook-URL bij in je Git-provider."
+  },
+  "workflow": {
+    "title": "Workflow-statussen",
+    "description": "Definieer de statussen waar werkitems doorheen gaan. Backlog en Done zijn altijd aanwezig.",
+    "addState": "Status toevoegen",
+    "stateName": "Statusnaam",
+    "changeColor": "Kleur wijzigen",
+    "locked": "Vergrendeld",
+    "moveUp": "Omhoog",
+    "moveDown": "Omlaag",
+    "createFailed": "Status aanmaken mislukt",
+    "hooksTitle": "Transitie-hooks",
+    "hooksDescription": "Stel teamleden op de hoogte wanneer werkitems een bepaalde status bereiken.",
+    "noHooks": "Geen hooks geconfigureerd.",
+    "addHook": "Hook toevoegen",
+    "whenEnters": "Wanneer item binnenkomt in",
+    "notify": "melden",
+    "selectState": "Selecteer status...",
+    "hookRule": "Wanneer item {{state}} bereikt, {{role}} melden"
+  },
+  "presence": {
+    "oneViewer": "1 kijker",
+    "multipleViewers": "{{count}} aan het bekijken"
   },
   "helpOverlay": {
     "dismiss": "Sluiten",

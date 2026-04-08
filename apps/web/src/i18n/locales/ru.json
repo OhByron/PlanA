@@ -301,6 +301,8 @@
     "clickToAddDescription": "Нажмите, чтобы добавить описание...",
     "details": "Детали",
     "statusLabel": "Статус",
+    "cancel": "Отменить элемент",
+    "uncancel": "Восстановить элемент",
     "typeLabel": "Тип",
     "priorityLabel": "Приоритет",
     "assigneeLabel": "Исполнитель",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Целевой статус",
     "copyBranch": "Копировать имя ветки",
     "copied": "Скопировано!",
+    "createBranch": "Создать branch",
+    "onPROpen": "При открытии PR:",
+    "onPRMerge": "При merge PR:",
     "saveWarning": "Сохраните эти значения сейчас. Секрет webhook больше не будет показан.",
     "tunnelHint": "Для локальной разработки используйте туннель (ngrok, cloudflared), чтобы открыть порт 8080, и обновите URL webhook в вашем Git-провайдере."
+  },
+  "workflow": {
+    "title": "Состояния workflow",
+    "description": "Определите состояния, через которые проходят рабочие элементы. Backlog и Done всегда присутствуют.",
+    "addState": "Добавить состояние",
+    "stateName": "Название состояния",
+    "changeColor": "Изменить цвет",
+    "locked": "Заблокировано",
+    "moveUp": "Вверх",
+    "moveDown": "Вниз",
+    "createFailed": "Не удалось создать состояние",
+    "hooksTitle": "Хуки переходов",
+    "hooksDescription": "Уведомляйте участников команды, когда рабочие элементы переходят в определённое состояние.",
+    "noHooks": "Хуки не настроены.",
+    "addHook": "Добавить хук",
+    "whenEnters": "Когда элемент входит в",
+    "notify": "уведомить",
+    "selectState": "Выберите состояние...",
+    "hookRule": "Когда элемент входит в {{state}}, уведомить {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 зритель",
+    "multipleViewers": "{{count}} просматривают"
   },
   "helpOverlay": {
     "dismiss": "Скрыть",

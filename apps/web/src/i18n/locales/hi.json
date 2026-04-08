@@ -301,6 +301,8 @@
     "clickToAddDescription": "विवरण जोड़ने के लिए क्लिक करें...",
     "details": "विवरण",
     "statusLabel": "स्थिति",
+    "cancel": "आइटम रद्द करें",
+    "uncancel": "आइटम पुनर्स्थापित करें",
     "typeLabel": "प्रकार",
     "priorityLabel": "प्राथमिकता",
     "assigneeLabel": "असाइनी",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "लक्ष्य स्थिति",
     "copyBranch": "शाखा का नाम कॉपी करें",
     "copied": "कॉपी किया गया!",
+    "createBranch": "शाखा बनाएं",
+    "onPROpen": "जब PR खुलता है:",
+    "onPRMerge": "जब PR मर्ज होता है:",
     "saveWarning": "ये मान अभी सहेजें। Webhook सीक्रेट दोबारा नहीं दिखाया जाएगा।",
     "tunnelHint": "स्थानीय विकास के लिए, पोर्ट 8080 को एक्सपोज़ करने के लिए एक टनल (ngrok, cloudflared) का उपयोग करें और अपने Git प्रदाता में webhook URL अपडेट करें।"
+  },
+  "workflow": {
+    "title": "वर्कफ़्लो स्थितियां",
+    "description": "उन स्थितियों को परिभाषित करें जिनसे कार्य आइटम गुजरते हैं। बैकलॉग और पूर्ण हमेशा मौजूद रहते हैं।",
+    "addState": "स्थिति जोड़ें",
+    "stateName": "स्थिति का नाम",
+    "changeColor": "रंग बदलें",
+    "locked": "लॉक किया गया",
+    "moveUp": "ऊपर ले जाएं",
+    "moveDown": "नीचे ले जाएं",
+    "createFailed": "स्थिति बनाने में विफल",
+    "hooksTitle": "संक्रमण हुक",
+    "hooksDescription": "जब कार्य आइटम किसी विशिष्ट स्थिति में प्रवेश करते हैं तो टीम सदस्यों को सूचित करें।",
+    "noHooks": "कोई हुक कॉन्फ़िगर नहीं हैं।",
+    "addHook": "हुक जोड़ें",
+    "whenEnters": "जब आइटम प्रवेश करता है",
+    "notify": "सूचित करें",
+    "selectState": "स्थिति चुनें...",
+    "hookRule": "जब आइटम {{state}} में प्रवेश करता है, {{role}} को सूचित करें"
+  },
+  "presence": {
+    "oneViewer": "1 दर्शक",
+    "multipleViewers": "{{count}} देख रहे हैं"
   },
   "helpOverlay": {
     "dismiss": "खारिज करें",

@@ -301,6 +301,8 @@
     "clickToAddDescription": "Açıklama eklemek için tıklayın...",
     "details": "Detaylar",
     "statusLabel": "Durum",
+    "cancel": "Öğeyi iptal et",
+    "uncancel": "Öğeyi geri yükle",
     "typeLabel": "Tip",
     "priorityLabel": "Öncelik",
     "assigneeLabel": "Atanan",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Hedef durum",
     "copyBranch": "Dal adını kopyala",
     "copied": "Kopyalandı!",
+    "createBranch": "Branch oluştur",
+    "onPROpen": "PR açıldığında:",
+    "onPRMerge": "PR merge edildiğinde:",
     "saveWarning": "Bu değerleri şimdi kaydedin. Webhook sırrı tekrar gösterilmeyecektir.",
     "tunnelHint": "Yerel geliştirme için bir tünel (ngrok, cloudflared) kullanarak 8080 portunu açın ve Git sağlayıcınızdaki webhook URL'sini güncelleyin."
+  },
+  "workflow": {
+    "title": "Workflow Durumları",
+    "description": "İş öğelerinin geçtiği durumları tanımlayın. Backlog ve Done her zaman mevcuttur.",
+    "addState": "Durum Ekle",
+    "stateName": "Durum adı",
+    "changeColor": "Renk değiştir",
+    "locked": "Kilitli",
+    "moveUp": "Yukarı taşı",
+    "moveDown": "Aşağı taşı",
+    "createFailed": "Durum oluşturulamadı",
+    "hooksTitle": "Geçiş Hookları",
+    "hooksDescription": "İş öğeleri belirli bir duruma girdiğinde ekip üyelerini bilgilendirin.",
+    "noHooks": "Yapılandırılmış hook yok.",
+    "addHook": "Hook Ekle",
+    "whenEnters": "Öğe şu duruma girdiğinde",
+    "notify": "bilgilendir",
+    "selectState": "Durum seçin...",
+    "hookRule": "Öğe {{state}} durumuna girdiğinde, {{role}} bilgilendir"
+  },
+  "presence": {
+    "oneViewer": "1 izleyici",
+    "multipleViewers": "{{count}} izliyor"
   },
   "helpOverlay": {
     "dismiss": "Kapat",

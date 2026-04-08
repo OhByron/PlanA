@@ -579,6 +579,16 @@
     "hookRule": "When item enters {{state}}, notify {{role}}"
   },
 
+  "projectSettings": {
+    "workflowSubsetDesc": "Choose which workflow states this project uses. Backlog and Done are always included.",
+    "useAllStates": "Use all states"
+  },
+
+  "presence": {
+    "oneViewer": "1 viewer",
+    "multipleViewers": "{{count}} viewing"
+  },
+
   "helpOverlay": {
     "dismiss": "Dismiss",
     "close": "Close"

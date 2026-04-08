@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api-client';
 import { toProject } from '../../lib/api-transforms';
 import { useLicence, useActivateLicence } from '../../hooks/use-licence';
+import { useWorkflowStates, useProjectWorkflowStates } from '../../hooks/use-workflow-states';
+import { useMutation } from '@tanstack/react-query';
 
 interface ShareToken {
   id: string;
@@ -153,6 +155,9 @@ export function AISettingsPage() {
           {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
         </div>
       </div>
+
+      {/* Workflow State Subset */}
+      <WorkflowSubsetSection projectId={projectId} />
 
       {/* Stakeholder Sharing */}
       <ShareTokensSection projectId={projectId} />
@@ -710,6 +715,112 @@ function ShareTokensSection({ projectId }: { projectId: string }) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+// --- Workflow State Subset ---
+
+function WorkflowSubsetSection({ projectId }: { projectId: string }) {
+  const { t } = useTranslation();
+  const { data: projectStates = [] } = useProjectWorkflowStates(projectId);
+  const qc = useQueryClient();
+
+  // Get org ID from the first project state (they all have the same orgId)
+  const orgId = projectStates[0]?.orgId ?? '';
+  const { data: allOrgStates = [] } = useWorkflowStates(orgId);
+
+  // Track which states are enabled for this project
+  const activeIds = new Set(projectStates.map((s) => s.id));
+
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  // Check if project is using all org states (no custom subset)
+  const isUsingAll = allOrgStates.length > 0 && allOrgStates.length === projectStates.length;
+
+  const saveSubset = useMutation({
+    mutationFn: async (stateIds: string[]) => {
+      setSaving(true);
+      setSaved(false);
+      await api.post(`/projects/${projectId}/workflow-states/subset`, { state_ids: stateIds });
+    },
+    onSettled: () => {
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+      qc.invalidateQueries({ queryKey: ['project-workflow-states', projectId] });
+    },
+  });
+
+  const toggleState = (stateId: string, isInitial: boolean, isTerminal: boolean) => {
+    if (isInitial || isTerminal) return; // Can't toggle bookends
+
+    const newActive = new Set(activeIds);
+    if (newActive.has(stateId)) {
+      newActive.delete(stateId);
+    } else {
+      newActive.add(stateId);
+    }
+
+    // Build ordered list matching org state order
+    const ordered = allOrgStates
+      .filter((s) => newActive.has(s.id))
+      .map((s) => s.id);
+
+    saveSubset.mutate(ordered);
+  };
+
+  const resetToAll = () => {
+    saveSubset.mutate([]);
+  };
+
+  if (allOrgStates.length === 0) return null;
+
+  return (
+    <div>
+      <h2 className="mb-2 text-sm font-semibold text-gray-700">
+        {t('workflow.title') ?? 'Workflow States'}
+      </h2>
+      <p className="mb-3 text-xs text-gray-500">
+        {t('projectSettings.workflowSubsetDesc') ?? 'Choose which workflow states this project uses. Backlog and Done are always included.'}
+      </p>
+
+      <div className="space-y-1">
+        {allOrgStates.map((state) => (
+          <label
+            key={state.id}
+            className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2 cursor-pointer hover:bg-gray-50"
+          >
+            <input
+              type="checkbox"
+              checked={activeIds.has(state.id)}
+              disabled={state.isInitial || state.isTerminal || saving}
+              onChange={() => toggleState(state.id, state.isInitial, state.isTerminal)}
+              className="rounded border-gray-300"
+            />
+            <span
+              className="h-3 w-3 rounded-full shrink-0"
+              style={{ backgroundColor: state.color }}
+            />
+            <span className="text-sm text-gray-700">
+              {t(`status.${state.slug}`, { defaultValue: state.name })}
+            </span>
+            {(state.isInitial || state.isTerminal) && (
+              <span className="text-[10px] text-gray-400">{t('workflow.locked') ?? 'Locked'}</span>
+            )}
+          </label>
+        ))}
+      </div>
+
+      <div className="mt-3 flex items-center gap-3">
+        {!isUsingAll && (
+          <Button size="sm" variant="ghost" onClick={resetToAll} disabled={saving}>
+            {t('projectSettings.useAllStates') ?? 'Use all states'}
+          </Button>
+        )}
+        {saved && <span className="text-xs text-green-600">{t('common.saved')}</span>}
+      </div>
     </div>
   );
 }

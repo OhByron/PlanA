@@ -301,6 +301,8 @@
     "clickToAddDescription": "Kliknij, aby dodać opis...",
     "details": "Szczegóły",
     "statusLabel": "Status",
+    "cancel": "Anuluj element",
+    "uncancel": "Przywróć element",
     "typeLabel": "Typ",
     "priorityLabel": "Priorytet",
     "assigneeLabel": "Przypisany do",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Status docelowy",
     "copyBranch": "Kopiuj nazwę gałęzi",
     "copied": "Skopiowano!",
+    "createBranch": "Utwórz branch",
+    "onPROpen": "Przy otwarciu PR:",
+    "onPRMerge": "Przy merge PR:",
     "saveWarning": "Zapisz te wartości teraz. Sekret webhooka nie zostanie ponownie wyświetlony.",
     "tunnelHint": "Do lokalnego rozwoju użyj tunelu (ngrok, cloudflared), aby udostępnić port 8080 i zaktualizuj adres URL webhooka u dostawcy Git."
+  },
+  "workflow": {
+    "title": "Stany workflow",
+    "description": "Zdefiniuj stany, przez które przechodzą elementy pracy. Backlog i Done są zawsze obecne.",
+    "addState": "Dodaj stan",
+    "stateName": "Nazwa stanu",
+    "changeColor": "Zmień kolor",
+    "locked": "Zablokowany",
+    "moveUp": "Przesuń w górę",
+    "moveDown": "Przesuń w dół",
+    "createFailed": "Nie udało się utworzyć stanu",
+    "hooksTitle": "Hooki przejść",
+    "hooksDescription": "Powiadamiaj członków zespołu, gdy elementy pracy wchodzą w określony stan.",
+    "noHooks": "Brak skonfigurowanych hooków.",
+    "addHook": "Dodaj hook",
+    "whenEnters": "Gdy element wchodzi w",
+    "notify": "powiadom",
+    "selectState": "Wybierz stan...",
+    "hookRule": "Gdy element wchodzi w {{state}}, powiadom {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 oglądający",
+    "multipleViewers": "{{count}} ogląda"
   },
   "helpOverlay": {
     "dismiss": "Odrzuć",

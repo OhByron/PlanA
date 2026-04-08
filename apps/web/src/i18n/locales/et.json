@@ -301,6 +301,8 @@
     "clickToAddDescription": "Klõpsake kirjelduse lisamiseks...",
     "details": "Üksikasjad",
     "statusLabel": "Olek",
+    "cancel": "Tühista üksus",
+    "uncancel": "Taasta üksus",
     "typeLabel": "Tüüp",
     "priorityLabel": "Prioriteet",
     "assigneeLabel": "Määratud",
@@ -438,8 +440,34 @@
     "mergeTargetStatus": "Sihtstaatus",
     "copyBranch": "Kopeeri haru nimi",
     "copied": "Kopeeritud!",
+    "createBranch": "Loo haru",
+    "onPROpen": "Kui PR avatakse:",
+    "onPRMerge": "Kui PR ühendatakse:",
     "saveWarning": "Salvesta need väärtused kohe. Webhook'i saladust ei kuvata enam.",
     "tunnelHint": "Kohalikuks arenduseks kasuta tunnelit (ngrok, cloudflared), et avada port 8080, ja uuenda webhook'i URL-i oma Git pakkuja juures."
+  },
+  "workflow": {
+    "title": "Töövoo olekud",
+    "description": "Määrake olekud, mida tööüksused läbivad. Backlog ja Valmis on alati olemas.",
+    "addState": "Lisa olek",
+    "stateName": "Oleku nimi",
+    "changeColor": "Muuda värvi",
+    "locked": "Lukustatud",
+    "moveUp": "Liiguta üles",
+    "moveDown": "Liiguta alla",
+    "createFailed": "Oleku loomine ebaõnnestus",
+    "hooksTitle": "Ülemineku hookid",
+    "hooksDescription": "Teavita meeskonnaliikmeid, kui tööüksused sisenevad kindlasse olekusse.",
+    "noHooks": "Ühtegi hooki pole seadistatud.",
+    "addHook": "Lisa hook",
+    "whenEnters": "Kui üksus siseneb",
+    "notify": "teavita",
+    "selectState": "Vali olek...",
+    "hookRule": "Kui üksus siseneb olekusse {{state}}, teavita {{role}}"
+  },
+  "presence": {
+    "oneViewer": "1 vaataja",
+    "multipleViewers": "{{count}} vaatab"
   },
   "helpOverlay": {
     "dismiss": "Sulge",
