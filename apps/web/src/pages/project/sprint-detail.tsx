@@ -131,6 +131,25 @@ export function SprintDetailPage() {
   const [nameDraft, setNameDraft] = useState('');
   const [editGoal, setEditGoal] = useState(false);
   const [goalDraft, setGoalDraft] = useState('');
+  const [aiGoalLoading, setAiGoalLoading] = useState(false);
+
+  const generateGoal = async () => {
+    if (!sprint || sprintItems.length === 0) return;
+    setAiGoalLoading(true);
+    try {
+      const result = await api.post<{ goal: string }>(`/projects/${projectId}/ai/suggest-inline`, {
+        type: 'sprint_goal',
+        sprint_name: sprint.name,
+        item_titles: sprintItems.map((i) => i.title),
+      });
+      setGoalDraft(result.goal);
+      setEditGoal(true);
+    } catch {
+      // AI not configured or failed - silently ignore
+    } finally {
+      setAiGoalLoading(false);
+    }
+  };
 
   const patchSprint = (data: Record<string, unknown>) => {
     updateSprint.mutate({ sprintId, data });
@@ -388,7 +407,18 @@ export function SprintDetailPage() {
 
           {/* Goal */}
           <div className="mb-4">
-            <label className="mb-1 block text-xs font-medium text-gray-500">{t('sprintDetail.goalLabel')}</label>
+            <div className="mb-1 flex items-center gap-2">
+              <label className="text-xs font-medium text-gray-500">{t('sprintDetail.goalLabel')}</label>
+              {sprintItems.length > 0 && (
+                <button
+                  onClick={generateGoal}
+                  disabled={aiGoalLoading}
+                  className="rounded bg-brand-50 px-2 py-0.5 text-[10px] font-medium text-brand-600 hover:bg-brand-100 disabled:opacity-50 transition-colors"
+                >
+                  {aiGoalLoading ? (t('common.generating') ?? 'Generating...') : (t('sprintDetail.generateGoal') ?? 'Generate with AI')}
+                </button>
+              )}
+            </div>
             {editGoal ? (
               <div className="space-y-1">
                 <Input
