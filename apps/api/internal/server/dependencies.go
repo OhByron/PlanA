@@ -9,6 +9,7 @@ import (
 	"github.com/OhByron/PlanA/internal/auth"
 	"github.com/OhByron/PlanA/internal/config"
 	"github.com/OhByron/PlanA/internal/oauth"
+	"github.com/OhByron/PlanA/internal/realtime"
 )
 
 // Dependencies holds all services required to build the HTTP handler tree.
@@ -19,6 +20,7 @@ type Dependencies struct {
 	DB     *pgxpool.Pool
 	Redis  *redis.Client
 	Auth   *auth.Service
+	Hub    *realtime.Hub
 	GitHub *oauth.GitHubProvider
 	Google *oauth.GoogleProvider
 }

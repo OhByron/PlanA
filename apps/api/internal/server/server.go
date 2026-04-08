@@ -68,6 +68,7 @@ func New(deps *Dependencies) http.Handler {
 	wsH      := handlers.NewWorkflowStateHandlers(deps.DB)
 	thH      := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH     := handlers.NewProjectWorkflowStateHandlers(deps.DB)
+	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
@@ -75,6 +76,7 @@ func New(deps *Dependencies) http.Handler {
 
 	// Public routes
 	r.Get("/health", handlers.Health)
+	r.Get("/api/ws", realtimeH.Upgrade)
 
 	r.Route("/api", func(r chi.Router) {
 		// ----------------------------------------------------------------
