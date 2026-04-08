@@ -22,14 +22,14 @@ const JOB_ROLES = ['pm', 'po', 'dev', 'qe', 'bsa', 'ba', 'ux'];
 
 export function OrgTransitionHooksPage() {
   const { t } = useTranslation();
-  const { orgID } = useParams({ strict: false }) as { orgID: string };
-  const { data: states = [] } = useWorkflowStates(orgID);
+  const { orgId } = useParams({ strict: false }) as { orgId: string };
+  const { data: states = [] } = useWorkflowStates(orgId);
   const qc = useQueryClient();
 
   const { data: hooks = [] } = useQuery({
-    queryKey: ['transition-hooks', orgID],
+    queryKey: ['transition-hooks', orgId],
     queryFn: async (): Promise<TransitionHook[]> => {
-      const raw = await api.get<Record<string, unknown>[]>(`/orgs/${orgID}/transition-hooks`);
+      const raw = await api.get<Record<string, unknown>[]>(`/orgs/${orgId}/transition-hooks`);
       return raw.map((h) => ({
         id: h.id as string,
         orgId: h.org_id as string,
@@ -42,21 +42,21 @@ export function OrgTransitionHooksPage() {
         createdAt: h.created_at as string,
       }));
     },
-    enabled: !!orgID,
+    enabled: !!orgId,
   });
 
   const createHook = useMutation({
     mutationFn: async (data: { trigger_state_id: string; action_type: string; config: Record<string, string> }) => {
-      await api.post(`/orgs/${orgID}/transition-hooks`, data);
+      await api.post(`/orgs/${orgId}/transition-hooks`, data);
     },
-    onSettled: () => qc.invalidateQueries({ queryKey: ['transition-hooks', orgID] }),
+    onSettled: () => qc.invalidateQueries({ queryKey: ['transition-hooks', orgId] }),
   });
 
   const deleteHook = useMutation({
     mutationFn: async (hookId: string) => {
-      await api.delete(`/orgs/${orgID}/transition-hooks/${hookId}`);
+      await api.delete(`/orgs/${orgId}/transition-hooks/${hookId}`);
     },
-    onSettled: () => qc.invalidateQueries({ queryKey: ['transition-hooks', orgID] }),
+    onSettled: () => qc.invalidateQueries({ queryKey: ['transition-hooks', orgId] }),
   });
 
   const [showAdd, setShowAdd] = useState(false);

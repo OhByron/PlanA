@@ -13,12 +13,12 @@ import type { WorkflowState } from '@projecta/types';
 
 export function OrgWorkflowPage() {
   const { t } = useTranslation();
-  const { orgID } = useParams({ strict: false }) as { orgID: string };
-  const { data: states = [], isLoading } = useWorkflowStates(orgID);
-  const createState = useCreateWorkflowState(orgID);
-  const updateState = useUpdateWorkflowState(orgID);
-  const deleteState = useDeleteWorkflowState(orgID);
-  const reorder = useReorderWorkflowStates(orgID);
+  const { orgId } = useParams({ strict: false }) as { orgId: string };
+  const { data: states = [], isLoading } = useWorkflowStates(orgId);
+  const createState = useCreateWorkflowState(orgId);
+  const updateState = useUpdateWorkflowState(orgId);
+  const deleteState = useDeleteWorkflowState(orgId);
+  const reorder = useReorderWorkflowStates(orgId);
 
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState('');
