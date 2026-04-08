@@ -20,6 +20,8 @@ import { useProjectBlockedStatus, useProjectDependencies } from '../../hooks/use
 import { useVCSBulkSummary } from '../../hooks/use-vcs';
 import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 import { useProjectRealtimeInvalidation } from '../../hooks/use-realtime-invalidation';
+import { usePresence } from '../../hooks/use-presence';
+import { PresenceBar } from '../../components/presence-bar';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
 import { HelpOverlay } from '../../components/help-overlay';
@@ -35,6 +37,7 @@ export function BoardPage() {
   const { data: vcsSummaries } = useVCSBulkSummary(projectId);
   const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
   useProjectRealtimeInvalidation(projectId);
+  const { viewers } = usePresence(projectId);
 
   // Active (non-cancelled) items for the board
   const activeItems = useMemo(() => items.filter((i) => !i.isCancelled), [items]);
@@ -275,9 +278,12 @@ export function BoardPage() {
       )}
 
       <div className="flex items-center justify-between px-6 py-3">
-        <p className="text-sm text-gray-500">
-          {t('board.itemCount', { count: items.length })}
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-sm text-gray-500">
+            {t('board.itemCount', { count: items.length })}
+          </p>
+          <PresenceBar viewers={viewers} />
+        </div>
         {totalCapacity > 0 && (
           <div className="flex items-center gap-2 text-sm">
             <span className={cn(
