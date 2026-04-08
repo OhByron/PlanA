@@ -50,11 +50,15 @@ func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get status changes for items in this sprint, grouped by day
+	// Only count transitions to terminal states (done) or cancelled items
 	rows, err := h.db.Query(r.Context(), `
-		SELECT DATE(changed_at) as day, new_status, COALESCE(SUM(points), 0)
-		FROM status_changes
-		WHERE sprint_id = $1
-		GROUP BY DATE(changed_at), new_status
+		SELECT DATE(sc.changed_at) as day,
+		       COALESCE(ws.is_terminal, FALSE) AS is_terminal,
+		       COALESCE(SUM(sc.points), 0)
+		FROM status_changes sc
+		LEFT JOIN workflow_states ws ON ws.id = sc.new_state_id
+		WHERE sc.sprint_id = $1
+		GROUP BY DATE(sc.changed_at), ws.is_terminal
 		ORDER BY day`, sprintID)
 	if err != nil {
 		slog.Error("burndown: query failed", "error", err)
@@ -65,15 +69,15 @@ func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 
 	// Build day-by-day change data
 	type dayChange struct {
-		Day    string
-		Status string
-		Points int
+		Day        string
+		IsTerminal bool
+		Points     int
 	}
 	changes := []dayChange{}
 	for rows.Next() {
 		var dc dayChange
 		var day time.Time
-		if err := rows.Scan(&day, &dc.Status, &dc.Points); err != nil {
+		if err := rows.Scan(&day, &dc.IsTerminal, &dc.Points); err != nil {
 			continue
 		}
 		dc.Day = day.Format("2006-01-02")
@@ -100,9 +104,9 @@ func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 
 	for d := start; !d.After(end); d = d.Add(24 * time.Hour) {
 		dayStr := d.Format("2006-01-02")
-		// Subtract points that moved to "done" or "cancelled" on this day
+		// Subtract points that moved to a terminal state on this day
 		for _, c := range changes {
-			if c.Day == dayStr && (c.Status == "done" || c.Status == "cancelled") {
+			if c.Day == dayStr && c.IsTerminal {
 				remaining -= c.Points
 			}
 		}
@@ -388,7 +392,8 @@ func (h *SprintHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			`SELECT COALESCE(SUM(COALESCE(w.points_used, w.story_points, 0)), 0)
 			 FROM sprint_items si
 			 JOIN work_items w ON w.id = si.work_item_id
-			 WHERE si.sprint_id = $1 AND w.status = 'done'`,
+			 JOIN workflow_states ws ON ws.id = w.workflow_state_id
+			 WHERE si.sprint_id = $1 AND ws.is_terminal = true`,
 			sprintID).Scan(&computed)
 		if err == nil && computed != nil && s.Velocity == nil {
 			s.Velocity = computed
