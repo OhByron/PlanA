@@ -39,6 +39,7 @@ import { CalendarPage } from './pages/project/calendar';
 import { VCSSettingsPage } from './pages/project/vcs-settings';
 import { SettingsPage } from './pages/project/settings';
 import { OrgWorkflowPage } from './pages/org-workflow';
+import { PortfolioDashboardPage } from './pages/portfolio-dashboard';
 import { OrgTransitionHooksPage } from './pages/org-transition-hooks';
 import { RealtimeProvider } from './hooks/use-realtime';
 import { ReleasesPage } from './pages/project/releases';
@@ -130,6 +131,12 @@ const orgDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/orgs/$orgId',
   component: OrgDetailPage,
+});
+
+const orgPortfolioRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/orgs/$orgId/portfolio',
+  component: PortfolioDashboardPage,
 });
 
 const orgWorkflowRoute = createRoute({
@@ -273,6 +280,7 @@ const routeTree = rootRoute.addChildren([
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
+    orgPortfolioRoute,
     orgWorkflowRoute,
     orgTransitionHooksRoute,
     archiveRoute,
