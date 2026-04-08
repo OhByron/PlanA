@@ -949,7 +949,9 @@
     "notes": "Utgåveanteckningar",
     "generateNotes": "Generera anteckningar",
     "enhanceWithAI": "Förbättra med AI",
-    "noNotes": "Inga utgåveanteckningar ännu. Klicka på Generera anteckningar för att skapa dem från objekten."
+    "noNotes": "Inga utgåveanteckningar ännu. Klicka på Generera anteckningar för att skapa dem från objekten.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Utgående Webhooks",

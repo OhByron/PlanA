@@ -949,7 +949,9 @@
     "notes": "Udgivelsesnoter",
     "generateNotes": "Generér noter",
     "enhanceWithAI": "Forbedr med AI",
-    "noNotes": "Ingen udgivelsesnoter endnu. Klik på Generér noter for at oprette dem fra elementerne."
+    "noNotes": "Ingen udgivelsesnoter endnu. Klik på Generér noter for at oprette dem fra elementerne.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Udgående Webhooks",

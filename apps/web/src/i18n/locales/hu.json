@@ -949,7 +949,9 @@
     "notes": "Kiadási jegyzetek",
     "generateNotes": "Jegyzetek generálása",
     "enhanceWithAI": "Fejlesztés AI-val",
-    "noNotes": "Még nincsenek kiadási jegyzetek. Kattintson a Jegyzetek generálása gombra, hogy az elemekből hozza létre őket."
+    "noNotes": "Még nincsenek kiadási jegyzetek. Kattintson a Jegyzetek generálása gombra, hogy az elemekből hozza létre őket.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Kimenő Webhooks",

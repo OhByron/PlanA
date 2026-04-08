@@ -949,7 +949,9 @@
     "notes": "Белешке издања",
     "generateNotes": "Генериши белешке",
     "enhanceWithAI": "Побољшај помоћу AI",
-    "noNotes": "Још нема белешки издања. Кликните Генериши белешке да их направите од ставки."
+    "noNotes": "Још нема белешки издања. Кликните Генериши белешке да их направите од ставки.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Одлазни Webhooks",

@@ -949,7 +949,9 @@
     "notes": "Bilješke izdanja",
     "generateNotes": "Generiraj bilješke",
     "enhanceWithAI": "Poboljšaj s AI",
-    "noNotes": "Još nema bilješki izdanja. Kliknite Generiraj bilješke da ih stvorite iz stavki."
+    "noNotes": "Još nema bilješki izdanja. Kliknite Generiraj bilješke da ih stvorite iz stavki.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Odlazni Webhooks",

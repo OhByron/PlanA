@@ -949,7 +949,9 @@
     "notes": "发布说明",
     "generateNotes": "生成说明",
     "enhanceWithAI": "AI 优化",
-    "noNotes": "暂无发布说明。点击生成说明以从条目中创建。"
+    "noNotes": "暂无发布说明。点击生成说明以从条目中创建。",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "出站 Webhooks",

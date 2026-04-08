@@ -949,7 +949,9 @@
     "notes": "Útgáfuglósur",
     "generateNotes": "Búa til glósur",
     "enhanceWithAI": "Bæta með AI",
-    "noNotes": "Engar útgáfuglósur ennþá. Smelltu á Búa til glósur til að búa þær til úr atriðunum."
+    "noNotes": "Engar útgáfuglósur ennþá. Smelltu á Búa til glósur til að búa þær til úr atriðunum.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Útsendir Webhooks",

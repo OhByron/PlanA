@@ -949,7 +949,9 @@
     "notes": "Notatki wydania",
     "generateNotes": "Generuj notatki",
     "enhanceWithAI": "Ulepsz z AI",
-    "noNotes": "Brak notatek wydania. Kliknij Generuj notatki, aby utworzyć je z elementów."
+    "noNotes": "Brak notatek wydania. Kliknij Generuj notatki, aby utworzyć je z elementów.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Wychodzące Webhooks",

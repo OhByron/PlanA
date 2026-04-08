@@ -949,7 +949,9 @@
     "notes": "リリースノート",
     "generateNotes": "ノートを生成",
     "enhanceWithAI": "AIで改善",
-    "noNotes": "リリースノートはまだありません。ノートを生成をクリックしてアイテムから作成してください。"
+    "noNotes": "リリースノートはまだありません。ノートを生成をクリックしてアイテムから作成してください。",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "送信 Webhooks",

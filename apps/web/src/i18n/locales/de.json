@@ -949,7 +949,9 @@
     "notes": "Release-Notizen",
     "generateNotes": "Notizen generieren",
     "enhanceWithAI": "Mit KI verbessern",
-    "noNotes": "Noch keine Release-Notizen. Klicken Sie auf Notizen generieren, um sie aus den Elementen zu erstellen."
+    "noNotes": "Noch keine Release-Notizen. Klicken Sie auf Notizen generieren, um sie aus den Elementen zu erstellen.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Ausgehende Webhooks",

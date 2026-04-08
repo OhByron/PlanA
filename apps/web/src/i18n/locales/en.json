@@ -614,7 +614,9 @@
     "notes": "Release Notes",
     "generateNotes": "Generate notes",
     "enhanceWithAI": "Enhance with AI",
-    "noNotes": "No release notes yet. Click Generate notes to create them from the items."
+    "noNotes": "No release notes yet. Click Generate notes to create them from the items.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
 
   "commandPalette": {

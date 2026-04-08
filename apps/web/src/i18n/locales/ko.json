@@ -949,7 +949,9 @@
     "notes": "릴리스 노트",
     "generateNotes": "노트 생성",
     "enhanceWithAI": "AI로 개선",
-    "noNotes": "아직 릴리스 노트가 없습니다. 항목에서 생성하려면 노트 생성을 클릭하세요."
+    "noNotes": "아직 릴리스 노트가 없습니다. 항목에서 생성하려면 노트 생성을 클릭하세요.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "발신 Webhooks",

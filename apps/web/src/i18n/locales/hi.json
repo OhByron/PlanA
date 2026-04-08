@@ -949,7 +949,9 @@
     "notes": "रिलीज़ नोट्स",
     "generateNotes": "नोट्स जनरेट करें",
     "enhanceWithAI": "AI से बेहतर बनाएं",
-    "noNotes": "अभी तक कोई रिलीज़ नोट्स नहीं। आइटम से बनाने के लिए नोट्स जनरेट करें पर क्लिक करें।"
+    "noNotes": "अभी तक कोई रिलीज़ नोट्स नहीं। आइटम से बनाने के लिए नोट्स जनरेट करें पर क्लिक करें।",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "आउटबाउंड Webhooks",

@@ -949,7 +949,9 @@
     "notes": "ملاحظات الإصدار",
     "generateNotes": "توليد الملاحظات",
     "enhanceWithAI": "تحسين بالذكاء الاصطناعي",
-    "noNotes": "لا توجد ملاحظات إصدار بعد. انقر على توليد الملاحظات لإنشائها من العناصر."
+    "noNotes": "لا توجد ملاحظات إصدار بعد. انقر على توليد الملاحظات لإنشائها من العناصر.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Webhooks الصادرة",

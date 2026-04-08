@@ -949,7 +949,9 @@
     "notes": "Leidimo pastabos",
     "generateNotes": "Generuoti pastabas",
     "enhanceWithAI": "Pagerinti su AI",
-    "noNotes": "Leidimo pastabų dar nėra. Spustelėkite Generuoti pastabas, kad jas sukurtumėte iš elementų."
+    "noNotes": "Leidimo pastabų dar nėra. Spustelėkite Generuoti pastabas, kad jas sukurtumėte iš elementų.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Išeinantys Webhooks",

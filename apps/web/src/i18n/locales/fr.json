@@ -949,7 +949,9 @@
     "notes": "Notes de version",
     "generateNotes": "Générer les notes",
     "enhanceWithAI": "Améliorer avec l'IA",
-    "noNotes": "Pas encore de notes de version. Cliquez sur Générer les notes pour les créer à partir des éléments."
+    "noNotes": "Pas encore de notes de version. Cliquez sur Générer les notes pour les créer à partir des éléments.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Webhooks sortants",

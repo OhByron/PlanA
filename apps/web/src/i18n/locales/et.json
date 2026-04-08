@@ -949,7 +949,9 @@
     "notes": "Väljalaskemärkmed",
     "generateNotes": "Genereeri märkmed",
     "enhanceWithAI": "Täiusta AI-ga",
-    "noNotes": "Väljalaskemärkmeid pole veel. Klõpsa Genereeri märkmed, et luua need elementidest."
+    "noNotes": "Väljalaskemärkmeid pole veel. Klõpsa Genereeri märkmed, et luua need elementidest.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Väljaminevad Webhooks",

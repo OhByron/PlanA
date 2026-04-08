@@ -949,7 +949,9 @@
     "notes": "Sürüm Notları",
     "generateNotes": "Notları oluştur",
     "enhanceWithAI": "AI ile geliştir",
-    "noNotes": "Henüz sürüm notu yok. Öğelerden oluşturmak için Notları oluştur'a tıklayın."
+    "noNotes": "Henüz sürüm notu yok. Öğelerden oluşturmak için Notları oluştur'a tıklayın.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Giden Webhooks",

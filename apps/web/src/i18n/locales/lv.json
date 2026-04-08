@@ -949,7 +949,9 @@
     "notes": "Izlaiduma piezīmes",
     "generateNotes": "Ģenerēt piezīmes",
     "enhanceWithAI": "Uzlabot ar AI",
-    "noNotes": "Izlaiduma piezīmju vēl nav. Noklikšķiniet uz Ģenerēt piezīmes, lai tās izveidotu no elementiem."
+    "noNotes": "Izlaiduma piezīmju vēl nav. Noklikšķiniet uz Ģenerēt piezīmes, lai tās izveidotu no elementiem.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Izejošie Webhooks",

@@ -949,7 +949,9 @@
     "notes": "Releasenotities",
     "generateNotes": "Notities genereren",
     "enhanceWithAI": "Verbeteren met AI",
-    "noNotes": "Nog geen releasenotities. Klik op Notities genereren om ze uit de items te maken."
+    "noNotes": "Nog geen releasenotities. Klik op Notities genereren om ze uit de items te maken.",
+    "addItem": "+ Add item",
+    "selectItem": "Select a completed item to add..."
   },
   "webhooks": {
     "title": "Uitgaande Webhooks",
