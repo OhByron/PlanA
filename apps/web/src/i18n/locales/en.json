@@ -806,6 +806,7 @@
     "properties": "Sprint Properties",
     "nameLabel": "Name",
     "goalLabel": "Goal",
+    "generateGoal": "Generate with AI",
     "statusLabel": "Status",
     "startDateLabel": "Start Date",
     "endDateLabel": "End Date",
