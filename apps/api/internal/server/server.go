@@ -10,6 +10,7 @@ import (
 
 	"github.com/OhByron/PlanA/internal/email"
 	"github.com/OhByron/PlanA/internal/handlers"
+	"github.com/OhByron/PlanA/internal/realtime"
 	"github.com/OhByron/PlanA/internal/server/middleware"
 	"github.com/OhByron/PlanA/internal/vcs"
 )
@@ -38,6 +39,13 @@ func New(deps *Dependencies) http.Handler {
 	})
 	r.Use(c.Handler)
 
+	// Create event publish function that bridges handlers to the realtime Hub
+	publish := handlers.EventPublishFunc(func(channel, eventType string, payload map[string]string) {
+		if deps.Hub != nil {
+			deps.Hub.Publish(channel, realtime.NewEvent(eventType, channel, payload))
+		}
+	})
+
 	// Construct handler groups
 	authH    := handlers.NewAuthHandlers(deps.DB, deps.Auth, deps.GitHub, deps.Google, deps.Config, deps.Redis)
 	userH    := handlers.NewUserHandlers(deps.DB, deps.Auth)
@@ -45,14 +53,14 @@ func New(deps *Dependencies) http.Handler {
 	initH    := handlers.NewInitiativeHandlers(deps.DB)
 	teamH    := handlers.NewTeamHandlers(deps.DB)
 	projH    := handlers.NewProjectHandlers(deps.DB)
-	wiH      := handlers.NewWorkItemHandlers(deps.DB)
+	wiH      := handlers.NewWorkItemHandlers(deps.DB, publish)
 	acH      := handlers.NewACHandlers(deps.DB)
-	commH    := handlers.NewCommentHandlers(deps.DB)
+	commH    := handlers.NewCommentHandlers(deps.DB, publish)
 	epicH    := handlers.NewEpicHandlers(deps.DB)
-	sprintH  := handlers.NewSprintHandlers(deps.DB)
-	siH      := handlers.NewSprintItemHandlers(deps.DB)
+	sprintH  := handlers.NewSprintHandlers(deps.DB, publish)
+	siH      := handlers.NewSprintItemHandlers(deps.DB, publish)
 	depH     := handlers.NewDependencyHandlers(deps.DB)
-	estH     := handlers.NewEstimationHandlers(deps.DB)
+	estH     := handlers.NewEstimationHandlers(deps.DB, publish)
 	licH     := handlers.NewLicenceHandlers(deps.DB)
 	linkH    := handlers.NewLinkHandlers(deps.DB)
 	pmH      := handlers.NewProjectMemberHandlers(deps.DB)
@@ -68,6 +76,7 @@ func New(deps *Dependencies) http.Handler {
 	wsH      := handlers.NewWorkflowStateHandlers(deps.DB)
 	thH      := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH     := handlers.NewProjectWorkflowStateHandlers(deps.DB)
+	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
@@ -75,6 +84,7 @@ func New(deps *Dependencies) http.Handler {
 
 	// Public routes
 	r.Get("/health", handlers.Health)
+	r.Get("/api/ws", realtimeH.Upgrade)
 
 	r.Route("/api", func(r chi.Router) {
 		// ----------------------------------------------------------------

@@ -39,6 +39,7 @@ import { CalendarPage } from './pages/project/calendar';
 import { VCSSettingsPage } from './pages/project/vcs-settings';
 import { OrgWorkflowPage } from './pages/org-workflow';
 import { OrgTransitionHooksPage } from './pages/org-transition-hooks';
+import { RealtimeProvider } from './hooks/use-realtime';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -285,7 +286,9 @@ createRoot(rootEl).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <RealtimeProvider>
+          <RouterProvider router={router} />
+        </RealtimeProvider>
       </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,

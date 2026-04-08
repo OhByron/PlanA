@@ -19,6 +19,7 @@ import (
 	"github.com/OhByron/PlanA/internal/email"
 	"github.com/OhByron/PlanA/internal/migrations"
 	"github.com/OhByron/PlanA/internal/oauth"
+	"github.com/OhByron/PlanA/internal/realtime"
 	"github.com/OhByron/PlanA/internal/server"
 )
 
@@ -73,12 +74,15 @@ func main() {
 	ghProvider := oauth.NewGitHubProvider(cfg)
 	googProvider := oauth.NewGoogleProvider(cfg)
 
+	hub := realtime.NewHub()
+
 	deps := &server.Dependencies{
 		Config: cfg,
 		Logger: logger,
 		DB:     pool,
 		Redis:  rdb,
 		Auth:   authSvc,
+		Hub:    hub,
 		GitHub: ghProvider,
 		Google: googProvider,
 	}

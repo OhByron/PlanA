@@ -84,10 +84,13 @@ func scanWorkItem(row interface{ Scan(dest ...any) error }) (WorkItem, error) {
 
 // WorkItemHandlers handles CRUD for stories, bugs, and tasks within a project.
 type WorkItemHandlers struct {
-	db DBPOOL
+	db      DBPOOL
+	publish EventPublishFunc
 }
 
-func NewWorkItemHandlers(db DBPOOL) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
+func NewWorkItemHandlers(db DBPOOL, publish EventPublishFunc) *WorkItemHandlers {
+	return &WorkItemHandlers{db: db, publish: publish}
+}
 
 // getWorkItem fetches a single work item with its workflow state info via JOIN.
 func (h *WorkItemHandlers) getWorkItem(ctx interface {
@@ -358,6 +361,12 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusCreated, wi)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "work_item.created", map[string]string{
+			"id": wi.ID, "project_id": projectID, "actor_id": claims.UserID,
+		})
+	}
 }
 
 // Get returns a single work item by ID.
@@ -708,7 +717,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 		// Notify assignee of state change
 		if wi.AssigneeID != nil {
-			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, wi.StateName, claims.UserID, wi.ID)
+			NotifyStatusChange(r.Context(), h.db, h.publish, *wi.AssigneeID, wi.Title, wi.StateName, claims.UserID, wi.ID)
 		}
 
 		// Fire transition hooks for the new state
@@ -723,10 +732,16 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 	// Notify new assignee when assignment changes
 	if body.AssigneeID != nil && wi.AssigneeID != nil {
-		NotifyAssignee(r.Context(), h.db, *wi.AssigneeID, wi.Title, claims.UserID, wi.ID)
+		NotifyAssignee(r.Context(), h.db, h.publish, *wi.AssigneeID, wi.Title, claims.UserID, wi.ID)
 	}
 
 	writeJSON(w, http.StatusOK, wi)
+
+	if h.publish != nil {
+		h.publish("project:"+wi.ProjectID, "work_item.updated", map[string]string{
+			"id": wi.ID, "project_id": wi.ProjectID, "actor_id": claims.UserID,
+		})
+	}
 }
 
 // fireTransitionHooks executes any hooks configured for the given state.
@@ -882,4 +897,10 @@ func (h *WorkItemHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "work_item.deleted", map[string]string{
+			"id": workItemID, "project_id": projectID, "actor_id": claims.UserID,
+		})
+	}
 }

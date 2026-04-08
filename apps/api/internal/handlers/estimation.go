@@ -10,10 +10,13 @@ import (
 	"github.com/OhByron/PlanA/internal/auth"
 )
 
-type EstimationHandlers struct{ db DBPOOL }
+type EstimationHandlers struct {
+	db      DBPOOL
+	publish EventPublishFunc
+}
 
-func NewEstimationHandlers(db DBPOOL) *EstimationHandlers {
-	return &EstimationHandlers{db: db}
+func NewEstimationHandlers(db DBPOOL, publish EventPublishFunc) *EstimationHandlers {
+	return &EstimationHandlers{db: db, publish: publish}
 }
 
 type voteResponse struct {
@@ -108,6 +111,13 @@ func (h *EstimationHandlers) Vote(w http.ResponseWriter, r *http.Request) {
 	h.db.QueryRow(r.Context(), `SELECT name FROM project_members WHERE id = $1`, memberID).Scan(&v.MemberName)
 
 	writeJSON(w, http.StatusOK, v)
+
+	if h.publish != nil {
+		projectID := resolveProjectID(r.Context(), h.db, workItemID)
+		h.publish("project:"+projectID+":estimation:"+workItemID, "vote.cast", map[string]string{
+			"work_item_id": workItemID, "member_id": memberID,
+		})
+	}
 }
 
 // Lock accepts the final estimate and writes it to story_points, then clears votes.
@@ -146,6 +156,15 @@ func (h *EstimationHandlers) Lock(w http.ResponseWriter, r *http.Request) {
 	h.db.Exec(r.Context(), `DELETE FROM estimation_votes WHERE work_item_id = $1`, workItemID)
 
 	writeJSON(w, http.StatusOK, map[string]any{"story_points": body.Value, "votes_cleared": true})
+
+	if h.publish != nil {
+		h.publish("project:"+projectID+":estimation:"+workItemID, "vote.locked", map[string]string{
+			"work_item_id": workItemID,
+		})
+		h.publish("project:"+projectID, "work_item.updated", map[string]string{
+			"id": workItemID, "project_id": projectID, "actor_id": claims.UserID,
+		})
+	}
 }
 
 // Reset clears all votes for a work item without locking.
@@ -155,4 +174,11 @@ func (h *EstimationHandlers) Reset(w http.ResponseWriter, r *http.Request) {
 
 	h.db.Exec(r.Context(), `DELETE FROM estimation_votes WHERE work_item_id = $1`, workItemID)
 	w.WriteHeader(http.StatusNoContent)
+
+	if h.publish != nil {
+		projectID := resolveProjectID(r.Context(), h.db, workItemID)
+		h.publish("project:"+projectID+":estimation:"+workItemID, "vote.reset", map[string]string{
+			"work_item_id": workItemID,
+		})
+	}
 }

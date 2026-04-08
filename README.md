@@ -118,7 +118,7 @@ Development goals for PlanA, informed by competitive analysis against Jira, Line
 These are the features evaluators look for in the first 10 minutes. Without them, developer teams are likely to pass.
 
 - ~~**Git Integration (GitHub / GitLab)**~~ **SHIPPED** - Repository linking with encrypted token storage, webhook processing for push/branch/PR/review/CI events, automatic work item linking via item number patterns, PR status badges with clickable CI links, auto-transition on PR open (to in review) and merge (configurable), bot comments on PRs linking back to PlanA, copy/create branch buttons, bulk VCS summary on board cards, admin settings page, 27 languages.
-- **Real-Time Collaboration** - Live presence indicators, real-time board updates via WebSockets, co-editing support. Replaces the current polling approach with instant sync.
+- ~~**Real-Time Collaboration**~~ **SHIPPED** - WebSocket infrastructure with Hub, channel subscriptions, JWT auth, and presence tracking. All major handlers emit real-time events (work items, comments, sprints, estimation, notifications). Frontend auto-invalidates TanStack Query caches on events, with graceful fallback to polling when disconnected. Presence bar shows who's viewing the board. Redis pub/sub for multi-instance scaling deferred until needed.
 - ~~**Custom Workflow States**~~ **SHIPPED** - Org-level workflow state definitions with custom names, colors, and ordering. Backlog and Done are immutable bookends, admins fill in the middle. Dynamic board columns, transition hooks (notify roles on state entry), configurable VCS auto-transitions, cancel/restore as separate action, project-level state subsets (API ready). Full backend and frontend conversion from hardcoded statuses.
 
 ### Tier 2: Competitive Parity (Expected by Evaluators)
@@ -144,6 +144,7 @@ Features that lean into PlanA's unique strengths and create separation from comp
 - Whiteboards / embedded docs (not our fight)
 - Time tracking (commodity feature, many dedicated tools exist)
 - Deep Figma integration (nice-to-have, not a deal-maker)
+- Redis pub/sub for real-time multi-instance scaling (deferred until horizontal scaling needed)
 
 ---
 

@@ -25,10 +25,13 @@ type Comment struct {
 
 // CommentHandlers handles threaded comments on work items.
 type CommentHandlers struct {
-	db DBPOOL
+	db      DBPOOL
+	publish EventPublishFunc
 }
 
-func NewCommentHandlers(db DBPOOL) *CommentHandlers { return &CommentHandlers{db: db} }
+func NewCommentHandlers(db DBPOOL, publish EventPublishFunc) *CommentHandlers {
+	return &CommentHandlers{db: db, publish: publish}
+}
 
 // List returns all comments for a given work item.
 func (h *CommentHandlers) List(w http.ResponseWriter, r *http.Request) {
@@ -133,13 +136,19 @@ func (h *CommentHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		slog.Warn("comments.Create: work-item lookup for notification failed", "error", err)
 	}
 	if assigneeID != nil {
-		NotifyComment(r.Context(), h.db, *assigneeID, wiTitle, claims.UserID, workItemID)
+		NotifyComment(r.Context(), h.db, h.publish, *assigneeID, wiTitle, claims.UserID, workItemID)
 	}
 
 	// Scan for @mentions in the comment body
-	NotifyMentions(r.Context(), h.db, projectID, wiTitle, claims.UserID, workItemID, body.Body)
+	NotifyMentions(r.Context(), h.db, h.publish, projectID, wiTitle, claims.UserID, workItemID, body.Body)
 
 	writeJSON(w, http.StatusCreated, c)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "comment.created", map[string]string{
+			"id": c.ID, "work_item_id": workItemID, "actor_id": claims.UserID,
+		})
+	}
 }
 
 // updateCommentRequest is the JSON body for patching a comment.
