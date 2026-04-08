@@ -85,13 +85,16 @@ UPDATE work_items SET is_cancelled = TRUE WHERE status = 'cancelled';
 ALTER TABLE work_items ADD COLUMN workflow_state_id UUID REFERENCES workflow_states(id);
 
 -- Backfill workflow_state_id from current status text
-UPDATE work_items wi
-SET workflow_state_id = ws.id
-FROM projects p
-  JOIN teams t ON t.id = p.team_id
-  JOIN workflow_states ws ON ws.org_id = t.organization_id
-    AND ws.slug = CASE WHEN wi.status = 'cancelled' THEN 'backlog' ELSE wi.status END
-WHERE wi.project_id = p.id;
+UPDATE work_items
+SET workflow_state_id = (
+  SELECT ws.id
+  FROM projects p
+    JOIN teams t ON t.id = p.team_id
+    JOIN workflow_states ws ON ws.org_id = t.organization_id
+  WHERE p.id = work_items.project_id
+    AND ws.slug = CASE WHEN work_items.status = 'cancelled' THEN 'backlog' ELSE work_items.status END
+  LIMIT 1
+);
 
 -- Drop old status column and make FK not null
 ALTER TABLE work_items DROP COLUMN status;
@@ -118,12 +121,15 @@ ALTER TABLE projects ADD COLUMN pr_open_transition_state_id UUID REFERENCES work
 ALTER TABLE projects ADD COLUMN pr_merge_transition_state_id UUID REFERENCES workflow_states(id);
 
 -- Seed pr_merge_transition_state_id from merge_transition_status for existing projects
-UPDATE projects p
-SET pr_merge_transition_state_id = ws.id
-FROM teams t
-  JOIN workflow_states ws ON ws.org_id = t.organization_id
-    AND ws.slug = p.merge_transition_status
-WHERE t.id = p.team_id
-  AND p.merge_transition_status IS NOT NULL;
+UPDATE projects
+SET pr_merge_transition_state_id = (
+  SELECT ws.id
+  FROM teams t
+    JOIN workflow_states ws ON ws.org_id = t.organization_id
+  WHERE t.id = projects.team_id
+    AND ws.slug = projects.merge_transition_status
+  LIMIT 1
+)
+WHERE merge_transition_status IS NOT NULL;
 
 ALTER TABLE projects DROP COLUMN IF EXISTS merge_transition_status;
