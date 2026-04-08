@@ -33,6 +33,9 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (request.method !== 'GET') return;
 
+  // Skip non-http(s) schemes (chrome-extension, etc.)
+  if (!url.protocol.startsWith('http')) return;
+
   // Skip WebSocket upgrades
   if (url.pathname === '/api/ws') return;
 
