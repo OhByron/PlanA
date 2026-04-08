@@ -90,6 +90,7 @@ func New(deps *Dependencies) http.Handler {
 	thH := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH := handlers.NewProjectWorkflowStateHandlers(deps.DB)
 	activityH := handlers.NewActivityHandlers(deps.DB)
+	portfolioH := handlers.NewPortfolioHandlers(deps.DB)
 	releaseH := handlers.NewReleaseHandlers(deps.DB, publish)
 	outWebhookH := handlers.NewOutboundWebhookHandlers(deps.DB)
 	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB, allowedOrigins)
@@ -201,6 +202,9 @@ func New(deps *Dependencies) http.Handler {
 							r.Delete("/", thH.Delete)
 						})
 					})
+
+					// Portfolio dashboard (cross-project metrics)
+					r.Get("/portfolio", portfolioH.Dashboard)
 
 					// Initiatives (cross-team, org-scoped)
 					r.Route("/initiatives", func(r chi.Router) {

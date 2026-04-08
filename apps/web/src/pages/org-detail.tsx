@@ -79,6 +79,13 @@ export function OrgDetailPage() {
             {t('workflow.title') ?? 'Workflow'}
           </Link>
           <Link
+            to="/orgs/$orgId/portfolio"
+            params={{ orgId }}
+            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            {t('portfolio.title') ?? 'Portfolio'}
+          </Link>
+          <Link
             to="/orgs/$orgId/hooks"
             params={{ orgId }}
             className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"

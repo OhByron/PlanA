@@ -965,5 +965,27 @@
   },
   "ai": {
     "notConfigured": "AI er ikke konfigureret for dette projekt. Gå til Indstillinger for at opsætte en AI-udbyder."
+  },
+  "portfolio": {
+    "title": "Portfolio Dashboard",
+    "initiatives": "Initiatives",
+    "active": "active",
+    "projects": "Projects",
+    "completion": "Completion",
+    "blocked": "Blocked",
+    "initiativeProgress": "Initiative Progress",
+    "projectHealth": "Project Health",
+    "epics": "epics",
+    "stories": "stories",
+    "points": "pts",
+    "target": "Target",
+    "project": "Project",
+    "team": "Team",
+    "progress": "Progress",
+    "bugs": "Bugs",
+    "blockedItems": "Blocked",
+    "velocity": "Velocity",
+    "sprint": "Sprint",
+    "healthLabel": "Health"
   }
 }

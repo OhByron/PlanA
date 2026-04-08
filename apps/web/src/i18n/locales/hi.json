@@ -965,5 +965,27 @@
   },
   "ai": {
     "notConfigured": "इस प्रोजेक्ट के लिए AI कॉन्फ़िगर नहीं है। AI प्रदाता सेट करने के लिए सेटिंग्स पर जाएं।"
+  },
+  "portfolio": {
+    "title": "Portfolio Dashboard",
+    "initiatives": "Initiatives",
+    "active": "active",
+    "projects": "Projects",
+    "completion": "Completion",
+    "blocked": "Blocked",
+    "initiativeProgress": "Initiative Progress",
+    "projectHealth": "Project Health",
+    "epics": "epics",
+    "stories": "stories",
+    "points": "pts",
+    "target": "Target",
+    "project": "Project",
+    "team": "Team",
+    "progress": "Progress",
+    "bugs": "Bugs",
+    "blockedItems": "Blocked",
+    "velocity": "Velocity",
+    "sprint": "Sprint",
+    "healthLabel": "Health"
   }
 }
