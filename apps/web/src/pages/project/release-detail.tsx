@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Badge, Textarea } from '@projecta/ui';
+import { Button, Input, Badge, Select, Textarea } from '@projecta/ui';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   useRelease,
   useUpdateRelease,
@@ -11,6 +12,8 @@ import {
   useShareRelease,
   useUnshareRelease,
 } from '../../hooks/use-releases';
+import { useWorkItems } from '../../hooks/use-work-items';
+import { api } from '../../lib/api-client';
 
 export function ReleaseDetailPage() {
   const { t } = useTranslation();
@@ -25,6 +28,23 @@ export function ReleaseDetailPage() {
 
   const [editingNotes, setEditingNotes] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
+  const [showAddItem, setShowAddItem] = useState(false);
+  const { data: allWorkItems = [] } = useWorkItems(projectId);
+  const qc = useQueryClient();
+
+  const addItem = useMutation({
+    mutationFn: (workItemId: string) => api.post(`/projects/${projectId}/releases/${releaseId}/items`, { work_item_id: workItemId }),
+    onSettled: () => qc.invalidateQueries({ queryKey: ['release', releaseId] }),
+  });
+
+  const removeItem = useMutation({
+    mutationFn: (workItemId: string) => api.delete(`/projects/${projectId}/releases/${releaseId}/items/${workItemId}`),
+    onSettled: () => qc.invalidateQueries({ queryKey: ['release', releaseId] }),
+  });
+
+  // Items not already in the release, for the add dropdown
+  const releaseItemIds = new Set(data?.items.map((i) => i.id) ?? []);
+  const availableItems = allWorkItems.filter((i) => !releaseItemIds.has(i.id) && i.stateIsTerminal && !i.isCancelled);
 
   if (isLoading || !data) {
     return (
@@ -105,9 +125,38 @@ export function ReleaseDetailPage() {
 
       {/* Items */}
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-          {t('releases.items') ?? 'Items'} ({items.length})
-        </h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+            {t('releases.items') ?? 'Items'} ({items.length})
+          </h2>
+          {isDraft && (
+            <Button size="sm" variant="ghost" onClick={() => setShowAddItem(!showAddItem)}>
+              {showAddItem ? t('common.cancel') : (t('releases.addItem') ?? '+ Add item')}
+            </Button>
+          )}
+        </div>
+
+        {showAddItem && isDraft && availableItems.length > 0 && (
+          <div className="mb-3 flex items-center gap-2">
+            <Select
+              onChange={(e) => {
+                if (e.target.value) {
+                  addItem.mutate(e.target.value);
+                  e.target.value = '';
+                }
+              }}
+              className="flex-1 text-sm"
+            >
+              <option value="">{t('releases.selectItem') ?? 'Select a completed item to add...'}</option>
+              {availableItems.map((wi) => (
+                <option key={wi.id} value={wi.id}>
+                  #{(wi as unknown as { itemNumber?: number }).itemNumber ?? ''} {wi.title}
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
+
         {items.length === 0 ? (
           <p className="text-sm text-gray-400">{t('releases.noItems') ?? 'No items in this release.'}</p>
         ) : (
@@ -125,6 +174,15 @@ export function ReleaseDetailPage() {
                 >
                   {item.stateName}
                 </span>
+                {isDraft && (
+                  <button
+                    onClick={() => removeItem.mutate(item.id)}
+                    className="text-gray-300 hover:text-red-500 text-sm"
+                    title={t('common.remove') ?? 'Remove'}
+                  >
+                    &times;
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -176,7 +234,7 @@ export function ReleaseDetailPage() {
           </div>
         ) : release.notes ? (
           <div
-            className="prose prose-sm max-w-none cursor-pointer rounded border border-transparent p-3 hover:border-gray-200"
+            className="max-w-none cursor-pointer rounded border border-gray-100 bg-white p-4 hover:border-gray-300 transition-colors"
             onClick={() => {
               if (isDraft) {
                 setNotesDraft(release.notes ?? '');
