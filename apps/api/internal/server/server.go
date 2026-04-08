@@ -90,6 +90,7 @@ func New(deps *Dependencies) http.Handler {
 	thH := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH := handlers.NewProjectWorkflowStateHandlers(deps.DB)
 	activityH := handlers.NewActivityHandlers(deps.DB)
+	releaseH := handlers.NewReleaseHandlers(deps.DB, publish)
 	outWebhookH := handlers.NewOutboundWebhookHandlers(deps.DB)
 	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB, allowedOrigins)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
@@ -100,6 +101,9 @@ func New(deps *Dependencies) http.Handler {
 	// Public routes
 	r.Get("/health", handlers.Health)
 	r.Get("/api/ws", realtimeH.Upgrade)
+
+	// Public release page (token-authenticated)
+	r.Get("/api/releases/{shareToken}", releaseH.Public)
 
 	// API documentation (public)
 	docsH := handlers.NewDocsHandler()
@@ -350,6 +354,23 @@ func New(deps *Dependencies) http.Handler {
 
 				// Activity feed
 				r.Get("/activity", activityH.ListByProject)
+
+				// Releases
+				r.Route("/releases", func(r chi.Router) {
+					r.Get("/", releaseH.List)
+					r.Post("/", releaseH.Create)
+					r.Route("/{releaseID}", func(r chi.Router) {
+						r.Get("/", releaseH.Get)
+						r.Patch("/", releaseH.Update)
+						r.Post("/items", releaseH.AddItem)
+						r.Delete("/items/{workItemID}", releaseH.RemoveItem)
+						r.Post("/generate-notes", releaseH.GenerateNotes)
+						r.Post("/enhance-notes", releaseH.EnhanceNotes)
+						r.Post("/publish", releaseH.Publish)
+						r.Post("/share", releaseH.Share)
+						r.Delete("/share", releaseH.Unshare)
+					})
+				})
 			})
 
 			// Sprint item management (add/remove work items from a sprint)

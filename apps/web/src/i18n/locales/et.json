@@ -46,7 +46,8 @@
     "graph": "Graaf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versioonihaldus"
+    "vcs": "Versioonihaldus",
+    "releases": "Väljalasked"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Väljalasked",
+    "create": "Uus väljalase",
+    "name": "Nimi",
+    "version": "Versioon",
+    "includeSprints": "Kaasa sprindid",
+    "noReleases": "Väljalaskeid pole veel. Loo üks, et grupeerida lõpetatud tööd.",
+    "backToList": "Kõik väljalasked",
+    "publish": "Avalda",
+    "shareExternally": "Jaga väliselt",
+    "copyLink": "Kopeeri link",
+    "revokeShare": "Tühista",
+    "sprints": "Sprindid",
+    "items": "Elemendid",
+    "noItems": "Selles väljalaskes pole elemente.",
+    "notes": "Väljalaskemärkmed",
+    "generateNotes": "Genereeri märkmed",
+    "enhanceWithAI": "Täiusta AI-ga",
+    "noNotes": "Väljalaskemärkmeid pole veel. Klõpsa Genereeri märkmed, et luua need elementidest."
+  },
+  "webhooks": {
+    "title": "Väljaminevad Webhooks",
+    "description": "PlanA saadab POST sündmuste andmed nendele URL-idele, kui toimuvad muudatused. Iga kohaletoimetamine allkirjastatakse HMAC-SHA256-ga.",
+    "noWebhooks": "Ühtegi webhook-i pole seadistatud.",
+    "addWebhook": "Lisa Webhook",
+    "secretWarning": "Salvesta see saladus kohe. Seda ei kuvata enam. Kasuta seda X-PlanA-Signature päiste kontrollimiseks.",
+    "test": "Testi",
+    "deliveries": "Kohaletoimetamised",
+    "noDeliveries": "Kohaletoimetamisi pole veel."
   }
 }

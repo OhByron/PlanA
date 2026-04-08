@@ -46,7 +46,8 @@
     "graph": "Grafik",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Sürüm Kontrolü"
+    "vcs": "Sürüm Kontrolü",
+    "releases": "Sürümler"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Sürümler",
+    "create": "Yeni Sürüm",
+    "name": "Ad",
+    "version": "Sürüm",
+    "includeSprints": "Sprintleri dahil et",
+    "noReleases": "Henüz sürüm yok. Tamamlanan işleri gruplamak için bir tane oluşturun.",
+    "backToList": "Tüm sürümler",
+    "publish": "Yayınla",
+    "shareExternally": "Harici paylaş",
+    "copyLink": "Bağlantıyı kopyala",
+    "revokeShare": "İptal et",
+    "sprints": "Sprintler",
+    "items": "Öğeler",
+    "noItems": "Bu sürümde öğe yok.",
+    "notes": "Sürüm Notları",
+    "generateNotes": "Notları oluştur",
+    "enhanceWithAI": "AI ile geliştir",
+    "noNotes": "Henüz sürüm notu yok. Öğelerden oluşturmak için Notları oluştur'a tıklayın."
+  },
+  "webhooks": {
+    "title": "Giden Webhooks",
+    "description": "Değişiklikler olduğunda PlanA bu URL'lere POST ile olay verilerini gönderir. Her teslimat HMAC-SHA256 ile imzalanır.",
+    "noWebhooks": "Yapılandırılmış webhook yok.",
+    "addWebhook": "Webhook Ekle",
+    "secretWarning": "Bu sırrı şimdi kaydedin. Tekrar gösterilmeyecektir. X-PlanA-Signature başlıklarını doğrulamak için kullanın.",
+    "test": "Test",
+    "deliveries": "Teslimatlar",
+    "noDeliveries": "Henüz teslimat yok."
   }
 }

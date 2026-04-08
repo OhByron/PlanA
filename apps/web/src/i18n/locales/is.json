@@ -46,7 +46,8 @@
     "graph": "Graf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Útgáfustýring"
+    "vcs": "Útgáfustýring",
+    "releases": "Útgáfur"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Útgáfur",
+    "create": "Ný útgáfa",
+    "name": "Nafn",
+    "version": "Útgáfa",
+    "includeSprints": "Taka með sprinta",
+    "noReleases": "Engar útgáfur ennþá. Búðu til eina til að flokka lokið verk.",
+    "backToList": "Allar útgáfur",
+    "publish": "Birta",
+    "shareExternally": "Deila utan",
+    "copyLink": "Afrita tengil",
+    "revokeShare": "Afturkalla",
+    "sprints": "Sprintar",
+    "items": "Atriði",
+    "noItems": "Engin atriði í þessari útgáfu.",
+    "notes": "Útgáfuglósur",
+    "generateNotes": "Búa til glósur",
+    "enhanceWithAI": "Bæta með AI",
+    "noNotes": "Engar útgáfuglósur ennþá. Smelltu á Búa til glósur til að búa þær til úr atriðunum."
+  },
+  "webhooks": {
+    "title": "Útsendir Webhooks",
+    "description": "PlanA mun senda POST atburðagögn á þessi URL þegar breytingar eiga sér stað. Hver afhending er undirritað með HMAC-SHA256.",
+    "noWebhooks": "Engir webhookar stilltar.",
+    "addWebhook": "Bæta við Webhook",
+    "secretWarning": "Vistaðu þetta leyniord núna. Það verður ekki sýnt aftur. Notaðu það til að staðfesta X-PlanA-Signature hausa.",
+    "test": "Prófa",
+    "deliveries": "Afhendingar",
+    "noDeliveries": "Engar afhendingar ennþá."
   }
 }

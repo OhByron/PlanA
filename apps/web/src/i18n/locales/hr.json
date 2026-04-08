@@ -46,7 +46,8 @@
     "graph": "Graf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Upravljanje verzijama"
+    "vcs": "Upravljanje verzijama",
+    "releases": "Izdanja"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Izdanja",
+    "create": "Novo izdanje",
+    "name": "Naziv",
+    "version": "Verzija",
+    "includeSprints": "Uključi sprintove",
+    "noReleases": "Još nema izdanja. Stvorite jedno za grupiranje dovršenog rada.",
+    "backToList": "Sva izdanja",
+    "publish": "Objavi",
+    "shareExternally": "Podijeli eksterno",
+    "copyLink": "Kopiraj poveznicu",
+    "revokeShare": "Opozovi",
+    "sprints": "Sprintovi",
+    "items": "Stavke",
+    "noItems": "Nema stavki u ovom izdanju.",
+    "notes": "Bilješke izdanja",
+    "generateNotes": "Generiraj bilješke",
+    "enhanceWithAI": "Poboljšaj s AI",
+    "noNotes": "Još nema bilješki izdanja. Kliknite Generiraj bilješke da ih stvorite iz stavki."
+  },
+  "webhooks": {
+    "title": "Odlazni Webhooks",
+    "description": "PlanA će slati POST podatke o događajima na ove URL-ove kada dođe do promjena. Svaka isporuka potpisana je s HMAC-SHA256.",
+    "noWebhooks": "Nema konfiguriranih webhookova.",
+    "addWebhook": "Dodaj Webhook",
+    "secretWarning": "Spremite ovu tajnu sada. Neće biti ponovno prikazana. Koristite je za provjeru X-PlanA-Signature zaglavlja.",
+    "test": "Testiraj",
+    "deliveries": "Isporuke",
+    "noDeliveries": "Još nema isporuka."
   }
 }

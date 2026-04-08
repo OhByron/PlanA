@@ -46,7 +46,8 @@
     "graph": "Graf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versionshantering"
+    "vcs": "Versionshantering",
+    "releases": "Utgåvor"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Utgåvor",
+    "create": "Ny utgåva",
+    "name": "Namn",
+    "version": "Version",
+    "includeSprints": "Inkludera sprintar",
+    "noReleases": "Inga utgåvor ännu. Skapa en för att gruppera slutfört arbete.",
+    "backToList": "Alla utgåvor",
+    "publish": "Publicera",
+    "shareExternally": "Dela externt",
+    "copyLink": "Kopiera länk",
+    "revokeShare": "Återkalla",
+    "sprints": "Sprintar",
+    "items": "Objekt",
+    "noItems": "Inga objekt i denna utgåva.",
+    "notes": "Utgåveanteckningar",
+    "generateNotes": "Generera anteckningar",
+    "enhanceWithAI": "Förbättra med AI",
+    "noNotes": "Inga utgåveanteckningar ännu. Klicka på Generera anteckningar för att skapa dem från objekten."
+  },
+  "webhooks": {
+    "title": "Utgående Webhooks",
+    "description": "PlanA skickar POST-händelsedata till dessa URL:er när ändringar sker. Varje leverans signeras med HMAC-SHA256.",
+    "noWebhooks": "Inga webhooks konfigurerade.",
+    "addWebhook": "Lägg till Webhook",
+    "secretWarning": "Spara denna hemlighet nu. Den visas inte igen. Använd den för att verifiera X-PlanA-Signature-rubriker.",
+    "test": "Testa",
+    "deliveries": "Leveranser",
+    "noDeliveries": "Inga leveranser ännu."
   }
 }

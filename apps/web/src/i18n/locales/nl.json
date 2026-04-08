@@ -46,7 +46,8 @@
     "graph": "Graaf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versiebeheer"
+    "vcs": "Versiebeheer",
+    "releases": "Releases"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Releases",
+    "create": "Nieuwe release",
+    "name": "Naam",
+    "version": "Versie",
+    "includeSprints": "Sprints opnemen",
+    "noReleases": "Nog geen releases. Maak er een aan om voltooid werk te groeperen.",
+    "backToList": "Alle releases",
+    "publish": "Publiceren",
+    "shareExternally": "Extern delen",
+    "copyLink": "Link kopiëren",
+    "revokeShare": "Intrekken",
+    "sprints": "Sprints",
+    "items": "Items",
+    "noItems": "Geen items in deze release.",
+    "notes": "Releasenotities",
+    "generateNotes": "Notities genereren",
+    "enhanceWithAI": "Verbeteren met AI",
+    "noNotes": "Nog geen releasenotities. Klik op Notities genereren om ze uit de items te maken."
+  },
+  "webhooks": {
+    "title": "Uitgaande Webhooks",
+    "description": "PlanA stuurt POST-gebeurtenisgegevens naar deze URL's wanneer er wijzigingen optreden. Elke bezorging wordt ondertekend met HMAC-SHA256.",
+    "noWebhooks": "Geen webhooks geconfigureerd.",
+    "addWebhook": "Webhook toevoegen",
+    "secretWarning": "Bewaar dit geheim nu. Het wordt niet opnieuw getoond. Gebruik het om X-PlanA-Signature-headers te verifiëren.",
+    "test": "Testen",
+    "deliveries": "Bezorgingen",
+    "noDeliveries": "Nog geen bezorgingen."
   }
 }

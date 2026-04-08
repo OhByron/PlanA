@@ -46,7 +46,8 @@
     "graph": "图表",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "版本控制"
+    "vcs": "版本控制",
+    "releases": "发布"
   },
   "graph": {
     "hardDependency": "强依赖",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "发布",
+    "create": "新建发布",
+    "name": "名称",
+    "version": "版本",
+    "includeSprints": "包含冲刺",
+    "noReleases": "暂无发布。创建一个以归类已完成的工作。",
+    "backToList": "所有发布",
+    "publish": "发布",
+    "shareExternally": "外部分享",
+    "copyLink": "复制链接",
+    "revokeShare": "撤销",
+    "sprints": "冲刺",
+    "items": "条目",
+    "noItems": "此发布中没有条目。",
+    "notes": "发布说明",
+    "generateNotes": "生成说明",
+    "enhanceWithAI": "AI 优化",
+    "noNotes": "暂无发布说明。点击生成说明以从条目中创建。"
+  },
+  "webhooks": {
+    "title": "出站 Webhooks",
+    "description": "当发生更改时，PlanA 将通过 POST 向这些 URL 发送事件数据。每次交付均使用 HMAC-SHA256 签名。",
+    "noWebhooks": "未配置任何 webhook。",
+    "addWebhook": "添加 Webhook",
+    "secretWarning": "请立即保存此密钥。它将不会再次显示。使用它来验证 X-PlanA-Signature 头。",
+    "test": "测试",
+    "deliveries": "交付",
+    "noDeliveries": "暂无交付。"
   }
 }

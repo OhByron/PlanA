@@ -46,7 +46,8 @@
     "graph": "Grafas",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versijų valdymas"
+    "vcs": "Versijų valdymas",
+    "releases": "Leidimai"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Leidimai",
+    "create": "Naujas leidimas",
+    "name": "Pavadinimas",
+    "version": "Versija",
+    "includeSprints": "Įtraukti sprintus",
+    "noReleases": "Leidimų dar nėra. Sukurkite vieną, kad sugrupuotumėte atliktą darbą.",
+    "backToList": "Visi leidimai",
+    "publish": "Publikuoti",
+    "shareExternally": "Dalintis išoriškai",
+    "copyLink": "Kopijuoti nuorodą",
+    "revokeShare": "Atšaukti",
+    "sprints": "Sprintai",
+    "items": "Elementai",
+    "noItems": "Šiame leidime nėra elementų.",
+    "notes": "Leidimo pastabos",
+    "generateNotes": "Generuoti pastabas",
+    "enhanceWithAI": "Pagerinti su AI",
+    "noNotes": "Leidimo pastabų dar nėra. Spustelėkite Generuoti pastabas, kad jas sukurtumėte iš elementų."
+  },
+  "webhooks": {
+    "title": "Išeinantys Webhooks",
+    "description": "PlanA siųs POST įvykių duomenis šiais URL adresais, kai įvyks pakeitimai. Kiekvienas pristatymas pasirašomas HMAC-SHA256.",
+    "noWebhooks": "Webhookų nekonfigūruota.",
+    "addWebhook": "Pridėti Webhook",
+    "secretWarning": "Išsaugokite šį slaptažodį dabar. Jis nebus rodomas dar kartą. Naudokite jį X-PlanA-Signature antraščių patikrinimui.",
+    "test": "Testuoti",
+    "deliveries": "Pristatymai",
+    "noDeliveries": "Pristatymų dar nėra."
   }
 }

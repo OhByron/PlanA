@@ -46,7 +46,8 @@
     "graph": "Gráf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Verziókezelés"
+    "vcs": "Verziókezelés",
+    "releases": "Kiadások"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Kiadások",
+    "create": "Új kiadás",
+    "name": "Név",
+    "version": "Verzió",
+    "includeSprints": "Sprintek befoglalása",
+    "noReleases": "Még nincsenek kiadások. Hozzon létre egyet a befejezett munka csoportosításához.",
+    "backToList": "Összes kiadás",
+    "publish": "Közzététel",
+    "shareExternally": "Külső megosztás",
+    "copyLink": "Hivatkozás másolása",
+    "revokeShare": "Visszavonás",
+    "sprints": "Sprintek",
+    "items": "Elemek",
+    "noItems": "Nincsenek elemek ebben a kiadásban.",
+    "notes": "Kiadási jegyzetek",
+    "generateNotes": "Jegyzetek generálása",
+    "enhanceWithAI": "Fejlesztés AI-val",
+    "noNotes": "Még nincsenek kiadási jegyzetek. Kattintson a Jegyzetek generálása gombra, hogy az elemekből hozza létre őket."
+  },
+  "webhooks": {
+    "title": "Kimenő Webhooks",
+    "description": "A PlanA POST eseményadatokat küld ezekre az URL-ekre, amikor változások történnek. Minden kézbesítés HMAC-SHA256-tal van aláírva.",
+    "noWebhooks": "Nincsenek konfigurált webhookok.",
+    "addWebhook": "Webhook hozzáadása",
+    "secretWarning": "Mentse el ezt a titkot most. Nem jelenik meg újra. Használja az X-PlanA-Signature fejlécek ellenőrzéséhez.",
+    "test": "Teszt",
+    "deliveries": "Kézbesítések",
+    "noDeliveries": "Még nincsenek kézbesítések."
   }
 }

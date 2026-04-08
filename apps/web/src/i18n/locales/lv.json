@@ -46,7 +46,8 @@
     "graph": "Grafs",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versiju kontrole"
+    "vcs": "Versiju kontrole",
+    "releases": "Izlaidumi"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Izlaidumi",
+    "create": "Jauns izlaidums",
+    "name": "Nosaukums",
+    "version": "Versija",
+    "includeSprints": "Iekļaut sprintus",
+    "noReleases": "Vēl nav izlaidumu. Izveidojiet vienu, lai grupētu pabeigto darbu.",
+    "backToList": "Visi izlaidumi",
+    "publish": "Publicēt",
+    "shareExternally": "Kopīgot ārēji",
+    "copyLink": "Kopēt saiti",
+    "revokeShare": "Atsaukt",
+    "sprints": "Sprinti",
+    "items": "Elementi",
+    "noItems": "Šajā izlaidumā nav elementu.",
+    "notes": "Izlaiduma piezīmes",
+    "generateNotes": "Ģenerēt piezīmes",
+    "enhanceWithAI": "Uzlabot ar AI",
+    "noNotes": "Izlaiduma piezīmju vēl nav. Noklikšķiniet uz Ģenerēt piezīmes, lai tās izveidotu no elementiem."
+  },
+  "webhooks": {
+    "title": "Izejošie Webhooks",
+    "description": "PlanA nosūtīs POST notikumu datus uz šiem URL, kad notiks izmaiņas. Katra piegāde tiek parakstīta ar HMAC-SHA256.",
+    "noWebhooks": "Nav konfigurētu webhook.",
+    "addWebhook": "Pievienot Webhook",
+    "secretWarning": "Saglabājiet šo noslēpumu tagad. Tas vairs netiks rādīts. Izmantojiet to X-PlanA-Signature galveņu pārbaudei.",
+    "test": "Testēt",
+    "deliveries": "Piegādes",
+    "noDeliveries": "Piegāžu vēl nav."
   }
 }

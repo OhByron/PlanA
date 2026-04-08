@@ -46,7 +46,8 @@
     "graph": "Γράφημα",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Έλεγχος Εκδόσεων"
+    "vcs": "Έλεγχος Εκδόσεων",
+    "releases": "Εκδόσεις"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Εκδόσεις",
+    "create": "Νέα Έκδοση",
+    "name": "Όνομα",
+    "version": "Έκδοση",
+    "includeSprints": "Συμπερίληψη sprints",
+    "noReleases": "Δεν υπάρχουν εκδόσεις ακόμα. Δημιουργήστε μία για να ομαδοποιήσετε ολοκληρωμένη εργασία.",
+    "backToList": "Όλες οι εκδόσεις",
+    "publish": "Δημοσίευση",
+    "shareExternally": "Εξωτερική κοινοποίηση",
+    "copyLink": "Αντιγραφή συνδέσμου",
+    "revokeShare": "Ανάκληση",
+    "sprints": "Sprints",
+    "items": "Στοιχεία",
+    "noItems": "Δεν υπάρχουν στοιχεία σε αυτή την έκδοση.",
+    "notes": "Σημειώσεις Έκδοσης",
+    "generateNotes": "Δημιουργία σημειώσεων",
+    "enhanceWithAI": "Βελτίωση με AI",
+    "noNotes": "Δεν υπάρχουν σημειώσεις έκδοσης ακόμα. Κάντε κλικ στο Δημιουργία σημειώσεων για να τις δημιουργήσετε από τα στοιχεία."
+  },
+  "webhooks": {
+    "title": "Εξερχόμενα Webhooks",
+    "description": "Το PlanA θα στείλει POST δεδομένα συμβάντων σε αυτά τα URLs όταν γίνονται αλλαγές. Κάθε παράδοση υπογράφεται με HMAC-SHA256.",
+    "noWebhooks": "Δεν έχουν ρυθμιστεί webhooks.",
+    "addWebhook": "Προσθήκη Webhook",
+    "secretWarning": "Αποθηκεύστε αυτό το μυστικό τώρα. Δεν θα εμφανιστεί ξανά. Χρησιμοποιήστε το για επαλήθευση των κεφαλίδων X-PlanA-Signature.",
+    "test": "Δοκιμή",
+    "deliveries": "Παραδόσεις",
+    "noDeliveries": "Δεν υπάρχουν παραδόσεις ακόμα."
   }
 }

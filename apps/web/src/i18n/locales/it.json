@@ -46,7 +46,8 @@
     "graph": "Grafico",
     "gantt": "Gantt",
     "calendar": "Calendario",
-    "vcs": "Controllo versione"
+    "vcs": "Controllo versione",
+    "releases": "Rilasci"
   },
   "graph": {
     "hardDependency": "Dipendenza forte",
@@ -893,7 +894,8 @@
     "sprintDuration": "Durata Sprint",
     "sprintDurationHelp": "Compila automaticamente le date di fine sprint.",
     "months": "mesi",
-    "weeks": "settimane"
+    "weeks": "settimane",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Rilasci",
+    "create": "Nuovo rilascio",
+    "name": "Nome",
+    "version": "Versione",
+    "includeSprints": "Includi sprint",
+    "noReleases": "Nessun rilascio ancora. Creane uno per raggruppare il lavoro completato.",
+    "backToList": "Tutti i rilasci",
+    "publish": "Pubblica",
+    "shareExternally": "Condividi esternamente",
+    "copyLink": "Copia link",
+    "revokeShare": "Revoca",
+    "sprints": "Sprint",
+    "items": "Elementi",
+    "noItems": "Nessun elemento in questo rilascio.",
+    "notes": "Note di rilascio",
+    "generateNotes": "Genera note",
+    "enhanceWithAI": "Migliora con AI",
+    "noNotes": "Nessuna nota di rilascio ancora. Clicca su Genera note per crearle dagli elementi."
+  },
+  "webhooks": {
+    "title": "Webhooks in uscita",
+    "description": "PlanA invierà dati degli eventi tramite POST a questi URL quando si verificano modifiche. Ogni consegna è firmata con HMAC-SHA256.",
+    "noWebhooks": "Nessun webhook configurato.",
+    "addWebhook": "Aggiungi Webhook",
+    "secretWarning": "Salva questo segreto ora. Non verrà mostrato di nuovo. Usalo per verificare le intestazioni X-PlanA-Signature.",
+    "test": "Testa",
+    "deliveries": "Consegne",
+    "noDeliveries": "Nessuna consegna ancora."
   }
 }
