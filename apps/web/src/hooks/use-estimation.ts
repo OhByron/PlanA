@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api-client';
+import { useRealtimeConnected } from './use-realtime';
 
 export interface EstimationVote {
   id: string;
@@ -20,6 +21,7 @@ function toVote(w: Record<string, unknown>): EstimationVote {
 }
 
 export function useEstimationVotes(workItemId: string) {
+  const wsConnected = useRealtimeConnected();
   return useQuery({
     queryKey: ['estimation-votes', workItemId],
     queryFn: async (): Promise<EstimationVote[]> => {
@@ -27,7 +29,8 @@ export function useEstimationVotes(workItemId: string) {
       return raw.map(toVote);
     },
     enabled: !!workItemId,
-    refetchInterval: 5000, // Poll every 5s for other team members' votes
+    // Poll only when WebSocket is disconnected; WS handles real-time updates
+    refetchInterval: wsConnected ? false : 5000,
   });
 }
 

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api-client';
+import { useRealtimeConnected } from './use-realtime';
 
 export interface Notification {
   id: string;
@@ -26,24 +27,27 @@ function toNotification(w: Record<string, unknown>): Notification {
 }
 
 export function useNotifications() {
+  const wsConnected = useRealtimeConnected();
   return useQuery({
     queryKey: ['notifications'],
     queryFn: async (): Promise<Notification[]> => {
       const raw = await api.get<Record<string, unknown>[]>('/notifications');
       return raw.map(toNotification);
     },
-    refetchInterval: 30_000, // poll every 30s
+    // Poll only when WebSocket is disconnected
+    refetchInterval: wsConnected ? false : 30_000,
   });
 }
 
 export function useUnreadCount() {
+  const wsConnected = useRealtimeConnected();
   return useQuery({
     queryKey: ['notifications-unread-count'],
     queryFn: async () => {
       const raw = await api.get<{ count: number }>('/notifications/unread-count');
       return raw.count;
     },
-    refetchInterval: 30_000,
+    refetchInterval: wsConnected ? false : 30_000,
   });
 }
 

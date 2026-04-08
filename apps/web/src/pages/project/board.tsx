@@ -19,6 +19,7 @@ import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus, useProjectDependencies } from '../../hooks/use-project-dependencies';
 import { useVCSBulkSummary } from '../../hooks/use-vcs';
 import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
+import { useProjectRealtimeInvalidation } from '../../hooks/use-realtime-invalidation';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
 import { HelpOverlay } from '../../components/help-overlay';
@@ -33,6 +34,7 @@ export function BoardPage() {
   const { data: deps = [] } = useProjectDependencies(projectId);
   const { data: vcsSummaries } = useVCSBulkSummary(projectId);
   const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
+  useProjectRealtimeInvalidation(projectId);
 
   // Active (non-cancelled) items for the board
   const activeItems = useMemo(() => items.filter((i) => !i.isCancelled), [items]);
