@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@projecta/ui';
 import { AISettingsPage } from './ai-settings';
 import { VCSSettingsPage } from './vcs-settings';
+import { WebhooksSettingsTab } from './webhooks-settings';
 
-const TABS = ['general', 'repositories'] as const;
+const TABS = ['general', 'repositories', 'webhooks'] as const;
 type SettingsTab = typeof TABS[number];
 
 /**
@@ -26,6 +27,7 @@ export function SettingsPage() {
   const tabLabels: Record<SettingsTab, string> = {
     general: t('settings.general') ?? 'General',
     repositories: t('settings.repositories') ?? 'Repositories',
+    webhooks: t('settings.webhooks') ?? 'Webhooks',
   };
 
   return (
@@ -58,6 +60,7 @@ export function SettingsPage() {
       <div className="flex-1 overflow-y-auto">
         {activeTab === 'general' && <AISettingsPage />}
         {activeTab === 'repositories' && <VCSSettingsPage />}
+        {activeTab === 'webhooks' && <WebhooksSettingsTab projectId={projectId} />}
       </div>
     </div>
   );

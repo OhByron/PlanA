@@ -13,6 +13,7 @@ import (
 	"github.com/OhByron/PlanA/internal/realtime"
 	"github.com/OhByron/PlanA/internal/server/middleware"
 	"github.com/OhByron/PlanA/internal/vcs"
+	"github.com/OhByron/PlanA/internal/webhookdelivery"
 )
 
 // New builds and returns the complete HTTP handler tree.
@@ -39,10 +40,22 @@ func New(deps *Dependencies) http.Handler {
 	})
 	r.Use(c.Handler)
 
+	// Create webhook deliverer for outbound webhooks
+	webhookDeliverer := webhookdelivery.NewDeliverer(deps.DB)
+
 	// Create event publish function that bridges handlers to the realtime Hub
+	// and triggers outbound webhook deliveries
 	publish := handlers.EventPublishFunc(func(channel, eventType string, payload map[string]string) {
 		if deps.Hub != nil {
 			deps.Hub.Publish(channel, realtime.NewEvent(eventType, channel, payload))
+		}
+		// Deliver to outbound webhooks if this is a project-scoped event
+		if projectID, ok := payload["project_id"]; ok && projectID != "" {
+			data := make(map[string]any, len(payload))
+			for k, v := range payload {
+				data[k] = v
+			}
+			webhookDeliverer.DeliverEvent(projectID, eventType, data)
 		}
 	})
 
@@ -77,6 +90,7 @@ func New(deps *Dependencies) http.Handler {
 	thH := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH := handlers.NewProjectWorkflowStateHandlers(deps.DB)
 	activityH := handlers.NewActivityHandlers(deps.DB)
+	outWebhookH := handlers.NewOutboundWebhookHandlers(deps.DB)
 	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB, allowedOrigins)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
@@ -86,6 +100,11 @@ func New(deps *Dependencies) http.Handler {
 	// Public routes
 	r.Get("/health", handlers.Health)
 	r.Get("/api/ws", realtimeH.Upgrade)
+
+	// API documentation (public)
+	docsH := handlers.NewDocsHandler()
+	r.Get("/api/docs", docsH.UI)
+	r.Get("/api/docs/openapi.yaml", docsH.Spec)
 
 	r.Route("/api", func(r chi.Router) {
 		// ----------------------------------------------------------------
@@ -304,6 +323,18 @@ func New(deps *Dependencies) http.Handler {
 						r.Patch("/", vcsConnH.Update)
 						r.Delete("/", vcsConnH.Delete)
 						r.Post("/test", vcsConnH.TestConnection)
+					})
+				})
+
+				// Outbound webhooks
+				r.Route("/webhooks", func(r chi.Router) {
+					r.Get("/", outWebhookH.List)
+					r.Post("/", outWebhookH.Create)
+					r.Route("/{webhookID}", func(r chi.Router) {
+						r.Patch("/", outWebhookH.Update)
+						r.Delete("/", outWebhookH.Delete)
+						r.Get("/deliveries", outWebhookH.Deliveries)
+						r.Post("/test", outWebhookH.Test)
 					})
 				})
 

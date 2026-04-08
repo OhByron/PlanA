@@ -584,6 +584,17 @@
     "useAllStates": "Use all states"
   },
 
+  "webhooks": {
+    "title": "Outbound Webhooks",
+    "description": "PlanA will POST event payloads to these URLs when changes occur. Each delivery is signed with HMAC-SHA256.",
+    "noWebhooks": "No webhooks configured.",
+    "addWebhook": "Add Webhook",
+    "secretWarning": "Save this secret now. It will not be shown again. Use it to verify X-PlanA-Signature headers.",
+    "test": "Test",
+    "deliveries": "Deliveries",
+    "noDeliveries": "No deliveries yet."
+  },
+
   "commandPalette": {
     "placeholder": "Search or type a command...",
     "noResults": "No results found.",
@@ -886,6 +897,7 @@
   "settings": {
     "general": "General",
     "repositories": "Repositories",
+    "webhooks": "Webhooks",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",
