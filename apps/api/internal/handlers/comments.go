@@ -149,6 +149,9 @@ func (h *CommentHandlers) Create(w http.ResponseWriter, r *http.Request) {
 			"id": c.ID, "work_item_id": workItemID, "actor_id": claims.UserID,
 		})
 	}
+	LogActivity(r.Context(), h.db, projectID, &workItemID, nil, nil, claims.UserID, "comment.created", map[string]any{
+		"comment_id": c.ID, "work_item_title": wiTitle,
+	})
 }
 
 // updateCommentRequest is the JSON body for patching a comment.
