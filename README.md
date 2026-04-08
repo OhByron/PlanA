@@ -127,7 +127,7 @@ Features that established tools already offer. Their absence signals immaturity 
 
 - ~~**Activity Feed & Audit Trail**~~ **SHIPPED** - activity_log table capturing all mutations with actor, event type, and JSONB field-level changes. Project and work-item level endpoints with filtering. Timeline UI on work item detail page.
 - ~~**Command Palette (Keyboard-First UX)**~~ **SHIPPED** - Cmd+K / Ctrl+K to search work items by title and number, navigate to any project page. Keyboard navigation, grouped results, 26 languages.
-- **Public API Documentation & Webhooks** - A documented REST API and outbound webhooks for custom integrations. The path to an ecosystem without needing a plugin marketplace.
+- ~~**Public API Documentation & Webhooks**~~ **SHIPPED** - OpenAPI 3.0 spec (141 endpoints, 23 tags) served via Swagger UI at /api/docs. Outbound webhooks with HMAC-SHA256 signed delivery, retry with exponential backoff, event type filtering, delivery log, test button. Settings UI with webhook management tab.
 
 ### Tier 3: Differentiation (Win Deals)
 
