@@ -584,6 +584,17 @@
     "useAllStates": "Use all states"
   },
 
+  "commandPalette": {
+    "placeholder": "Search or type a command...",
+    "noResults": "No results found.",
+    "workItems": "Work Items",
+    "navigation": "Navigation",
+    "actions": "Actions",
+    "navigate": "navigate",
+    "select": "select",
+    "close": "close"
+  },
+
   "activity": {
     "title": "Activity",
     "noActivity": "No activity yet.",

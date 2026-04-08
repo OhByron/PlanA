@@ -469,6 +469,32 @@
     "oneViewer": "1 áhorfandi",
     "multipleViewers": "{{count}} skoða"
   },
+  "commandPalette": {
+    "placeholder": "Leita eða slá inn skipun...",
+    "noResults": "Engar niðurstöður fundust.",
+    "workItems": "Verkþættir",
+    "navigation": "Leiðsögn",
+    "actions": "Aðgerðir",
+    "navigate": "flakka",
+    "select": "velja",
+    "close": "loka"
+  },
+  "activity": {
+    "title": "Virkni",
+    "noActivity": "Engin virkni ennþá.",
+    "created": "bjó til {{title}}",
+    "updated": "uppfærði atriði",
+    "deleted": "eyddi atriði",
+    "movedTo": "fært í {{state}}",
+    "assigned": "breytti úthlutun",
+    "changedPriority": "breytti forgangi í {{priority}}",
+    "cancelled": "hætti við atriði",
+    "restored": "endurheimti atriði",
+    "commented": "athugasemd við {{title}}",
+    "addedToSprint": "bætt í sprint",
+    "removedFromSprint": "fjarlægt úr sprinti",
+    "updatedSprint": "uppfærði sprint"
+  },
   "helpOverlay": {
     "dismiss": "Hunsa",
     "close": "Loka"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Almennt",
+    "repositories": "Geymslur",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

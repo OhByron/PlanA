@@ -512,6 +512,32 @@
     "oneViewer": "1 spectateur",
     "multipleViewers": "{{count}} en train de voir"
   },
+  "commandPalette": {
+    "placeholder": "Rechercher ou saisir une commande...",
+    "noResults": "Aucun résultat trouvé.",
+    "workItems": "Éléments de travail",
+    "navigation": "Navigation",
+    "actions": "Actions",
+    "navigate": "naviguer",
+    "select": "sélectionner",
+    "close": "fermer"
+  },
+  "activity": {
+    "title": "Activité",
+    "noActivity": "Aucune activité pour le moment.",
+    "created": "a créé {{title}}",
+    "updated": "a mis à jour l'élément",
+    "deleted": "a supprimé l'élément",
+    "movedTo": "déplacé vers {{state}}",
+    "assigned": "a changé l'assignation",
+    "changedPriority": "a changé la priorité en {{priority}}",
+    "cancelled": "a annulé l'élément",
+    "restored": "a restauré l'élément",
+    "commented": "a commenté {{title}}",
+    "addedToSprint": "ajouté au sprint",
+    "removedFromSprint": "retiré du sprint",
+    "updatedSprint": "a mis à jour le sprint"
+  },
   "helpOverlay": {
     "dismiss": "Fermer",
     "close": "Fermer"
@@ -856,6 +882,8 @@
     "cancelled": "Annulé"
   },
   "settings": {
+    "general": "Général",
+    "repositories": "Dépôts",
     "projectSettings": "Paramètres de planification",
     "projectSettingsDesc": "Définissez les horizons temporels par défaut pour ce projet. Ils remplissent automatiquement les dates lors de la création d'épiques et de sprints.",
     "projectDuration": "Durée du projet / fonctionnalité",

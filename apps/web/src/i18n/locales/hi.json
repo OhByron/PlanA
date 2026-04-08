@@ -469,6 +469,32 @@
     "oneViewer": "1 दर्शक",
     "multipleViewers": "{{count}} देख रहे हैं"
   },
+  "commandPalette": {
+    "placeholder": "खोजें या कमांड टाइप करें...",
+    "noResults": "कोई परिणाम नहीं मिला।",
+    "workItems": "कार्य आइटम",
+    "navigation": "नेविगेशन",
+    "actions": "क्रियाएँ",
+    "navigate": "नेविगेट करें",
+    "select": "चुनें",
+    "close": "बंद करें"
+  },
+  "activity": {
+    "title": "गतिविधि",
+    "noActivity": "अभी तक कोई गतिविधि नहीं।",
+    "created": "{{title}} बनाया",
+    "updated": "आइटम अपडेट किया",
+    "deleted": "आइटम हटाया",
+    "movedTo": "{{state}} में ले जाया गया",
+    "assigned": "असाइनमेंट बदला",
+    "changedPriority": "प्राथमिकता {{priority}} में बदली",
+    "cancelled": "आइटम रद्द किया",
+    "restored": "आइटम पुनर्स्थापित किया",
+    "commented": "{{title}} पर टिप्पणी की",
+    "addedToSprint": "स्प्रिंट में जोड़ा गया",
+    "removedFromSprint": "स्प्रिंट से हटाया गया",
+    "updatedSprint": "स्प्रिंट अपडेट किया"
+  },
   "helpOverlay": {
     "dismiss": "खारिज करें",
     "close": "बंद करें"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "सामान्य",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

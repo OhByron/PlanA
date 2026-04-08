@@ -469,6 +469,32 @@
     "oneViewer": "مشاهد واحد",
     "multipleViewers": "{{count}} يشاهدون"
   },
+  "commandPalette": {
+    "placeholder": "ابحث أو اكتب أمرًا...",
+    "noResults": "لم يتم العثور على نتائج.",
+    "workItems": "عناصر العمل",
+    "navigation": "التنقل",
+    "actions": "الإجراءات",
+    "navigate": "تنقل",
+    "select": "تحديد",
+    "close": "إغلاق"
+  },
+  "activity": {
+    "title": "النشاط",
+    "noActivity": "لا يوجد نشاط بعد.",
+    "created": "أنشأ {{title}}",
+    "updated": "حدّث العنصر",
+    "deleted": "حذف العنصر",
+    "movedTo": "نقل إلى {{state}}",
+    "assigned": "غيّر التعيين",
+    "changedPriority": "غيّر الأولوية إلى {{priority}}",
+    "cancelled": "ألغى العنصر",
+    "restored": "استعاد العنصر",
+    "commented": "علّق على {{title}}",
+    "addedToSprint": "أُضيف إلى السبرنت",
+    "removedFromSprint": "أُزيل من السبرنت",
+    "updatedSprint": "حدّث السبرنت"
+  },
   "helpOverlay": {
     "dismiss": "تجاهل",
     "close": "إغلاق"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "عام",
+    "repositories": "المستودعات",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

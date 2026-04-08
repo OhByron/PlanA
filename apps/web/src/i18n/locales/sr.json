@@ -469,6 +469,32 @@
     "oneViewer": "1 gledalac",
     "multipleViewers": "{{count}} gleda"
   },
+  "commandPalette": {
+    "placeholder": "Претражи или унеси команду...",
+    "noResults": "Нема пронађених резултата.",
+    "workItems": "Радни елементи",
+    "navigation": "Навигација",
+    "actions": "Акције",
+    "navigate": "навигирај",
+    "select": "изабери",
+    "close": "затвори"
+  },
+  "activity": {
+    "title": "Активност",
+    "noActivity": "Још нема активности.",
+    "created": "креирао {{title}}",
+    "updated": "ажурирао елемент",
+    "deleted": "обрисао елемент",
+    "movedTo": "премештено у {{state}}",
+    "assigned": "променио додељивање",
+    "changedPriority": "променио приоритет на {{priority}}",
+    "cancelled": "отказао елемент",
+    "restored": "вратио елемент",
+    "commented": "коментарисао на {{title}}",
+    "addedToSprint": "додато у спринт",
+    "removedFromSprint": "уклоњено из спринта",
+    "updatedSprint": "ажурирао спринт"
+  },
   "helpOverlay": {
     "dismiss": "Odbaci",
     "close": "Zatvori"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Опште",
+    "repositories": "Репозиторијуми",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

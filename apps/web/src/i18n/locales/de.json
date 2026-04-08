@@ -512,6 +512,32 @@
     "oneViewer": "1 Betrachter",
     "multipleViewers": "{{count}} sehen zu"
   },
+  "commandPalette": {
+    "placeholder": "Suchen oder Befehl eingeben...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "workItems": "Arbeitselemente",
+    "navigation": "Navigation",
+    "actions": "Aktionen",
+    "navigate": "navigieren",
+    "select": "auswählen",
+    "close": "schließen"
+  },
+  "activity": {
+    "title": "Aktivität",
+    "noActivity": "Noch keine Aktivität.",
+    "created": "hat {{title}} erstellt",
+    "updated": "hat Element aktualisiert",
+    "deleted": "hat Element gelöscht",
+    "movedTo": "verschoben nach {{state}}",
+    "assigned": "Zuweisung geändert",
+    "changedPriority": "Priorität geändert auf {{priority}}",
+    "cancelled": "hat Element abgebrochen",
+    "restored": "hat Element wiederhergestellt",
+    "commented": "hat {{title}} kommentiert",
+    "addedToSprint": "zum Sprint hinzugefügt",
+    "removedFromSprint": "aus Sprint entfernt",
+    "updatedSprint": "Sprint aktualisiert"
+  },
   "helpOverlay": {
     "dismiss": "Verwerfen",
     "close": "Schließen"
@@ -856,6 +882,8 @@
     "cancelled": "Abgebrochen"
   },
   "settings": {
+    "general": "Allgemein",
+    "repositories": "Repositories",
     "projectSettings": "Planungsstandards",
     "projectSettingsDesc": "Lege die Standard-Zeithorizonte für dieses Projekt fest. Diese füllen Daten beim Erstellen von Epics und Sprints automatisch aus und unterstützen die Zeitplanung.",
     "projectDuration": "Feature-/Projektdauer",

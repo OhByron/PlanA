@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Link, Outlet, useParams } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +7,8 @@ import { api } from '../lib/api-client';
 import { toProject } from '../lib/api-transforms';
 import { useAuth } from '../auth/auth-context';
 import { useProjectMembers } from '../hooks/use-project-members';
+import { useWorkItems } from '../hooks/use-work-items';
+import { CommandPalette, useCommandItems } from '../components/command-palette';
 
 export function ProjectLayout() {
   const { t } = useTranslation();
@@ -22,8 +25,25 @@ export function ProjectLayout() {
   });
 
   const { data: members = [] } = useProjectMembers(projectId);
+  const { data: workItems = [] } = useWorkItems(projectId);
   const currentMember = members.find((m) => m.userId === user?.id);
   const isPM = currentMember?.jobRole === 'pm' || currentMember?.jobRole === 'po';
+
+  // Command palette
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const commandItems = useCommandItems(projectId, workItems);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      setPaletteOpen((prev) => !prev);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   if (isLoading) {
     return (
@@ -49,6 +69,7 @@ export function ProjectLayout() {
 
   return (
     <div className="flex h-full flex-col">
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} items={commandItems} />
       {/* Project header + tabs */}
       <div className="border-b border-gray-200 bg-white px-6">
         <div className="flex items-center gap-4 pt-4 pb-0">

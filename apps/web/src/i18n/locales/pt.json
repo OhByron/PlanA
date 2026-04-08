@@ -512,6 +512,32 @@
     "oneViewer": "1 visualizador",
     "multipleViewers": "{{count}} visualizando"
   },
+  "commandPalette": {
+    "placeholder": "Pesquisar ou digitar um comando...",
+    "noResults": "Nenhum resultado encontrado.",
+    "workItems": "Itens de Trabalho",
+    "navigation": "Navegação",
+    "actions": "Ações",
+    "navigate": "navegar",
+    "select": "selecionar",
+    "close": "fechar"
+  },
+  "activity": {
+    "title": "Atividade",
+    "noActivity": "Nenhuma atividade ainda.",
+    "created": "criou {{title}}",
+    "updated": "atualizou item",
+    "deleted": "excluiu item",
+    "movedTo": "movido para {{state}}",
+    "assigned": "alterou atribuição",
+    "changedPriority": "alterou prioridade para {{priority}}",
+    "cancelled": "cancelou item",
+    "restored": "restaurou item",
+    "commented": "comentou em {{title}}",
+    "addedToSprint": "adicionado ao sprint",
+    "removedFromSprint": "removido do sprint",
+    "updatedSprint": "atualizou o sprint"
+  },
   "helpOverlay": {
     "dismiss": "Dispensar",
     "close": "Fechar"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelado"
   },
   "settings": {
+    "general": "Geral",
+    "repositories": "Repositórios",
     "projectSettings": "Padrões de Planejamento",
     "projectSettingsDesc": "Defina os horizontes de tempo padrão para este projeto. Eles preenchem automaticamente as datas ao criar épicos e sprints.",
     "projectDuration": "Duração do Projeto / Funcionalidade",

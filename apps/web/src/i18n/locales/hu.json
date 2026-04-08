@@ -469,6 +469,32 @@
     "oneViewer": "1 néző",
     "multipleViewers": "{{count}} nézi"
   },
+  "commandPalette": {
+    "placeholder": "Keresés vagy parancs beírása...",
+    "noResults": "Nincs találat.",
+    "workItems": "Munkaelemek",
+    "navigation": "Navigáció",
+    "actions": "Műveletek",
+    "navigate": "navigálás",
+    "select": "kiválasztás",
+    "close": "bezárás"
+  },
+  "activity": {
+    "title": "Tevékenység",
+    "noActivity": "Még nincs tevékenység.",
+    "created": "létrehozta: {{title}}",
+    "updated": "frissítette az elemet",
+    "deleted": "törölte az elemet",
+    "movedTo": "áthelyezve ide: {{state}}",
+    "assigned": "megváltoztatta a hozzárendelést",
+    "changedPriority": "prioritás módosítva erre: {{priority}}",
+    "cancelled": "visszavonta az elemet",
+    "restored": "visszaállította az elemet",
+    "commented": "hozzászólt ehhez: {{title}}",
+    "addedToSprint": "hozzáadva a sprinthez",
+    "removedFromSprint": "eltávolítva a sprintből",
+    "updatedSprint": "frissítette a sprintet"
+  },
   "helpOverlay": {
     "dismiss": "Elvetés",
     "close": "Bezárás"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Általános",
+    "repositories": "Tárolók",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

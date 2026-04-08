@@ -469,6 +469,32 @@
     "oneViewer": "1 gledatelj",
     "multipleViewers": "{{count}} gleda"
   },
+  "commandPalette": {
+    "placeholder": "Pretraži ili upiši naredbu...",
+    "noResults": "Nema pronađenih rezultata.",
+    "workItems": "Radni elementi",
+    "navigation": "Navigacija",
+    "actions": "Radnje",
+    "navigate": "navigiraj",
+    "select": "odaberi",
+    "close": "zatvori"
+  },
+  "activity": {
+    "title": "Aktivnost",
+    "noActivity": "Još nema aktivnosti.",
+    "created": "stvorio/la {{title}}",
+    "updated": "ažurirao/la element",
+    "deleted": "obrisao/la element",
+    "movedTo": "premješteno u {{state}}",
+    "assigned": "promijenio/la dodjelu",
+    "changedPriority": "promijenio/la prioritet na {{priority}}",
+    "cancelled": "otkazao/la element",
+    "restored": "vratio/la element",
+    "commented": "komentirao/la na {{title}}",
+    "addedToSprint": "dodano u sprint",
+    "removedFromSprint": "uklonjeno iz sprinta",
+    "updatedSprint": "ažurirao/la sprint"
+  },
   "helpOverlay": {
     "dismiss": "Odbaci",
     "close": "Zatvori"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Općenito",
+    "repositories": "Repozitoriji",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",
