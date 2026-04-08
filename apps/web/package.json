@@ -20,7 +20,7 @@
     "@tanstack/react-router": "^1.101.0",
     "@tiptap/extension-placeholder": "^3.21.0",
     "@tiptap/pm": "^3.21.0",
-    "@tiptap/react": "^3.21.0",
+    "@tiptap/react": "^3.22.3",
     "@tiptap/starter-kit": "^3.21.0",
     "@xyflow/react": "^12.10.2",
     "i18next": "^26.0.3",
