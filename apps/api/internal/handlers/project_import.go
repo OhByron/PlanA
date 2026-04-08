@@ -226,25 +226,46 @@ func (h *ProjectHandlers) Import(w http.ResponseWriter, r *http.Request) {
 	for _, wi := range orderedItems {
 		itemCounter++
 		newItemID := remap(getString(wi, "id"))
-		status := getString(wi, "status")
+		// Resolve workflow state: use slug from export, or initial state for templates
+		stateSlug := getString(wi, "state_slug")
+		if stateSlug == "" {
+			stateSlug = getString(wi, "status") // backwards compat with old exports
+		}
 		assignee := remapNullable(getStringPtr(wi, "assignee_id"))
 		if asTemplate {
-			status = "backlog"
+			stateSlug = "backlog"
 			assignee = nil
 		}
+		// Look up the workflow_state_id by slug for this org
+		var stateID string
+		if err := tx.QueryRow(ctx,
+			`SELECT ws.id FROM workflow_states ws
+			 JOIN teams t ON t.organization_id = ws.org_id
+			 JOIN projects p ON p.team_id = t.id
+			 WHERE p.id = $1 AND ws.slug = $2`, newProjectID, stateSlug,
+		).Scan(&stateID); err != nil {
+			// Fall back to initial state
+			_ = tx.QueryRow(ctx,
+				`SELECT ws.id FROM workflow_states ws
+				 JOIN teams t ON t.organization_id = ws.org_id
+				 JOIN projects p ON p.team_id = t.id
+				 WHERE p.id = $1 AND ws.is_initial = true`, newProjectID,
+			).Scan(&stateID)
+		}
+		isCancelled := getString(wi, "status") == "cancelled"
 		if _, err := tx.Exec(ctx,
 			`INSERT INTO work_items (id, project_id, epic_id, parent_id, type, title, description,
-				status, priority, assignee_id, story_points, points_used, labels, order_index,
+				workflow_state_id, is_cancelled, priority, assignee_id, story_points, points_used, labels, order_index,
 				start_date, due_date, pre_conditions, post_conditions,
 				is_blocked, blocked_reason, created_by, item_number)
-			 VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9, $10, $11, $12, $13::text[], $14,
-				$15::date, $16::date, $17::jsonb, $18::jsonb, false, NULL, $19, $20)`,
+			 VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9, $10, $11, $12, $13, $14::text[], $15,
+				$16::date, $17::date, $18::jsonb, $19::jsonb, false, NULL, $20, $21)`,
 			newItemID, newProjectID,
 			remapNullable(getStringPtr(wi, "epic_id")),
 			remapNullable(getStringPtr(wi, "parent_id")),
 			getString(wi, "type"), getString(wi, "title"),
 			rawJSONOrNull(wi, "description"),
-			status, getString(wi, "priority"),
+			stateID, isCancelled, getString(wi, "priority"),
 			assignee,
 			intPtrOrNil(wi, "story_points"),
 			intPtrOrNil(wi, "points_used"),

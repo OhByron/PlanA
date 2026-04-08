@@ -192,6 +192,21 @@ func (h *OrgHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Seed default workflow states
+	_, err = tx.Exec(r.Context(),
+		`INSERT INTO workflow_states (org_id, name, slug, color, position, is_initial, is_terminal) VALUES
+		 ($1, 'Backlog',     'backlog',     '#6B7280', 0, TRUE,  FALSE),
+		 ($1, 'Ready',       'ready',       '#3B82F6', 1, FALSE, FALSE),
+		 ($1, 'In Progress', 'in_progress', '#8B5CF6', 2, FALSE, FALSE),
+		 ($1, 'In Review',   'in_review',   '#F59E0B', 3, FALSE, FALSE),
+		 ($1, 'Done',        'done',        '#22C55E', 4, FALSE, TRUE)`,
+		org.ID)
+	if err != nil {
+		slog.Error("orgs.Create: seed workflow states failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create organization")
+		return
+	}
+
 	if err := tx.Commit(r.Context()); err != nil {
 		slog.Error("orgs.Create: commit failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create organization")

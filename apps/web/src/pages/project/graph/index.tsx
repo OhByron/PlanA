@@ -140,7 +140,7 @@ function GraphPageInner() {
     for (const edge of draft.mergedEdges) {
       if (edge.isRemoved || edge.type !== 'depends_on' || edge.strength !== 'hard') continue;
       const target = itemMap.get(edge.targetId);
-      if (target && target.status !== 'done' && target.status !== 'cancelled') {
+      if (target && !target.stateIsTerminal && !target.isCancelled) {
         blockedItems.add(edge.sourceId);
       }
     }

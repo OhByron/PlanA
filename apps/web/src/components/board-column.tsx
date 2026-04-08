@@ -1,21 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import type { WorkItem, WorkItemStatus } from '@projecta/types';
+import type { WorkItem, WorkflowState } from '@projecta/types';
 import { cn } from '@projecta/ui';
 import { SortableWorkItemCard } from './sortable-work-item-card';
 import type { VCSBulkItem } from '../hooks/use-vcs';
 
-const columnColors: Record<string, string> = {
-  backlog: 'border-t-gray-300',
-  ready: 'border-t-blue-400',
-  in_progress: 'border-t-brand-500',
-  in_review: 'border-t-amber-400',
-  done: 'border-t-green-500',
-};
-
 interface BoardColumnProps {
-  status: WorkItemStatus;
+  state: WorkflowState;
   items: WorkItem[];
   projectId: string;
   parentTitles?: Map<string, string> | undefined;
@@ -24,16 +16,13 @@ interface BoardColumnProps {
   blockedItems?: Set<string> | undefined;
   wipWarning?: boolean | undefined;
   memberNames?: Map<string, string> | undefined;
-  /** Map of item ID → number of items it unblocks when done */
   unblocksMap?: Map<string, number> | undefined;
-  /** Map of story ID → number of child tasks that are done */
   childDoneCounts?: Map<string, number> | undefined;
-  /** VCS summaries keyed by work item ID */
   vcsSummaries?: Map<string, VCSBulkItem> | undefined;
 }
 
 export function BoardColumn({
-  status,
+  state,
   items,
   projectId,
   parentTitles,
@@ -47,23 +36,26 @@ export function BoardColumn({
   vcsSummaries,
 }: BoardColumnProps) {
   const { t } = useTranslation();
-  const { setNodeRef, isOver } = useDroppable({ id: status });
+  const { setNodeRef, isOver } = useDroppable({ id: state.id });
   const itemIds = items.map((i) => i.id);
+
+  // Use translated name if available, otherwise the DB name
+  const displayName = t(`status.${state.slug}`, { defaultValue: state.name });
 
   return (
     <div
       role="region"
-      aria-label={t('board.column', { status: t(`status.${status}`) })}
+      aria-label={t('board.column', { status: displayName })}
       className={cn(
         'flex w-72 flex-shrink-0 flex-col rounded-lg border-t-2 bg-gray-50',
-        columnColors[status] ?? 'border-t-gray-300',
         isOver && 'bg-brand-50/50',
       )}
+      style={{ borderTopColor: state.color }}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2">
         <h3 className="text-sm font-semibold text-gray-700">
-          {t(`status.${status}`)}
+          {displayName}
         </h3>
         <span className={cn(
           'rounded-full px-2 py-0.5 text-xs font-medium',

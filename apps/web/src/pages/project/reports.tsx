@@ -289,10 +289,11 @@ function SprintProgress({
       backlog: { count: 0, points: 0 },
     };
     for (const item of items) {
-      const bucket = counts[item.status] ?? { count: 0, points: 0 };
+      const slug = item.isCancelled ? 'cancelled' : item.stateSlug;
+      const bucket = counts[slug] ?? { count: 0, points: 0 };
       bucket.count++;
       bucket.points += item.storyPoints ?? 0;
-      counts[item.status] = bucket;
+      counts[slug] = bucket;
     }
     return counts;
   }, [items]);
@@ -365,7 +366,7 @@ function EpicProgress({
         {epics.map((epic) => {
           const stories = items.filter((i) => i.epicId === epic.id && i.type === 'story');
           const total = stories.length;
-          const done = stories.filter((s) => s.status === 'done').length;
+          const done = stories.filter((s) => s.stateIsTerminal).length;
           const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
           return (
@@ -484,7 +485,7 @@ function BlockedReport({
             >
               <TypeIcon type={item.type} />
               <span className="flex-1 truncate text-sm text-gray-900">{item.title}</span>
-              <StatusBadge status={item.status} />
+              <StatusBadge stateName={item.stateName} stateSlug={item.stateSlug} stateColor={item.stateColor} isCancelled={item.isCancelled} />
             </Link>
           ))}
         </div>

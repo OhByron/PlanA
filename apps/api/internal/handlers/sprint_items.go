@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -91,14 +92,13 @@ func (h *SprintItemHandlers) ListItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := h.db.Query(r.Context(), `
-		SELECT wi.id, wi.project_id, wi.epic_id, wi.parent_id, wi.type, wi.title, wi.description,
-		       wi.status, wi.priority, wi.assignee_id, wi.story_points, wi.labels, wi.order_index,
-		       wi.is_blocked, wi.blocked_reason, wi.source_test_result_id, wi.created_by, wi.created_at, wi.updated_at
+	rows, err := h.db.Query(r.Context(), fmt.Sprintf(`
+		SELECT %s
 		  FROM sprint_items si
 		  JOIN work_items wi ON wi.id = si.work_item_id
+		  JOIN workflow_states ws ON ws.id = wi.workflow_state_id
 		 WHERE si.sprint_id = $1
-		 ORDER BY si.order_index`, sprintID)
+		 ORDER BY si.order_index`, workItemColumns), sprintID)
 	if err != nil {
 		slog.Error("sprint_items.ListItems: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list sprint items")
@@ -108,18 +108,11 @@ func (h *SprintItemHandlers) ListItems(w http.ResponseWriter, r *http.Request) {
 
 	items := []WorkItem{}
 	for rows.Next() {
-		var wi WorkItem
-		if err := rows.Scan(
-			&wi.ID, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.Labels, &wi.OrderIndex,
-			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
-		); err != nil {
+		wi, err := scanWorkItem(rows)
+		if err != nil {
 			slog.Error("sprint_items.ListItems: scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read sprint item row")
 			return
-		}
-		if wi.Labels == nil {
-			wi.Labels = []string{}
 		}
 		items = append(items, wi)
 	}

@@ -79,7 +79,7 @@ export function useGraphLayout(
       const containerW = snap(Math.max(contentWidth, 300));
       const containerH = snap(Math.max(contentHeight, 160));
 
-      const doneItems = epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled');
+      const doneItems = epicItems.filter((i) => i.stateIsTerminal || i.isCancelled);
       const totalPts = epicItems.reduce((s, i) => s + (i.storyPoints ?? 0), 0);
       const donePts = doneItems.reduce((s, i) => s + (i.storyPoints ?? 0), 0);
 

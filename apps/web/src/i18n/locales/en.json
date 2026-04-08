@@ -406,6 +406,8 @@
     "clickToAddDescription": "Click to add a description...",
     "details": "Details",
     "statusLabel": "Status",
+    "cancel": "Cancel item",
+    "uncancel": "Restore item",
     "typeLabel": "Type",
     "priorityLabel": "Priority",
     "assigneeLabel": "Assignee",
@@ -552,7 +554,29 @@
     "createBranch": "Create branch",
     "copied": "Copied!",
     "saveWarning": "Save these values now. The webhook secret will not be shown again.",
-    "tunnelHint": "For local development, use a tunnel (ngrok, cloudflared) to expose port 8080 and update the webhook URL in your Git provider."
+    "tunnelHint": "For local development, use a tunnel (ngrok, cloudflared) to expose port 8080 and update the webhook URL in your Git provider.",
+    "onPROpen": "When PR opens:",
+    "onPRMerge": "When PR merges:"
+  },
+
+  "workflow": {
+    "title": "Workflow States",
+    "description": "Define the states that work items move through. Backlog and Done are always present.",
+    "addState": "Add State",
+    "stateName": "State name",
+    "changeColor": "Change color",
+    "locked": "Locked",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "createFailed": "Failed to create state",
+    "hooksTitle": "Transition Hooks",
+    "hooksDescription": "Notify team members when work items enter a specific state.",
+    "noHooks": "No hooks configured.",
+    "addHook": "Add Hook",
+    "whenEnters": "When item enters",
+    "notify": "notify",
+    "selectState": "Select state...",
+    "hookRule": "When item enters {{state}}, notify {{role}}"
   },
 
   "helpOverlay": {

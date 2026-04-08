@@ -53,7 +53,7 @@ export function SprintDetailPage() {
   // Stories available to add (not in any sprint, not done/cancelled)
   const availableStories = useMemo(
     () => allItems.filter(
-      (i) => i.type === 'story' && !assignedSet.has(i.id) && i.status !== 'done' && i.status !== 'cancelled',
+      (i) => i.type === 'story' && !assignedSet.has(i.id) && !i.stateIsTerminal && !i.isCancelled,
     ),
     [allItems, assignedSet],
   );
@@ -202,7 +202,7 @@ export function SprintDetailPage() {
               onClick={() => {
                 // Calculate velocity from done items' points
                 const donePoints = sprintItems
-                  .filter((i) => i.status === 'done')
+                  .filter((i) => i.stateIsTerminal)
                   .reduce((s, i) => s + (i.storyPoints ?? 0), 0);
                 updateSprint.mutate({ sprintId, data: { status: 'completed', velocity: donePoints } });
               }}
@@ -277,7 +277,7 @@ export function SprintDetailPage() {
                 >
                   {story.title}
                 </Link>
-                <StatusBadge status={story.status} />
+                <StatusBadge stateName={story.stateName} stateSlug={story.stateSlug} stateColor={story.stateColor} isCancelled={story.isCancelled} />
                 <PriorityIndicator priority={story.priority} />
                 <span className="w-8 text-center rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
                   {taskPoints || '—'}
@@ -306,7 +306,7 @@ export function SprintDetailPage() {
                       >
                         {task.title}
                       </Link>
-                      <StatusBadge status={task.status} />
+                      <StatusBadge stateName={task.stateName} stateSlug={task.stateSlug} stateColor={task.stateColor} isCancelled={task.isCancelled} />
                       <span className="w-8 text-center text-xs text-gray-500">
                         {task.storyPoints ?? '—'}
                       </span>
@@ -332,7 +332,7 @@ export function SprintDetailPage() {
                 >
                   {task.title}
                 </Link>
-                <StatusBadge status={task.status} />
+                <StatusBadge stateName={task.stateName} stateSlug={task.stateSlug} stateColor={task.stateColor} isCancelled={task.isCancelled} />
                 <span className="w-8 text-center rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
                   {task.storyPoints ?? '—'}
                 </span>

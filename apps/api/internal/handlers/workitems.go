@@ -17,34 +17,69 @@ import (
 
 // WorkItem represents a work_items row returned to clients.
 type WorkItem struct {
-	ID            string          `json:"id"`
-	ItemNumber    *int            `json:"item_number"`
-	ProjectID     string          `json:"project_id"`
-	EpicID        *string         `json:"epic_id"`
-	ParentID      *string         `json:"parent_id"`
-	Type          string          `json:"type"`
-	Title         string          `json:"title"`
-	Description   json.RawMessage `json:"description"`
-	Status        string          `json:"status"`
-	Priority      string          `json:"priority"`
-	AssigneeID    *string         `json:"assignee_id"`
-	StoryPoints   *int            `json:"story_points"`
-	PointsUsed    *int            `json:"points_used"`
-	Labels        []string        `json:"labels"`
-	OrderIndex    float64         `json:"order_index"`
-	StartDate          *time.Time      `json:"start_date"`
-	DueDate            *time.Time      `json:"due_date"`
-	TargetDate         *time.Time      `json:"target_date"`
-	PreConditions      json.RawMessage `json:"pre_conditions"`
-	PostConditions     json.RawMessage `json:"post_conditions"`
-	DesignReady        bool            `json:"design_ready"`
-	DesignLink         *string         `json:"design_link"`
-	IsBlocked          bool            `json:"is_blocked"`
-	BlockedReason      *string         `json:"blocked_reason"`
-	SourceTestResultID *string         `json:"source_test_result_id"`
-	CreatedBy          string          `json:"created_by"`
-	CreatedAt          time.Time       `json:"created_at"`
-	UpdatedAt          time.Time       `json:"updated_at"`
+	ID               string          `json:"id"`
+	ItemNumber       *int            `json:"item_number"`
+	ProjectID        string          `json:"project_id"`
+	EpicID           *string         `json:"epic_id"`
+	ParentID         *string         `json:"parent_id"`
+	Type             string          `json:"type"`
+	Title            string          `json:"title"`
+	Description      json.RawMessage `json:"description"`
+	WorkflowStateID  string          `json:"workflow_state_id"`
+	IsCancelled      bool            `json:"is_cancelled"`
+	// Embedded state info (populated via JOIN)
+	StateName        string          `json:"state_name"`
+	StateSlug        string          `json:"state_slug"`
+	StateColor       string          `json:"state_color"`
+	StatePosition    int             `json:"state_position"`
+	StateIsTerminal  bool            `json:"state_is_terminal"`
+	StateIsInitial   bool            `json:"state_is_initial"`
+	Priority         string          `json:"priority"`
+	AssigneeID       *string         `json:"assignee_id"`
+	StoryPoints      *int            `json:"story_points"`
+	PointsUsed       *int            `json:"points_used"`
+	Labels           []string        `json:"labels"`
+	OrderIndex       float64         `json:"order_index"`
+	StartDate        *time.Time      `json:"start_date"`
+	DueDate          *time.Time      `json:"due_date"`
+	TargetDate       *time.Time      `json:"target_date"`
+	PreConditions    json.RawMessage `json:"pre_conditions"`
+	PostConditions   json.RawMessage `json:"post_conditions"`
+	DesignReady      bool            `json:"design_ready"`
+	DesignLink       *string         `json:"design_link"`
+	IsBlocked        bool            `json:"is_blocked"`
+	BlockedReason    *string         `json:"blocked_reason"`
+	SourceTestResultID *string       `json:"source_test_result_id"`
+	CreatedBy        string          `json:"created_by"`
+	CreatedAt        time.Time       `json:"created_at"`
+	UpdatedAt        time.Time       `json:"updated_at"`
+}
+
+// workItemColumns is the SELECT column list for work items with state JOIN.
+const workItemColumns = `wi.id, wi.item_number, wi.project_id, wi.epic_id, wi.parent_id, wi.type, wi.title, wi.description,
+	wi.workflow_state_id, wi.is_cancelled,
+	ws.name, ws.slug, ws.color, ws.position, ws.is_terminal, ws.is_initial,
+	wi.priority, wi.assignee_id, wi.story_points, wi.points_used, wi.labels, wi.order_index,
+	wi.start_date, wi.due_date, wi.target_date, wi.pre_conditions, wi.post_conditions,
+	wi.design_ready, wi.design_link, wi.is_blocked, wi.blocked_reason,
+	wi.source_test_result_id, wi.created_by, wi.created_at, wi.updated_at`
+
+// scanWorkItem scans a work item row with embedded state info.
+func scanWorkItem(row interface{ Scan(dest ...any) error }) (WorkItem, error) {
+	var wi WorkItem
+	err := row.Scan(
+		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
+		&wi.WorkflowStateID, &wi.IsCancelled,
+		&wi.StateName, &wi.StateSlug, &wi.StateColor, &wi.StatePosition, &wi.StateIsTerminal, &wi.StateIsInitial,
+		&wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex,
+		&wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions,
+		&wi.DesignReady, &wi.DesignLink, &wi.IsBlocked, &wi.BlockedReason,
+		&wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
+	)
+	if wi.Labels == nil {
+		wi.Labels = []string{}
+	}
+	return wi, err
 }
 
 // WorkItemHandlers handles CRUD for stories, bugs, and tasks within a project.
@@ -53,6 +88,20 @@ type WorkItemHandlers struct {
 }
 
 func NewWorkItemHandlers(db DBPOOL) *WorkItemHandlers { return &WorkItemHandlers{db: db} }
+
+// getWorkItem fetches a single work item with its workflow state info via JOIN.
+func (h *WorkItemHandlers) getWorkItem(ctx interface {
+	Value(any) any
+	Deadline() (time.Time, bool)
+	Done() <-chan struct{}
+	Err() error
+}, id string) (WorkItem, error) {
+	row := h.db.QueryRow(ctx,
+		fmt.Sprintf(`SELECT %s FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.id = $1`, workItemColumns), id)
+	return scanWorkItem(row)
+}
 
 // qeGateCheck enforces the QE workflow gate: items assigned to a QE role cannot
 // close unless test results exist and all pass. This prevents premature closure
@@ -82,44 +131,51 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 	pp := parsePagination(r)
 
-	where := "WHERE project_id = $1"
+	where := "WHERE wi.project_id = $1"
 	args := []any{projectID}
 	argN := 2
 
 	if v := r.URL.Query().Get("type"); v != "" {
-		where += fmt.Sprintf(" AND type = $%d", argN)
+		where += fmt.Sprintf(" AND wi.type = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("status"); v != "" {
-		where += fmt.Sprintf(" AND status = $%d", argN)
+		// Support filtering by state slug for backwards compatibility
+		where += fmt.Sprintf(" AND wi.workflow_state_id IN (SELECT id FROM workflow_states WHERE slug = $%d)", argN)
+		args = append(args, v)
+		argN++
+	}
+	if v := r.URL.Query().Get("workflow_state_id"); v != "" {
+		where += fmt.Sprintf(" AND wi.workflow_state_id = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("epic_id"); v != "" {
-		where += fmt.Sprintf(" AND epic_id = $%d", argN)
+		where += fmt.Sprintf(" AND wi.epic_id = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 	if v := r.URL.Query().Get("assignee_id"); v != "" {
-		where += fmt.Sprintf(" AND assignee_id = $%d", argN)
+		where += fmt.Sprintf(" AND wi.assignee_id = $%d", argN)
 		args = append(args, v)
 		argN++
 	}
 
 	// Count total matching rows.
 	var total int
-	err := h.db.QueryRow(r.Context(), "SELECT COUNT(*) FROM work_items "+where, args...).Scan(&total)
+	err := h.db.QueryRow(r.Context(),
+		"SELECT COUNT(*) FROM work_items wi JOIN workflow_states ws ON ws.id = wi.workflow_state_id "+where, args...).Scan(&total)
 	if err != nil {
 		slog.Error("workitems.List: count query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list work items")
 		return
 	}
 
-	query := fmt.Sprintf(`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-		status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
-		is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
-		FROM work_items %s ORDER BY order_index, created_at LIMIT $%d OFFSET $%d`, where, argN, argN+1)
+	query := fmt.Sprintf(`SELECT %s
+		FROM work_items wi JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		%s ORDER BY wi.order_index, wi.created_at LIMIT $%d OFFSET $%d`,
+		workItemColumns, where, argN, argN+1)
 	args = append(args, pp.PageSize, pp.Offset)
 
 	rows, err := h.db.Query(r.Context(), query, args...)
@@ -132,18 +188,11 @@ func (h *WorkItemHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 	items := []WorkItem{}
 	for rows.Next() {
-		var wi WorkItem
-		if err := rows.Scan(
-			&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-			&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
-			&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
-		); err != nil {
+		wi, err := scanWorkItem(rows)
+		if err != nil {
 			slog.Error("workitems.List: scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "db_error", "Failed to read work item row")
 			return
-		}
-		if wi.Labels == nil {
-			wi.Labels = []string{}
 		}
 		items = append(items, wi)
 	}
@@ -269,29 +318,43 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		dueDate = inheritedDueDate
 	}
 
-	var wi WorkItem
+	// Resolve the initial (backlog) state for this project's org
+	orgID, err := getOrgIDForProject(r.Context(), h.db, projectID)
+	if err != nil {
+		slog.Error("workitems.Create: failed to resolve org", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
+		return
+	}
+	initialStateID, err := getInitialStateID(r.Context(), h.db, orgID)
+	if err != nil {
+		slog.Error("workitems.Create: failed to resolve initial state", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
+		return
+	}
+
+	var insertedID string
 	err = h.db.QueryRow(r.Context(),
 		`INSERT INTO work_items (project_id, epic_id, parent_id, type, title, description,
-			priority, assignee_id, story_points, labels, order_index, start_date, due_date, created_by, item_number, source_test_result_id)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
-			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
+			workflow_state_id, priority, assignee_id, story_points, labels, order_index,
+			start_date, due_date, created_by, item_number, source_test_result_id)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+		 RETURNING id`,
 		projectID, epicID, body.ParentID, body.Type, body.Title, body.Description,
-		priority, body.AssigneeID, body.StoryPoints, labels, orderIndex, startDate, dueDate, claims.UserID, itemNumber, body.SourceTestResultID,
-	).Scan(
-		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
-	)
+		initialStateID, priority, body.AssigneeID, body.StoryPoints, labels, orderIndex,
+		startDate, dueDate, claims.UserID, itemNumber, body.SourceTestResultID,
+	).Scan(&insertedID)
 	if err != nil {
 		slog.Error("workitems.Create: insert failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
 		return
 	}
 
-	if wi.Labels == nil {
-		wi.Labels = []string{}
+	// Re-fetch with JOIN to get state info
+	wi, err := h.getWorkItem(r.Context(), insertedID)
+	if err != nil {
+		slog.Error("workitems.Create: re-fetch failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to create work item")
+		return
 	}
 
 	writeJSON(w, http.StatusCreated, wi)
@@ -305,17 +368,7 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var wi WorkItem
-	err := h.db.QueryRow(r.Context(),
-		`SELECT id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
-			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at
-		 FROM work_items WHERE id = $1`, workItemID,
-	).Scan(
-		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
-	)
+	wi, err := h.getWorkItem(r.Context(), workItemID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Work item not found")
@@ -326,10 +379,6 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if wi.Labels == nil {
-		wi.Labels = []string{}
-	}
-
 	writeJSON(w, http.StatusOK, wi)
 }
 
@@ -338,7 +387,8 @@ type updateWorkItemRequest struct {
 	Title         *string          `json:"title"`
 	Description   *json.RawMessage `json:"description"`
 	Type          *string          `json:"type"`
-	Status        *string          `json:"status"`
+	WorkflowStateID *string        `json:"workflow_state_id"`
+	IsCancelled     *bool          `json:"is_cancelled"`
 	Priority      *string          `json:"priority"`
 	EpicID        *string          `json:"epic_id"`
 	ParentID      *string          `json:"parent_id"`
@@ -399,9 +449,14 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		args = append(args, *body.Type)
 		argN++
 	}
-	if body.Status != nil {
-		fields = append(fields, fmt.Sprintf("status = $%d", argN))
-		args = append(args, *body.Status)
+	if body.WorkflowStateID != nil {
+		fields = append(fields, fmt.Sprintf("workflow_state_id = $%d", argN))
+		args = append(args, *body.WorkflowStateID)
+		argN++
+	}
+	if body.IsCancelled != nil {
+		fields = append(fields, fmt.Sprintf("is_cancelled = $%d", argN))
+		args = append(args, *body.IsCancelled)
 		argN++
 	}
 	if body.Priority != nil {
@@ -534,45 +589,54 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Capture old status (and QE gate fields) before update.
-	var oldStatus string
-	if body.Status != nil {
+	// Capture old state before update for transition logic.
+	var oldStateID string
+	var oldIsTerminal bool
+	if body.WorkflowStateID != nil {
 		var assigneeID *string
 		var parentID *string
 		var jobRole string
 		err := h.db.QueryRow(r.Context(),
-			`SELECT w.status, w.assignee_id, w.parent_id, COALESCE(pm.job_role, '')
+			`SELECT w.workflow_state_id, ws.is_terminal, w.assignee_id, w.parent_id, COALESCE(pm.job_role, '')
 			 FROM work_items w
+			 JOIN workflow_states ws ON ws.id = w.workflow_state_id
 			 LEFT JOIN project_members pm ON pm.id = w.assignee_id
 			 WHERE w.id = $1`, workItemID,
-		).Scan(&oldStatus, &assigneeID, &parentID, &jobRole)
+		).Scan(&oldStateID, &oldIsTerminal, &assigneeID, &parentID, &jobRole)
 		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			slog.Error("workitems.Update: pre-check query failed", "error", err)
 		}
 
-		// Story completion gate: a story with child tasks cannot be moved to "done"
-		// manually if any child task is not done/cancelled.
-		if *body.Status == "done" {
+		// Check if the target state is terminal (done)
+		var targetIsTerminal bool
+		_ = h.db.QueryRow(r.Context(),
+			`SELECT is_terminal FROM workflow_states WHERE id = $1`, *body.WorkflowStateID,
+		).Scan(&targetIsTerminal)
+
+		// Story completion gate: a story with child tasks cannot be moved to terminal
+		// if any child task is not terminal/cancelled.
+		if targetIsTerminal {
 			var itemType string
 			h.db.QueryRow(r.Context(), `SELECT type FROM work_items WHERE id = $1`, workItemID).Scan(&itemType)
 			if itemType == "story" {
 				var incompleteChildren int
 				if err := h.db.QueryRow(r.Context(),
-					`SELECT COUNT(*) FROM work_items
-					 WHERE parent_id = $1 AND status NOT IN ('done', 'cancelled')`,
+					`SELECT COUNT(*) FROM work_items wi2
+					 JOIN workflow_states ws2 ON ws2.id = wi2.workflow_state_id
+					 WHERE wi2.parent_id = $1 AND wi2.is_cancelled = FALSE AND ws2.is_terminal = FALSE`,
 					workItemID).Scan(&incompleteChildren); err != nil {
 					slog.Warn("workitems.Update: child-check query failed", "error", err)
 				}
 				if incompleteChildren > 0 {
 					writeError(w, http.StatusUnprocessableEntity, "incomplete_subtasks",
-						fmt.Sprintf("Cannot mark story as done — %d subtask(s) still incomplete", incompleteChildren))
+						fmt.Sprintf("Cannot mark story as done - %d subtask(s) still incomplete", incompleteChildren))
 					return
 				}
 			}
 		}
 
-		// QE status gate: QE-assigned items require linked test results that all pass before moving to Done.
-		if *body.Status == "done" {
+		// QE status gate: QE-assigned items require linked test results that all pass before moving to terminal.
+		if targetIsTerminal {
 			var totalResults, failedResults int
 			if err := h.db.QueryRow(r.Context(),
 				`SELECT
@@ -598,19 +662,12 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 	args = append(args, workItemID)
 	query := fmt.Sprintf(
-		`UPDATE work_items SET %s WHERE id = $%d
-		 RETURNING id, item_number, project_id, epic_id, parent_id, type, title, description,
-			status, priority, assignee_id, story_points, points_used, labels, order_index, start_date, due_date, target_date, pre_conditions, post_conditions, design_ready, design_link,
-			is_blocked, blocked_reason, source_test_result_id, created_by, created_at, updated_at`,
+		`UPDATE work_items SET %s WHERE id = $%d RETURNING id`,
 		strings.Join(fields, ", "), argN,
 	)
 
-	var wi WorkItem
-	err := h.db.QueryRow(r.Context(), query, args...).Scan(
-		&wi.ID, &wi.ItemNumber, &wi.ProjectID, &wi.EpicID, &wi.ParentID, &wi.Type, &wi.Title, &wi.Description,
-		&wi.Status, &wi.Priority, &wi.AssigneeID, &wi.StoryPoints, &wi.PointsUsed, &wi.Labels, &wi.OrderIndex, &wi.StartDate, &wi.DueDate, &wi.TargetDate, &wi.PreConditions, &wi.PostConditions, &wi.DesignReady, &wi.DesignLink,
-		&wi.IsBlocked, &wi.BlockedReason, &wi.SourceTestResultID, &wi.CreatedBy, &wi.CreatedAt, &wi.UpdatedAt,
-	)
+	var updatedID string
+	err := h.db.QueryRow(r.Context(), query, args...).Scan(&updatedID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusNotFound, "not_found", "Work item not found")
@@ -621,80 +678,46 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if wi.Labels == nil {
-		wi.Labels = []string{}
+	// Re-fetch with JOIN to get full state info
+	wi, err := h.getWorkItem(r.Context(), updatedID)
+	if err != nil {
+		slog.Error("workitems.Update: re-fetch failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to update work item")
+		return
 	}
 
-	// Record each status transition with its point value so the burndown chart can
-	// reconstruct remaining work per day without scanning the full work-item history.
-	if body.Status != nil && *body.Status != oldStatus {
+	// Record state transition for burndown and fire hooks.
+	if body.WorkflowStateID != nil && *body.WorkflowStateID != oldStateID {
 		var sprintID *string
 		if err := h.db.QueryRow(r.Context(),
 			`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`,
 			workItemID).Scan(&sprintID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			slog.Warn("workitems.Update: sprint lookup for status-change log failed", "error", err)
 		}
-		// Use points_used (actual effort) when transitioning to done; otherwise use estimate.
 		statusChangePoints := wi.StoryPoints
-		if *body.Status == "done" && wi.PointsUsed != nil {
+		if wi.StateIsTerminal && wi.PointsUsed != nil {
 			statusChangePoints = wi.PointsUsed
 		}
 		_, err := h.db.Exec(r.Context(),
-			`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
+			`INSERT INTO status_changes (work_item_id, sprint_id, old_state_id, new_state_id, points)
 			 VALUES ($1, $2, $3, $4, $5)`,
-			workItemID, sprintID, oldStatus, *body.Status, statusChangePoints)
+			workItemID, sprintID, oldStateID, *body.WorkflowStateID, statusChangePoints)
 		if err != nil {
 			slog.Error("workitems.Update: failed to log status change", "error", err)
 		}
-		// Notify assignee of status change
+
+		// Notify assignee of state change
 		if wi.AssigneeID != nil {
-			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, *body.Status, claims.UserID, wi.ID)
+			NotifyStatusChange(r.Context(), h.db, *wi.AssigneeID, wi.Title, wi.StateName, claims.UserID, wi.ID)
 		}
 
-		// points_used is set independently by the user — no auto-default from story_points
+		// Fire transition hooks for the new state
+		h.fireTransitionHooks(r.Context(), wi.WorkflowStateID, workItemID, projectID)
 
-		// Auto-promote parent story: when a task moves to done, check if all
-		// sibling tasks under the same parent are now done/cancelled. If so,
-		// automatically move the parent story to done.
-		if *body.Status == "done" && wi.ParentID != nil {
-			var incompleteCount int
-			if err := h.db.QueryRow(r.Context(),
-				`SELECT COUNT(*) FROM work_items
-				 WHERE parent_id = $1 AND id != $2 AND status NOT IN ('done', 'cancelled')`,
-				*wi.ParentID, workItemID,
-			).Scan(&incompleteCount); err != nil {
-				slog.Warn("workitems.Update: sibling-check failed", "error", err)
-			}
-			if incompleteCount == 0 {
-				// All siblings done — auto-promote the parent
-				var parentStatus string
-				h.db.QueryRow(r.Context(),
-					`SELECT status FROM work_items WHERE id = $1`, *wi.ParentID,
-				).Scan(&parentStatus)
-				if parentStatus != "done" && parentStatus != "cancelled" {
-					h.db.Exec(r.Context(),
-						`UPDATE work_items SET status = 'done', updated_at = NOW()
-						 WHERE id = $1`,
-						*wi.ParentID)
-					// Log the parent status change too
-					var parentSprintID *string
-					if err := h.db.QueryRow(r.Context(),
-						`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`,
-						*wi.ParentID).Scan(&parentSprintID); err != nil {
-						// no sprint — that's fine
-					}
-					var parentPoints *int
-					h.db.QueryRow(r.Context(),
-						`SELECT story_points FROM work_items WHERE id = $1`, *wi.ParentID,
-					).Scan(&parentPoints)
-					h.db.Exec(r.Context(),
-						`INSERT INTO status_changes (work_item_id, sprint_id, old_status, new_status, points)
-						 VALUES ($1, $2, $3, 'done', $4)`,
-						*wi.ParentID, parentSprintID, parentStatus, parentPoints)
-					slog.Info("workitems.Update: auto-promoted parent story to done",
-						"parentID", *wi.ParentID, "triggeredBy", workItemID)
-				}
-			}
+		// Auto-promote parent story: when a task moves to terminal, check if all
+		// sibling tasks under the same parent are now terminal/cancelled.
+		if wi.StateIsTerminal && wi.ParentID != nil {
+			h.autoPromoteParent(r.Context(), *wi.ParentID, workItemID)
 		}
 	}
 
@@ -704,6 +727,130 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, wi)
+}
+
+// fireTransitionHooks executes any hooks configured for the given state.
+func (h *WorkItemHandlers) fireTransitionHooks(ctx interface {
+	Value(any) any
+	Deadline() (time.Time, bool)
+	Done() <-chan struct{}
+	Err() error
+}, stateID, workItemID, projectID string) {
+	rows, err := h.db.Query(ctx,
+		`SELECT config FROM workflow_transition_hooks WHERE trigger_state_id = $1 AND action_type = 'notify_role'`,
+		stateID)
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var configBytes []byte
+		if err := rows.Scan(&configBytes); err != nil {
+			continue
+		}
+		var config struct {
+			Role string `json:"role"`
+		}
+		if err := json.Unmarshal(configBytes, &config); err != nil || config.Role == "" {
+			continue
+		}
+
+		// Find project members with the matching role and notify them
+		memberRows, err := h.db.Query(ctx,
+			`SELECT user_id FROM project_members WHERE project_id = $1 AND job_role = $2`,
+			projectID, config.Role)
+		if err != nil {
+			continue
+		}
+
+		var title string
+		_ = h.db.QueryRow(ctx, `SELECT title FROM work_items WHERE id = $1`, workItemID).Scan(&title)
+
+		for memberRows.Next() {
+			var userID string
+			if err := memberRows.Scan(&userID); err != nil {
+				continue
+			}
+			_, _ = h.db.Exec(ctx,
+				`INSERT INTO notifications (user_id, type, message, work_item_id)
+				 VALUES ($1, 'status_change', $2, $3)`,
+				userID, fmt.Sprintf("Work item '%s' has entered a state requiring your attention.", title), workItemID)
+		}
+		memberRows.Close()
+	}
+}
+
+// autoPromoteParent checks if all children of a parent are terminal/cancelled
+// and promotes the parent to its org's terminal state if so.
+func (h *WorkItemHandlers) autoPromoteParent(ctx interface {
+	Value(any) any
+	Deadline() (time.Time, bool)
+	Done() <-chan struct{}
+	Err() error
+}, parentID, triggeredBy string) {
+	var incompleteCount int
+	if err := h.db.QueryRow(ctx,
+		`SELECT COUNT(*) FROM work_items wi2
+		 JOIN workflow_states ws2 ON ws2.id = wi2.workflow_state_id
+		 WHERE wi2.parent_id = $1 AND wi2.id != $2
+		   AND wi2.is_cancelled = FALSE AND ws2.is_terminal = FALSE`,
+		parentID, triggeredBy,
+	).Scan(&incompleteCount); err != nil {
+		slog.Warn("workitems.autoPromoteParent: sibling-check failed", "error", err)
+		return
+	}
+	if incompleteCount > 0 {
+		return
+	}
+
+	// All siblings done - get the parent's org terminal state
+	var parentStateID, parentProjectID string
+	var parentIsTerminal, parentIsCancelled bool
+	h.db.QueryRow(ctx,
+		`SELECT workflow_state_id, project_id, is_cancelled FROM work_items WHERE id = $1`, parentID,
+	).Scan(&parentStateID, &parentProjectID, &parentIsCancelled)
+
+	if parentIsCancelled {
+		return
+	}
+
+	_ = h.db.QueryRow(ctx,
+		`SELECT ws.is_terminal FROM workflow_states ws WHERE ws.id = $1`, parentStateID,
+	).Scan(&parentIsTerminal)
+	if parentIsTerminal {
+		return
+	}
+
+	orgID, err := getOrgIDForProject(ctx, h.db, parentProjectID)
+	if err != nil {
+		return
+	}
+	terminalID, err := getTerminalStateID(ctx, h.db, orgID)
+	if err != nil {
+		return
+	}
+
+	h.db.Exec(ctx,
+		`UPDATE work_items SET workflow_state_id = $1, updated_at = NOW() WHERE id = $2`,
+		terminalID, parentID)
+
+	// Log the parent state change
+	var parentSprintID *string
+	h.db.QueryRow(ctx,
+		`SELECT sprint_id FROM sprint_items WHERE work_item_id = $1 LIMIT 1`, parentID,
+	).Scan(&parentSprintID)
+	var parentPoints *int
+	h.db.QueryRow(ctx,
+		`SELECT story_points FROM work_items WHERE id = $1`, parentID,
+	).Scan(&parentPoints)
+	h.db.Exec(ctx,
+		`INSERT INTO status_changes (work_item_id, sprint_id, old_state_id, new_state_id, points)
+		 VALUES ($1, $2, $3, $4, $5)`,
+		parentID, parentSprintID, parentStateID, terminalID, parentPoints)
+
+	slog.Info("workitems.Update: auto-promoted parent to terminal state",
+		"parentID", parentID, "triggeredBy", triggeredBy)
 }
 
 // Delete removes a work item by ID.

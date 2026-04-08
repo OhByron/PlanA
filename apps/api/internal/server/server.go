@@ -65,6 +65,9 @@ func New(deps *Dependencies) http.Handler {
 	sprintDepH := handlers.NewSprintDepHandlers(deps.DB)
 	emailSender := email.NewSender(deps.Config.ResendAPIKey, "PlanA <onboarding@resend.dev>")
 	invH     := handlers.NewInvitationHandlers(deps.DB, deps.Auth, deps.Config, emailSender)
+	wsH      := handlers.NewWorkflowStateHandlers(deps.DB)
+	thH      := handlers.NewTransitionHookHandlers(deps.DB)
+	pwsH     := handlers.NewProjectWorkflowStateHandlers(deps.DB)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
 	vcsWebH  := handlers.NewVCSWebhookHandlers(deps.DB, vcsEncryptor, deps.Config.FrontendURL)
@@ -144,6 +147,26 @@ func New(deps *Dependencies) http.Handler {
 					r.Delete("/", orgH.Delete)
 					r.Post("/archive", orgH.Archive)
 					r.Post("/unarchive", orgH.Unarchive)
+
+					// Workflow states (org-level)
+					r.Route("/workflow-states", func(r chi.Router) {
+						r.Get("/", wsH.List)
+						r.Post("/", wsH.Create)
+						r.Post("/reorder", wsH.Reorder)
+						r.Route("/{stateID}", func(r chi.Router) {
+							r.Patch("/", wsH.Update)
+							r.Delete("/", wsH.Delete)
+						})
+					})
+
+					// Transition hooks (org-level)
+					r.Route("/transition-hooks", func(r chi.Router) {
+						r.Get("/", thH.List)
+						r.Post("/", thH.Create)
+						r.Route("/{hookID}", func(r chi.Router) {
+							r.Delete("/", thH.Delete)
+						})
+					})
 
 					// Initiatives (cross-team, org-scoped)
 					r.Route("/initiatives", func(r chi.Router) {
@@ -250,6 +273,12 @@ func New(deps *Dependencies) http.Handler {
 					r.Get("/{resultID}", testH.Get)
 					r.Post("/junit", testH.ImportJUnit)
 					r.Post("/webhook", testH.Webhook)
+				})
+
+				// Project workflow states (subset of org states)
+				r.Route("/workflow-states", func(r chi.Router) {
+					r.Get("/", pwsH.List)
+					r.Post("/subset", pwsH.SetSubset)
 				})
 
 				// VCS bulk summary for board cards

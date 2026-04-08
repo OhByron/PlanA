@@ -207,16 +207,20 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 		// Sprint metrics
 		var totalItems, doneItems int
 		_ = h.db.QueryRow(r.Context(),
-			`SELECT COUNT(*), COUNT(*) FILTER (WHERE wi.status IN ('done', 'cancelled'))
-			 FROM sprint_items si JOIN work_items wi ON wi.id = si.work_item_id
+			`SELECT COUNT(*), COUNT(*) FILTER (WHERE ws.is_terminal = TRUE OR wi.is_cancelled = TRUE)
+			 FROM sprint_items si
+			 JOIN work_items wi ON wi.id = si.work_item_id
+			 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
 			 WHERE si.sprint_id = $1`, *sprintID,
 		).Scan(&totalItems, &doneItems)
 
 		var totalPoints, donePoints int
 		_ = h.db.QueryRow(r.Context(),
 			`SELECT COALESCE(SUM(wi.story_points), 0),
-			        COALESCE(SUM(wi.story_points) FILTER (WHERE wi.status IN ('done', 'cancelled')), 0)
-			 FROM sprint_items si JOIN work_items wi ON wi.id = si.work_item_id
+			        COALESCE(SUM(wi.story_points) FILTER (WHERE ws.is_terminal = TRUE OR wi.is_cancelled = TRUE), 0)
+			 FROM sprint_items si
+			 JOIN work_items wi ON wi.id = si.work_item_id
+			 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
 			 WHERE si.sprint_id = $1`, *sprintID,
 		).Scan(&totalPoints, &donePoints)
 
@@ -258,9 +262,11 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 	var openDefects, closedDefects int
 	_ = h.db.QueryRow(r.Context(),
 		`SELECT
-			COUNT(*) FILTER (WHERE status NOT IN ('done', 'cancelled')),
-			COUNT(*) FILTER (WHERE status IN ('done', 'cancelled'))
-		 FROM work_items WHERE project_id = $1 AND type = 'bug'`, projectID,
+			COUNT(*) FILTER (WHERE ws.is_terminal = FALSE AND wi.is_cancelled = FALSE),
+			COUNT(*) FILTER (WHERE ws.is_terminal = TRUE OR wi.is_cancelled = TRUE)
+		 FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND wi.type = 'bug'`, projectID,
 	).Scan(&openDefects, &closedDefects)
 	dashboard["defects"] = map[string]int{
 		"open":   openDefects,

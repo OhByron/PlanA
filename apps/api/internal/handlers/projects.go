@@ -17,12 +17,12 @@ import (
 const projectColumns = `id, team_id, name, slug, description, methodology,
 	status, due_date, contact_name, contact_email, contact_phone,
 	sprint_duration_weeks, default_project_months, default_epic_weeks,
-	archived_at, retention_days, merge_transition_status, created_at, updated_at`
+	archived_at, retention_days, pr_open_transition_state_id, pr_merge_transition_state_id, created_at, updated_at`
 
 const projectColumnsAliased = `p.id, p.team_id, p.name, p.slug, p.description, p.methodology,
 	p.status, p.due_date, p.contact_name, p.contact_email, p.contact_phone,
 	p.sprint_duration_weeks, p.default_project_months, p.default_epic_weeks,
-	p.archived_at, p.retention_days, p.merge_transition_status, p.created_at, p.updated_at`
+	p.archived_at, p.retention_days, p.pr_open_transition_state_id, p.pr_merge_transition_state_id, p.created_at, p.updated_at`
 
 // Project represents a project row returned to clients.
 type Project struct {
@@ -42,9 +42,10 @@ type Project struct {
 	DefaultEpicWeeks    int        `json:"default_epic_weeks"`
 	ArchivedAt             *time.Time `json:"archived_at"`
 	RetentionDays          int        `json:"retention_days"`
-	MergeTransitionStatus  *string    `json:"merge_transition_status"`
-	CreatedAt              time.Time  `json:"created_at"`
-	UpdatedAt              time.Time  `json:"updated_at"`
+	PROpenTransitionStateID  *string   `json:"pr_open_transition_state_id"`
+	PRMergeTransitionStateID *string   `json:"pr_merge_transition_state_id"`
+	CreatedAt                time.Time `json:"created_at"`
+	UpdatedAt                time.Time `json:"updated_at"`
 }
 
 func (p *Project) scanFields() []any {
@@ -52,7 +53,8 @@ func (p *Project) scanFields() []any {
 		&p.ID, &p.TeamID, &p.Name, &p.Slug, &p.Description, &p.Methodology,
 		&p.Status, &p.DueDate, &p.ContactName, &p.ContactEmail, &p.ContactPhone,
 		&p.SprintDurationWeeks, &p.DefaultProjectMonths, &p.DefaultEpicWeeks,
-		&p.ArchivedAt, &p.RetentionDays, &p.MergeTransitionStatus, &p.CreatedAt, &p.UpdatedAt,
+		&p.ArchivedAt, &p.RetentionDays, &p.PROpenTransitionStateID, &p.PRMergeTransitionStateID,
+		&p.CreatedAt, &p.UpdatedAt,
 	}
 }
 
@@ -244,7 +246,8 @@ type updateProjectRequest struct {
 	DefaultProjectMonths     *int    `json:"default_project_months"`
 	DefaultEpicWeeks         *int    `json:"default_epic_weeks"`
 	RetentionDays            *int    `json:"retention_days"`
-	MergeTransitionStatus    *string `json:"merge_transition_status"`
+	PROpenTransitionStateID  *string `json:"pr_open_transition_state_id"`
+	PRMergeTransitionStateID *string `json:"pr_merge_transition_state_id"`
 }
 
 func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
@@ -322,16 +325,23 @@ func (h *ProjectHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		args = append(args, *body.RetentionDays)
 		argN++
 	}
-	if body.MergeTransitionStatus != nil {
-		val := *body.MergeTransitionStatus
-		if val == "" || val == "disabled" {
-			fields = append(fields, fmt.Sprintf("merge_transition_status = $%d", argN))
-			args = append(args, nil)
+	if body.PROpenTransitionStateID != nil {
+		if *body.PROpenTransitionStateID == "" {
+			fields = append(fields, "pr_open_transition_state_id = NULL")
 		} else {
-			fields = append(fields, fmt.Sprintf("merge_transition_status = $%d", argN))
-			args = append(args, val)
+			fields = append(fields, fmt.Sprintf("pr_open_transition_state_id = $%d", argN))
+			args = append(args, *body.PROpenTransitionStateID)
+			argN++
 		}
-		argN++
+	}
+	if body.PRMergeTransitionStateID != nil {
+		if *body.PRMergeTransitionStateID == "" {
+			fields = append(fields, "pr_merge_transition_state_id = NULL")
+		} else {
+			fields = append(fields, fmt.Sprintf("pr_merge_transition_state_id = $%d", argN))
+			args = append(args, *body.PRMergeTransitionStateID)
+			argN++
+		}
 	}
 
 	if len(fields) == 0 {

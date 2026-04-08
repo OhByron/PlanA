@@ -26,8 +26,7 @@ import { CommentsSection } from '../../components/comments-section';
 import { TestResultsSection } from '../../components/test-results-section';
 import { VCSSection } from '../../components/vcs-section';
 import { DependenciesSection } from '../../components/dependencies-section';
-
-const STATUSES: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review', 'done', 'cancelled'];
+import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 const TYPES: WorkItemType[] = ['story', 'bug', 'task'];
 
@@ -55,6 +54,7 @@ export function WorkItemDetailPage() {
   // Project members for assignee dropdown
   const { data: projectMembers = [] } = useProjectMembers(projectId);
   const { data: epics = [] } = useEpics(projectId);
+  const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
 
   // Calculated points for stories (sum of child task points)
   const childTasksForPoints = allItems.filter((i) => i.parentId === workItemId);
@@ -396,7 +396,7 @@ export function WorkItemDetailPage() {
         </section>
 
         {/* Estimation votes (tasks/bugs in backlog only — once work starts, estimation is done) */}
-        {item.type !== 'story' && item.status === 'backlog' && (
+        {item.type !== 'story' && item.stateIsInitial && (
           <EstimationVotes workItemId={workItemId} projectId={projectId} currentPoints={item.storyPoints} />
         )}
 
@@ -493,16 +493,31 @@ export function WorkItemDetailPage() {
         {/* Status */}
         <FieldGroup label={t('workItemDetail.statusLabel')}>
           <Select
-            value={item.status}
-            onChange={(e) => patchField({ status: e.target.value })}
+            value={item.workflowStateId}
+            onChange={(e) => patchField({ workflowStateId: e.target.value })}
             aria-label="Status"
           >
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {t(`status.${s}`)}
+            {workflowStates.map((s) => (
+              <option key={s.id} value={s.id}>
+                {t(`status.${s.slug}`, { defaultValue: s.name })}
               </option>
             ))}
           </Select>
+          {!item.isCancelled ? (
+            <button
+              onClick={() => patchField({ isCancelled: true })}
+              className="mt-1 text-xs text-red-500 hover:text-red-700"
+            >
+              {t('workItemDetail.cancel') ?? 'Cancel item'}
+            </button>
+          ) : (
+            <button
+              onClick={() => patchField({ isCancelled: false })}
+              className="mt-1 text-xs text-gray-500 hover:text-gray-700"
+            >
+              {t('workItemDetail.uncancel') ?? 'Restore item'}
+            </button>
+          )}
         </FieldGroup>
 
         {/* Type */}
@@ -595,7 +610,7 @@ export function WorkItemDetailPage() {
             onChange={(e) => patchField({ dueDate: e.target.value || '' })}
             aria-label="Due date"
           />
-          {item.dueDate && new Date(item.dueDate) < new Date() && item.status !== 'done' && item.status !== 'cancelled' && (
+          {item.dueDate && new Date(item.dueDate) < new Date() && !item.stateIsTerminal && !item.isCancelled && (
             <p className="mt-1 text-xs font-medium text-red-500">{t('workItemDetail.overdue')}</p>
           )}
         </FieldGroup>
@@ -685,7 +700,7 @@ export function WorkItemDetailPage() {
               .filter((d) => d.type === 'depends_on' && d.sourceId === workItemId)
               .filter((d) => {
                 const target = allItems.find((i) => i.id === d.targetId);
-                return target && target.status !== 'done' && target.status !== 'cancelled';
+                return target && !target.stateIsTerminal && !target.isCancelled;
               });
 
             if (blockers.length > 0) {
@@ -981,7 +996,7 @@ function ChildTasksSection({
             {assignee && (
               <span className="text-xs text-gray-500">{assignee.name} ({assignee.jobRole.toUpperCase()})</span>
             )}
-            <StatusBadge status={task.status} />
+            <StatusBadge stateName={task.stateName} stateSlug={task.stateSlug} stateColor={task.stateColor} isCancelled={task.isCancelled} />
             <span className="w-8 text-center rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
               {task.storyPoints ?? '—'}
             </span>

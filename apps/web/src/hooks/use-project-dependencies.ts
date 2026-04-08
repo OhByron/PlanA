@@ -15,7 +15,7 @@ export interface BlockedInfo {
  * Computes which items are blocked based on hard `depends_on` where the target isn't done.
  */
 export function useProjectBlockedStatus(projectId: string, items: WorkItem[]) {
-  const itemStatusMap = new Map(items.map((i) => [i.id, i.status]));
+  const itemTerminalMap = new Map(items.map((i) => [i.id, { stateIsTerminal: i.stateIsTerminal, isCancelled: i.isCancelled }]));
 
   const { data } = useQuery({
     queryKey: ['project-dependencies', projectId],
@@ -36,8 +36,8 @@ export function useProjectBlockedStatus(projectId: string, items: WorkItem[]) {
   for (const dep of deps) {
     // Only hard depends_on relationships create blocking
     if (dep.type !== 'depends_on' || dep.strength !== 'hard') continue;
-    const targetStatus = itemStatusMap.get(dep.targetId);
-    if (targetStatus && targetStatus !== 'done' && targetStatus !== 'cancelled') {
+    const targetState = itemTerminalMap.get(dep.targetId);
+    if (targetState && !targetState.stateIsTerminal && !targetState.isCancelled) {
       blockedItems.add(dep.sourceId);
       const existing = blockerMap.get(dep.sourceId) ?? [];
       existing.push({ id: dep.targetId, title: dep.targetTitle });

@@ -9,9 +9,9 @@ import {
   useTestVCSConnection,
   type VCSConnection,
 } from '../../hooks/use-vcs';
+import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api-client';
-import { toProject } from '../../lib/api-transforms';
 
 export function VCSSettingsPage() {
   const { t } = useTranslation();
@@ -36,25 +36,27 @@ export function VCSSettingsPage() {
 
 function MergeTransitionSection({ projectId }: { projectId: string }) {
   const { t } = useTranslation();
+  const { data: states = [] } = useProjectWorkflowStates(projectId);
   const { data: project } = useQuery({
     queryKey: ['project', projectId],
     queryFn: async () => {
       const raw = await api.get<Record<string, unknown>>(`/projects/${projectId}`);
-      return toProject(raw);
+      return raw;
     },
   });
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const currentValue = (project as Record<string, unknown> | undefined)?.mergeTransitionStatus as string | null | undefined;
+  const prOpenStateId = (project as Record<string, unknown> | undefined)?.pr_open_transition_state_id as string | null ?? '';
+  const prMergeStateId = (project as Record<string, unknown> | undefined)?.pr_merge_transition_state_id as string | null ?? '';
 
-  const handleChange = async (value: string) => {
+  const handleChange = async (field: string, value: string) => {
     setSaving(true);
     setSaved(false);
     try {
       await api.patch(`/projects/${projectId}`, {
-        merge_transition_status: value || 'disabled',
+        [field]: value || null,
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
@@ -67,16 +69,37 @@ function MergeTransitionSection({ projectId }: { projectId: string }) {
     <section>
       <h2 className="mb-1 text-sm font-semibold text-gray-700">{t('vcs.mergeTransition')}</h2>
       <p className="mb-3 text-xs text-gray-500">{t('vcs.mergeTransitionDesc')}</p>
-      <div className="flex items-center gap-3">
-        <Select
-          value={currentValue ?? 'done'}
-          onChange={(e) => handleChange(e.target.value)}
-          disabled={saving}
-        >
-          <option value="done">Done</option>
-          <option value="in_review">In Review</option>
-          <option value="disabled">{t('vcs.disabled')}</option>
-        </Select>
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-600 w-40">{t('vcs.onPROpen') ?? 'When PR opens:'}</span>
+          <Select
+            value={prOpenStateId}
+            onChange={(e) => handleChange('pr_open_transition_state_id', e.target.value)}
+            disabled={saving}
+          >
+            <option value="">{t('vcs.disabled')}</option>
+            {states.map((s) => (
+              <option key={s.id} value={s.id}>
+                {t(`status.${s.slug}`, { defaultValue: s.name })}
+              </option>
+            ))}
+          </Select>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-600 w-40">{t('vcs.onPRMerge') ?? 'When PR merges:'}</span>
+          <Select
+            value={prMergeStateId}
+            onChange={(e) => handleChange('pr_merge_transition_state_id', e.target.value)}
+            disabled={saving}
+          >
+            <option value="">{t('vcs.disabled')}</option>
+            {states.map((s) => (
+              <option key={s.id} value={s.id}>
+                {t(`status.${s.slug}`, { defaultValue: s.name })}
+              </option>
+            ))}
+          </Select>
+        </div>
         {saved && <span className="text-xs text-green-600">{t('common.saved')}</span>}
       </div>
     </section>

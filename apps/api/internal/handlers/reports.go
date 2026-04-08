@@ -77,10 +77,12 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	_ = h.db.QueryRow(r.Context(),
 		`SELECT
 			COUNT(*),
-			COUNT(*) FILTER (WHERE status = 'done'),
-			COALESCE(SUM(story_points), 0),
-			COALESCE(SUM(story_points) FILTER (WHERE status = 'done'), 0)
-		 FROM work_items WHERE project_id = $1 AND type IN ('story', 'task')`, projectID,
+			COUNT(*) FILTER (WHERE ws.is_terminal = true),
+			COALESCE(SUM(wi.story_points), 0),
+			COALESCE(SUM(wi.story_points) FILTER (WHERE ws.is_terminal = true), 0)
+		 FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND wi.type IN ('story', 'task')`, projectID,
 	).Scan(&totalStories, &doneStories, &totalPoints, &donePoints)
 
 	report["metrics"] = map[string]any{
@@ -130,13 +132,14 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	eRows, _ := h.db.Query(r.Context(),
 		`SELECT e.title,
 			COUNT(DISTINCT wi.id),
-			COUNT(DISTINCT wi.id) FILTER (WHERE wi.status = 'done'),
+			COUNT(DISTINCT wi.id) FILTER (WHERE ws.is_terminal = true),
 			COUNT(DISTINCT ac.id),
 			CASE WHEN COUNT(DISTINCT wi.id) = 0 THEN 0
 			     ELSE (COUNT(DISTINCT CASE WHEN tr.id IS NOT NULL THEN wi.id END) * 100 / COUNT(DISTINCT wi.id))
 			END
 		 FROM epics e
 		 LEFT JOIN work_items wi ON wi.epic_id = e.id AND wi.type = 'story'
+		 LEFT JOIN workflow_states ws ON ws.id = wi.workflow_state_id
 		 LEFT JOIN acceptance_criteria ac ON ac.work_item_id = wi.id
 		 LEFT JOIN test_results tr ON tr.work_item_id = wi.id
 		 WHERE e.project_id = $1
@@ -159,10 +162,12 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	_ = h.db.QueryRow(r.Context(),
 		`SELECT
 			COUNT(*),
-			COUNT(*) FILTER (WHERE status NOT IN ('done', 'cancelled')),
-			COUNT(*) FILTER (WHERE status IN ('done', 'cancelled')),
-			COUNT(*) FILTER (WHERE priority = 'urgent' AND status NOT IN ('done', 'cancelled'))
-		 FROM work_items WHERE project_id = $1 AND type = 'bug'`, projectID,
+			COUNT(*) FILTER (WHERE ws.is_terminal = FALSE AND wi.is_cancelled = FALSE),
+			COUNT(*) FILTER (WHERE ws.is_terminal = TRUE OR wi.is_cancelled = TRUE),
+			COUNT(*) FILTER (WHERE wi.priority = 'urgent' AND ws.is_terminal = FALSE AND wi.is_cancelled = FALSE)
+		 FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND wi.type = 'bug'`, projectID,
 	).Scan(&ds.Total, &ds.Open, &ds.Resolved, &ds.Critical)
 	report["defects"] = ds
 
@@ -195,10 +200,12 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 
 	var blocked []blockedItem
 	bRows, _ := h.db.Query(r.Context(),
-		`SELECT title, type, COALESCE(blocked_reason, 'Has unresolved dependency')
-		 FROM work_items
-		 WHERE project_id = $1 AND is_blocked = true AND status NOT IN ('done', 'cancelled')
-		 ORDER BY priority`, projectID)
+		`SELECT wi.title, wi.type, COALESCE(wi.blocked_reason, 'Has unresolved dependency')
+		 FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND wi.is_blocked = true
+		   AND ws.is_terminal = FALSE AND wi.is_cancelled = FALSE
+		 ORDER BY wi.priority`, projectID)
 	if bRows != nil {
 		for bRows.Next() {
 			var b blockedItem

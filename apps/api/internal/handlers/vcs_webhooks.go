@@ -279,7 +279,7 @@ func (h *VCSWebhookHandlers) processPullRequest(ctx context.Context, conn *connR
 
 	// Auto-transition to in_review when a non-draft PR is opened
 	if evt.State == "open" && !evt.Draft && workItemID != nil {
-		h.transitionToInReview(ctx, *workItemID, evt.ExternalID)
+		h.transitionToInReview(ctx, conn.ProjectID, *workItemID, evt.ExternalID)
 	}
 
 	// Post a bot comment linking back to PlanA on new PRs
@@ -351,64 +351,30 @@ func (h *VCSWebhookHandlers) processCheckSuite(ctx context.Context, conn *connRe
 // ---------- Auto-transition ----------
 
 func (h *VCSWebhookHandlers) autoTransition(ctx context.Context, projectID, workItemID string, prNumber int64) {
-	var targetStatus *string
+	var targetStateID *string
 	err := h.db.QueryRow(ctx,
-		`SELECT merge_transition_status FROM projects WHERE id = $1`, projectID,
-	).Scan(&targetStatus)
-	if err != nil || targetStatus == nil {
+		`SELECT pr_merge_transition_state_id FROM projects WHERE id = $1`, projectID,
+	).Scan(&targetStateID)
+	if err != nil || targetStateID == nil {
 		return // disabled or project not found
 	}
 
+	// Only transition if not cancelled and not already at/past target
 	tag, err := h.db.Exec(ctx,
-		`UPDATE work_items SET status = $1
-		  WHERE id = $2 AND status NOT IN ($1, 'cancelled')`,
-		*targetStatus, workItemID)
+		`UPDATE work_items SET workflow_state_id = $1, updated_at = NOW()
+		  WHERE id = $2 AND is_cancelled = FALSE
+		    AND workflow_state_id != $1`,
+		*targetStateID, workItemID)
 	if err != nil {
 		slog.Error("vcs_webhooks: auto-transition failed", "workItemID", workItemID, "error", err)
 		return
 	}
 
 	if tag.RowsAffected() > 0 {
+		var stateName string
+		_ = h.db.QueryRow(ctx, `SELECT name FROM workflow_states WHERE id = $1`, *targetStateID).Scan(&stateName)
 		slog.Info("vcs_webhooks: auto-transitioned work item",
-			"workItemID", workItemID, "status", *targetStatus, "pr", prNumber)
-
-		// Create a notification for the assignee
-		var assigneeID *string
-		var itemNumber *int
-		_ = h.db.QueryRow(ctx,
-			`SELECT assignee_id, item_number FROM work_items WHERE id = $1`, workItemID,
-		).Scan(&assigneeID, &itemNumber)
-
-		if assigneeID != nil {
-			msg := fmt.Sprintf("PR #%d was merged. Work item #%d automatically moved to %s.",
-				prNumber, 0, *targetStatus)
-			if itemNumber != nil {
-				msg = fmt.Sprintf("PR #%d was merged. Work item #%d automatically moved to %s.",
-					prNumber, *itemNumber, *targetStatus)
-			}
-			_, _ = h.db.Exec(ctx,
-				`INSERT INTO notifications (user_id, type, message, work_item_id)
-				 VALUES ($1, 'status_change', $2, $3)`,
-				*assigneeID, msg, workItemID)
-		}
-	}
-}
-
-// transitionToInReview moves a work item to in_review when a PR is opened,
-// but only if the item is currently in backlog, ready, or in_progress.
-func (h *VCSWebhookHandlers) transitionToInReview(ctx context.Context, workItemID string, prNumber int64) {
-	tag, err := h.db.Exec(ctx,
-		`UPDATE work_items SET status = 'in_review'
-		  WHERE id = $1 AND status IN ('backlog', 'ready', 'in_progress')`,
-		workItemID)
-	if err != nil {
-		slog.Error("vcs_webhooks: transition to in_review failed", "workItemID", workItemID, "error", err)
-		return
-	}
-
-	if tag.RowsAffected() > 0 {
-		slog.Info("vcs_webhooks: moved to in_review on PR open",
-			"workItemID", workItemID, "pr", prNumber)
+			"workItemID", workItemID, "state", stateName, "pr", prNumber)
 
 		var assigneeID *string
 		var itemNumber *int
@@ -417,8 +383,57 @@ func (h *VCSWebhookHandlers) transitionToInReview(ctx context.Context, workItemI
 		).Scan(&assigneeID, &itemNumber)
 
 		if assigneeID != nil && itemNumber != nil {
-			msg := fmt.Sprintf("PR #%d opened. Work item #%d moved to in review.",
-				prNumber, *itemNumber)
+			msg := fmt.Sprintf("PR #%d was merged. Work item #%d automatically moved to %s.",
+				prNumber, *itemNumber, stateName)
+			_, _ = h.db.Exec(ctx,
+				`INSERT INTO notifications (user_id, type, message, work_item_id)
+				 VALUES ($1, 'status_change', $2, $3)`,
+				*assigneeID, msg, workItemID)
+		}
+	}
+}
+
+// transitionOnPROpen moves a work item to the configured PR-open state,
+// but only if the item's current state position is less than the target.
+func (h *VCSWebhookHandlers) transitionToInReview(ctx context.Context, projectID, workItemID string, prNumber int64) {
+	var targetStateID *string
+	err := h.db.QueryRow(ctx,
+		`SELECT pr_open_transition_state_id FROM projects WHERE id = $1`, projectID,
+	).Scan(&targetStateID)
+	if err != nil || targetStateID == nil {
+		return // disabled
+	}
+
+	// Only transition forward (current position < target position)
+	tag, err := h.db.Exec(ctx,
+		`UPDATE work_items wi SET workflow_state_id = $1, updated_at = NOW()
+		  FROM workflow_states cur_ws, workflow_states tgt_ws
+		 WHERE wi.id = $2
+		   AND cur_ws.id = wi.workflow_state_id
+		   AND tgt_ws.id = $1
+		   AND cur_ws.position < tgt_ws.position
+		   AND wi.is_cancelled = FALSE`,
+		*targetStateID, workItemID)
+	if err != nil {
+		slog.Error("vcs_webhooks: PR open transition failed", "workItemID", workItemID, "error", err)
+		return
+	}
+
+	if tag.RowsAffected() > 0 {
+		var stateName string
+		_ = h.db.QueryRow(ctx, `SELECT name FROM workflow_states WHERE id = $1`, *targetStateID).Scan(&stateName)
+		slog.Info("vcs_webhooks: moved on PR open",
+			"workItemID", workItemID, "state", stateName, "pr", prNumber)
+
+		var assigneeID *string
+		var itemNumber *int
+		_ = h.db.QueryRow(ctx,
+			`SELECT assignee_id, item_number FROM work_items WHERE id = $1`, workItemID,
+		).Scan(&assigneeID, &itemNumber)
+
+		if assigneeID != nil && itemNumber != nil {
+			msg := fmt.Sprintf("PR #%d opened. Work item #%d moved to %s.",
+				prNumber, *itemNumber, stateName)
 			_, _ = h.db.Exec(ctx,
 				`INSERT INTO notifications (user_id, type, message, work_item_id)
 				 VALUES ($1, 'status_change', $2, $3)`,

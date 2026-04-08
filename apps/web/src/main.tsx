@@ -37,6 +37,8 @@ import { GraphPage } from './pages/project/graph';
 import { GanttPage } from './pages/project/gantt';
 import { CalendarPage } from './pages/project/calendar';
 import { VCSSettingsPage } from './pages/project/vcs-settings';
+import { OrgWorkflowPage } from './pages/org-workflow';
+import { OrgTransitionHooksPage } from './pages/org-transition-hooks';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -124,6 +126,18 @@ const orgDetailRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/orgs/$orgId',
   component: OrgDetailPage,
+});
+
+const orgWorkflowRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/orgs/$orgId/workflow',
+  component: OrgWorkflowPage,
+});
+
+const orgTransitionHooksRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/orgs/$orgId/hooks',
+  component: OrgTransitionHooksPage,
 });
 
 const archiveRoute = createRoute({
@@ -243,6 +257,8 @@ const routeTree = rootRoute.addChildren([
     myWorkRoute,
     orgsRoute,
     orgDetailRoute,
+    orgWorkflowRoute,
+    orgTransitionHooksRoute,
     archiveRoute,
     projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, teamRoute, settingsRoute, vcsSettingsRoute, reportViewRoute]),
     epicDetailRoute,

@@ -95,13 +95,14 @@ func (d *DigestRunner) buildDigest(ctx context.Context, userID, userName string)
 	// 1. Items assigned to this user that were updated in the last 24h
 	since := time.Now().Add(-24 * time.Hour)
 	rows, err := d.db.Query(ctx, `
-		SELECT wi.title, wi.status, wi.priority, p.name AS project_name
+		SELECT wi.title, ws.name AS state_name, wi.priority, p.name AS project_name
 		FROM work_items wi
+		JOIN workflow_states ws ON ws.id = wi.workflow_state_id
 		JOIN project_members pm ON pm.id = wi.assignee_id
 		JOIN projects p ON p.id = wi.project_id
 		WHERE pm.user_id = $1
 		  AND wi.updated_at > $2
-		  AND wi.status NOT IN ('done', 'cancelled')
+		  AND ws.is_terminal = FALSE AND wi.is_cancelled = FALSE
 		ORDER BY p.name, wi.priority
 	`, userID, since)
 	if err != nil && err != pgx.ErrNoRows {
