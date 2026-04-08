@@ -46,7 +46,8 @@
     "graph": "グラフ",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "バージョン管理"
+    "vcs": "バージョン管理",
+    "releases": "リリース"
   },
   "graph": {
     "hardDependency": "強い依存関係",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "リリース",
+    "create": "新規リリース",
+    "name": "名前",
+    "version": "バージョン",
+    "includeSprints": "スプリントを含める",
+    "noReleases": "リリースはまだありません。完了した作業をまとめるために作成してください。",
+    "backToList": "すべてのリリース",
+    "publish": "公開",
+    "shareExternally": "外部に共有",
+    "copyLink": "リンクをコピー",
+    "revokeShare": "取り消し",
+    "sprints": "スプリント",
+    "items": "アイテム",
+    "noItems": "このリリースにアイテムはありません。",
+    "notes": "リリースノート",
+    "generateNotes": "ノートを生成",
+    "enhanceWithAI": "AIで改善",
+    "noNotes": "リリースノートはまだありません。ノートを生成をクリックしてアイテムから作成してください。"
+  },
+  "webhooks": {
+    "title": "送信 Webhooks",
+    "description": "変更が発生すると、PlanA はこれらの URL に POST でイベントデータを送信します。各配信は HMAC-SHA256 で署名されます。",
+    "noWebhooks": "Webhook が設定されていません。",
+    "addWebhook": "Webhook を追加",
+    "secretWarning": "このシークレットを今すぐ保存してください。再度表示されません。X-PlanA-Signature ヘッダーの検証に使用してください。",
+    "test": "テスト",
+    "deliveries": "配信",
+    "noDeliveries": "配信はまだありません。"
   }
 }

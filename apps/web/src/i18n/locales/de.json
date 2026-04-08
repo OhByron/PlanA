@@ -46,7 +46,8 @@
     "graph": "Graph",
     "gantt": "Gantt",
     "calendar": "Kalender",
-    "vcs": "Versionsverwaltung"
+    "vcs": "Versionsverwaltung",
+    "releases": "Releases"
   },
   "graph": {
     "hardDependency": "Harte Abhängigkeit",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint-Dauer",
     "sprintDurationHelp": "Füllt Sprint-Enddaten ab Startdatum automatisch aus.",
     "months": "Monate",
-    "weeks": "Wochen"
+    "weeks": "Wochen",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Releases",
+    "create": "Neues Release",
+    "name": "Name",
+    "version": "Version",
+    "includeSprints": "Sprints einschließen",
+    "noReleases": "Noch keine Releases. Erstellen Sie eines, um abgeschlossene Arbeit zu gruppieren.",
+    "backToList": "Alle Releases",
+    "publish": "Veröffentlichen",
+    "shareExternally": "Extern teilen",
+    "copyLink": "Link kopieren",
+    "revokeShare": "Widerrufen",
+    "sprints": "Sprints",
+    "items": "Elemente",
+    "noItems": "Keine Elemente in diesem Release.",
+    "notes": "Release-Notizen",
+    "generateNotes": "Notizen generieren",
+    "enhanceWithAI": "Mit KI verbessern",
+    "noNotes": "Noch keine Release-Notizen. Klicken Sie auf Notizen generieren, um sie aus den Elementen zu erstellen."
+  },
+  "webhooks": {
+    "title": "Ausgehende Webhooks",
+    "description": "PlanA sendet POST-Ereignisdaten an diese URLs, wenn Änderungen auftreten. Jede Zustellung wird mit HMAC-SHA256 signiert.",
+    "noWebhooks": "Keine Webhooks konfiguriert.",
+    "addWebhook": "Webhook hinzufügen",
+    "secretWarning": "Speichern Sie dieses Geheimnis jetzt. Es wird nicht erneut angezeigt. Verwenden Sie es zur Überprüfung von X-PlanA-Signature-Headern.",
+    "test": "Testen",
+    "deliveries": "Zustellungen",
+    "noDeliveries": "Noch keine Zustellungen."
   }
 }

@@ -46,7 +46,8 @@
     "graph": "Graf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Kontrola wersji"
+    "vcs": "Kontrola wersji",
+    "releases": "Wydania"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Wydania",
+    "create": "Nowe wydanie",
+    "name": "Nazwa",
+    "version": "Wersja",
+    "includeSprints": "Dołącz sprinty",
+    "noReleases": "Brak wydań. Utwórz jedno, aby zgrupować ukończoną pracę.",
+    "backToList": "Wszystkie wydania",
+    "publish": "Opublikuj",
+    "shareExternally": "Udostępnij zewnętrznie",
+    "copyLink": "Kopiuj link",
+    "revokeShare": "Cofnij",
+    "sprints": "Sprinty",
+    "items": "Elementy",
+    "noItems": "Brak elementów w tym wydaniu.",
+    "notes": "Notatki wydania",
+    "generateNotes": "Generuj notatki",
+    "enhanceWithAI": "Ulepsz z AI",
+    "noNotes": "Brak notatek wydania. Kliknij Generuj notatki, aby utworzyć je z elementów."
+  },
+  "webhooks": {
+    "title": "Wychodzące Webhooks",
+    "description": "PlanA wyśle dane zdarzeń metodą POST na te adresy URL, gdy wystąpią zmiany. Każda dostawa jest podpisana HMAC-SHA256.",
+    "noWebhooks": "Brak skonfigurowanych webhooków.",
+    "addWebhook": "Dodaj Webhook",
+    "secretWarning": "Zapisz ten sekret teraz. Nie zostanie ponownie wyświetlony. Użyj go do weryfikacji nagłówków X-PlanA-Signature.",
+    "test": "Testuj",
+    "deliveries": "Dostawy",
+    "noDeliveries": "Brak dostaw."
   }
 }

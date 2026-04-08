@@ -46,7 +46,8 @@
     "graph": "Graphe",
     "gantt": "Gantt",
     "calendar": "Calendrier",
-    "vcs": "Gestion de versions"
+    "vcs": "Gestion de versions",
+    "releases": "Versions"
   },
   "graph": {
     "hardDependency": "Dépendance forte",
@@ -893,7 +894,8 @@
     "sprintDuration": "Durée du sprint",
     "sprintDurationHelp": "Remplit automatiquement les dates de fin de sprint.",
     "months": "mois",
-    "weeks": "semaines"
+    "weeks": "semaines",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Versions",
+    "create": "Nouvelle version",
+    "name": "Nom",
+    "version": "Version",
+    "includeSprints": "Inclure les sprints",
+    "noReleases": "Aucune version pour le moment. Créez-en une pour regrouper le travail terminé.",
+    "backToList": "Toutes les versions",
+    "publish": "Publier",
+    "shareExternally": "Partager en externe",
+    "copyLink": "Copier le lien",
+    "revokeShare": "Révoquer",
+    "sprints": "Sprints",
+    "items": "Éléments",
+    "noItems": "Aucun élément dans cette version.",
+    "notes": "Notes de version",
+    "generateNotes": "Générer les notes",
+    "enhanceWithAI": "Améliorer avec l'IA",
+    "noNotes": "Pas encore de notes de version. Cliquez sur Générer les notes pour les créer à partir des éléments."
+  },
+  "webhooks": {
+    "title": "Webhooks sortants",
+    "description": "PlanA enverra des données d'événements par POST à ces URLs lorsque des modifications surviennent. Chaque livraison est signée avec HMAC-SHA256.",
+    "noWebhooks": "Aucun webhook configuré.",
+    "addWebhook": "Ajouter un Webhook",
+    "secretWarning": "Enregistrez ce secret maintenant. Il ne sera plus affiché. Utilisez-le pour vérifier les en-têtes X-PlanA-Signature.",
+    "test": "Tester",
+    "deliveries": "Livraisons",
+    "noDeliveries": "Aucune livraison pour le moment."
   }
 }

@@ -46,7 +46,8 @@
     "graph": "Graf",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "Versionsstyring"
+    "vcs": "Versionsstyring",
+    "releases": "Udgivelser"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Udgivelser",
+    "create": "Ny udgivelse",
+    "name": "Navn",
+    "version": "Version",
+    "includeSprints": "Inkludér sprints",
+    "noReleases": "Ingen udgivelser endnu. Opret en for at gruppere afsluttet arbejde.",
+    "backToList": "Alle udgivelser",
+    "publish": "Publicér",
+    "shareExternally": "Del eksternt",
+    "copyLink": "Kopiér link",
+    "revokeShare": "Tilbagekald",
+    "sprints": "Sprints",
+    "items": "Elementer",
+    "noItems": "Ingen elementer i denne udgivelse.",
+    "notes": "Udgivelsesnoter",
+    "generateNotes": "Generér noter",
+    "enhanceWithAI": "Forbedr med AI",
+    "noNotes": "Ingen udgivelsesnoter endnu. Klik på Generér noter for at oprette dem fra elementerne."
+  },
+  "webhooks": {
+    "title": "Udgående Webhooks",
+    "description": "PlanA sender POST-hændelsesdata til disse URL'er, når der sker ændringer. Hver levering signeres med HMAC-SHA256.",
+    "noWebhooks": "Ingen webhooks konfigureret.",
+    "addWebhook": "Tilføj Webhook",
+    "secretWarning": "Gem denne hemmelighed nu. Den vises ikke igen. Brug den til at verificere X-PlanA-Signature-headere.",
+    "test": "Test",
+    "deliveries": "Leveringer",
+    "noDeliveries": "Ingen leveringer endnu."
   }
 }

@@ -596,6 +596,27 @@
     "noDeliveries": "No deliveries yet."
   },
 
+  "releases": {
+    "title": "Releases",
+    "create": "New Release",
+    "name": "Name",
+    "version": "Version",
+    "includeSprints": "Include sprints",
+    "noReleases": "No releases yet. Create one to group completed work.",
+    "backToList": "All releases",
+    "publish": "Publish",
+    "shareExternally": "Share externally",
+    "copyLink": "Copy link",
+    "revokeShare": "Revoke",
+    "sprints": "Sprints",
+    "items": "Items",
+    "noItems": "No items in this release.",
+    "notes": "Release Notes",
+    "generateNotes": "Generate notes",
+    "enhanceWithAI": "Enhance with AI",
+    "noNotes": "No release notes yet. Click Generate notes to create them from the items."
+  },
+
   "commandPalette": {
     "placeholder": "Search or type a command...",
     "noResults": "No results found.",

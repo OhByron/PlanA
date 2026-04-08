@@ -46,7 +46,8 @@
     "graph": "ग्राफ",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "संस्करण नियंत्रण"
+    "vcs": "संस्करण नियंत्रण",
+    "releases": "रिलीज़"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "रिलीज़",
+    "create": "नई रिलीज़",
+    "name": "नाम",
+    "version": "संस्करण",
+    "includeSprints": "स्प्रिंट शामिल करें",
+    "noReleases": "अभी तक कोई रिलीज़ नहीं। पूर्ण कार्य को समूहित करने के लिए एक बनाएं।",
+    "backToList": "सभी रिलीज़",
+    "publish": "प्रकाशित करें",
+    "shareExternally": "बाहरी रूप से साझा करें",
+    "copyLink": "लिंक कॉपी करें",
+    "revokeShare": "रद्द करें",
+    "sprints": "स्प्रिंट",
+    "items": "आइटम",
+    "noItems": "इस रिलीज़ में कोई आइटम नहीं।",
+    "notes": "रिलीज़ नोट्स",
+    "generateNotes": "नोट्स जनरेट करें",
+    "enhanceWithAI": "AI से बेहतर बनाएं",
+    "noNotes": "अभी तक कोई रिलीज़ नोट्स नहीं। आइटम से बनाने के लिए नोट्स जनरेट करें पर क्लिक करें।"
+  },
+  "webhooks": {
+    "title": "आउटबाउंड Webhooks",
+    "description": "परिवर्तन होने पर PlanA इन URLs पर POST के माध्यम से इवेंट डेटा भेजेगा। प्रत्येक डिलीवरी HMAC-SHA256 से हस्ताक्षरित होती है।",
+    "noWebhooks": "कोई webhook कॉन्फ़िगर नहीं किया गया।",
+    "addWebhook": "Webhook जोड़ें",
+    "secretWarning": "इस सीक्रेट को अभी सेव करें। यह दोबारा नहीं दिखाया जाएगा। X-PlanA-Signature हेडर सत्यापित करने के लिए इसका उपयोग करें।",
+    "test": "टेस्ट",
+    "deliveries": "डिलीवरी",
+    "noDeliveries": "अभी तक कोई डिलीवरी नहीं।"
   }
 }

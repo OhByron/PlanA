@@ -46,7 +46,8 @@
     "graph": "Grafo",
     "gantt": "Gantt",
     "calendar": "Calendario",
-    "vcs": "Control de Versiones"
+    "vcs": "Control de Versiones",
+    "releases": "Lanzamientos"
   },
   "graph": {
     "hardDependency": "Dependencia fuerte",
@@ -893,7 +894,8 @@
     "sprintDuration": "Duración del Sprint",
     "sprintDurationHelp": "Rellena automáticamente las fechas de fin del sprint.",
     "months": "meses",
-    "weeks": "semanas"
+    "weeks": "semanas",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "Lanzamientos",
+    "create": "Nuevo lanzamiento",
+    "name": "Nombre",
+    "version": "Versión",
+    "includeSprints": "Incluir sprints",
+    "noReleases": "No hay lanzamientos aún. Crea uno para agrupar el trabajo completado.",
+    "backToList": "Todos los lanzamientos",
+    "publish": "Publicar",
+    "shareExternally": "Compartir externamente",
+    "copyLink": "Copiar enlace",
+    "revokeShare": "Revocar",
+    "sprints": "Sprints",
+    "items": "Elementos",
+    "noItems": "No hay elementos en este lanzamiento.",
+    "notes": "Notas de lanzamiento",
+    "generateNotes": "Generar notas",
+    "enhanceWithAI": "Mejorar con IA",
+    "noNotes": "Aún no hay notas de lanzamiento. Haz clic en Generar notas para crearlas a partir de los elementos."
+  },
+  "webhooks": {
+    "title": "Webhooks salientes",
+    "description": "PlanA enviará datos de eventos mediante POST a estas URLs cuando ocurran cambios. Cada entrega se firma con HMAC-SHA256.",
+    "noWebhooks": "No hay webhooks configurados.",
+    "addWebhook": "Añadir Webhook",
+    "secretWarning": "Guarda este secreto ahora. No se mostrará de nuevo. Úsalo para verificar las cabeceras X-PlanA-Signature.",
+    "test": "Probar",
+    "deliveries": "Entregas",
+    "noDeliveries": "No hay entregas aún."
   }
 }

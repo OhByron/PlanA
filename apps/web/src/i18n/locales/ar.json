@@ -46,7 +46,8 @@
     "graph": "رسم بياني",
     "gantt": "Gantt",
     "calendar": "Calendar",
-    "vcs": "التحكم بالإصدارات"
+    "vcs": "التحكم بالإصدارات",
+    "releases": "الإصدارات"
   },
   "graph": {
     "hardDependency": "Hard Dependency",
@@ -893,7 +894,8 @@
     "sprintDuration": "Sprint Duration",
     "sprintDurationHelp": "Auto-fills sprint end dates from start date.",
     "months": "months",
-    "weeks": "weeks"
+    "weeks": "weeks",
+    "webhooks": "Webhooks"
   },
   "archive": {
     "title": "Archive",
@@ -928,5 +930,35 @@
     "enterKey": "Enter Licence Key",
     "changeKey": "Change Licence Key",
     "invalidKey": "Invalid licence key. Check that you copied the full key."
+  },
+  "releases": {
+    "title": "الإصدارات",
+    "create": "إصدار جديد",
+    "name": "الاسم",
+    "version": "الإصدار",
+    "includeSprints": "تضمين السبرنتات",
+    "noReleases": "لا توجد إصدارات بعد. أنشئ واحدًا لتجميع العمل المكتمل.",
+    "backToList": "جميع الإصدارات",
+    "publish": "نشر",
+    "shareExternally": "مشاركة خارجية",
+    "copyLink": "نسخ الرابط",
+    "revokeShare": "إلغاء المشاركة",
+    "sprints": "السبرنتات",
+    "items": "العناصر",
+    "noItems": "لا توجد عناصر في هذا الإصدار.",
+    "notes": "ملاحظات الإصدار",
+    "generateNotes": "توليد الملاحظات",
+    "enhanceWithAI": "تحسين بالذكاء الاصطناعي",
+    "noNotes": "لا توجد ملاحظات إصدار بعد. انقر على توليد الملاحظات لإنشائها من العناصر."
+  },
+  "webhooks": {
+    "title": "Webhooks الصادرة",
+    "description": "سيرسل PlanA حمولات الأحداث عبر POST إلى هذه العناوين عند حدوث تغييرات. يتم توقيع كل تسليم باستخدام HMAC-SHA256.",
+    "noWebhooks": "لم يتم تكوين أي webhooks.",
+    "addWebhook": "إضافة Webhook",
+    "secretWarning": "احفظ هذا السر الآن. لن يتم عرضه مرة أخرى. استخدمه للتحقق من ترويسات X-PlanA-Signature.",
+    "test": "اختبار",
+    "deliveries": "التسليمات",
+    "noDeliveries": "لا توجد تسليمات بعد."
   }
 }
