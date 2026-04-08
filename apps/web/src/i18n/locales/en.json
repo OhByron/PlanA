@@ -596,6 +596,10 @@
     "noDeliveries": "No deliveries yet."
   },
 
+  "ai": {
+    "notConfigured": "AI is not configured for this project. Go to Settings to set up an AI provider."
+  },
+
   "releases": {
     "title": "Releases",
     "create": "New Release",

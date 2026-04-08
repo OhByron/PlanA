@@ -11,6 +11,8 @@ import { api } from '../../lib/api-client';
 import { TypeIcon } from '../../components/type-icon';
 import { PriorityIndicator } from '../../components/priority-indicator';
 import { StatusBadge } from '../../components/status-badge';
+import { useAIAvailable } from '../../hooks/use-ai-available';
+import { AINotConfigured } from '../../components/ai-not-configured';
 
 const statusColors: Record<string, 'success' | 'default' | 'secondary' | 'outline'> = {
   active: 'success',
@@ -132,6 +134,7 @@ export function SprintDetailPage() {
   const [editGoal, setEditGoal] = useState(false);
   const [goalDraft, setGoalDraft] = useState('');
   const [aiGoalLoading, setAiGoalLoading] = useState(false);
+  const { guardAI, showNotConfigured, dismissNotConfigured } = useAIAvailable(projectId);
 
   const generateGoal = async () => {
     if (!sprint || sprintItems.length === 0) return;
@@ -166,6 +169,7 @@ export function SprintDetailPage() {
   return (
     <div className="flex h-full">
       <div className="flex-1 overflow-y-auto p-6">
+      <AINotConfigured show={showNotConfigured} onDismiss={dismissNotConfigured} />
       {/* Header */}
       <button
         onClick={() => window.history.back()}
@@ -411,7 +415,7 @@ export function SprintDetailPage() {
               <label className="text-xs font-medium text-gray-500">{t('sprintDetail.goalLabel')}</label>
               {sprintItems.length > 0 && (
                 <button
-                  onClick={generateGoal}
+                  onClick={() => guardAI(generateGoal)}
                   disabled={aiGoalLoading}
                   className="rounded bg-brand-50 px-2 py-0.5 text-[10px] font-medium text-brand-600 hover:bg-brand-100 disabled:opacity-50 transition-colors"
                 >

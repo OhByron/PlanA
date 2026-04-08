@@ -29,6 +29,8 @@ import { DependenciesSection } from '../../components/dependencies-section';
 import { ActivityFeed } from '../../components/activity-feed';
 import { useWorkItemActivity } from '../../hooks/use-activity';
 import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
+import { useAIAvailable } from '../../hooks/use-ai-available';
+import { AINotConfigured } from '../../components/ai-not-configured';
 const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 const TYPES: WorkItemType[] = ['story', 'bug', 'task'];
 
@@ -57,6 +59,7 @@ export function WorkItemDetailPage() {
   const { data: projectMembers = [] } = useProjectMembers(projectId);
   const { data: epics = [] } = useEpics(projectId);
   const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
+  const { aiAvailable, guardAI, showNotConfigured, dismissNotConfigured } = useAIAvailable(projectId);
   const { data: activityEntries = [], isLoading: activityLoading } = useWorkItemActivity(workItemId);
 
   // Calculated points for stories (sum of child task points)
@@ -90,6 +93,7 @@ export function WorkItemDetailPage() {
   const [aiQuestions, setAiQuestions] = useState<string[]>([]);
 
   const suggestAC = async () => {
+    if (!aiAvailable) { guardAI(() => {}); return; }
     setAiLoading(true);
     setAiSuggestions([]);
     setAiQuestions([]);
@@ -107,6 +111,7 @@ export function WorkItemDetailPage() {
   };
 
   const suggestFromTest = async () => {
+    if (!aiAvailable) { guardAI(() => {}); return; }
     if (!item?.sourceTestResultId) return;
     setAiDefectLoading(true);
     setAiSuggestions([]);
@@ -171,6 +176,7 @@ export function WorkItemDetailPage() {
     <div className="flex h-full">
       {/* Main content */}
       <div className="flex-1 overflow-y-auto p-6">
+        <AINotConfigured show={showNotConfigured} onDismiss={dismissNotConfigured} />
         {/* Back link */}
         <button
           onClick={() => window.history.back()}

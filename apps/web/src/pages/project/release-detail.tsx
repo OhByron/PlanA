@@ -13,6 +13,8 @@ import {
   useUnshareRelease,
 } from '../../hooks/use-releases';
 import { useWorkItems } from '../../hooks/use-work-items';
+import { useAIAvailable } from '../../hooks/use-ai-available';
+import { AINotConfigured } from '../../components/ai-not-configured';
 import { api } from '../../lib/api-client';
 
 export function ReleaseDetailPage() {
@@ -29,6 +31,7 @@ export function ReleaseDetailPage() {
   const [editingNotes, setEditingNotes] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
   const [showAddItem, setShowAddItem] = useState(false);
+  const { guardAI, showNotConfigured, dismissNotConfigured } = useAIAvailable(projectId);
   const { data: allWorkItems = [] } = useWorkItems(projectId);
   const qc = useQueryClient();
 
@@ -77,6 +80,8 @@ export function ReleaseDetailPage() {
       >
         &larr; {t('releases.backToList') ?? 'All releases'}
       </Link>
+
+      <AINotConfigured show={showNotConfigured} onDismiss={dismissNotConfigured} />
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -209,7 +214,7 @@ export function ReleaseDetailPage() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => enhanceNotes.mutate()}
+                  onClick={() => guardAI(() => enhanceNotes.mutate())}
                   disabled={enhanceNotes.isPending}
                 >
                   {enhanceNotes.isPending ? (t('common.generating') ?? 'Generating...') : (t('releases.enhanceWithAI') ?? 'Enhance with AI')}
