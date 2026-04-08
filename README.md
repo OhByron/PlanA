@@ -135,7 +135,7 @@ Features that lean into PlanA's unique strengths and create separation from comp
 
 - ~~**Sprint Goal AI**~~ **SHIPPED** - "Generate with AI" button on sprint detail generates a business-value focused goal from the sprint's items. Uses the multi-provider AI system (Anthropic, OpenAI, Azure).
 - ~~**Release Management**~~ **SHIPPED** - Group completed sprint items into versioned releases. Template-based note generation grouped by type, AI enhancement for stakeholder-friendly language. Publish to lock, share externally via public token-authenticated page. 26 languages.
-- **Portfolio / Initiative Dashboard** - Cross-project initiative tracking with health indicators, cross-team dependency visibility, and roll-up metrics for programme-level oversight.
+- ~~**Portfolio / Initiative Dashboard**~~ **SHIPPED** - Cross-project metrics aggregation with initiative progress rollup (epics, stories, points), project health table with computed indicators (healthy/at_risk/blocked), summary cards, inline progress bars. No migration needed, purely aggregates existing data.
 - **Mobile Access (PWA)** - A progressive web app covering standup check-ins, quick status updates, and notifications. Covers the majority of mobile use cases without the cost of a native app.
 
 ### Deprioritized (Not Now)
