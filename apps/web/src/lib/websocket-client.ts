@@ -101,7 +101,11 @@ export class RealtimeClient {
     this.setState('connecting');
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.host;
+    // In dev, Vite's HMR can interfere with WS proxy. Connect to API directly if on dev port.
+    let host = window.location.host;
+    if (host.includes(':5173') || host.includes(':5174') || host.includes(':5175') || host.includes(':5176')) {
+      host = host.replace(/:\d+/, ':8080');
+    }
     const url = `${protocol}//${host}/api/ws?token=${encodeURIComponent(this.token)}`;
 
     try {
