@@ -579,11 +579,6 @@
     "hookRule": "When item enters {{state}}, notify {{role}}"
   },
 
-  "settings": {
-    "general": "General",
-    "repositories": "Repositories"
-  },
-
   "projectSettings": {
     "workflowSubsetDesc": "Choose which workflow states this project uses. Backlog and Done are always included.",
     "useAllStates": "Use all states"
@@ -878,6 +873,8 @@
   },
 
   "settings": {
+    "general": "General",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",
