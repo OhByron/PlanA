@@ -193,7 +193,7 @@ func (h *VCSConnectionHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		 RETURNING id, project_id, provider, owner, repo, default_branch, auth_method,
 		           encrypted_token IS NOT NULL, installation_id, enabled, created_by,
 		           created_at, updated_at`,
-		projectID, body.Provider, strings.ToLower(body.Owner), strings.ToLower(body.Repo),
+		projectID, body.Provider, body.Owner, body.Repo,
 		body.DefaultBranch, body.AuthMethod, encryptedToken, body.InstallationID,
 		webhookSecret, claims.UserID,
 	).Scan(
