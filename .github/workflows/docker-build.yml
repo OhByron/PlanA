@@ -5,10 +5,15 @@ on:
     branches: [main]
     tags: ['v*']
 
+permissions:
+  contents: read
+
 jobs:
   build-api:
     name: Build API image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
@@ -27,6 +32,8 @@ jobs:
   build-web:
     name: Build web image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
