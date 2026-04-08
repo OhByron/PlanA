@@ -145,9 +145,9 @@ func NotifyMentions(ctx context.Context, db DBPOOL, publish EventPublishFunc, pr
 // extractText recursively pulls plain text from Tiptap JSON.
 func extractText(data json.RawMessage) string {
 	var node struct {
-		Type    string            `json:"type"`
-		Text    string            `json:"text"`
-		Content json.RawMessage   `json:"content"`
+		Type    string          `json:"type"`
+		Text    string          `json:"text"`
+		Content json.RawMessage `json:"content"`
 	}
 	if err := json.Unmarshal(data, &node); err != nil {
 		// Might be an array

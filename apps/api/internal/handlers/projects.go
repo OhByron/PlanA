@@ -26,26 +26,26 @@ const projectColumnsAliased = `p.id, p.team_id, p.name, p.slug, p.description, p
 
 // Project represents a project row returned to clients.
 type Project struct {
-	ID           string     `json:"id"`
-	TeamID       string     `json:"team_id"`
-	Name         string     `json:"name"`
-	Slug         string     `json:"slug"`
-	Description  *string    `json:"description"`
-	Methodology  string     `json:"methodology"`
-	Status       *string    `json:"status"`
-	DueDate      *time.Time `json:"due_date"`
-	ContactName  *string    `json:"contact_name"`
-	ContactEmail *string    `json:"contact_email"`
-	ContactPhone        *string    `json:"contact_phone"`
-	SprintDurationWeeks int        `json:"sprint_duration_weeks"`
-	DefaultProjectMonths int        `json:"default_project_months"`
-	DefaultEpicWeeks    int        `json:"default_epic_weeks"`
-	ArchivedAt             *time.Time `json:"archived_at"`
-	RetentionDays          int        `json:"retention_days"`
-	PROpenTransitionStateID  *string   `json:"pr_open_transition_state_id"`
-	PRMergeTransitionStateID *string   `json:"pr_merge_transition_state_id"`
-	CreatedAt                time.Time `json:"created_at"`
-	UpdatedAt                time.Time `json:"updated_at"`
+	ID                       string     `json:"id"`
+	TeamID                   string     `json:"team_id"`
+	Name                     string     `json:"name"`
+	Slug                     string     `json:"slug"`
+	Description              *string    `json:"description"`
+	Methodology              string     `json:"methodology"`
+	Status                   *string    `json:"status"`
+	DueDate                  *time.Time `json:"due_date"`
+	ContactName              *string    `json:"contact_name"`
+	ContactEmail             *string    `json:"contact_email"`
+	ContactPhone             *string    `json:"contact_phone"`
+	SprintDurationWeeks      int        `json:"sprint_duration_weeks"`
+	DefaultProjectMonths     int        `json:"default_project_months"`
+	DefaultEpicWeeks         int        `json:"default_epic_weeks"`
+	ArchivedAt               *time.Time `json:"archived_at"`
+	RetentionDays            int        `json:"retention_days"`
+	PROpenTransitionStateID  *string    `json:"pr_open_transition_state_id"`
+	PRMergeTransitionStateID *string    `json:"pr_merge_transition_state_id"`
+	CreatedAt                time.Time  `json:"created_at"`
+	UpdatedAt                time.Time  `json:"updated_at"`
 }
 
 func (p *Project) scanFields() []any {
@@ -234,15 +234,15 @@ func (h *ProjectHandlers) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 type updateProjectRequest struct {
-	Name         *string `json:"name"`
-	Description  *string `json:"description"`
-	Methodology  *string `json:"methodology"`
-	Status       *string `json:"status"`
-	DueDate      *string `json:"due_date"`
-	ContactName  *string `json:"contact_name"`
-	ContactEmail *string `json:"contact_email"`
-	ContactPhone         *string `json:"contact_phone"`
-	SprintDurationWeeks  *int    `json:"sprint_duration_weeks"`
+	Name                     *string `json:"name"`
+	Description              *string `json:"description"`
+	Methodology              *string `json:"methodology"`
+	Status                   *string `json:"status"`
+	DueDate                  *string `json:"due_date"`
+	ContactName              *string `json:"contact_name"`
+	ContactEmail             *string `json:"contact_email"`
+	ContactPhone             *string `json:"contact_phone"`
+	SprintDurationWeeks      *int    `json:"sprint_duration_weeks"`
 	DefaultProjectMonths     *int    `json:"default_project_months"`
 	DefaultEpicWeeks         *int    `json:"default_epic_weeks"`
 	RetentionDays            *int    `json:"retention_days"`

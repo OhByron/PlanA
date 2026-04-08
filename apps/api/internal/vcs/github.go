@@ -233,14 +233,14 @@ func (g *GitHubProvider) parseBranchRef(eventType string, payload []byte) (Event
 type ghPRPayload struct {
 	Action      string `json:"action"`
 	PullRequest struct {
-		Number int64  `json:"number"`
-		Title  string `json:"title"`
-		State  string `json:"state"` // open, closed
-		Draft  bool   `json:"draft"`
-		Merged bool   `json:"merged"`
-		Body   string `json:"body"`
+		Number  int64  `json:"number"`
+		Title   string `json:"title"`
+		State   string `json:"state"` // open, closed
+		Draft   bool   `json:"draft"`
+		Merged  bool   `json:"merged"`
+		Body    string `json:"body"`
 		HTMLURL string `json:"html_url"`
-		Head   struct {
+		Head    struct {
 			Ref string `json:"ref"`
 		} `json:"head"`
 		Base struct {
@@ -322,9 +322,9 @@ func (g *GitHubProvider) parseReview(payload []byte) (Event, error) {
 type ghCheckSuitePayload struct {
 	Action     string `json:"action"`
 	CheckSuite struct {
-		Conclusion  *string `json:"conclusion"` // success, failure, neutral, etc.
-		Status      string  `json:"status"`     // queued, in_progress, completed
-		HTMLURL     string  `json:"html_url"`
+		Conclusion   *string `json:"conclusion"` // success, failure, neutral, etc.
+		Status       string  `json:"status"`     // queued, in_progress, completed
+		HTMLURL      string  `json:"html_url"`
 		PullRequests []struct {
 			Number int64 `json:"number"`
 		} `json:"pull_requests"`

@@ -290,18 +290,18 @@ func (h *TestResultHandlers) Webhook(w http.ResponseWriter, r *http.Request) {
 // ---------- Method 3: List ----------
 
 type testResultRow struct {
-	ID           string     `json:"id"`
-	ProjectID    string     `json:"project_id"`
-	WorkItemID   *string    `json:"work_item_id"`
-	TestName     string     `json:"test_name"`
-	Status       string     `json:"status"`
-	DurationMs   *int       `json:"duration_ms"`
-	ErrorMessage *string    `json:"error_message"`
-	Source       string     `json:"source"`
-	SuiteName    *string    `json:"suite_name"`
-	RunID        *string    `json:"run_id"`
-	ReportedAt   time.Time  `json:"reported_at"`
-	CreatedAt    time.Time  `json:"created_at"`
+	ID           string    `json:"id"`
+	ProjectID    string    `json:"project_id"`
+	WorkItemID   *string   `json:"work_item_id"`
+	TestName     string    `json:"test_name"`
+	Status       string    `json:"status"`
+	DurationMs   *int      `json:"duration_ms"`
+	ErrorMessage *string   `json:"error_message"`
+	Source       string    `json:"source"`
+	SuiteName    *string   `json:"suite_name"`
+	RunID        *string   `json:"run_id"`
+	ReportedAt   time.Time `json:"reported_at"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 func (h *TestResultHandlers) List(w http.ResponseWriter, r *http.Request) {

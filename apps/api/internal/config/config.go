@@ -72,8 +72,16 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("JWT_SECRET must be at least 32 characters")
 	}
 
-	if cfg.Environment == "production" && cfg.VCSEncryptionKey != "" && len(cfg.VCSEncryptionKey) != 64 {
-		return nil, fmt.Errorf("VCS_ENCRYPTION_KEY must be exactly 64 hex characters (32 bytes)")
+	if cfg.Environment == "production" {
+		if cfg.AllowedOrigins == "" {
+			return nil, fmt.Errorf("ALLOWED_ORIGINS is required in production")
+		}
+		if cfg.VCSEncryptionKey == "" {
+			return nil, fmt.Errorf("VCS_ENCRYPTION_KEY is required in production for token encryption")
+		}
+		if len(cfg.VCSEncryptionKey) != 64 {
+			return nil, fmt.Errorf("VCS_ENCRYPTION_KEY must be exactly 64 hex characters (32 bytes)")
+		}
 	}
 
 	return cfg, nil

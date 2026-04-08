@@ -228,7 +228,9 @@ Generate a defect report with description and acceptance criteria for the fix.`,
 	}
 
 	var anthropicResp struct {
-		Content []struct{ Text string `json:"text"` } `json:"content"`
+		Content []struct {
+			Text string `json:"text"`
+		} `json:"content"`
 	}
 	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
 		return nil, fmt.Errorf("parsing response: %w", err)
@@ -321,7 +323,9 @@ Story: %s
 	}
 
 	var anthropicResp struct {
-		Content []struct{ Text string `json:"text"` } `json:"content"`
+		Content []struct {
+			Text string `json:"text"`
+		} `json:"content"`
 	}
 	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
 		return nil, fmt.Errorf("parsing response: %w", err)
@@ -402,7 +406,9 @@ Only include "questions" if the title is genuinely too ambiguous. Otherwise retu
 	}
 
 	var anthropicResp struct {
-		Content []struct{ Text string `json:"text"` } `json:"content"`
+		Content []struct {
+			Text string `json:"text"`
+		} `json:"content"`
 	}
 	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
 		return nil, fmt.Errorf("parsing response: %w", err)
@@ -434,19 +440,31 @@ func (p *AnthropicProvider) RawChat(ctx context.Context, systemPrompt, userPromp
 	}
 	jsonBody, _ := json.Marshal(body)
 	httpReq, err := http.NewRequestWithContext(ctx, "POST", "https://api.anthropic.com/v1/messages", bytes.NewReader(jsonBody))
-	if err != nil { return "", err }
+	if err != nil {
+		return "", err
+	}
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("x-api-key", p.apiKey)
 	httpReq.Header.Set("anthropic-version", "2023-06-01")
 	resp, err := http.DefaultClient.Do(httpReq)
-	if err != nil { return "", err }
+	if err != nil {
+		return "", err
+	}
 	defer resp.Body.Close()
 	respBody, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode != 200 { return "", fmt.Errorf("Anthropic API returned %d: %s", resp.StatusCode, respBody) }
-	var anthropicResp struct {
-		Content []struct{ Text string `json:"text"` } `json:"content"`
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("Anthropic API returned %d: %s", resp.StatusCode, respBody)
 	}
-	if err := json.Unmarshal(respBody, &anthropicResp); err != nil { return "", err }
-	if len(anthropicResp.Content) == 0 { return "", fmt.Errorf("empty response") }
+	var anthropicResp struct {
+		Content []struct {
+			Text string `json:"text"`
+		} `json:"content"`
+	}
+	if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
+		return "", err
+	}
+	if len(anthropicResp.Content) == 0 {
+		return "", fmt.Errorf("empty response")
+	}
 	return anthropicResp.Content[0].Text, nil
 }

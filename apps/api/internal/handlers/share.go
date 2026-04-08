@@ -225,12 +225,12 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 		).Scan(&totalPoints, &donePoints)
 
 		dashboard["sprint"] = map[string]any{
-			"name":        sprintName,
-			"goal":        sprintGoal,
-			"start_date":  sprintStart,
-			"end_date":    sprintEnd,
-			"total_items": totalItems,
-			"done_items":  doneItems,
+			"name":         sprintName,
+			"goal":         sprintGoal,
+			"start_date":   sprintStart,
+			"end_date":     sprintEnd,
+			"total_items":  totalItems,
+			"done_items":   doneItems,
 			"total_points": totalPoints,
 			"done_points":  donePoints,
 		}
@@ -238,15 +238,16 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 
 	// Recently completed items (done in last 14 days)
 	type completedItem struct {
-		Title    string    `json:"title"`
-		Type     string    `json:"type"`
-		DoneAt   time.Time `json:"done_at"`
+		Title  string    `json:"title"`
+		Type   string    `json:"type"`
+		DoneAt time.Time `json:"done_at"`
 	}
 	var completed []completedItem
 	rows, err := h.db.Query(r.Context(),
-		`SELECT title, type, updated_at FROM work_items
-		 WHERE project_id = $1 AND status = 'done'
-		 ORDER BY updated_at DESC LIMIT 20`, projectID)
+		`SELECT wi.title, wi.type, wi.updated_at FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND ws.is_terminal = true
+		 ORDER BY wi.updated_at DESC LIMIT 20`, projectID)
 	if err == nil {
 		for rows.Next() {
 			var c completedItem
@@ -297,8 +298,10 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 	// Overall progress
 	var totalStories, doneStories int
 	_ = h.db.QueryRow(r.Context(),
-		`SELECT COUNT(*), COUNT(*) FILTER (WHERE status = 'done')
-		 FROM work_items WHERE project_id = $1 AND type = 'story'`, projectID,
+		`SELECT COUNT(*), COUNT(*) FILTER (WHERE ws.is_terminal = true)
+		 FROM work_items wi
+		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
+		 WHERE wi.project_id = $1 AND wi.type = 'story'`, projectID,
 	).Scan(&totalStories, &doneStories)
 	dashboard["progress"] = map[string]int{
 		"total_stories": totalStories,

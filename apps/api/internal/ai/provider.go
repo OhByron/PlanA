@@ -49,7 +49,7 @@ type SuggestACRequest struct {
 	ExistingAC       []string // existing AC on this story (Given/When/Then strings)
 	SiblingStories   []string // titles of other stories in the same epic
 	ProjectName      string
-	Language         string   // user's language preference (e.g. "fr", "de", "ja")
+	Language         string // user's language preference (e.g. "fr", "de", "ja")
 }
 
 type SuggestACResponse struct {
@@ -64,14 +64,14 @@ type ACSuggestion struct {
 }
 
 type SuggestDescRequest struct {
-	StoryTitle     string
-	CurrentDesc    string // may be empty
-	EpicTitle      string
+	StoryTitle      string
+	CurrentDesc     string // may be empty
+	EpicTitle       string
 	EpicDescription string
-	SiblingStories []string
-	ProjectName    string
-	StoryType      string // story, bug, task
-	Language       string
+	SiblingStories  []string
+	ProjectName     string
+	StoryType       string // story, bug, task
+	Language        string
 }
 
 type SuggestDescResponse struct {
@@ -111,9 +111,9 @@ type SuggestDecompRequest struct {
 
 // TaskSuggestion is a single suggested child task.
 type TaskSuggestion struct {
-	Title    string `json:"title"`
-	Role     string `json:"role"`     // suggested job_role for assignee (dev, qe, ux, ba)
-	Points   int    `json:"points"`   // suggested story points
+	Title     string `json:"title"`
+	Role      string `json:"role"`      // suggested job_role for assignee (dev, qe, ux, ba)
+	Points    int    `json:"points"`    // suggested story points
 	Rationale string `json:"rationale"` // brief explanation of why this task is needed
 }
 

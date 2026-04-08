@@ -86,10 +86,10 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	).Scan(&totalStories, &doneStories, &totalPoints, &donePoints)
 
 	report["metrics"] = map[string]any{
-		"total_items":    totalStories,
-		"done_items":     doneStories,
-		"total_points":   totalPoints,
-		"done_points":    donePoints,
+		"total_items":  totalStories,
+		"done_items":   doneStories,
+		"total_points": totalPoints,
+		"done_points":  donePoints,
 		"completion_pct": func() int {
 			if totalStories == 0 {
 				return 0
@@ -122,11 +122,11 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	// --------------- Epics breakdown ---------------
 
 	type epicReport struct {
-		Title         string `json:"title"`
-		TotalStories  int    `json:"total_stories"`
-		DoneStories   int    `json:"done_stories"`
-		TotalAC       int    `json:"total_ac"`
-		TestCoverage  int    `json:"test_coverage_pct"`
+		Title        string `json:"title"`
+		TotalStories int    `json:"total_stories"`
+		DoneStories  int    `json:"done_stories"`
+		TotalAC      int    `json:"total_ac"`
+		TestCoverage int    `json:"test_coverage_pct"`
 	}
 	var epics []epicReport
 	eRows, _ := h.db.Query(r.Context(),

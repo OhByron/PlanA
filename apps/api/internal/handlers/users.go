@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-
 	"github.com/OhByron/PlanA/internal/auth"
 )
 

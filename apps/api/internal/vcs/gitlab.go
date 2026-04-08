@@ -59,13 +59,13 @@ func (g *GitLabProvider) ParseEvent(eventType string, payload []byte) (Event, er
 // RegisterWebhook creates a webhook on the GitLab project via the API.
 func (g *GitLabProvider) RegisterWebhook(ctx context.Context, token, owner, repo, url, secret string) (int64, error) {
 	body, _ := json.Marshal(map[string]any{
-		"url":                      url,
-		"token":                    secret,
-		"push_events":              true,
-		"merge_requests_events":    true,
-		"note_events":              false,
-		"pipeline_events":          true,
-		"enable_ssl_verification":  true,
+		"url":                     url,
+		"token":                   secret,
+		"push_events":             true,
+		"merge_requests_events":   true,
+		"note_events":             false,
+		"pipeline_events":         true,
+		"enable_ssl_verification": true,
 	})
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
@@ -220,7 +220,7 @@ type glMRPayload struct {
 		IID          int64      `json:"iid"`
 		Title        string     `json:"title"`
 		State        string     `json:"state"` // opened, closed, merged
-		Draft        bool       `json:"draft"`  // or WorkInProgress
+		Draft        bool       `json:"draft"` // or WorkInProgress
 		WIP          bool       `json:"work_in_progress"`
 		SourceBranch string     `json:"source_branch"`
 		TargetBranch string     `json:"target_branch"`

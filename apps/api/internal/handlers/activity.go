@@ -22,17 +22,17 @@ func NewActivityHandlers(db DBPOOL) *ActivityHandlers {
 }
 
 type ActivityEntry struct {
-	ID           string          `json:"id"`
-	ProjectID    string          `json:"project_id"`
-	WorkItemID   *string         `json:"work_item_id"`
-	SprintID     *string         `json:"sprint_id"`
-	EpicID       *string         `json:"epic_id"`
-	ActorID      string          `json:"actor_id"`
-	ActorName    string          `json:"actor_name"`
-	ActorAvatar  *string         `json:"actor_avatar"`
-	EventType    string          `json:"event_type"`
-	Changes      json.RawMessage `json:"changes"`
-	CreatedAt    time.Time       `json:"created_at"`
+	ID          string          `json:"id"`
+	ProjectID   string          `json:"project_id"`
+	WorkItemID  *string         `json:"work_item_id"`
+	SprintID    *string         `json:"sprint_id"`
+	EpicID      *string         `json:"epic_id"`
+	ActorID     string          `json:"actor_id"`
+	ActorName   string          `json:"actor_name"`
+	ActorAvatar *string         `json:"actor_avatar"`
+	EventType   string          `json:"event_type"`
+	Changes     json.RawMessage `json:"changes"`
+	CreatedAt   time.Time       `json:"created_at"`
 }
 
 // ListByProject returns the activity feed for a project.

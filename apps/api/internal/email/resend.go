@@ -21,10 +21,10 @@ func NewSender(apiKey, fromAddress string) *Sender {
 }
 
 type sendRequest struct {
-	From    string `json:"from"`
+	From    string   `json:"from"`
 	To      []string `json:"to"`
-	Subject string `json:"subject"`
-	HTML    string `json:"html"`
+	Subject string   `json:"subject"`
+	HTML    string   `json:"html"`
 }
 
 // Send delivers an email. If no API key is configured, logs the email instead.

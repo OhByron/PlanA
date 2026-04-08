@@ -36,13 +36,13 @@ const (
 
 // Licence is the decoded and validated licence payload.
 type Licence struct {
-	LicenceID    string            `json:"licenceId"`
-	Organisation string            `json:"organisation"`
-	Tier         Tier              `json:"tier"`
-	IssuedAt     string            `json:"issuedAt"`
-	ExpiresAt    string            `json:"expiresAt,omitempty"`
-	MaxUsers     int               `json:"maxUsers,omitempty"`
-	Features     map[string]any    `json:"features,omitempty"`
+	LicenceID    string         `json:"licenceId"`
+	Organisation string         `json:"organisation"`
+	Tier         Tier           `json:"tier"`
+	IssuedAt     string         `json:"issuedAt"`
+	ExpiresAt    string         `json:"expiresAt,omitempty"`
+	MaxUsers     int            `json:"maxUsers,omitempty"`
+	Features     map[string]any `json:"features,omitempty"`
 }
 
 // Info returns a summary suitable for API responses.

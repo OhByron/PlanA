@@ -112,7 +112,9 @@ func (p *OpenAIProvider) SuggestDefect(ctx context.Context, req SuggestDefectReq
 
 	var openaiResp struct {
 		Choices []struct {
-			Message struct{ Content string `json:"content"` } `json:"message"`
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
 		} `json:"choices"`
 	}
 	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
@@ -170,7 +172,9 @@ func (p *OpenAIProvider) SuggestDecomposition(ctx context.Context, req SuggestDe
 
 	var openaiResp struct {
 		Choices []struct {
-			Message struct{ Content string `json:"content"` } `json:"message"`
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
 		} `json:"choices"`
 	}
 	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
@@ -192,35 +196,56 @@ func (p *OpenAIProvider) SuggestDescription(ctx context.Context, req SuggestDesc
 
 	userPrompt := fmt.Sprintf("Project: %s\nEpic: %s\n%s\nType: %s\nTitle: %s\n%s\nWrite a description.",
 		req.ProjectName, req.EpicTitle, req.EpicDescription, req.StoryType, req.StoryTitle,
-		func() string { if req.CurrentDesc != "" { return "Current: " + req.CurrentDesc }; return "" }())
+		func() string {
+			if req.CurrentDesc != "" {
+				return "Current: " + req.CurrentDesc
+			}
+			return ""
+		}())
 
 	body := map[string]any{
 		"model": p.model, "max_tokens": 1024,
-		"messages": []map[string]string{{"role": "system", "content": systemPrompt}, {"role": "user", "content": userPrompt}},
+		"messages":        []map[string]string{{"role": "system", "content": systemPrompt}, {"role": "user", "content": userPrompt}},
 		"response_format": map[string]string{"type": "json_object"},
 	}
 
 	jsonBody, _ := json.Marshal(body)
 	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
 
 	resp, err := http.DefaultClient.Do(httpReq)
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	respBody, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode != 200 { return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody) }
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody)
+	}
 
 	var openaiResp struct {
-		Choices []struct{ Message struct{ Content string `json:"content"` } `json:"message"` } `json:"choices"`
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
 	}
-	if err := json.Unmarshal(respBody, &openaiResp); err != nil { return nil, err }
-	if len(openaiResp.Choices) == 0 { return nil, fmt.Errorf("empty response") }
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
+		return nil, err
+	}
+	if len(openaiResp.Choices) == 0 {
+		return nil, fmt.Errorf("empty response")
+	}
 
 	var result SuggestDescResponse
-	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil { return nil, err }
+	if err := json.Unmarshal([]byte(openaiResp.Choices[0].Message.Content), &result); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
@@ -234,18 +259,32 @@ func (p *OpenAIProvider) RawChat(ctx context.Context, systemPrompt, userPrompt s
 	}
 	jsonBody, _ := json.Marshal(body)
 	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.endpoint+"/chat/completions", bytes.NewReader(jsonBody))
-	if err != nil { return "", err }
+	if err != nil {
+		return "", err
+	}
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
 	resp, err := http.DefaultClient.Do(httpReq)
-	if err != nil { return "", err }
+	if err != nil {
+		return "", err
+	}
 	defer resp.Body.Close()
 	respBody, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode != 200 { return "", fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody) }
-	var openaiResp struct {
-		Choices []struct{ Message struct{ Content string `json:"content"` } `json:"message"` } `json:"choices"`
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("OpenAI API returned %d: %s", resp.StatusCode, respBody)
 	}
-	if err := json.Unmarshal(respBody, &openaiResp); err != nil { return "", err }
-	if len(openaiResp.Choices) == 0 { return "", fmt.Errorf("empty response") }
+	var openaiResp struct {
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
+	}
+	if err := json.Unmarshal(respBody, &openaiResp); err != nil {
+		return "", err
+	}
+	if len(openaiResp.Choices) == 0 {
+		return "", fmt.Errorf("empty response")
+	}
 	return openaiResp.Choices[0].Message.Content, nil
 }

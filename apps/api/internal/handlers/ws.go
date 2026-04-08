@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gorilla/websocket"
 
@@ -12,29 +13,22 @@ import (
 	"github.com/OhByron/PlanA/internal/realtime"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool {
-		// In production, validate against allowed origins.
-		// For now, allow all origins (CORS is handled at the HTTP level).
-		return true
-	},
-}
-
 // WSHandler handles WebSocket upgrade requests.
 type WSHandler struct {
-	hub  *realtime.Hub
-	auth *auth.Service
-	db   DBPOOL
+	hub            *realtime.Hub
+	auth           *auth.Service
+	db             DBPOOL
+	allowedOrigins []string
 }
 
-func NewWSHandler(hub *realtime.Hub, auth *auth.Service, db DBPOOL) *WSHandler {
-	return &WSHandler{hub: hub, auth: auth, db: db}
+func NewWSHandler(hub *realtime.Hub, auth *auth.Service, db DBPOOL, allowedOrigins []string) *WSHandler {
+	return &WSHandler{hub: hub, auth: auth, db: db, allowedOrigins: allowedOrigins}
 }
 
 // Upgrade handles the WebSocket upgrade request.
-// JWT is passed via query param: /api/ws?token=<jwt>
+// JWT is passed via query param because the browser WebSocket API
+// does not support custom headers. The token is validated server-side
+// and not logged.
 func (h *WSHandler) Upgrade(w http.ResponseWriter, r *http.Request) {
 	tokenStr := r.URL.Query().Get("token")
 	if tokenStr == "" {
@@ -46,6 +40,12 @@ func (h *WSHandler) Upgrade(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
+	}
+
+	upgrader := websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin:     h.checkOrigin,
 	}
 
 	// Fetch user name and avatar for presence
@@ -73,6 +73,28 @@ func (h *WSHandler) Upgrade(w http.ResponseWriter, r *http.Request) {
 	go client.ReadPump()
 }
 
+// checkOrigin validates the WebSocket origin against allowed origins.
+func (h *WSHandler) checkOrigin(r *http.Request) bool {
+	origin := r.Header.Get("Origin")
+	if origin == "" {
+		return true // Non-browser clients (e.g., CLI tools) don't send Origin
+	}
+
+	// In development, allow localhost origins
+	if strings.HasPrefix(origin, "http://localhost:") {
+		return true
+	}
+
+	for _, allowed := range h.allowedOrigins {
+		if origin == allowed {
+			return true
+		}
+	}
+
+	slog.Warn("ws: rejected origin", "origin", origin)
+	return false
+}
+
 // authorizeChannel checks if a user is allowed to subscribe to a channel.
 func (h *WSHandler) authorizeChannel(userID, channel string) bool {
 	// user:{id} channels - only the user themselves
@@ -82,15 +104,18 @@ func (h *WSHandler) authorizeChannel(userID, channel string) bool {
 
 	// project:{id} and project:{id}:* channels - must be a project member or org admin
 	if strings.HasPrefix(channel, "project:") {
-		// Extract project ID (first segment after "project:")
 		parts := strings.SplitN(channel[8:], ":", 2)
 		projectID := parts[0]
 		if projectID == "" {
 			return false
 		}
 
+		// Use a short-lived context for the authorization query
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
 		var allowed bool
-		err := h.db.QueryRow(context.Background(),
+		err := h.db.QueryRow(ctx,
 			`SELECT EXISTS(
 				SELECT 1 FROM project_members pm WHERE pm.project_id = $1 AND pm.user_id = $2
 				UNION ALL

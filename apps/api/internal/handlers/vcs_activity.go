@@ -41,27 +41,27 @@ type vcsBranch struct {
 }
 
 type vcsPullRequest struct {
-	ID            string     `json:"id"`
-	ConnectionID  string     `json:"connection_id"`
-	ExternalID    int64      `json:"external_id"`
-	Title         string     `json:"title"`
-	State         string     `json:"state"`
-	Draft         bool       `json:"draft"`
-	SourceBranch  string     `json:"source_branch"`
-	TargetBranch  string     `json:"target_branch"`
-	AuthorLogin   *string    `json:"author_login"`
-	AuthorAvatar  *string    `json:"author_avatar"`
-	URL           string     `json:"url"`
-	ChecksStatus  *string    `json:"checks_status"`
-	ChecksURL     *string    `json:"checks_url"`
-	ReviewStatus  *string    `json:"review_status"`
-	MergedAt      *time.Time `json:"merged_at"`
-	ClosedAt      *time.Time `json:"closed_at"`
-	Provider      string     `json:"provider"`
-	RepoOwner     string     `json:"repo_owner"`
-	RepoName      string     `json:"repo_name"`
-	CreatedAt     time.Time  `json:"created_at"`
-	UpdatedAt     time.Time  `json:"updated_at"`
+	ID           string     `json:"id"`
+	ConnectionID string     `json:"connection_id"`
+	ExternalID   int64      `json:"external_id"`
+	Title        string     `json:"title"`
+	State        string     `json:"state"`
+	Draft        bool       `json:"draft"`
+	SourceBranch string     `json:"source_branch"`
+	TargetBranch string     `json:"target_branch"`
+	AuthorLogin  *string    `json:"author_login"`
+	AuthorAvatar *string    `json:"author_avatar"`
+	URL          string     `json:"url"`
+	ChecksStatus *string    `json:"checks_status"`
+	ChecksURL    *string    `json:"checks_url"`
+	ReviewStatus *string    `json:"review_status"`
+	MergedAt     *time.Time `json:"merged_at"`
+	ClosedAt     *time.Time `json:"closed_at"`
+	Provider     string     `json:"provider"`
+	RepoOwner    string     `json:"repo_owner"`
+	RepoName     string     `json:"repo_name"`
+	CreatedAt    time.Time  `json:"created_at"`
+	UpdatedAt    time.Time  `json:"updated_at"`
 }
 
 type vcsCommit struct {
@@ -130,10 +130,10 @@ func (h *VCSActivityHandlers) BulkSummary(w http.ResponseWriter, r *http.Request
 	defer rows.Close()
 
 	type bulkItem struct {
-		WorkItemID  string  `json:"work_item_id"`
-		BranchCount int     `json:"branch_count"`
-		OpenPRCount int     `json:"open_pr_count"`
-		MergedPRs   int     `json:"merged_prs"`
+		WorkItemID   string  `json:"work_item_id"`
+		BranchCount  int     `json:"branch_count"`
+		OpenPRCount  int     `json:"open_pr_count"`
+		MergedPRs    int     `json:"merged_prs"`
 		ChecksStatus *string `json:"checks_status"`
 	}
 

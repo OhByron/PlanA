@@ -14,26 +14,26 @@ import (
 
 // ProjectExport is the top-level JSON structure for a project export.
 type ProjectExport struct {
-	Version    string          `json:"version"`
-	ExportedAt time.Time       `json:"exported_at"`
-	ExportedBy string          `json:"exported_by"`
-	Project    json.RawMessage `json:"project"`
-	Members    json.RawMessage `json:"members"`
-	Epics      json.RawMessage `json:"epics"`
-	EpicDeps   json.RawMessage `json:"epic_dependencies"`
-	WorkItems  json.RawMessage `json:"work_items"`
-	ItemDeps   json.RawMessage `json:"work_item_dependencies"`
-	ItemLinks  json.RawMessage `json:"work_item_links"`
-	AC         json.RawMessage `json:"acceptance_criteria"`
-	Comments   json.RawMessage `json:"comments"`
-	Sprints    json.RawMessage `json:"sprints"`
-	SprintItems json.RawMessage `json:"sprint_items"`
-	SprintDeps json.RawMessage `json:"sprint_dependencies"`
-	DodItems   json.RawMessage `json:"dod_items"`
-	ItemDod    json.RawMessage `json:"work_item_dod"`
-	Impediments json.RawMessage `json:"impediments"`
+	Version           string          `json:"version"`
+	ExportedAt        time.Time       `json:"exported_at"`
+	ExportedBy        string          `json:"exported_by"`
+	Project           json.RawMessage `json:"project"`
+	Members           json.RawMessage `json:"members"`
+	Epics             json.RawMessage `json:"epics"`
+	EpicDeps          json.RawMessage `json:"epic_dependencies"`
+	WorkItems         json.RawMessage `json:"work_items"`
+	ItemDeps          json.RawMessage `json:"work_item_dependencies"`
+	ItemLinks         json.RawMessage `json:"work_item_links"`
+	AC                json.RawMessage `json:"acceptance_criteria"`
+	Comments          json.RawMessage `json:"comments"`
+	Sprints           json.RawMessage `json:"sprints"`
+	SprintItems       json.RawMessage `json:"sprint_items"`
+	SprintDeps        json.RawMessage `json:"sprint_dependencies"`
+	DodItems          json.RawMessage `json:"dod_items"`
+	ItemDod           json.RawMessage `json:"work_item_dod"`
+	Impediments       json.RawMessage `json:"impediments"`
 	DesignAttachments json.RawMessage `json:"design_attachments"`
-	StatusChanges json.RawMessage `json:"status_changes"`
+	StatusChanges     json.RawMessage `json:"status_changes"`
 }
 
 // Export dumps an entire project and all its children as a single JSON document.

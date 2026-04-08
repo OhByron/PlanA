@@ -382,9 +382,9 @@ func (h *ProjectHandlers) Import(w http.ResponseWriter, r *http.Request) {
 	).Scan(p.scanFields()...)
 
 	writeJSON(w, http.StatusCreated, map[string]interface{}{
-		"project":    p,
+		"project":        p,
 		"items_imported": itemCounter,
-		"id_mapping": idMap,
+		"id_mapping":     idMap,
 	})
 }
 

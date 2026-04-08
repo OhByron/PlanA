@@ -17,42 +17,42 @@ import (
 
 // WorkItem represents a work_items row returned to clients.
 type WorkItem struct {
-	ID               string          `json:"id"`
-	ItemNumber       *int            `json:"item_number"`
-	ProjectID        string          `json:"project_id"`
-	EpicID           *string         `json:"epic_id"`
-	ParentID         *string         `json:"parent_id"`
-	Type             string          `json:"type"`
-	Title            string          `json:"title"`
-	Description      json.RawMessage `json:"description"`
-	WorkflowStateID  string          `json:"workflow_state_id"`
-	IsCancelled      bool            `json:"is_cancelled"`
+	ID              string          `json:"id"`
+	ItemNumber      *int            `json:"item_number"`
+	ProjectID       string          `json:"project_id"`
+	EpicID          *string         `json:"epic_id"`
+	ParentID        *string         `json:"parent_id"`
+	Type            string          `json:"type"`
+	Title           string          `json:"title"`
+	Description     json.RawMessage `json:"description"`
+	WorkflowStateID string          `json:"workflow_state_id"`
+	IsCancelled     bool            `json:"is_cancelled"`
 	// Embedded state info (populated via JOIN)
-	StateName        string          `json:"state_name"`
-	StateSlug        string          `json:"state_slug"`
-	StateColor       string          `json:"state_color"`
-	StatePosition    int             `json:"state_position"`
-	StateIsTerminal  bool            `json:"state_is_terminal"`
-	StateIsInitial   bool            `json:"state_is_initial"`
-	Priority         string          `json:"priority"`
-	AssigneeID       *string         `json:"assignee_id"`
-	StoryPoints      *int            `json:"story_points"`
-	PointsUsed       *int            `json:"points_used"`
-	Labels           []string        `json:"labels"`
-	OrderIndex       float64         `json:"order_index"`
-	StartDate        *time.Time      `json:"start_date"`
-	DueDate          *time.Time      `json:"due_date"`
-	TargetDate       *time.Time      `json:"target_date"`
-	PreConditions    json.RawMessage `json:"pre_conditions"`
-	PostConditions   json.RawMessage `json:"post_conditions"`
-	DesignReady      bool            `json:"design_ready"`
-	DesignLink       *string         `json:"design_link"`
-	IsBlocked        bool            `json:"is_blocked"`
-	BlockedReason    *string         `json:"blocked_reason"`
-	SourceTestResultID *string       `json:"source_test_result_id"`
-	CreatedBy        string          `json:"created_by"`
-	CreatedAt        time.Time       `json:"created_at"`
-	UpdatedAt        time.Time       `json:"updated_at"`
+	StateName          string          `json:"state_name"`
+	StateSlug          string          `json:"state_slug"`
+	StateColor         string          `json:"state_color"`
+	StatePosition      int             `json:"state_position"`
+	StateIsTerminal    bool            `json:"state_is_terminal"`
+	StateIsInitial     bool            `json:"state_is_initial"`
+	Priority           string          `json:"priority"`
+	AssigneeID         *string         `json:"assignee_id"`
+	StoryPoints        *int            `json:"story_points"`
+	PointsUsed         *int            `json:"points_used"`
+	Labels             []string        `json:"labels"`
+	OrderIndex         float64         `json:"order_index"`
+	StartDate          *time.Time      `json:"start_date"`
+	DueDate            *time.Time      `json:"due_date"`
+	TargetDate         *time.Time      `json:"target_date"`
+	PreConditions      json.RawMessage `json:"pre_conditions"`
+	PostConditions     json.RawMessage `json:"post_conditions"`
+	DesignReady        bool            `json:"design_ready"`
+	DesignLink         *string         `json:"design_link"`
+	IsBlocked          bool            `json:"is_blocked"`
+	BlockedReason      *string         `json:"blocked_reason"`
+	SourceTestResultID *string         `json:"source_test_result_id"`
+	CreatedBy          string          `json:"created_by"`
+	CreatedAt          time.Time       `json:"created_at"`
+	UpdatedAt          time.Time       `json:"updated_at"`
 }
 
 // workItemColumns is the SELECT column list for work items with state JOIN.
@@ -397,28 +397,28 @@ func (h *WorkItemHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 // updateWorkItemRequest is the JSON body for patching a work item.
 type updateWorkItemRequest struct {
-	Title         *string          `json:"title"`
-	Description   *json.RawMessage `json:"description"`
-	Type          *string          `json:"type"`
-	WorkflowStateID *string        `json:"workflow_state_id"`
-	IsCancelled     *bool          `json:"is_cancelled"`
-	Priority      *string          `json:"priority"`
-	EpicID        *string          `json:"epic_id"`
-	ParentID      *string          `json:"parent_id"`
-	AssigneeID    *string          `json:"assignee_id"`
-	StoryPoints   *int             `json:"story_points"`
-	PointsUsed    *int             `json:"points_used"`
-	Labels        *[]string        `json:"labels"`
-	OrderIndex    *float64         `json:"order_index"`
-	StartDate      *string          `json:"start_date"`
-	DueDate        *string          `json:"due_date"`
-	TargetDate     *string          `json:"target_date"`
-	PreConditions  *json.RawMessage `json:"pre_conditions"`
-	PostConditions *json.RawMessage `json:"post_conditions"`
-	DesignReady    *bool            `json:"design_ready"`
-	DesignLink     *string          `json:"design_link"`
-	IsBlocked      *bool            `json:"is_blocked"`
-	BlockedReason *string          `json:"blocked_reason"`
+	Title           *string          `json:"title"`
+	Description     *json.RawMessage `json:"description"`
+	Type            *string          `json:"type"`
+	WorkflowStateID *string          `json:"workflow_state_id"`
+	IsCancelled     *bool            `json:"is_cancelled"`
+	Priority        *string          `json:"priority"`
+	EpicID          *string          `json:"epic_id"`
+	ParentID        *string          `json:"parent_id"`
+	AssigneeID      *string          `json:"assignee_id"`
+	StoryPoints     *int             `json:"story_points"`
+	PointsUsed      *int             `json:"points_used"`
+	Labels          *[]string        `json:"labels"`
+	OrderIndex      *float64         `json:"order_index"`
+	StartDate       *string          `json:"start_date"`
+	DueDate         *string          `json:"due_date"`
+	TargetDate      *string          `json:"target_date"`
+	PreConditions   *json.RawMessage `json:"pre_conditions"`
+	PostConditions  *json.RawMessage `json:"post_conditions"`
+	DesignReady     *bool            `json:"design_ready"`
+	DesignLink      *string          `json:"design_link"`
+	IsBlocked       *bool            `json:"is_blocked"`
+	BlockedReason   *string          `json:"blocked_reason"`
 }
 
 // Update patches a work item by ID using dynamic SET clause.
