@@ -63,6 +63,7 @@ export function ProjectLayout() {
     { label: t('nav.calendar'), to: '/p/$projectId/calendar' as const },
     { label: t('nav.reports'), to: '/p/$projectId/reports' as const },
     { label: t('nav.report'), to: '/p/$projectId/report' as const },
+    { label: t('nav.releases'), to: '/p/$projectId/releases' as const },
     { label: t('nav.team'), to: '/p/$projectId/team' as const },
     { label: t('nav.settings'), to: '/p/$projectId/settings' as const },
   ];

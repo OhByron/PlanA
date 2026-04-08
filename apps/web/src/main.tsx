@@ -41,6 +41,8 @@ import { SettingsPage } from './pages/project/settings';
 import { OrgWorkflowPage } from './pages/org-workflow';
 import { OrgTransitionHooksPage } from './pages/org-transition-hooks';
 import { RealtimeProvider } from './hooks/use-realtime';
+import { ReleasesPage } from './pages/project/releases';
+import { ReleaseDetailPage } from './pages/project/release-detail';
 import './index.css';
 
 // ---------------------------------------------------------------------------
@@ -234,6 +236,18 @@ const calendarRoute = createRoute({
   component: CalendarPage,
 });
 
+const releasesRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/releases',
+  component: ReleasesPage,
+});
+
+const releaseDetailRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: '/releases/$releaseId',
+  component: ReleaseDetailPage,
+});
+
 const vcsSettingsRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/vcs',
@@ -262,7 +276,7 @@ const routeTree = rootRoute.addChildren([
     orgWorkflowRoute,
     orgTransitionHooksRoute,
     archiveRoute,
-    projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, teamRoute, settingsRoute, vcsSettingsRoute, reportViewRoute]),
+    projectRoute.addChildren([boardRoute, graphRoute, backlogRoute, epicsRoute, sprintsRoute, ganttRoute, calendarRoute, reportsRoute, releasesRoute, releaseDetailRoute, teamRoute, settingsRoute, vcsSettingsRoute, reportViewRoute]),
     epicDetailRoute,
     sprintDetailRoute,
     workItemDetailRoute,

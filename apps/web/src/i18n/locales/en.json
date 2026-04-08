@@ -48,6 +48,7 @@
     "graph": "Graph",
     "gantt": "Gantt",
     "calendar": "Calendar",
+    "releases": "Releases",
     "vcs": "Repositories"
   },
 
