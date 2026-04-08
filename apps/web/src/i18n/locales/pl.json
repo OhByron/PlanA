@@ -469,6 +469,32 @@
     "oneViewer": "1 oglądający",
     "multipleViewers": "{{count}} ogląda"
   },
+  "commandPalette": {
+    "placeholder": "Szukaj lub wpisz polecenie...",
+    "noResults": "Nie znaleziono wyników.",
+    "workItems": "Elementy pracy",
+    "navigation": "Nawigacja",
+    "actions": "Akcje",
+    "navigate": "nawiguj",
+    "select": "wybierz",
+    "close": "zamknij"
+  },
+  "activity": {
+    "title": "Aktywność",
+    "noActivity": "Brak aktywności.",
+    "created": "utworzył {{title}}",
+    "updated": "zaktualizował element",
+    "deleted": "usunął element",
+    "movedTo": "przeniesiono do {{state}}",
+    "assigned": "zmienił przypisanie",
+    "changedPriority": "zmienił priorytet na {{priority}}",
+    "cancelled": "anulował element",
+    "restored": "przywrócił element",
+    "commented": "skomentował {{title}}",
+    "addedToSprint": "dodano do sprintu",
+    "removedFromSprint": "usunięto ze sprintu",
+    "updatedSprint": "zaktualizował sprint"
+  },
   "helpOverlay": {
     "dismiss": "Odrzuć",
     "close": "Zamknij"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Ogólne",
+    "repositories": "Repozytoria",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

@@ -469,6 +469,32 @@
     "oneViewer": "1 vaataja",
     "multipleViewers": "{{count}} vaatab"
   },
+  "commandPalette": {
+    "placeholder": "Otsi või sisesta käsk...",
+    "noResults": "Tulemusi ei leitud.",
+    "workItems": "Tööüksused",
+    "navigation": "Navigeerimine",
+    "actions": "Tegevused",
+    "navigate": "navigeeri",
+    "select": "vali",
+    "close": "sulge"
+  },
+  "activity": {
+    "title": "Tegevus",
+    "noActivity": "Tegevust pole veel.",
+    "created": "lõi {{title}}",
+    "updated": "uuendas üksust",
+    "deleted": "kustutas üksuse",
+    "movedTo": "liigutatud olekusse {{state}}",
+    "assigned": "muutis määramist",
+    "changedPriority": "muutis prioriteedi tasemele {{priority}}",
+    "cancelled": "tühistas üksuse",
+    "restored": "taastas üksuse",
+    "commented": "kommenteeris üksust {{title}}",
+    "addedToSprint": "lisatud sprinti",
+    "removedFromSprint": "eemaldatud sprindist",
+    "updatedSprint": "uuendas sprinti"
+  },
   "helpOverlay": {
     "dismiss": "Sulge",
     "close": "Sulge"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Üldine",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

@@ -469,6 +469,32 @@
     "oneViewer": "1 izleyici",
     "multipleViewers": "{{count}} izliyor"
   },
+  "commandPalette": {
+    "placeholder": "Ara veya komut yazın...",
+    "noResults": "Sonuç bulunamadı.",
+    "workItems": "İş Öğeleri",
+    "navigation": "Gezinme",
+    "actions": "Eylemler",
+    "navigate": "gezin",
+    "select": "seç",
+    "close": "kapat"
+  },
+  "activity": {
+    "title": "Etkinlik",
+    "noActivity": "Henüz etkinlik yok.",
+    "created": "{{title}} oluşturdu",
+    "updated": "öğeyi güncelledi",
+    "deleted": "öğeyi sildi",
+    "movedTo": "{{state}} durumuna taşındı",
+    "assigned": "atamayı değiştirdi",
+    "changedPriority": "önceliği {{priority}} olarak değiştirdi",
+    "cancelled": "öğeyi iptal etti",
+    "restored": "öğeyi geri yükledi",
+    "commented": "{{title}} üzerine yorum yaptı",
+    "addedToSprint": "sprint'e eklendi",
+    "removedFromSprint": "sprint'ten çıkarıldı",
+    "updatedSprint": "sprint'i güncelledi"
+  },
   "helpOverlay": {
     "dismiss": "Kapat",
     "close": "Kapat"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Genel",
+    "repositories": "Depolar",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

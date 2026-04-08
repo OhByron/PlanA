@@ -512,6 +512,32 @@
     "oneViewer": "1 espectador",
     "multipleViewers": "{{count}} viendo"
   },
+  "commandPalette": {
+    "placeholder": "Buscar o escribir un comando...",
+    "noResults": "No se encontraron resultados.",
+    "workItems": "Elementos de Trabajo",
+    "navigation": "Navegación",
+    "actions": "Acciones",
+    "navigate": "navegar",
+    "select": "seleccionar",
+    "close": "cerrar"
+  },
+  "activity": {
+    "title": "Actividad",
+    "noActivity": "Sin actividad aún.",
+    "created": "creó {{title}}",
+    "updated": "actualizó elemento",
+    "deleted": "eliminó elemento",
+    "movedTo": "movido a {{state}}",
+    "assigned": "cambió asignación",
+    "changedPriority": "cambió prioridad a {{priority}}",
+    "cancelled": "canceló elemento",
+    "restored": "restauró elemento",
+    "commented": "comentó en {{title}}",
+    "addedToSprint": "agregado al sprint",
+    "removedFromSprint": "eliminado del sprint",
+    "updatedSprint": "actualizó el sprint"
+  },
   "helpOverlay": {
     "dismiss": "Descartar",
     "close": "Cerrar"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelado"
   },
   "settings": {
+    "general": "General",
+    "repositories": "Repositorios",
     "projectSettings": "Valores Predeterminados de Planificación",
     "projectSettingsDesc": "Establece los horizontes de tiempo predeterminados para este proyecto. Rellenan automáticamente las fechas al crear épicas y sprints.",
     "projectDuration": "Duración del Proyecto / Funcionalidad",

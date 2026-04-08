@@ -512,6 +512,32 @@
     "oneViewer": "1 visualizzatore",
     "multipleViewers": "{{count}} stanno visualizzando"
   },
+  "commandPalette": {
+    "placeholder": "Cerca o digita un comando...",
+    "noResults": "Nessun risultato trovato.",
+    "workItems": "Elementi di lavoro",
+    "navigation": "Navigazione",
+    "actions": "Azioni",
+    "navigate": "naviga",
+    "select": "seleziona",
+    "close": "chiudi"
+  },
+  "activity": {
+    "title": "Attività",
+    "noActivity": "Nessuna attività ancora.",
+    "created": "ha creato {{title}}",
+    "updated": "ha aggiornato l'elemento",
+    "deleted": "ha eliminato l'elemento",
+    "movedTo": "spostato in {{state}}",
+    "assigned": "ha cambiato assegnazione",
+    "changedPriority": "ha cambiato priorità in {{priority}}",
+    "cancelled": "ha annullato l'elemento",
+    "restored": "ha ripristinato l'elemento",
+    "commented": "ha commentato {{title}}",
+    "addedToSprint": "aggiunto allo sprint",
+    "removedFromSprint": "rimosso dallo sprint",
+    "updatedSprint": "ha aggiornato lo sprint"
+  },
   "helpOverlay": {
     "dismiss": "Ignora",
     "close": "Chiudi"
@@ -856,6 +882,8 @@
     "cancelled": "Annullato"
   },
   "settings": {
+    "general": "Generale",
+    "repositories": "Repository",
     "projectSettings": "Impostazioni Predefinite di Pianificazione",
     "projectSettingsDesc": "Imposta gli orizzonti temporali predefiniti per questo progetto. Compilano automaticamente le date alla creazione di epiche e sprint.",
     "projectDuration": "Durata Progetto / Funzionalità",

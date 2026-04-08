@@ -469,6 +469,32 @@
     "oneViewer": "1 位查看者",
     "multipleViewers": "{{count}} 人正在查看"
   },
+  "commandPalette": {
+    "placeholder": "搜索或输入命令...",
+    "noResults": "未找到结果。",
+    "workItems": "工作项",
+    "navigation": "导航",
+    "actions": "操作",
+    "navigate": "导航",
+    "select": "选择",
+    "close": "关闭"
+  },
+  "activity": {
+    "title": "活动",
+    "noActivity": "暂无活动。",
+    "created": "创建了 {{title}}",
+    "updated": "更新了项目",
+    "deleted": "删除了项目",
+    "movedTo": "移动到 {{state}}",
+    "assigned": "更改了分配",
+    "changedPriority": "将优先级更改为 {{priority}}",
+    "cancelled": "取消了项目",
+    "restored": "恢复了项目",
+    "commented": "评论了 {{title}}",
+    "addedToSprint": "已添加到冲刺",
+    "removedFromSprint": "已从冲刺中移除",
+    "updatedSprint": "更新了冲刺"
+  },
   "helpOverlay": {
     "dismiss": "关闭",
     "close": "关闭"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "常规",
+    "repositories": "仓库",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

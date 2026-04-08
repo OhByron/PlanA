@@ -469,6 +469,32 @@
     "oneViewer": "1 θεατής",
     "multipleViewers": "{{count}} βλέπουν"
   },
+  "commandPalette": {
+    "placeholder": "Αναζήτηση ή πληκτρολογήστε εντολή...",
+    "noResults": "Δεν βρέθηκαν αποτελέσματα.",
+    "workItems": "Στοιχεία Εργασίας",
+    "navigation": "Πλοήγηση",
+    "actions": "Ενέργειες",
+    "navigate": "πλοήγηση",
+    "select": "επιλογή",
+    "close": "κλείσιμο"
+  },
+  "activity": {
+    "title": "Δραστηριότητα",
+    "noActivity": "Δεν υπάρχει δραστηριότητα ακόμα.",
+    "created": "δημιούργησε {{title}}",
+    "updated": "ενημέρωσε στοιχείο",
+    "deleted": "διέγραψε στοιχείο",
+    "movedTo": "μετακινήθηκε σε {{state}}",
+    "assigned": "άλλαξε ανάθεση",
+    "changedPriority": "άλλαξε προτεραιότητα σε {{priority}}",
+    "cancelled": "ακύρωσε στοιχείο",
+    "restored": "επανέφερε στοιχείο",
+    "commented": "σχολίασε στο {{title}}",
+    "addedToSprint": "προστέθηκε στο sprint",
+    "removedFromSprint": "αφαιρέθηκε από το sprint",
+    "updatedSprint": "ενημέρωσε το sprint"
+  },
   "helpOverlay": {
     "dismiss": "Απόρριψη",
     "close": "Κλείσιμο"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Γενικά",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

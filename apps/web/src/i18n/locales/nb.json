@@ -469,6 +469,32 @@
     "oneViewer": "1 ser på",
     "multipleViewers": "{{count}} ser på"
   },
+  "commandPalette": {
+    "placeholder": "Søk eller skriv en kommando...",
+    "noResults": "Ingen resultater funnet.",
+    "workItems": "Arbeidselementer",
+    "navigation": "Navigasjon",
+    "actions": "Handlinger",
+    "navigate": "naviger",
+    "select": "velg",
+    "close": "lukk"
+  },
+  "activity": {
+    "title": "Aktivitet",
+    "noActivity": "Ingen aktivitet ennå.",
+    "created": "opprettet {{title}}",
+    "updated": "oppdaterte element",
+    "deleted": "slettet element",
+    "movedTo": "flyttet til {{state}}",
+    "assigned": "endret tildeling",
+    "changedPriority": "endret prioritet til {{priority}}",
+    "cancelled": "kansellerte element",
+    "restored": "gjenopprettet element",
+    "commented": "kommenterte på {{title}}",
+    "addedToSprint": "lagt til i sprint",
+    "removedFromSprint": "fjernet fra sprint",
+    "updatedSprint": "oppdaterte sprint"
+  },
   "helpOverlay": {
     "dismiss": "Avvis",
     "close": "Lukk"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Generelt",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

@@ -469,6 +469,32 @@
     "oneViewer": "1 зритель",
     "multipleViewers": "{{count}} просматривают"
   },
+  "commandPalette": {
+    "placeholder": "Поиск или введите команду...",
+    "noResults": "Результатов не найдено.",
+    "workItems": "Рабочие элементы",
+    "navigation": "Навигация",
+    "actions": "Действия",
+    "navigate": "навигация",
+    "select": "выбрать",
+    "close": "закрыть"
+  },
+  "activity": {
+    "title": "Активность",
+    "noActivity": "Пока нет активности.",
+    "created": "создал {{title}}",
+    "updated": "обновил элемент",
+    "deleted": "удалил элемент",
+    "movedTo": "перемещено в {{state}}",
+    "assigned": "изменил назначение",
+    "changedPriority": "изменил приоритет на {{priority}}",
+    "cancelled": "отменил элемент",
+    "restored": "восстановил элемент",
+    "commented": "прокомментировал {{title}}",
+    "addedToSprint": "добавлено в спринт",
+    "removedFromSprint": "удалено из спринта",
+    "updatedSprint": "обновил спринт"
+  },
   "helpOverlay": {
     "dismiss": "Скрыть",
     "close": "Закрыть"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Общие",
+    "repositories": "Репозитории",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

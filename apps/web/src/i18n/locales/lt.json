@@ -469,6 +469,32 @@
     "oneViewer": "1 žiūrintysis",
     "multipleViewers": "{{count}} žiūri"
   },
+  "commandPalette": {
+    "placeholder": "Ieškoti arba įvesti komandą...",
+    "noResults": "Rezultatų nerasta.",
+    "workItems": "Darbo elementai",
+    "navigation": "Navigacija",
+    "actions": "Veiksmai",
+    "navigate": "naviguoti",
+    "select": "pasirinkti",
+    "close": "uždaryti"
+  },
+  "activity": {
+    "title": "Veikla",
+    "noActivity": "Veiklos dar nėra.",
+    "created": "sukūrė {{title}}",
+    "updated": "atnaujino elementą",
+    "deleted": "ištrynė elementą",
+    "movedTo": "perkelta į {{state}}",
+    "assigned": "pakeitė priskyrimą",
+    "changedPriority": "pakeitė prioritetą į {{priority}}",
+    "cancelled": "atšaukė elementą",
+    "restored": "atkūrė elementą",
+    "commented": "pakomentavo {{title}}",
+    "addedToSprint": "pridėta prie sprinto",
+    "removedFromSprint": "pašalinta iš sprinto",
+    "updatedSprint": "atnaujino sprintą"
+  },
   "helpOverlay": {
     "dismiss": "Atmesti",
     "close": "Uždaryti"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Bendra",
+    "repositories": "Saugyklos",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

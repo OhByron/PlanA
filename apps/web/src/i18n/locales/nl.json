@@ -469,6 +469,32 @@
     "oneViewer": "1 kijker",
     "multipleViewers": "{{count}} aan het bekijken"
   },
+  "commandPalette": {
+    "placeholder": "Zoeken of een opdracht typen...",
+    "noResults": "Geen resultaten gevonden.",
+    "workItems": "Werkitems",
+    "navigation": "Navigatie",
+    "actions": "Acties",
+    "navigate": "navigeren",
+    "select": "selecteren",
+    "close": "sluiten"
+  },
+  "activity": {
+    "title": "Activiteit",
+    "noActivity": "Nog geen activiteit.",
+    "created": "heeft {{title}} aangemaakt",
+    "updated": "heeft item bijgewerkt",
+    "deleted": "heeft item verwijderd",
+    "movedTo": "verplaatst naar {{state}}",
+    "assigned": "heeft toewijzing gewijzigd",
+    "changedPriority": "heeft prioriteit gewijzigd naar {{priority}}",
+    "cancelled": "heeft item geannuleerd",
+    "restored": "heeft item hersteld",
+    "commented": "heeft gereageerd op {{title}}",
+    "addedToSprint": "toegevoegd aan sprint",
+    "removedFromSprint": "verwijderd uit sprint",
+    "updatedSprint": "heeft sprint bijgewerkt"
+  },
   "helpOverlay": {
     "dismiss": "Sluiten",
     "close": "Sluiten"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Algemeen",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

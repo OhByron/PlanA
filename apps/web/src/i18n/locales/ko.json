@@ -469,6 +469,32 @@
     "oneViewer": "1명 보는 중",
     "multipleViewers": "{{count}}명 보는 중"
   },
+  "commandPalette": {
+    "placeholder": "검색하거나 명령어를 입력하세요...",
+    "noResults": "결과를 찾을 수 없습니다.",
+    "workItems": "작업 항목",
+    "navigation": "탐색",
+    "actions": "작업",
+    "navigate": "탐색",
+    "select": "선택",
+    "close": "닫기"
+  },
+  "activity": {
+    "title": "활동",
+    "noActivity": "아직 활동이 없습니다.",
+    "created": "{{title}} 생성함",
+    "updated": "항목 업데이트함",
+    "deleted": "항목 삭제함",
+    "movedTo": "{{state}}(으)로 이동함",
+    "assigned": "담당자 변경함",
+    "changedPriority": "우선순위를 {{priority}}(으)로 변경함",
+    "cancelled": "항목 취소함",
+    "restored": "항목 복원함",
+    "commented": "{{title}}에 댓글 작성함",
+    "addedToSprint": "스프린트에 추가됨",
+    "removedFromSprint": "스프린트에서 제거됨",
+    "updatedSprint": "스프린트 업데이트함"
+  },
   "helpOverlay": {
     "dismiss": "닫기",
     "close": "닫기"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "일반",
+    "repositories": "저장소",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",

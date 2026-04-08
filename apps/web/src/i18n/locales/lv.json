@@ -469,6 +469,32 @@
     "oneViewer": "1 skatītājs",
     "multipleViewers": "{{count}} skatās"
   },
+  "commandPalette": {
+    "placeholder": "Meklēt vai ievadīt komandu...",
+    "noResults": "Rezultāti nav atrasti.",
+    "workItems": "Darba vienības",
+    "navigation": "Navigācija",
+    "actions": "Darbības",
+    "navigate": "pārvietoties",
+    "select": "atlasīt",
+    "close": "aizvērt"
+  },
+  "activity": {
+    "title": "Aktivitāte",
+    "noActivity": "Pagaidām nav aktivitāšu.",
+    "created": "izveidoja {{title}}",
+    "updated": "atjaunināja vienību",
+    "deleted": "dzēsa vienību",
+    "movedTo": "pārvietots uz {{state}}",
+    "assigned": "mainīja piešķiri",
+    "changedPriority": "mainīja prioritāti uz {{priority}}",
+    "cancelled": "atcēla vienību",
+    "restored": "atjaunoja vienību",
+    "commented": "komentēja {{title}}",
+    "addedToSprint": "pievienots sprintam",
+    "removedFromSprint": "noņemts no sprinta",
+    "updatedSprint": "atjaunināja sprintu"
+  },
   "helpOverlay": {
     "dismiss": "Noraidīt",
     "close": "Aizvērt"
@@ -856,6 +882,8 @@
     "cancelled": "Cancelled"
   },
   "settings": {
+    "general": "Vispārīgi",
+    "repositories": "Repozitoriji",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",
