@@ -184,6 +184,19 @@ function MemberRow({
           >
             {t('team.copy')}
           </Button>
+          {m.email && (
+            <Button
+              size="xs"
+              variant="ghost"
+              onClick={() => {
+                const subject = encodeURIComponent('You\'ve been invited to PlanA');
+                const body = encodeURIComponent(`Hi ${m.name},\n\nYou've been invited to join the project. Click the link below to accept:\n\n${inviteUrl}\n\nThis link will expire in 7 days.`);
+                window.open(`mailto:${m.email}?subject=${subject}&body=${body}`, '_blank');
+              }}
+            >
+              {t('team.email') ?? 'Email'}
+            </Button>
+          )}
         </div>
       )}
     </div>

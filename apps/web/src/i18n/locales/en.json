@@ -619,6 +619,7 @@
     "generateNotes": "Generate notes",
     "enhanceWithAI": "Enhance with AI",
     "noNotes": "No release notes yet. Click Generate notes to create them from the items.",
+    "linkCopied": "Link copied!",
     "addItem": "+ Add item",
     "selectItem": "Select a completed item to add..."
   },
@@ -742,6 +743,7 @@
     "invite": "Invite",
     "inviteLink": "Invite link:",
     "copy": "Copy",
+    "email": "Email",
     "ptsPerSprint": "{{count}} pts/sprint",
     "addTeamMember": "Add Team Member",
     "nameRequired": "Name *",

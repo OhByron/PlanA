@@ -30,6 +30,7 @@ export function ReleaseDetailPage() {
 
   const [editingNotes, setEditingNotes] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
+  const [linkCopied, setLinkCopied] = useState(false);
   const [showAddItem, setShowAddItem] = useState(false);
   const { guardAI, showNotConfigured, dismissNotConfigured } = useAIAvailable(projectId);
   const { data: allWorkItems = [] } = useWorkItems(projectId);
@@ -108,9 +109,13 @@ export function ReleaseDetailPage() {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => navigator.clipboard.writeText(`${window.location.origin}/releases/${release.shareToken}`)}
+                onClick={() => {
+                  navigator.clipboard.writeText(`${window.location.origin}/releases/${release.shareToken}`);
+                  setLinkCopied(true);
+                  setTimeout(() => setLinkCopied(false), 2000);
+                }}
               >
-                {t('releases.copyLink') ?? 'Copy link'}
+                {linkCopied ? (t('releases.linkCopied') ?? 'Link copied!') : (t('releases.copyLink') ?? 'Copy link')}
               </Button>
               <Button size="sm" variant="ghost" onClick={() => unshareRelease.mutate()}>
                 {t('releases.revokeShare') ?? 'Revoke'}
