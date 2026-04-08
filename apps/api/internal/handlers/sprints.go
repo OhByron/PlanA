@@ -149,10 +149,13 @@ type Sprint struct {
 
 // SprintHandlers handles CRUD for sprints within a project.
 type SprintHandlers struct {
-	db DBPOOL
+	db      DBPOOL
+	publish EventPublishFunc
 }
 
-func NewSprintHandlers(db DBPOOL) *SprintHandlers { return &SprintHandlers{db: db} }
+func NewSprintHandlers(db DBPOOL, publish EventPublishFunc) *SprintHandlers {
+	return &SprintHandlers{db: db, publish: publish}
+}
 
 // List returns all sprints for a given project.
 func (h *SprintHandlers) List(w http.ResponseWriter, r *http.Request) {
@@ -277,6 +280,10 @@ func (h *SprintHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusCreated, s)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "sprint.updated", map[string]string{"id": s.ID})
+	}
 }
 
 // updateSprintRequest is the JSON body for patching a sprint.
@@ -403,6 +410,10 @@ func (h *SprintHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, s)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "sprint.updated", map[string]string{"id": s.ID})
+	}
 }
 
 // Delete removes a sprint by ID.

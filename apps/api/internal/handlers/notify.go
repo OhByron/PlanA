@@ -12,7 +12,7 @@ import (
 
 // CreateNotification inserts a notification for a user. Skips silently if userID is empty.
 // Automatically looks up project_id from the work item for navigation links.
-func CreateNotification(ctx context.Context, db DBPOOL, userID, notifType string, workItemID, actorID *string, data map[string]string) {
+func CreateNotification(ctx context.Context, db DBPOOL, publish EventPublishFunc, userID, notifType string, workItemID, actorID *string, data map[string]string) {
 	if userID == "" {
 		return
 	}
@@ -24,19 +24,27 @@ func CreateNotification(ctx context.Context, db DBPOOL, userID, notifType string
 		}
 	}
 	dataJSON, _ := json.Marshal(data)
-	_, err := db.Exec(ctx,
+	var notifID string
+	err := db.QueryRow(ctx,
 		`INSERT INTO notifications (user_id, type, work_item_id, actor_id, data)
-		 VALUES ($1, $2, $3, $4, $5)`,
-		userID, notifType, workItemID, actorID, dataJSON)
+		 VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+		userID, notifType, workItemID, actorID, dataJSON).Scan(&notifID)
 	if err != nil {
 		slog.Error("create notification failed", "error", err, "type", notifType, "user_id", userID)
+		return
+	}
+
+	if publish != nil {
+		publish("user:"+userID, "notification.created", map[string]string{
+			"id": notifID, "type": notifType,
+		})
 	}
 }
 
 // NotifyAssignee creates an 'assigned' notification. Assignees are stored as
 // project_member IDs (not user IDs) because members can exist before registering;
 // we resolve to user_id here so the notification reaches the right account.
-func NotifyAssignee(ctx context.Context, db DBPOOL, memberID, workItemTitle, actorUserID string, workItemID string) {
+func NotifyAssignee(ctx context.Context, db DBPOOL, publish EventPublishFunc, memberID, workItemTitle, actorUserID string, workItemID string) {
 	var userID *string
 	if err := db.QueryRow(ctx, `SELECT user_id FROM project_members WHERE id = $1`, memberID).Scan(&userID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		slog.Warn("NotifyAssignee: member→user lookup failed", "memberID", memberID, "error", err)
@@ -49,13 +57,13 @@ func NotifyAssignee(ctx context.Context, db DBPOOL, memberID, workItemTitle, act
 		return
 	}
 	wiID := workItemID
-	CreateNotification(ctx, db, *userID, "assigned", &wiID, &actorUserID, map[string]string{
+	CreateNotification(ctx, db, publish, *userID, "assigned", &wiID, &actorUserID, map[string]string{
 		"title": workItemTitle,
 	})
 }
 
 // NotifyStatusChange notifies the assignee that the status of their work item changed.
-func NotifyStatusChange(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTitle, newStatus, actorUserID, workItemID string) {
+func NotifyStatusChange(ctx context.Context, db DBPOOL, publish EventPublishFunc, assigneeMemberID, workItemTitle, newStatus, actorUserID, workItemID string) {
 	if assigneeMemberID == "" {
 		return
 	}
@@ -67,14 +75,14 @@ func NotifyStatusChange(ctx context.Context, db DBPOOL, assigneeMemberID, workIt
 		return
 	}
 	wiID := workItemID
-	CreateNotification(ctx, db, *userID, "status_changed", &wiID, &actorUserID, map[string]string{
+	CreateNotification(ctx, db, publish, *userID, "status_changed", &wiID, &actorUserID, map[string]string{
 		"title":  workItemTitle,
 		"status": newStatus,
 	})
 }
 
 // NotifyComment notifies the assignee that someone commented on their work item.
-func NotifyComment(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTitle, actorUserID, workItemID string) {
+func NotifyComment(ctx context.Context, db DBPOOL, publish EventPublishFunc, assigneeMemberID, workItemTitle, actorUserID, workItemID string) {
 	if assigneeMemberID == "" {
 		return
 	}
@@ -86,13 +94,13 @@ func NotifyComment(ctx context.Context, db DBPOOL, assigneeMemberID, workItemTit
 		return
 	}
 	wiID := workItemID
-	CreateNotification(ctx, db, *userID, "comment_added", &wiID, &actorUserID, map[string]string{
+	CreateNotification(ctx, db, publish, *userID, "comment_added", &wiID, &actorUserID, map[string]string{
 		"title": workItemTitle,
 	})
 }
 
 // NotifyMentions scans comment text for @name patterns and notifies matching project members.
-func NotifyMentions(ctx context.Context, db DBPOOL, projectID, workItemTitle, actorUserID, workItemID string, commentBody json.RawMessage) {
+func NotifyMentions(ctx context.Context, db DBPOOL, publish EventPublishFunc, projectID, workItemTitle, actorUserID, workItemID string, commentBody json.RawMessage) {
 	// Extract plain text from Tiptap JSON
 	text := extractText(commentBody)
 	if !strings.Contains(text, "@") {
@@ -127,7 +135,7 @@ func NotifyMentions(ctx context.Context, db DBPOOL, projectID, workItemTitle, ac
 		}
 		// Check for @Name or @name (case-insensitive)
 		if strings.Contains(strings.ToLower(text), "@"+strings.ToLower(m.name)) {
-			CreateNotification(ctx, db, m.userID, "mentioned", &wiID, &actorUserID, map[string]string{
+			CreateNotification(ctx, db, publish, m.userID, "mentioned", &wiID, &actorUserID, map[string]string{
 				"title": workItemTitle,
 			})
 		}

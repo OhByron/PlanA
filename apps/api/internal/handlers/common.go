@@ -23,6 +23,10 @@ type DBPOOL interface {
 	Begin(ctx context.Context) (pgx.Tx, error)
 }
 
+// EventPublishFunc is a function that publishes a real-time event to a channel.
+// Handlers receive this as a dependency to emit events without importing the realtime package.
+type EventPublishFunc func(channel string, eventType string, payload map[string]string)
+
 // checkProjectAccess verifies the user is a project member or org admin.
 // Returns nil if access is granted, or writes a 403 and returns an error.
 func checkProjectAccess(ctx context.Context, db DBPOOL, projectID, userID string) error {

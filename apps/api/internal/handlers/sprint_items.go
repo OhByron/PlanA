@@ -22,11 +22,12 @@ type SprintItem struct {
 
 // SprintItemHandlers handles adding and removing work items from a sprint.
 type SprintItemHandlers struct {
-	db DBPOOL
+	db      DBPOOL
+	publish EventPublishFunc
 }
 
-func NewSprintItemHandlers(db DBPOOL) *SprintItemHandlers {
-	return &SprintItemHandlers{db: db}
+func NewSprintItemHandlers(db DBPOOL, publish EventPublishFunc) *SprintItemHandlers {
+	return &SprintItemHandlers{db: db, publish: publish}
 }
 
 // addSprintItemRequest is the optional JSON body for adding a sprint item.
@@ -82,6 +83,12 @@ func (h *SprintItemHandlers) Add(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusCreated, si)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "sprint_item.added", map[string]string{
+			"sprint_id": sprintID, "work_item_id": workItemID,
+		})
+	}
 }
 
 // ListItems returns all work items in a sprint with full work item details.
@@ -162,6 +169,12 @@ func (h *SprintItemHandlers) Remove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+
+	if h.publish != nil {
+		h.publish("project:"+projectID, "sprint_item.removed", map[string]string{
+			"sprint_id": sprintID, "work_item_id": workItemID,
+		})
+	}
 }
 
 // AssignedItemIDs returns the IDs of all work items assigned to any sprint in a project.
