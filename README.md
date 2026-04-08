@@ -125,8 +125,8 @@ These are the features evaluators look for in the first 10 minutes. Without them
 
 Features that established tools already offer. Their absence signals immaturity during evaluation.
 
-- **Activity Feed & Audit Trail** - A filterable stream showing who changed what and when. Supports compliance needs and team awareness.
-- **Command Palette (Keyboard-First UX)** - Cmd+K / Ctrl+K to search, create, and navigate. Linear set this expectation for developer tools.
+- ~~**Activity Feed & Audit Trail**~~ **SHIPPED** - activity_log table capturing all mutations with actor, event type, and JSONB field-level changes. Project and work-item level endpoints with filtering. Timeline UI on work item detail page.
+- ~~**Command Palette (Keyboard-First UX)**~~ **SHIPPED** - Cmd+K / Ctrl+K to search work items by title and number, navigate to any project page. Keyboard navigation, grouped results, 26 languages.
 - **Public API Documentation & Webhooks** - A documented REST API and outbound webhooks for custom integrations. The path to an ecosystem without needing a plugin marketplace.
 
 ### Tier 3: Differentiation (Win Deals)
