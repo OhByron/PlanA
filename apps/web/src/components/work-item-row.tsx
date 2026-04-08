@@ -54,7 +54,7 @@ export function WorkItemRow({ item, projectId, calculatedPoints, dragHandleProps
         {item.title}
       </Link>
 
-      <StatusBadge status={item.status} />
+      <StatusBadge stateName={item.stateName} stateSlug={item.stateSlug} stateColor={item.stateColor} isCancelled={item.isCancelled} />
       <PriorityIndicator priority={item.priority} />
 
       <span className="w-8 text-center rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">

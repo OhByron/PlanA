@@ -91,7 +91,7 @@ export function MyWorkPage() {
                 <span className="flex-1 truncate text-sm font-medium text-gray-900">
                   {item.title}
                 </span>
-                <StatusBadge status={item.status} />
+                <StatusBadge stateName={item.stateName} stateSlug={item.stateSlug} stateColor={item.stateColor} isCancelled={item.isCancelled} />
                 <PriorityIndicator priority={item.priority} />
                 {item.storyPoints != null && (
                   <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">

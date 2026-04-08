@@ -102,7 +102,7 @@ export function detectOverallocation(
 
   // Compute transitive closure (reachability) for active items
   const activeItems = items.filter((i) =>
-    ['ready', 'in_progress', 'in_review'].includes(i.status),
+    !i.stateIsTerminal && !i.isCancelled && !i.stateIsInitial,
   );
 
   // Find items that can run in parallel (no path between them)
@@ -173,21 +173,21 @@ export function detectConflicts(
   items: WorkItem[],
 ): ValidationWarning[] {
   const warnings: ValidationWarning[] = [];
-  const statusMap = new Map(items.map((i) => [i.id, i.status]));
+  const itemMap = new Map(items.map((i) => [i.id, i]));
 
   const activeEdges = edges.filter(
     (e) => !e.isRemoved && e.type === 'depends_on' && e.strength === 'hard',
   );
 
   for (const edge of activeEdges) {
-    const sourceStatus = statusMap.get(edge.sourceId);
-    const targetStatus = statusMap.get(edge.targetId);
-    if (!sourceStatus || !targetStatus) continue;
+    const source = itemMap.get(edge.sourceId);
+    const target = itemMap.get(edge.targetId);
+    if (!source || !target) continue;
 
-    // Source is actively being worked but its dependency is still in backlog
+    // Source is actively being worked but its dependency is still in initial state (backlog)
     if (
-      ['in_progress', 'in_review'].includes(sourceStatus) &&
-      targetStatus === 'backlog'
+      !source.stateIsTerminal && !source.isCancelled && !source.stateIsInitial &&
+      target.stateIsInitial
     ) {
       warnings.push({
         type: 'conflicting_state',
@@ -199,8 +199,8 @@ export function detectConflicts(
 
     // Dependency target was cancelled but source is not done/cancelled
     if (
-      targetStatus === 'cancelled' &&
-      !['done', 'cancelled'].includes(sourceStatus)
+      target.isCancelled &&
+      !source.stateIsTerminal && !source.isCancelled
     ) {
       warnings.push({
         type: 'conflicting_state',

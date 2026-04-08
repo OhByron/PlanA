@@ -53,7 +53,7 @@ export function EpicsPage() {
       <div className="space-y-3">
         {epics.map((epic) => {
           const storyCount = allItems.filter((i) => i.epicId === epic.id).length;
-          const doneCount = allItems.filter((i) => i.epicId === epic.id && i.status === 'done').length;
+          const doneCount = allItems.filter((i) => i.epicId === epic.id && i.stateIsTerminal).length;
 
           return (
             <Link

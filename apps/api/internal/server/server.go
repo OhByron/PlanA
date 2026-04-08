@@ -152,7 +152,7 @@ func New(deps *Dependencies) http.Handler {
 					r.Route("/workflow-states", func(r chi.Router) {
 						r.Get("/", wsH.List)
 						r.Post("/", wsH.Create)
-						r.Put("/reorder", wsH.Reorder)
+						r.Post("/reorder", wsH.Reorder)
 						r.Route("/{stateID}", func(r chi.Router) {
 							r.Patch("/", wsH.Update)
 							r.Delete("/", wsH.Delete)
@@ -278,7 +278,7 @@ func New(deps *Dependencies) http.Handler {
 				// Project workflow states (subset of org states)
 				r.Route("/workflow-states", func(r chi.Router) {
 					r.Get("/", pwsH.List)
-					r.Put("/", pwsH.SetSubset)
+					r.Post("/subset", pwsH.SetSubset)
 				})
 
 				// VCS bulk summary for board cards

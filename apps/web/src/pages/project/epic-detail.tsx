@@ -220,7 +220,7 @@ export function EpicDetailPage() {
                     >
                       <TypeIcon type={item.type} />
                       <span className="flex-1 truncate text-sm text-gray-900">{item.title}</span>
-                      <StatusBadge status={item.status} />
+                      <StatusBadge stateName={item.stateName} stateSlug={item.stateSlug} stateColor={item.stateColor} isCancelled={item.isCancelled} />
                       {item.storyPoints != null && (
                         <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500">
                           {item.storyPoints}
@@ -270,7 +270,7 @@ export function EpicDetailPage() {
               function renderTree(item: typeof epicItems[0], depth: number) {
                 const assignee = members.find((m) => m.id === item.assigneeId);
                 const children = childrenOf.get(item.id) ?? [];
-                const doneChildren = children.filter((c) => c.status === 'done' || c.status === 'cancelled').length;
+                const doneChildren = children.filter((c) => c.stateIsTerminal || c.isCancelled).length;
                 // Collect all descendants for removal
                 const allDescendants: string[] = [];
                 function collectDescendants(id: string) {
@@ -376,20 +376,20 @@ export function EpicDetailPage() {
             <label className="mb-1 block text-xs font-medium text-gray-500">{t('epicDetail.progress')}</label>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>{epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length}/{epicItems.length} {t('epicDetail.itemsDone')}</span>
+                <span>{epicItems.filter((i) => i.stateIsTerminal || i.isCancelled).length}/{epicItems.length} {t('epicDetail.itemsDone')}</span>
                 <span>{epicItems.reduce((s, i) => s + (i.storyPoints ?? 0), 0)} {t('epicDetail.totalPts')}</span>
               </div>
               <div className="h-2 rounded-full bg-gray-100">
                 <div
                   className={cn(
                     'h-full rounded-full transition-all',
-                    epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length === epicItems.length
+                    epicItems.filter((i) => i.stateIsTerminal || i.isCancelled).length === epicItems.length
                       ? 'bg-emerald-400'
                       : 'bg-indigo-400',
                   )}
                   style={{
                     width: epicItems.length > 0
-                      ? `${(epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length / epicItems.length) * 100}%`
+                      ? `${(epicItems.filter((i) => i.stateIsTerminal || i.isCancelled).length / epicItems.length) * 100}%`
                       : '0%',
                   }}
                 />
@@ -446,7 +446,7 @@ function EpicItemRow({
         {assignee && (
           <span className="text-xs text-gray-500 shrink-0">{assignee.name}</span>
         )}
-        <StatusBadge status={item.status} />
+        <StatusBadge stateName={item.stateName} stateSlug={item.stateSlug} stateColor={item.stateColor} isCancelled={item.isCancelled} />
         <PriorityIndicator priority={item.priority} />
         {item.storyPoints != null && (
           <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">{item.storyPoints}</span>

@@ -216,7 +216,7 @@ export function CalendarPage() {
                         params={{ projectId, workItemId: item.id }}
                         className={cn(
                           'flex items-center gap-1 rounded px-1 py-0.5 text-[10px] truncate hover:opacity-80',
-                          STATUS_COLORS[item.status] ?? 'bg-gray-100 text-gray-600',
+                          STATUS_COLORS[item.stateSlug] ?? (item.isCancelled ? STATUS_COLORS['cancelled'] : 'bg-gray-100 text-gray-600'),
                         )}
                         title={item.title}
                       >

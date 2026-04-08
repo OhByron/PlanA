@@ -11,18 +11,17 @@ import {
 } from '@dnd-kit/core';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { WorkItem, WorkItemStatus } from '@projecta/types';
+import type { WorkItem, WorkflowState } from '@projecta/types';
 import { cn } from '@projecta/ui';
 import { ApiError } from '../../lib/api-client';
 import { useWorkItems, useUpdateWorkItem } from '../../hooks/use-work-items';
 import { useProjectMembers } from '../../hooks/use-project-members';
 import { useProjectBlockedStatus, useProjectDependencies } from '../../hooks/use-project-dependencies';
 import { useVCSBulkSummary } from '../../hooks/use-vcs';
+import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 import { BoardColumn } from '../../components/board-column';
 import { WorkItemCard } from '../../components/work-item-card';
 import { HelpOverlay } from '../../components/help-overlay';
-
-const COLUMNS: WorkItemStatus[] = ['backlog', 'ready', 'in_progress', 'in_review', 'done'];
 
 export function BoardPage() {
   const { t } = useTranslation();
@@ -33,6 +32,10 @@ export function BoardPage() {
   const { blockedItems } = useProjectBlockedStatus(projectId, items);
   const { data: deps = [] } = useProjectDependencies(projectId);
   const { data: vcsSummaries } = useVCSBulkSummary(projectId);
+  const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
+
+  // Active (non-cancelled) items for the board
+  const activeItems = useMemo(() => items.filter((i) => !i.isCancelled), [items]);
 
   // Compute enabler map: for each item, count how many not-yet-done items
   // are waiting on it (directly or transitively via depends_on chains).
@@ -41,18 +44,16 @@ export function BoardPage() {
     const map = new Map<string, number>();
     if (deps.length === 0) return map;
 
-    const itemStatusMap = new Map(items.map((i) => [i.id, i.status]));
-
     // Build: target → [sources that depend on it]
     // "source depends_on target" means target is the enabler
     const dependents = new Map<string, Set<string>>();
+    const itemMap = new Map(activeItems.map((i) => [i.id, i]));
     for (const dep of deps) {
       if (dep.type !== 'depends_on') continue;
-      const targetStatus = itemStatusMap.get(dep.targetId);
-      const sourceStatus = itemStatusMap.get(dep.sourceId);
-      // Only count if the target isn't done yet and the source isn't done/cancelled
-      if (targetStatus === 'done' || targetStatus === 'cancelled') continue;
-      if (sourceStatus === 'done' || sourceStatus === 'cancelled') continue;
+      const target = itemMap.get(dep.targetId);
+      const source = itemMap.get(dep.sourceId);
+      if (!target || !source) continue;
+      if (target.stateIsTerminal || source.stateIsTerminal) continue;
       const set = dependents.get(dep.targetId) ?? new Set();
       set.add(dep.sourceId);
       dependents.set(dep.targetId, set);
@@ -91,10 +92,10 @@ export function BoardPage() {
   );
 
   const totalInProgress = useMemo(
-    () => items
-      .filter((i) => i.status === 'in_progress' || i.status === 'in_review')
+    () => activeItems
+      .filter((i) => !i.stateIsInitial && !i.stateIsTerminal)
       .reduce((s, i) => s + (i.storyPoints ?? 0), 0),
-    [items],
+    [activeItems],
   );
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -143,7 +144,7 @@ export function BoardPage() {
     // Count done children for progress bars on story cards
     const childDoneCounts = new Map<string, number>();
     for (const item of items) {
-      if (item.parentId && (item.status === 'done' || item.status === 'cancelled')) {
+      if (item.parentId && (item.stateIsTerminal || item.isCancelled)) {
         childDoneCounts.set(item.parentId, (childDoneCounts.get(item.parentId) ?? 0) + 1);
       }
     }
@@ -151,17 +152,17 @@ export function BoardPage() {
     return { parentTitles, childTaskCounts, calculatedPointsMap, childDoneCounts };
   }, [items]);
 
-  const grouped = COLUMNS.reduce(
-    (acc, status) => {
-      const columnItems = items.filter((i) => i.status === status);
-      // Sort by user-defined order. Enabler badges draw attention without
-      // overriding the order the user has set by dragging cards.
-      columnItems.sort((a, b) => a.orderIndex - b.orderIndex);
-      acc[status] = columnItems;
-      return acc;
-    },
-    {} as Record<WorkItemStatus, WorkItem[]>,
-  );
+  // Group items by workflow state ID
+  const grouped = useMemo(() => {
+    const map = new Map<string, WorkItem[]>();
+    for (const state of workflowStates) {
+      const columnItems = activeItems
+        .filter((i) => i.workflowStateId === state.id)
+        .sort((a, b) => a.orderIndex - b.orderIndex);
+      map.set(state.id, columnItems);
+    }
+    return map;
+  }, [activeItems, workflowStates]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const item = items.find((i) => i.id === event.active.id);
@@ -173,23 +174,24 @@ export function BoardPage() {
     const { active, over } = event;
     if (!over) return;
 
-    // over.id may be a column status OR a card id (when dropped onto a card)
-    let newStatus: WorkItemStatus;
-    if (COLUMNS.includes(over.id as WorkItemStatus)) {
-      newStatus = over.id as WorkItemStatus;
+    // over.id may be a state ID (column) OR a card id (when dropped onto a card)
+    const stateIds = workflowStates.map((s) => s.id);
+    let newStateId: string;
+    if (stateIds.includes(over.id as string)) {
+      newStateId = over.id as string;
     } else {
-      // Dropped on a card — find which column that card belongs to
-      const overItem = items.find((i) => i.id === over.id);
+      // Dropped on a card - find which column that card belongs to
+      const overItem = activeItems.find((i) => i.id === over.id);
       if (!overItem) return;
-      newStatus = overItem.status;
+      newStateId = overItem.workflowStateId;
     }
 
-    const item = items.find((i) => i.id === active.id);
+    const item = activeItems.find((i) => i.id === active.id);
     if (!item) return;
 
-    // Same column — reorder within the column
-    if (item.status === newStatus && !COLUMNS.includes(over.id as WorkItemStatus)) {
-      const columnItems = grouped[newStatus] ?? [];
+    // Same column - reorder within the column
+    if (item.workflowStateId === newStateId && !stateIds.includes(over.id as string)) {
+      const columnItems = grouped.get(newStateId) ?? [];
       const activeIdx = columnItems.findIndex((i) => i.id === active.id);
       const overIdx = columnItems.findIndex((i) => i.id === over.id);
       if (activeIdx === -1 || overIdx === -1 || activeIdx === overIdx) return;
@@ -213,7 +215,7 @@ export function BoardPage() {
       return;
     }
 
-    if (item.status === newStatus) return;
+    if (item.workflowStateId === newStateId) return;
 
     const onMutateError = (err: Error) => {
       if (err instanceof ApiError) {
@@ -221,18 +223,18 @@ export function BoardPage() {
       }
     };
 
-    // Move the item
+    // Move the item to the new state
     updateItem.mutate(
-      { workItemId: item.id, data: { status: newStatus } },
+      { workItemId: item.id, data: { workflowStateId: newStateId } },
       { onError: onMutateError },
     );
 
     // Cascade: if it's a story, move child tasks too
     if (item.type === 'story') {
-      const children = items.filter((i) => i.parentId === item.id && i.status !== newStatus);
+      const children = activeItems.filter((i) => i.parentId === item.id && i.workflowStateId !== newStateId);
       for (const child of children) {
         updateItem.mutate(
-          { workItemId: child.id, data: { status: newStatus } },
+          { workItemId: child.id, data: { workflowStateId: newStateId } },
           { onError: onMutateError },
         );
       }
@@ -296,17 +298,17 @@ export function BoardPage() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          {COLUMNS.map((status) => (
+          {workflowStates.map((state) => (
             <BoardColumn
-              key={status}
-              status={status}
-              items={grouped[status] ?? []}
+              key={state.id}
+              state={state}
+              items={grouped.get(state.id) ?? []}
               projectId={projectId}
               parentTitles={parentTitles}
               childTaskCounts={childTaskCounts}
               calculatedPointsMap={calculatedPointsMap}
               blockedItems={blockedItems}
-              wipWarning={status === 'in_progress' && totalInProgress > totalCapacity}
+              wipWarning={!state.isInitial && !state.isTerminal && totalInProgress > totalCapacity}
               memberNames={memberNames}
               unblocksMap={unblocksMap}
               childDoneCounts={childDoneCounts}

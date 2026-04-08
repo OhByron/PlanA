@@ -38,7 +38,6 @@ interface GanttRow {
   rawId: string; // without epic- prefix
   title: string;
   type: 'epic' | 'story' | 'bug' | 'task';
-  status: string;
   priority: string;
   depth: number;
   startDay: number;
@@ -49,6 +48,12 @@ interface GanttRow {
   itemNumber: number | null | undefined;
   isEpic: boolean;
   hasChildren: boolean;
+  // State fields (for work items; epics use their own status)
+  stateName: string;
+  stateSlug: string;
+  stateColor: string;
+  isCancelled: boolean;
+  stateIsTerminal: boolean;
 }
 
 // --- Component ---
@@ -112,19 +117,21 @@ export function GanttPage() {
       const epicStart = epic.startDate ? new Date(epic.startDate) : now;
       const epicEnd = epic.dueDate ? new Date(epic.dueDate) : addDays(epicStart, 42);
       const epicItems = items.filter((i) => i.epicId === epic.id);
-      const doneCount = epicItems.filter((i) => i.status === 'done' || i.status === 'cancelled').length;
+      const doneCount = epicItems.filter((i) => i.stateIsTerminal || i.isCancelled).length;
       const progress = epicItems.length > 0 ? Math.round((doneCount / epicItems.length) * 100) : 0;
       const hasChildren = filter === 'all' && epicItems.some((i) => !i.parentId);
 
       ganttRows.push({
         id: `epic-${epic.id}`, rawId: epic.id, title: epic.title, type: 'epic',
-        status: epic.status, priority: epic.priority, depth: 0,
+        priority: epic.priority, depth: 0,
         startDay: daysBetween(earliest, epicStart),
         durationDays: Math.max(1, daysBetween(epicStart, epicEnd)),
         progress, assigneeName: undefined,
         itemNumber: (epic as any).itemNumber,
         targetDay: epic.targetDate ? daysBetween(earliest, new Date(epic.targetDate)) : null,
         isEpic: true, hasChildren,
+        stateName: epic.status, stateSlug: epic.status, stateColor: '#6b7280',
+        isCancelled: epic.status === 'cancelled', stateIsTerminal: epic.status === 'done' || epic.status === 'cancelled',
       });
 
       if (filter === 'all' && !collapsed.has(`epic-${epic.id}`)) {
@@ -147,21 +154,23 @@ export function GanttPage() {
         function addRow(item: WorkItem, depth: number) {
           const { start, end } = resolveDates(item);
           const children = items.filter((i) => i.parentId === item.id);
-          const doneKids = children.filter((c) => c.status === 'done' || c.status === 'cancelled').length;
-          const itemProgress = item.status === 'done' || item.status === 'cancelled' ? 100
+          const doneKids = children.filter((c) => c.stateIsTerminal || c.isCancelled).length;
+          const itemProgress = item.stateIsTerminal || item.isCancelled ? 100
             : children.length > 0 ? Math.round((doneKids / children.length) * 100)
-            : item.status === 'in_review' ? 80 : item.status === 'in_progress' ? 40 : item.status === 'ready' ? 10 : 0;
+            : item.stateSlug === 'in_review' ? 80 : item.stateSlug === 'in_progress' ? 40 : item.stateSlug === 'ready' ? 10 : 0;
           const hasKids = children.length > 0;
 
           ganttRows.push({
             id: item.id, rawId: item.id, title: item.title, type: item.type,
-            status: item.status, priority: item.priority, depth,
+            priority: item.priority, depth,
             startDay: daysBetween(earliest, start),
             durationDays: Math.max(1, daysBetween(start, end)),
             progress: itemProgress, assigneeName: item.assigneeId ? memberNames.get(item.assigneeId) : undefined,
             itemNumber: (item as any).itemNumber,
             targetDay: item.targetDate ? daysBetween(earliest, new Date(item.targetDate)) : null,
             isEpic: false, hasChildren: hasKids,
+            stateName: item.stateName, stateSlug: item.stateSlug, stateColor: item.stateColor,
+            isCancelled: item.isCancelled, stateIsTerminal: item.stateIsTerminal,
           });
 
           if (hasKids && !collapsed.has(item.id)) {
@@ -409,7 +418,7 @@ export function GanttPage() {
                   <span className={cn(row.isEpic && 'font-semibold')}>{row.title}</span>
                 </Link>
                 {row.assigneeName && <span className="mx-1 shrink-0 text-[10px] text-gray-400 truncate max-w-[50px]">{row.assigneeName}</span>}
-                <span className="w-14 shrink-0 text-center"><StatusBadge status={row.status as any} /></span>
+                <span className="w-14 shrink-0 text-center"><StatusBadge stateName={row.stateName} stateSlug={row.stateSlug} stateColor={row.stateColor} isCancelled={row.isCancelled} /></span>
               </div>
             ))}
           </div>
@@ -501,7 +510,7 @@ export function GanttPage() {
 
             {/* Bars */}
             {rows.map((row, i) => {
-              const isDone = row.status === 'done' || row.status === 'cancelled';
+              const isDone = row.stateIsTerminal || row.isCancelled;
               const isCritical = criticalPathIds.has(row.id);
               const bg = isDone ? DONE_BG : BAR_BG[row.type] ?? '#9ca3af';
               const barH = row.isEpic ? ROW_H - BAR_Y_PAD * 2 - 2 : ROW_H - BAR_Y_PAD * 2 - 6;

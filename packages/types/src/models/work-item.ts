@@ -1,14 +1,22 @@
 export type WorkItemType = 'story' | 'bug' | 'task';
 
-export type WorkItemStatus =
-  | 'backlog'
-  | 'ready'
-  | 'in_progress'
-  | 'in_review'
-  | 'done'
-  | 'cancelled';
+/** @deprecated Use WorkflowState instead. Kept for backwards compatibility during transition. */
+export type WorkItemStatus = string;
 
 export type Priority = 'urgent' | 'high' | 'medium' | 'low';
+
+export interface WorkflowState {
+  id: string;
+  orgId: string;
+  name: string;
+  slug: string;
+  color: string;
+  position: number;
+  isInitial: boolean;
+  isTerminal: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export type DesignAttachmentStatus = 'linked' | 'stale' | 'approved' | 'in_review';
 
@@ -40,7 +48,15 @@ export interface WorkItem {
   type: WorkItemType;
   title: string;
   description: Record<string, unknown> | null; // Tiptap JSON
-  status: WorkItemStatus;
+  workflowStateId: string;
+  isCancelled: boolean;
+  // Embedded state info from API JOIN
+  stateName: string;
+  stateSlug: string;
+  stateColor: string;
+  statePosition: number;
+  stateIsTerminal: boolean;
+  stateIsInitial: boolean;
   priority: Priority;
   assigneeId: string | null;
   storyPoints: number | null;
