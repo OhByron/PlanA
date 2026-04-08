@@ -962,5 +962,8 @@
     "test": "Probar",
     "deliveries": "Entregas",
     "noDeliveries": "No hay entregas aún."
+  },
+  "ai": {
+    "notConfigured": "La IA no está configurada para este proyecto. Ve a Configuración para configurar un proveedor de IA."
   }
 }

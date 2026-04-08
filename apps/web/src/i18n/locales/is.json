@@ -962,5 +962,8 @@
     "test": "Prófa",
     "deliveries": "Afhendingar",
     "noDeliveries": "Engar afhendingar ennþá."
+  },
+  "ai": {
+    "notConfigured": "AI er ekki stillt upp fyrir þetta verkefni. Farðu í Stillingar til að setja upp AI þjónustuaðila."
   }
 }

@@ -962,5 +962,8 @@
     "test": "Testi",
     "deliveries": "Kohaletoimetamised",
     "noDeliveries": "Kohaletoimetamisi pole veel."
+  },
+  "ai": {
+    "notConfigured": "AI pole selle projekti jaoks konfigureeritud. Minge seadetesse, et seadistada AI pakkuja."
   }
 }

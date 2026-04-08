@@ -962,5 +962,8 @@
     "test": "Testuj",
     "deliveries": "Dostawy",
     "noDeliveries": "Brak dostaw."
+  },
+  "ai": {
+    "notConfigured": "AI nie jest skonfigurowane dla tego projektu. Przejdź do Ustawień, aby skonfigurować dostawcę AI."
   }
 }

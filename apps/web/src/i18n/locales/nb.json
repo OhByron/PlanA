@@ -962,5 +962,8 @@
     "test": "Test",
     "deliveries": "Leveringer",
     "noDeliveries": "Ingen leveringer ennå."
+  },
+  "ai": {
+    "notConfigured": "AI er ikke konfigurert for dette prosjektet. Gå til Innstillinger for å sette opp en AI-leverandør."
   }
 }

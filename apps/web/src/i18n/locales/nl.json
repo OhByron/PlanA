@@ -962,5 +962,8 @@
     "test": "Testen",
     "deliveries": "Bezorgingen",
     "noDeliveries": "Nog geen bezorgingen."
+  },
+  "ai": {
+    "notConfigured": "AI is niet geconfigureerd voor dit project. Ga naar Instellingen om een AI-provider in te stellen."
   }
 }

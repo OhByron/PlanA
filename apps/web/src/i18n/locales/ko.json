@@ -962,5 +962,8 @@
     "test": "테스트",
     "deliveries": "전달",
     "noDeliveries": "아직 전달이 없습니다."
+  },
+  "ai": {
+    "notConfigured": "이 프로젝트에 AI가 구성되지 않았습니다. 설정에서 AI 제공자를 설정하세요."
   }
 }

@@ -962,5 +962,8 @@
     "test": "Тестирај",
     "deliveries": "Испоруке",
     "noDeliveries": "Још нема испорука."
+  },
+  "ai": {
+    "notConfigured": "AI nije konfigurisan za ovaj projekat. Idite na Podešavanja da biste podesili AI provajdera."
   }
 }

@@ -962,5 +962,8 @@
     "test": "测试",
     "deliveries": "交付",
     "noDeliveries": "暂无交付。"
+  },
+  "ai": {
+    "notConfigured": "此项目未配置AI。请前往设置配置AI提供商。"
   }
 }

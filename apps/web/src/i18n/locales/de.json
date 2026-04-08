@@ -962,5 +962,8 @@
     "test": "Testen",
     "deliveries": "Zustellungen",
     "noDeliveries": "Noch keine Zustellungen."
+  },
+  "ai": {
+    "notConfigured": "KI ist für dieses Projekt nicht konfiguriert. Gehen Sie zu Einstellungen, um einen KI-Anbieter einzurichten."
   }
 }

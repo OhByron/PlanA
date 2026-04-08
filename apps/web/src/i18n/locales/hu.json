@@ -962,5 +962,8 @@
     "test": "Teszt",
     "deliveries": "Kézbesítések",
     "noDeliveries": "Még nincsenek kézbesítések."
+  },
+  "ai": {
+    "notConfigured": "Az AI nincs konfigurálva ehhez a projekthez. Lépjen a Beállításokba egy AI szolgáltató beállításához."
   }
 }

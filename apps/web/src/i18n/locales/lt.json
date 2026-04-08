@@ -962,5 +962,8 @@
     "test": "Testuoti",
     "deliveries": "Pristatymai",
     "noDeliveries": "Pristatymų dar nėra."
+  },
+  "ai": {
+    "notConfigured": "AI nėra sukonfigūruotas šiam projektui. Eikite į Nustatymus, kad nustatytumėte AI tiekėją."
   }
 }

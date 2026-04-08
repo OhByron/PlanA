@@ -962,5 +962,8 @@
     "test": "Testiraj",
     "deliveries": "Isporuke",
     "noDeliveries": "Još nema isporuka."
+  },
+  "ai": {
+    "notConfigured": "AI nije konfiguriran za ovaj projekt. Idite na Postavke da biste postavili AI davatelja."
   }
 }

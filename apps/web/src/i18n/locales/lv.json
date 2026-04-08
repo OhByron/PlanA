@@ -962,5 +962,8 @@
     "test": "Testēt",
     "deliveries": "Piegādes",
     "noDeliveries": "Piegāžu vēl nav."
+  },
+  "ai": {
+    "notConfigured": "AI nav konfigurēts šim projektam. Dodieties uz Iestatījumiem, lai iestatītu AI pakalpojumu sniedzēju."
   }
 }

@@ -962,5 +962,8 @@
     "test": "Test",
     "deliveries": "Teslimatlar",
     "noDeliveries": "Henüz teslimat yok."
+  },
+  "ai": {
+    "notConfigured": "Bu proje için AI yapılandırılmamış. Bir AI sağlayıcısı kurmak için Ayarlara gidin."
   }
 }
