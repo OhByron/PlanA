@@ -119,7 +119,7 @@ These are the features evaluators look for in the first 10 minutes. Without them
 
 - ~~**Git Integration (GitHub / GitLab)**~~ **SHIPPED** - Repository linking with encrypted token storage, webhook processing for push/branch/PR/review/CI events, automatic work item linking via item number patterns, PR status badges with clickable CI links, auto-transition on PR open (to in review) and merge (configurable), bot comments on PRs linking back to PlanA, copy/create branch buttons, bulk VCS summary on board cards, admin settings page, 27 languages.
 - **Real-Time Collaboration** - Live presence indicators, real-time board updates via WebSockets, co-editing support. Replaces the current polling approach with instant sync.
-- **Custom Workflow States** - Allow teams to define their own status pipeline beyond the fixed six statuses. Required by teams with regulated or non-standard processes.
+- ~~**Custom Workflow States**~~ **SHIPPED** - Org-level workflow state definitions with custom names, colors, and ordering. Backlog and Done are immutable bookends, admins fill in the middle. Dynamic board columns, transition hooks (notify roles on state entry), configurable VCS auto-transitions, cancel/restore as separate action, project-level state subsets (API ready). Full backend and frontend conversion from hardcoded statuses.
 
 ### Tier 2: Competitive Parity (Expected by Evaluators)
 
