@@ -1,0 +1,3662 @@
+openapi: 3.0.3
+info:
+  title: PlanA API
+  description: Agile project management platform API
+  version: 1.0.0
+  contact:
+    name: PlanA
+
+servers:
+  - url: http://localhost:8080
+    description: Local development
+  - url: https://api.plana.app
+    description: Production (configurable)
+
+tags:
+  - name: Auth
+    description: Authentication and OAuth flows
+  - name: Users
+    description: Current user profile and preferences
+  - name: Organizations
+    description: Organization management
+  - name: Teams
+    description: Team management within organizations
+  - name: Projects
+    description: Project CRUD and configuration
+  - name: WorkItems
+    description: Stories, bugs, tasks, and sub-tasks
+  - name: Epics
+    description: Epic management within projects
+  - name: Sprints
+    description: Sprint planning, tracking, and burndown
+  - name: Dependencies
+    description: Work item, epic, and sprint dependencies
+  - name: Comments
+    description: Work item comments
+  - name: Links
+    description: External links on work items
+  - name: Estimation
+    description: Planning poker / story point voting
+  - name: Notifications
+    description: User notifications
+  - name: Activity
+    description: Activity feed and audit log
+  - name: VCS
+    description: Version control connections, branches, PRs, commits
+  - name: WorkflowStates
+    description: Org-level workflow state definitions
+  - name: TransitionHooks
+    description: Workflow transition automation hooks
+  - name: Reports
+    description: Report generation
+  - name: TestResults
+    description: Test result ingestion and summaries
+  - name: Share
+    description: Stakeholder dashboard share tokens
+  - name: Webhooks
+    description: Incoming VCS webhooks (GitHub/GitLab)
+  - name: WebSocket
+    description: Real-time event streaming
+  - name: Initiatives
+    description: Cross-team initiatives scoped to an org
+  - name: AI
+    description: AI-powered suggestions
+  - name: AcceptanceCriteria
+    description: Work item acceptance criteria
+  - name: ProjectMembers
+    description: Project member management
+  - name: Invitations
+    description: Email invitations
+  - name: Licence
+    description: Licence management
+  - name: ProjectWorkflowStates
+    description: Project-level workflow state subsets
+  - name: Health
+    description: Health check
+
+security:
+  - BearerAuth: []
+
+paths:
+  # =========================================================================
+  # Health
+  # =========================================================================
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      security: []
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  # =========================================================================
+  # Auth
+  # =========================================================================
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Authenticate with email and password
+      security: []
+      operationId: passwordLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/auth/github:
+    post:
+      tags: [Auth]
+      summary: Initiate GitHub OAuth flow (returns redirect URL)
+      security: []
+      operationId: githubInitiate
+      responses:
+        "200":
+          description: OAuth URL generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+
+  /api/auth/github/callback:
+    get:
+      tags: [Auth]
+      summary: GitHub OAuth callback (browser redirect)
+      security: []
+      operationId: githubCallback
+      parameters:
+        - name: code
+          in: query
+          schema:
+            type: string
+        - name: state
+          in: query
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirect to frontend with token
+
+  /api/auth/google:
+    post:
+      tags: [Auth]
+      summary: Initiate Google OAuth flow (returns redirect URL)
+      security: []
+      operationId: googleInitiate
+      responses:
+        "200":
+          description: OAuth URL generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+
+  /api/auth/google/callback:
+    get:
+      tags: [Auth]
+      summary: Google OAuth callback (browser redirect)
+      security: []
+      operationId: googleCallback
+      parameters:
+        - name: code
+          in: query
+          schema:
+            type: string
+        - name: state
+          in: query
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirect to frontend with token
+
+  /api/auth/logout:
+    delete:
+      tags: [Auth]
+      summary: Invalidate current session
+      operationId: logout
+      responses:
+        "204":
+          description: Session invalidated
+
+  /api/auth/dev-login:
+    post:
+      tags: [Auth]
+      summary: Dev-only bypass login (development environment only)
+      security: []
+      operationId: devLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Dev login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+
+  # =========================================================================
+  # Users
+  # =========================================================================
+  /api/me:
+    get:
+      tags: [Users]
+      summary: Get current user profile
+      operationId: getMe
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/me/work-items:
+    get:
+      tags: [Users]
+      summary: List all active work items assigned to the current user
+      operationId: myWorkItems
+      responses:
+        "200":
+          description: Work items assigned to user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkItem"
+
+  /api/me/preferences:
+    patch:
+      tags: [Users]
+      summary: Update user preferences (e.g. language)
+      operationId: updatePreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  example: en
+      responses:
+        "200":
+          description: Preferences updated
+
+  # =========================================================================
+  # Licence
+  # =========================================================================
+  /api/licence:
+    get:
+      tags: [Licence]
+      summary: Get current licence status
+      security: []
+      operationId: getLicence
+      responses:
+        "200":
+          description: Licence info
+    post:
+      tags: [Licence]
+      summary: Activate a licence key
+      security: []
+      operationId: activateLicence
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+      responses:
+        "200":
+          description: Licence activated
+
+  # =========================================================================
+  # Notifications
+  # =========================================================================
+  /api/notifications:
+    get:
+      tags: [Notifications]
+      summary: List notifications for current user
+      operationId: listNotifications
+      responses:
+        "200":
+          description: Notification list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /api/notifications/unread-count:
+    get:
+      tags: [Notifications]
+      summary: Get unread notification count
+      operationId: unreadNotificationCount
+      responses:
+        "200":
+          description: Unread count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+
+  /api/notifications/mark-all-read:
+    post:
+      tags: [Notifications]
+      summary: Mark all notifications as read
+      operationId: markAllNotificationsRead
+      responses:
+        "204":
+          description: All marked read
+
+  # =========================================================================
+  # Organizations
+  # =========================================================================
+  /api/orgs:
+    get:
+      tags: [Organizations]
+      summary: List organizations the current user belongs to
+      operationId: listOrgs
+      responses:
+        "200":
+          description: Organization list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+    post:
+      tags: [Organizations]
+      summary: Create a new organization
+      operationId: createOrg
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "201":
+          description: Organization created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+
+  /api/orgs/{orgID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    get:
+      tags: [Organizations]
+      summary: Get organization by ID
+      operationId: getOrg
+      responses:
+        "200":
+          description: Organization detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Organizations]
+      summary: Update organization
+      operationId: updateOrg
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Organization updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+    delete:
+      tags: [Organizations]
+      summary: Delete organization
+      operationId: deleteOrg
+      responses:
+        "204":
+          description: Deleted
+
+  /api/orgs/{orgID}/archive:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    post:
+      tags: [Organizations]
+      summary: Archive an organization
+      operationId: archiveOrg
+      responses:
+        "200":
+          description: Archived
+
+  /api/orgs/{orgID}/unarchive:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    post:
+      tags: [Organizations]
+      summary: Unarchive an organization
+      operationId: unarchiveOrg
+      responses:
+        "200":
+          description: Unarchived
+
+  # =========================================================================
+  # Workflow States (org-level)
+  # =========================================================================
+  /api/orgs/{orgID}/workflow-states:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    get:
+      tags: [WorkflowStates]
+      summary: List all workflow states for an organization
+      operationId: listWorkflowStates
+      responses:
+        "200":
+          description: Ordered list of workflow states
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkflowState"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      tags: [WorkflowStates]
+      summary: Create a new workflow state
+      operationId: createWorkflowState
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWorkflowStateRequest"
+      responses:
+        "201":
+          description: Workflow state created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowState"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /api/orgs/{orgID}/workflow-states/reorder:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    post:
+      tags: [WorkflowStates]
+      summary: Reorder workflow states
+      operationId: reorderWorkflowStates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: Ordered list of state IDs
+      responses:
+        "200":
+          description: Reordered
+
+  /api/orgs/{orgID}/workflow-states/{stateID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - name: stateID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [WorkflowStates]
+      summary: Update a workflow state
+      operationId: updateWorkflowState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                slug:
+                  type: string
+                color:
+                  type: string
+                position:
+                  type: integer
+                is_initial:
+                  type: boolean
+                is_terminal:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowState"
+    delete:
+      tags: [WorkflowStates]
+      summary: Delete a workflow state
+      operationId: deleteWorkflowState
+      responses:
+        "204":
+          description: Deleted
+
+  # =========================================================================
+  # Transition Hooks (org-level)
+  # =========================================================================
+  /api/orgs/{orgID}/transition-hooks:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    get:
+      tags: [TransitionHooks]
+      summary: List transition hooks
+      operationId: listTransitionHooks
+      responses:
+        "200":
+          description: Hook list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TransitionHook"
+    post:
+      tags: [TransitionHooks]
+      summary: Create a transition hook
+      operationId: createTransitionHook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from_state_id:
+                  type: string
+                  format: uuid
+                to_state_id:
+                  type: string
+                  format: uuid
+                action:
+                  type: string
+      responses:
+        "201":
+          description: Hook created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransitionHook"
+
+  /api/orgs/{orgID}/transition-hooks/{hookID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - name: hookID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    delete:
+      tags: [TransitionHooks]
+      summary: Delete a transition hook
+      operationId: deleteTransitionHook
+      responses:
+        "204":
+          description: Deleted
+
+  # =========================================================================
+  # Initiatives (org-level)
+  # =========================================================================
+  /api/orgs/{orgID}/initiatives:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    get:
+      tags: [Initiatives]
+      summary: List initiatives for an organization
+      operationId: listInitiatives
+      responses:
+        "200":
+          description: Initiative list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Initiative"
+    post:
+      tags: [Initiatives]
+      summary: Create an initiative
+      operationId: createInitiative
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "201":
+          description: Initiative created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Initiative"
+
+  /api/orgs/{orgID}/initiatives/{initiativeID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - name: initiativeID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Initiatives]
+      summary: Get initiative by ID
+      operationId: getInitiative
+      responses:
+        "200":
+          description: Initiative detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Initiative"
+    patch:
+      tags: [Initiatives]
+      summary: Update an initiative
+      operationId: updateInitiative
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Initiative"
+    delete:
+      tags: [Initiatives]
+      summary: Delete an initiative
+      operationId: deleteInitiative
+      responses:
+        "204":
+          description: Deleted
+
+  # =========================================================================
+  # Teams
+  # =========================================================================
+  /api/orgs/{orgID}/teams:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+    get:
+      tags: [Teams]
+      summary: List teams in an organization
+      operationId: listTeams
+      responses:
+        "200":
+          description: Team list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+    post:
+      tags: [Teams]
+      summary: Create a team
+      operationId: createTeam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "201":
+          description: Team created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+
+  /api/orgs/{orgID}/teams/{teamID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - $ref: "#/components/parameters/teamID"
+    get:
+      tags: [Teams]
+      summary: Get team by ID
+      operationId: getTeam
+      responses:
+        "200":
+          description: Team detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+    patch:
+      tags: [Teams]
+      summary: Update a team
+      operationId: updateTeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+    delete:
+      tags: [Teams]
+      summary: Delete a team
+      operationId: deleteTeam
+      responses:
+        "204":
+          description: Deleted
+
+  /api/orgs/{orgID}/teams/{teamID}/members:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - $ref: "#/components/parameters/teamID"
+    get:
+      tags: [Teams]
+      summary: List team members
+      operationId: listTeamMembers
+      responses:
+        "200":
+          description: Member list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+  # =========================================================================
+  # Projects (under team hierarchy)
+  # =========================================================================
+  /api/orgs/{orgID}/teams/{teamID}/projects:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - $ref: "#/components/parameters/teamID"
+    get:
+      tags: [Projects]
+      summary: List projects for a team
+      operationId: listTeamProjects
+      parameters:
+        - name: include_archived
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Project list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      tags: [Projects]
+      summary: Create a project under a team
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectRequest"
+      responses:
+        "201":
+          description: Project created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/orgs/{orgID}/teams/{teamID}/projects/import:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - $ref: "#/components/parameters/teamID"
+    post:
+      tags: [Projects]
+      summary: Import a project from JSON export
+      operationId: importProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201":
+          description: Project imported
+
+  /api/orgs/{orgID}/teams/{teamID}/projects/{projectID}:
+    parameters:
+      - $ref: "#/components/parameters/orgID"
+      - $ref: "#/components/parameters/teamID"
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Projects]
+      summary: Get project by ID (team-scoped)
+      operationId: getTeamProject
+      responses:
+        "200":
+          description: Project detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    patch:
+      tags: [Projects]
+      summary: Update project (team-scoped)
+      operationId: updateTeamProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    delete:
+      tags: [Projects]
+      summary: Delete project (team-scoped)
+      operationId: deleteTeamProject
+      responses:
+        "204":
+          description: Deleted
+
+  # =========================================================================
+  # Projects (shortcut routes - no org/team prefix)
+  # =========================================================================
+  /api/projects/{projectID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Projects]
+      summary: Get project by ID
+      operationId: getProject
+      responses:
+        "200":
+          description: Project detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Projects]
+      summary: Update project settings
+      operationId: updateProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectRequest"
+      responses:
+        "200":
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/projects/{projectID}/archive:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [Projects]
+      summary: Archive a project (soft-delete)
+      operationId: archiveProject
+      responses:
+        "200":
+          description: Project archived
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /api/projects/{projectID}/unarchive:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [Projects]
+      summary: Unarchive a project
+      operationId: unarchiveProject
+      responses:
+        "200":
+          description: Project unarchived
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /api/projects/{projectID}/export:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Projects]
+      summary: Export project as JSON
+      operationId: exportProject
+      responses:
+        "200":
+          description: Full project export
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # =========================================================================
+  # Work Items
+  # =========================================================================
+  /api/projects/{projectID}/work-items:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [WorkItems]
+      summary: List work items for a project with optional filters
+      operationId: listWorkItems
+      parameters:
+        - name: type
+          in: query
+          description: Filter by item type (story, bug, task)
+          schema:
+            type: string
+            enum: [story, bug, task]
+        - name: status
+          in: query
+          description: Filter by workflow state slug
+          schema:
+            type: string
+        - name: workflow_state_id
+          in: query
+          description: Filter by workflow state ID
+          schema:
+            type: string
+            format: uuid
+        - name: epic_id
+          in: query
+          description: Filter by epic ID
+          schema:
+            type: string
+            format: uuid
+        - name: assignee_id
+          in: query
+          description: Filter by assignee (project member ID)
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Paginated work item list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginationWrapper"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/WorkItem"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags: [WorkItems]
+      summary: Create a new work item (story, bug, or task)
+      operationId: createWorkItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWorkItemRequest"
+      responses:
+        "201":
+          description: Work item created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/projects/{projectID}/work-items/{workItemID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [WorkItems]
+      summary: Get a single work item by ID
+      operationId: getWorkItem
+      responses:
+        "200":
+          description: Work item detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkItem"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [WorkItems]
+      summary: Update a work item (partial update)
+      operationId: updateWorkItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWorkItemRequest"
+      responses:
+        "200":
+          description: Work item updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags: [WorkItems]
+      summary: Delete a work item
+      operationId: deleteWorkItem
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # =========================================================================
+  # AI suggestions on work items
+  # =========================================================================
+  /api/projects/{projectID}/work-items/{workItemID}/suggest-ac:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [AI]
+      summary: AI-suggest acceptance criteria for a work item
+      operationId: suggestAC
+      responses:
+        "200":
+          description: Suggested acceptance criteria
+
+  /api/projects/{projectID}/work-items/{workItemID}/suggest-desc:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [AI]
+      summary: AI-suggest description for a work item
+      operationId: suggestDescription
+      responses:
+        "200":
+          description: Suggested description
+
+  /api/projects/{projectID}/work-items/{workItemID}/suggest-from-test:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [AI]
+      summary: AI-suggest work item from a test failure
+      operationId: suggestFromTestFailure
+      responses:
+        "200":
+          description: Suggested work item content
+
+  /api/projects/{projectID}/work-items/{workItemID}/suggest-decompose:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [AI]
+      summary: AI-suggest decomposition of a work item into sub-tasks
+      operationId: suggestDecomposition
+      responses:
+        "200":
+          description: Suggested sub-tasks
+
+  # =========================================================================
+  # AI settings and inline suggestions
+  # =========================================================================
+  /api/projects/{projectID}/ai-settings:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [AI]
+      summary: Get AI settings for a project
+      operationId: getAISettings
+      responses:
+        "200":
+          description: AI settings
+    patch:
+      tags: [AI]
+      summary: Update AI settings for a project
+      operationId: updateAISettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Settings updated
+
+  /api/projects/{projectID}/ai/suggest-inline:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [AI]
+      summary: Inline AI suggestion (general purpose)
+      operationId: suggestInline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Inline suggestion
+
+  # =========================================================================
+  # Project Members
+  # =========================================================================
+  /api/projects/{projectID}/members:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [ProjectMembers]
+      summary: List project members
+      operationId: listProjectMembers
+      responses:
+        "200":
+          description: Member list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectMember"
+    post:
+      tags: [ProjectMembers]
+      summary: Add a project member
+      operationId: addProjectMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, job_role]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                job_role:
+                  type: string
+                  enum: [pm, po, dev, qe, design]
+                user_id:
+                  type: string
+                  format: uuid
+      responses:
+        "201":
+          description: Member added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectMember"
+
+  /api/projects/{projectID}/members/{memberID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - name: memberID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [ProjectMembers]
+      summary: Update a project member
+      operationId: updateProjectMember
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                job_role:
+                  type: string
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [ProjectMembers]
+      summary: Remove a project member
+      operationId: removeProjectMember
+      responses:
+        "204":
+          description: Removed
+
+  /api/projects/{projectID}/members/{memberID}/invite:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - name: memberID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      tags: [Invitations]
+      summary: Send an email invitation to a project member
+      operationId: createInvitation
+      responses:
+        "200":
+          description: Invitation sent
+
+  # =========================================================================
+  # Epics
+  # =========================================================================
+  /api/projects/{projectID}/epics:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Epics]
+      summary: List epics for a project (paginated)
+      operationId: listEpics
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Paginated epic list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginationWrapper"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Epic"
+    post:
+      tags: [Epics]
+      summary: Create a new epic
+      operationId: createEpic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEpicRequest"
+      responses:
+        "201":
+          description: Epic created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Epic"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/projects/{projectID}/epics/{epicID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/epicID"
+    get:
+      tags: [Epics]
+      summary: Get epic by ID
+      operationId: getEpic
+      responses:
+        "200":
+          description: Epic detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Epic"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags: [Epics]
+      summary: Update an epic
+      operationId: updateEpic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEpicRequest"
+      responses:
+        "200":
+          description: Epic updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Epic"
+    delete:
+      tags: [Epics]
+      summary: Delete an epic
+      operationId: deleteEpic
+      responses:
+        "204":
+          description: Deleted
+
+  # =========================================================================
+  # Epic Dependencies
+  # =========================================================================
+  /api/projects/{projectID}/epics/{epicID}/dependencies:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/epicID"
+    post:
+      tags: [Dependencies]
+      summary: Create an epic dependency
+      operationId: createEpicDependency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                depends_on_epic_id:
+                  type: string
+                  format: uuid
+      responses:
+        "201":
+          description: Dependency created
+
+  /api/projects/{projectID}/epics/{epicID}/dependencies/{depID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/epicID"
+      - $ref: "#/components/parameters/depID"
+    delete:
+      tags: [Dependencies]
+      summary: Delete an epic dependency
+      operationId: deleteEpicDependency
+      responses:
+        "204":
+          description: Deleted
+
+  /api/projects/{projectID}/epic-dependencies:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Dependencies]
+      summary: List all epic dependencies for a project
+      operationId: listEpicDependencies
+      responses:
+        "200":
+          description: Epic dependency list
+
+  # =========================================================================
+  # Sprints
+  # =========================================================================
+  /api/projects/{projectID}/sprints:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Sprints]
+      summary: List sprints for a project (paginated)
+      operationId: listSprints
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Paginated sprint list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginationWrapper"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Sprint"
+    post:
+      tags: [Sprints]
+      summary: Create a new sprint
+      operationId: createSprint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSprintRequest"
+      responses:
+        "201":
+          description: Sprint created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sprint"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/projects/{projectID}/sprints/{sprintID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/sprintID"
+    patch:
+      tags: [Sprints]
+      summary: Update a sprint
+      operationId: updateSprint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                goal:
+                  type: string
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                status:
+                  type: string
+                  enum: [planned, active, completed]
+      responses:
+        "200":
+          description: Sprint updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sprint"
+    delete:
+      tags: [Sprints]
+      summary: Delete a sprint
+      operationId: deleteSprint
+      responses:
+        "204":
+          description: Deleted
+
+  /api/projects/{projectID}/sprints/{sprintID}/burndown:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/sprintID"
+    get:
+      tags: [Sprints]
+      summary: Get burndown chart data for a sprint
+      operationId: sprintBurndown
+      responses:
+        "200":
+          description: Burndown data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_points:
+                    type: integer
+                  days:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                        remaining:
+                          type: integer
+                        ideal:
+                          type: integer
+
+  # =========================================================================
+  # Sprint Dependencies
+  # =========================================================================
+  /api/projects/{projectID}/sprints/{sprintID}/dependencies:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/sprintID"
+    post:
+      tags: [Dependencies]
+      summary: Create a sprint dependency
+      operationId: createSprintDependency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                depends_on_sprint_id:
+                  type: string
+                  format: uuid
+      responses:
+        "201":
+          description: Dependency created
+
+  /api/projects/{projectID}/sprints/{sprintID}/dependencies/{depID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/sprintID"
+      - $ref: "#/components/parameters/depID"
+    delete:
+      tags: [Dependencies]
+      summary: Delete a sprint dependency
+      operationId: deleteSprintDependency
+      responses:
+        "204":
+          description: Deleted
+
+  /api/projects/{projectID}/sprint-dependencies:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Dependencies]
+      summary: List all sprint dependencies for a project
+      operationId: listSprintDependencies
+      responses:
+        "200":
+          description: Sprint dependency list
+
+  # =========================================================================
+  # Sprint Items (assign/remove work items from sprints)
+  # =========================================================================
+  /api/projects/{projectID}/sprint-assigned:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Sprints]
+      summary: Get IDs of work items assigned to any sprint
+      operationId: sprintAssignedItemIDs
+      responses:
+        "200":
+          description: List of assigned work item IDs
+
+  /api/sprints/{sprintID}/items:
+    parameters:
+      - $ref: "#/components/parameters/sprintID"
+    get:
+      tags: [Sprints]
+      summary: List work items in a sprint
+      operationId: listSprintItems
+      responses:
+        "200":
+          description: Sprint item list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkItem"
+
+  /api/sprints/{sprintID}/items/{workItemID}:
+    parameters:
+      - $ref: "#/components/parameters/sprintID"
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [Sprints]
+      summary: Add a work item to a sprint
+      operationId: addSprintItem
+      responses:
+        "201":
+          description: Item added to sprint
+    delete:
+      tags: [Sprints]
+      summary: Remove a work item from a sprint
+      operationId: removeSprintItem
+      responses:
+        "204":
+          description: Item removed
+
+  # =========================================================================
+  # Project Dependencies (work item level)
+  # =========================================================================
+  /api/projects/{projectID}/dependencies:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Dependencies]
+      summary: List all work item dependencies for a project
+      operationId: listProjectDependencies
+      responses:
+        "200":
+          description: Dependency list
+
+  /api/projects/{projectID}/dependencies/bulk:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [Dependencies]
+      summary: Bulk commit dependency changes (add/remove)
+      operationId: bulkCommitDependencies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                add:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      from_id:
+                        type: string
+                        format: uuid
+                      to_id:
+                        type: string
+                        format: uuid
+                      type:
+                        type: string
+                remove:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        "200":
+          description: Dependencies committed
+
+  # =========================================================================
+  # Work Item sub-resources
+  # =========================================================================
+
+  # Acceptance Criteria
+  /api/work-items/{workItemID}/acceptance-criteria:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [AcceptanceCriteria]
+      summary: List acceptance criteria for a work item
+      operationId: listAcceptanceCriteria
+      responses:
+        "200":
+          description: Acceptance criteria list
+    post:
+      tags: [AcceptanceCriteria]
+      summary: Create an acceptance criterion
+      operationId: createAcceptanceCriterion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [description]
+              properties:
+                description:
+                  type: string
+                is_met:
+                  type: boolean
+      responses:
+        "201":
+          description: Created
+
+  /api/work-items/{workItemID}/acceptance-criteria/{acID}:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+      - name: acID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [AcceptanceCriteria]
+      summary: Update an acceptance criterion
+      operationId: updateAcceptanceCriterion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                is_met:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [AcceptanceCriteria]
+      summary: Delete an acceptance criterion
+      operationId: deleteAcceptanceCriterion
+      responses:
+        "204":
+          description: Deleted
+
+  # Comments
+  /api/work-items/{workItemID}/comments:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [Comments]
+      summary: List comments on a work item
+      operationId: listComments
+      responses:
+        "200":
+          description: Comment list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      tags: [Comments]
+      summary: Add a comment to a work item
+      operationId: createComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+      responses:
+        "201":
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
+  /api/work-items/{workItemID}/comments/{commentID}:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+      - name: commentID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [Comments]
+      summary: Update a comment
+      operationId: updateComment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+    delete:
+      tags: [Comments]
+      summary: Delete a comment
+      operationId: deleteComment
+      responses:
+        "204":
+          description: Deleted
+
+  # Work Item Dependencies
+  /api/work-items/{workItemID}/dependencies:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [Dependencies]
+      summary: List dependencies for a work item
+      operationId: listWorkItemDependencies
+      responses:
+        "200":
+          description: Dependency list
+    post:
+      tags: [Dependencies]
+      summary: Create a work item dependency
+      operationId: createWorkItemDependency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                depends_on_id:
+                  type: string
+                  format: uuid
+                type:
+                  type: string
+      responses:
+        "201":
+          description: Dependency created
+
+  /api/work-items/{workItemID}/dependencies/{depID}:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+      - $ref: "#/components/parameters/depID"
+    delete:
+      tags: [Dependencies]
+      summary: Delete a work item dependency
+      operationId: deleteWorkItemDependency
+      responses:
+        "204":
+          description: Deleted
+
+  # Links
+  /api/work-items/{workItemID}/links:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [Links]
+      summary: List external links on a work item
+      operationId: listLinks
+      responses:
+        "200":
+          description: Link list
+    post:
+      tags: [Links]
+      summary: Add an external link to a work item
+      operationId: createLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url:
+                  type: string
+                  format: uri
+                label:
+                  type: string
+      responses:
+        "201":
+          description: Link created
+
+  /api/work-items/{workItemID}/links/{linkID}:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+      - name: linkID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    delete:
+      tags: [Links]
+      summary: Delete an external link
+      operationId: deleteLink
+      responses:
+        "204":
+          description: Deleted
+
+  # Estimation / Voting
+  /api/work-items/{workItemID}/votes:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [Estimation]
+      summary: List votes for a work item
+      operationId: listVotes
+      responses:
+        "200":
+          description: Vote list
+    post:
+      tags: [Estimation]
+      summary: Cast or update a story point vote
+      operationId: castVote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [points]
+              properties:
+                points:
+                  type: integer
+      responses:
+        "200":
+          description: Vote recorded
+    delete:
+      tags: [Estimation]
+      summary: Reset all votes for a work item
+      operationId: resetVotes
+      responses:
+        "204":
+          description: Votes reset
+
+  /api/work-items/{workItemID}/votes/lock:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [Estimation]
+      summary: Lock voting and set final story points
+      operationId: lockVotes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                points:
+                  type: integer
+      responses:
+        "200":
+          description: Votes locked
+
+  # Work Item Activity
+  /api/work-items/{workItemID}/activity:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [Activity]
+      summary: Get activity feed for a specific work item
+      operationId: listWorkItemActivity
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginationWrapper"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ActivityEntry"
+
+  # Work Item Test Summary
+  /api/work-items/{workItemID}/test-summary:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [TestResults]
+      summary: Get test result summary for a work item
+      operationId: workItemTestSummary
+      responses:
+        "200":
+          description: Test summary
+
+  # Work Item VCS Activity
+  /api/work-items/{workItemID}/vcs-summary:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [VCS]
+      summary: Get VCS activity summary for a work item
+      operationId: workItemVCSSummary
+      responses:
+        "200":
+          description: VCS summary (branches, PRs, commits counts)
+
+  /api/work-items/{workItemID}/branches:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [VCS]
+      summary: List branches linked to a work item
+      operationId: listWorkItemBranches
+      responses:
+        "200":
+          description: Branch list
+
+  /api/work-items/{workItemID}/pull-requests:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [VCS]
+      summary: List pull requests linked to a work item
+      operationId: listWorkItemPRs
+      responses:
+        "200":
+          description: PR list
+
+  /api/work-items/{workItemID}/commits:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    get:
+      tags: [VCS]
+      summary: List commits linked to a work item
+      operationId: listWorkItemCommits
+      responses:
+        "200":
+          description: Commit list
+
+  /api/work-items/{workItemID}/create-branch:
+    parameters:
+      - $ref: "#/components/parameters/workItemID"
+    post:
+      tags: [VCS]
+      summary: Create a branch for a work item on the linked repository
+      operationId: createBranch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connection_id:
+                  type: string
+                  format: uuid
+                branch_name:
+                  type: string
+      responses:
+        "201":
+          description: Branch created
+
+  # =========================================================================
+  # Test Results
+  # =========================================================================
+  /api/projects/{projectID}/test-results:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [TestResults]
+      summary: List test results for a project
+      operationId: listTestResults
+      responses:
+        "200":
+          description: Test result list
+
+  /api/projects/{projectID}/test-results/{resultID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - name: resultID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [TestResults]
+      summary: Get a single test result
+      operationId: getTestResult
+      responses:
+        "200":
+          description: Test result detail
+
+  /api/projects/{projectID}/test-results/junit:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [TestResults]
+      summary: Import test results from JUnit XML
+      operationId: importJUnit
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Test results imported
+
+  /api/projects/{projectID}/test-results/webhook:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [TestResults]
+      summary: Receive test results via webhook
+      operationId: testResultWebhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201":
+          description: Test results received
+
+  # =========================================================================
+  # Project Workflow States (subset)
+  # =========================================================================
+  /api/projects/{projectID}/workflow-states:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [ProjectWorkflowStates]
+      summary: List workflow states enabled for this project
+      operationId: listProjectWorkflowStates
+      responses:
+        "200":
+          description: Workflow state list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkflowState"
+
+  /api/projects/{projectID}/workflow-states/subset:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [ProjectWorkflowStates]
+      summary: Set the subset of org workflow states used by this project
+      operationId: setProjectWorkflowStateSubset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        "200":
+          description: Subset updated
+
+  # =========================================================================
+  # VCS Connections
+  # =========================================================================
+  /api/projects/{projectID}/vcs/summary:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [VCS]
+      summary: Bulk VCS summary for board cards (PR/branch counts per work item)
+      operationId: vcsBulkSummary
+      responses:
+        "200":
+          description: VCS summary map
+
+  /api/projects/{projectID}/vcs/connections:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [VCS]
+      summary: List VCS connections for a project
+      operationId: listVCSConnections
+      responses:
+        "200":
+          description: Connection list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VCSConnection"
+    post:
+      tags: [VCS]
+      summary: Create a VCS connection (link a repository)
+      operationId: createVCSConnection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVCSConnectionRequest"
+      responses:
+        "201":
+          description: Connection created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VCSConnection"
+
+  /api/projects/{projectID}/vcs/connections/{connectionID}:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/connectionID"
+    get:
+      tags: [VCS]
+      summary: Get VCS connection by ID
+      operationId: getVCSConnection
+      responses:
+        "200":
+          description: Connection detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VCSConnection"
+    patch:
+      tags: [VCS]
+      summary: Update a VCS connection
+      operationId: updateVCSConnection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_branch:
+                  type: string
+                token:
+                  type: string
+                enabled:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VCSConnection"
+    delete:
+      tags: [VCS]
+      summary: Delete a VCS connection
+      operationId: deleteVCSConnection
+      responses:
+        "204":
+          description: Deleted
+
+  /api/projects/{projectID}/vcs/connections/{connectionID}/test:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - $ref: "#/components/parameters/connectionID"
+    post:
+      tags: [VCS]
+      summary: Test a VCS connection (verify credentials)
+      operationId: testVCSConnection
+      responses:
+        "200":
+          description: Connection test result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+
+  # =========================================================================
+  # Share Tokens (stakeholder dashboards)
+  # =========================================================================
+  /api/projects/{projectID}/share-tokens:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Share]
+      summary: List share tokens for a project
+      operationId: listShareTokens
+      responses:
+        "200":
+          description: Share token list
+    post:
+      tags: [Share]
+      summary: Create a share token
+      operationId: createShareToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+      responses:
+        "201":
+          description: Share token created
+
+  /api/projects/{projectID}/share-tokens/{tokenID}/revoke:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+      - name: tokenID
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      tags: [Share]
+      summary: Revoke a share token
+      operationId: revokeShareToken
+      responses:
+        "204":
+          description: Revoked
+
+  /api/share/{token}/dashboard:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags: [Share]
+      summary: Get stakeholder dashboard data (public, token-authenticated)
+      security: []
+      operationId: shareDashboard
+      responses:
+        "200":
+          description: Dashboard data
+
+  # =========================================================================
+  # Reports
+  # =========================================================================
+  /api/projects/{projectID}/reports/generate:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    post:
+      tags: [Reports]
+      summary: Generate a project report
+      operationId: generateReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: Report type (e.g. velocity, burndown, status)
+                format:
+                  type: string
+                  enum: [json, csv]
+      responses:
+        "200":
+          description: Generated report
+
+  # =========================================================================
+  # Activity Feed
+  # =========================================================================
+  /api/projects/{projectID}/activity:
+    parameters:
+      - $ref: "#/components/parameters/projectID"
+    get:
+      tags: [Activity]
+      summary: Get activity feed for a project
+      operationId: listProjectActivity
+      parameters:
+        - name: work_item_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: event_type
+          in: query
+          schema:
+            type: string
+        - name: actor_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Paginated activity feed
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginationWrapper"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ActivityEntry"
+
+  # =========================================================================
+  # Invitations (public)
+  # =========================================================================
+  /api/invitations/{token}:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags: [Invitations]
+      summary: Get invitation details by token (public)
+      security: []
+      operationId: getInvitation
+      responses:
+        "200":
+          description: Invitation detail
+
+  /api/invitations/{token}/accept:
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags: [Invitations]
+      summary: Accept an invitation (public)
+      security: []
+      operationId: acceptInvitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Invitation accepted
+
+  # =========================================================================
+  # VCS Webhooks (incoming, public)
+  # =========================================================================
+  /api/webhooks/github/{connectionID}:
+    parameters:
+      - $ref: "#/components/parameters/connectionID"
+    post:
+      tags: [Webhooks]
+      summary: GitHub webhook receiver
+      security: []
+      operationId: handleGitHubWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Webhook processed
+
+  /api/webhooks/gitlab/{connectionID}:
+    parameters:
+      - $ref: "#/components/parameters/connectionID"
+    post:
+      tags: [Webhooks]
+      summary: GitLab webhook receiver
+      security: []
+      operationId: handleGitLabWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Webhook processed
+
+  # =========================================================================
+  # WebSocket
+  # =========================================================================
+  /api/ws:
+    get:
+      tags: [WebSocket]
+      summary: WebSocket connection for real-time events
+      description: |
+        Upgrades to a WebSocket connection. Authentication via query parameter `?token=<jwt>`.
+        Once connected, clients receive JSON events for subscribed channels (projects, sprints, work items).
+        Send `{"type":"subscribe","channel":"project:<id>"}` to subscribe to a channel.
+      security: []
+      operationId: websocketUpgrade
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: JWT token for authentication
+          schema:
+            type: string
+      responses:
+        "101":
+          description: Switching Protocols (WebSocket upgrade)
+
+components:
+  # =========================================================================
+  # Security Schemes
+  # =========================================================================
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /api/auth/login or OAuth callback
+
+  # =========================================================================
+  # Parameters
+  # =========================================================================
+  parameters:
+    orgID:
+      name: orgID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    teamID:
+      name: teamID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    projectID:
+      name: projectID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    workItemID:
+      name: workItemID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    epicID:
+      name: epicID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    sprintID:
+      name: sprintID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    connectionID:
+      name: connectionID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    depID:
+      name: depID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    page:
+      name: page
+      in: query
+      description: Page number (1-based)
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+
+    page_size:
+      name: page_size
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        default: 50
+        minimum: 1
+        maximum: 200
+
+  # =========================================================================
+  # Responses
+  # =========================================================================
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  # =========================================================================
+  # Schemas
+  # =========================================================================
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: validation_error
+        message:
+          type: string
+          example: "name is required"
+
+    PaginationWrapper:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total matching items
+        page:
+          type: integer
+        page_size:
+          type: integer
+        items:
+          type: array
+          items: {}
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT session token
+        user_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+          nullable: true
+        language:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        organization_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Initiative:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        team_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        methodology:
+          type: string
+          enum: [scrum, kanban]
+        status:
+          type: string
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        contact_name:
+          type: string
+          nullable: true
+        contact_email:
+          type: string
+          format: email
+          nullable: true
+        contact_phone:
+          type: string
+          nullable: true
+        sprint_duration_weeks:
+          type: integer
+          default: 2
+        default_project_months:
+          type: integer
+        default_epic_weeks:
+          type: integer
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+        retention_days:
+          type: integer
+        pr_open_transition_state_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Workflow state to transition to when a PR is opened
+        pr_merge_transition_state_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Workflow state to transition to when a PR is merged
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateProjectRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        methodology:
+          type: string
+          enum: [scrum, kanban]
+        due_date:
+          type: string
+          format: date
+        contact_name:
+          type: string
+        contact_email:
+          type: string
+          format: email
+        contact_phone:
+          type: string
+
+    UpdateProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        methodology:
+          type: string
+        status:
+          type: string
+        due_date:
+          type: string
+          format: date
+        contact_name:
+          type: string
+        contact_email:
+          type: string
+        contact_phone:
+          type: string
+        sprint_duration_weeks:
+          type: integer
+        default_project_months:
+          type: integer
+        default_epic_weeks:
+          type: integer
+        retention_days:
+          type: integer
+        pr_open_transition_state_id:
+          type: string
+          format: uuid
+          description: Set to empty string to clear
+        pr_merge_transition_state_id:
+          type: string
+          format: uuid
+          description: Set to empty string to clear
+
+    ProjectMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        job_role:
+          type: string
+          enum: [pm, po, dev, qe, design]
+        created_at:
+          type: string
+          format: date-time
+
+    WorkItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        item_number:
+          type: integer
+          nullable: true
+          description: Project-scoped sequential number (e.g. PROJ-42)
+        project_id:
+          type: string
+          format: uuid
+        epic_id:
+          type: string
+          format: uuid
+          nullable: true
+        parent_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Parent work item ID for sub-tasks
+        type:
+          type: string
+          enum: [story, bug, task]
+        title:
+          type: string
+        description:
+          type: object
+          nullable: true
+          description: Rich text content (TipTap JSON)
+        workflow_state_id:
+          type: string
+          format: uuid
+        is_cancelled:
+          type: boolean
+        state_name:
+          type: string
+          description: Joined from workflow_states
+        state_slug:
+          type: string
+        state_color:
+          type: string
+          description: Hex color code
+        state_position:
+          type: integer
+        state_is_terminal:
+          type: boolean
+        state_is_initial:
+          type: boolean
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+        assignee_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: References a project_member ID
+        story_points:
+          type: integer
+          nullable: true
+        points_used:
+          type: integer
+          nullable: true
+        labels:
+          type: array
+          items:
+            type: string
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        target_date:
+          type: string
+          format: date
+          nullable: true
+        pre_conditions:
+          type: object
+          nullable: true
+          description: Rich text (TipTap JSON)
+        post_conditions:
+          type: object
+          nullable: true
+          description: Rich text (TipTap JSON)
+        design_ready:
+          type: boolean
+        design_link:
+          type: string
+          format: uri
+          nullable: true
+        is_blocked:
+          type: boolean
+        blocked_reason:
+          type: string
+          nullable: true
+        source_test_result_id:
+          type: string
+          format: uuid
+          nullable: true
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateWorkItemRequest:
+      type: object
+      required: [type, title]
+      properties:
+        type:
+          type: string
+          enum: [story, bug, task]
+        title:
+          type: string
+        description:
+          type: object
+          description: Rich text content (TipTap JSON)
+        epic_id:
+          type: string
+          format: uuid
+        parent_id:
+          type: string
+          format: uuid
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+          default: medium
+        assignee_id:
+          type: string
+          format: uuid
+        story_points:
+          type: integer
+        labels:
+          type: array
+          items:
+            type: string
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        source_test_result_id:
+          type: string
+          format: uuid
+
+    UpdateWorkItemRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: object
+          description: Rich text content (TipTap JSON)
+        type:
+          type: string
+          enum: [story, bug, task]
+        workflow_state_id:
+          type: string
+          format: uuid
+        is_cancelled:
+          type: boolean
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+        epic_id:
+          type: string
+          format: uuid
+        parent_id:
+          type: string
+          format: uuid
+        assignee_id:
+          type: string
+          format: uuid
+        story_points:
+          type: integer
+        points_used:
+          type: integer
+        labels:
+          type: array
+          items:
+            type: string
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        target_date:
+          type: string
+          format: date
+        pre_conditions:
+          type: object
+        post_conditions:
+          type: object
+        design_ready:
+          type: boolean
+        design_link:
+          type: string
+        is_blocked:
+          type: boolean
+        blocked_reason:
+          type: string
+
+    Epic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        item_number:
+          type: integer
+          nullable: true
+        project_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [open, in_progress, closed]
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        target_date:
+          type: string
+          format: date
+          nullable: true
+        initiative_id:
+          type: string
+          format: uuid
+          nullable: true
+        assignee_id:
+          type: string
+          format: uuid
+          nullable: true
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateEpicRequest:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, closed]
+          default: open
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+          default: medium
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        target_date:
+          type: string
+          format: date
+        initiative_id:
+          type: string
+          format: uuid
+        assignee_id:
+          type: string
+          format: uuid
+
+    UpdateEpicRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, closed]
+        priority:
+          type: string
+          enum: [urgent, high, medium, low]
+        order_index:
+          type: number
+          format: double
+        start_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        target_date:
+          type: string
+          format: date
+        initiative_id:
+          type: string
+          format: uuid
+        assignee_id:
+          type: string
+          format: uuid
+
+    Sprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        goal:
+          type: string
+          nullable: true
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+          enum: [planned, active, completed]
+        velocity:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateSprintRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        goal:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [planned, active, completed]
+          default: planned
+
+    WorkflowState:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+          description: Hex color code (e.g. "#3b82f6")
+        position:
+          type: integer
+          description: Sort order
+        is_initial:
+          type: boolean
+          description: Whether this is the default state for new work items
+        is_terminal:
+          type: boolean
+          description: Whether this state represents completion
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateWorkflowStateRequest:
+      type: object
+      required: [name, slug, color, position]
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+        position:
+          type: integer
+
+    TransitionHook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        from_state_id:
+          type: string
+          format: uuid
+        to_state_id:
+          type: string
+          format: uuid
+        action:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    VCSConnection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        provider:
+          type: string
+          enum: [github, gitlab]
+        owner:
+          type: string
+          description: Repository owner/organization
+        repo:
+          type: string
+          description: Repository name
+        default_branch:
+          type: string
+          default: main
+        auth_method:
+          type: string
+          enum: [pat, github_app]
+        has_token:
+          type: boolean
+          description: Whether an encrypted token is stored
+        installation_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: GitHub App installation ID
+        enabled:
+          type: boolean
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateVCSConnectionRequest:
+      type: object
+      required: [provider, owner, repo]
+      properties:
+        provider:
+          type: string
+          enum: [github, gitlab]
+        owner:
+          type: string
+        repo:
+          type: string
+        default_branch:
+          type: string
+          default: main
+        auth_method:
+          type: string
+          enum: [pat, github_app]
+        token:
+          type: string
+          description: Personal access token (encrypted at rest)
+        installation_id:
+          type: integer
+          format: int64
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          description: "Notification type (e.g. assigned, mentioned, status_changed)"
+        work_item_id:
+          type: string
+          format: uuid
+          nullable: true
+        actor_id:
+          type: string
+          format: uuid
+          nullable: true
+        data:
+          type: object
+          description: Additional notification-specific data
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    ActivityEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        work_item_id:
+          type: string
+          format: uuid
+          nullable: true
+        sprint_id:
+          type: string
+          format: uuid
+          nullable: true
+        epic_id:
+          type: string
+          format: uuid
+          nullable: true
+        actor_id:
+          type: string
+          format: uuid
+        actor_name:
+          type: string
+        actor_avatar:
+          type: string
+          format: uri
+          nullable: true
+        event_type:
+          type: string
+          description: "Event type (e.g. work_item.created, status.changed, comment.added)"
+        changes:
+          type: object
+          description: JSON diff of what changed
+        created_at:
+          type: string
+          format: date-time
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        work_item_id:
+          type: string
+          format: uuid
+        author_id:
+          type: string
+          format: uuid
+        author_name:
+          type: string
+        author_avatar:
+          type: string
+          nullable: true
+        body:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
