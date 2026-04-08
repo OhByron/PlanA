@@ -158,6 +158,7 @@ function VelocityChart({
         {completedSprints.length >= 2 && (
           <svg
             className="absolute inset-0 pointer-events-none"
+            viewBox="0 0 100 100"
             preserveAspectRatio="none"
             style={{ width: '100%', height: '100%' }}
           >
@@ -181,13 +182,13 @@ function VelocityChart({
 
               // Build velocity trend points
               const trendPoints = velocities
-                .map((v, i) => `${xPct(i)}%,${yPct(v)}%`)
+                .map((v, i) => `${xPct(i)},${yPct(v)}`)
                 .join(' ');
 
               // Build moving average points (skip NaN entries)
               const maPoints = showMovingAvg
                 ? movingAvg
-                    .map((v, i) => (Number.isNaN(v) ? null : `${xPct(i)}%,${yPct(v)}%`))
+                    .map((v, i) => (Number.isNaN(v) ? null : `${xPct(i)},${yPct(v)}`))
                     .filter(Boolean)
                     .join(' ')
                 : '';
@@ -207,12 +208,12 @@ function VelocityChart({
                   {velocities.map((v, i) => (
                     <circle
                       key={i}
-                      cx={`${xPct(i)}%`}
-                      cy={`${yPct(v)}%`}
-                      r="4"
+                      cx={xPct(i)}
+                      cy={yPct(v)}
+                      r="2.5"
                       fill="#4f46e5"
                       stroke="white"
-                      strokeWidth="1.5"
+                      strokeWidth="1"
                     />
                   ))}
                   {/* 3-sprint moving average (dashed) */}
