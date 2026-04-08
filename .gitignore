@@ -58,3 +58,5 @@ vendor/
 # Local-only test infrastructure (mocks, test files)
 apps/api/internal/handlers/*_test.go
 
+MainPreserve.json
+MainPreserve.json
