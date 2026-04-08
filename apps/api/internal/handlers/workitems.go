@@ -367,6 +367,10 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 			"id": wi.ID, "project_id": projectID, "actor_id": claims.UserID,
 		})
 	}
+	wiID := wi.ID
+	LogActivity(r.Context(), h.db, projectID, &wiID, nil, nil, claims.UserID, "work_item.created", map[string]any{
+		"title": wi.Title, "type": wi.Type,
+	})
 }
 
 // Get returns a single work item by ID.
@@ -742,6 +746,26 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 			"id": wi.ID, "project_id": wi.ProjectID, "actor_id": claims.UserID,
 		})
 	}
+
+	// Log activity with changed fields
+	activityChanges := map[string]any{"title": wi.Title}
+	if body.WorkflowStateID != nil {
+		activityChanges["state"] = map[string]any{"old": oldStateID, "new": *body.WorkflowStateID, "name": wi.StateName}
+	}
+	if body.AssigneeID != nil {
+		activityChanges["assignee"] = map[string]any{"new": *body.AssigneeID}
+	}
+	if body.Priority != nil {
+		activityChanges["priority"] = map[string]any{"new": *body.Priority}
+	}
+	if body.StoryPoints != nil {
+		activityChanges["story_points"] = map[string]any{"new": *body.StoryPoints}
+	}
+	if body.IsCancelled != nil {
+		activityChanges["is_cancelled"] = map[string]any{"new": *body.IsCancelled}
+	}
+	wiID := wi.ID
+	LogActivity(r.Context(), h.db, wi.ProjectID, &wiID, nil, nil, claims.UserID, "work_item.updated", activityChanges)
 }
 
 // fireTransitionHooks executes any hooks configured for the given state.
@@ -903,4 +927,7 @@ func (h *WorkItemHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 			"id": workItemID, "project_id": projectID, "actor_id": claims.UserID,
 		})
 	}
+	LogActivity(r.Context(), h.db, projectID, &workItemID, nil, nil, claims.UserID, "work_item.deleted", map[string]any{
+		"id": workItemID,
+	})
 }

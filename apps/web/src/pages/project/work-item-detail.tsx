@@ -26,6 +26,8 @@ import { CommentsSection } from '../../components/comments-section';
 import { TestResultsSection } from '../../components/test-results-section';
 import { VCSSection } from '../../components/vcs-section';
 import { DependenciesSection } from '../../components/dependencies-section';
+import { ActivityFeed } from '../../components/activity-feed';
+import { useWorkItemActivity } from '../../hooks/use-activity';
 import { useProjectWorkflowStates } from '../../hooks/use-workflow-states';
 const PRIORITIES: Priority[] = ['urgent', 'high', 'medium', 'low'];
 const TYPES: WorkItemType[] = ['story', 'bug', 'task'];
@@ -55,6 +57,7 @@ export function WorkItemDetailPage() {
   const { data: projectMembers = [] } = useProjectMembers(projectId);
   const { data: epics = [] } = useEpics(projectId);
   const { data: workflowStates = [] } = useProjectWorkflowStates(projectId);
+  const { data: activityEntries = [], isLoading: activityLoading } = useWorkItemActivity(workItemId);
 
   // Calculated points for stories (sum of child task points)
   const childTasksForPoints = allItems.filter((i) => i.parentId === workItemId);
@@ -478,6 +481,14 @@ export function WorkItemDetailPage() {
           createComment={createComment}
           projectMembers={projectMembers}
         />
+
+        {/* Activity Feed */}
+        <section className="mb-8">
+          <h2 className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+            {t('activity.title') ?? 'Activity'}
+          </h2>
+          <ActivityFeed entries={activityEntries} loading={activityLoading} />
+        </section>
       </div>
 
       {/* Sidebar panel */}

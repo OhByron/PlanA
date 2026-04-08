@@ -37,6 +37,7 @@ import { GraphPage } from './pages/project/graph';
 import { GanttPage } from './pages/project/gantt';
 import { CalendarPage } from './pages/project/calendar';
 import { VCSSettingsPage } from './pages/project/vcs-settings';
+import { SettingsPage } from './pages/project/settings';
 import { OrgWorkflowPage } from './pages/org-workflow';
 import { OrgTransitionHooksPage } from './pages/org-transition-hooks';
 import { RealtimeProvider } from './hooks/use-realtime';
@@ -206,7 +207,7 @@ const sprintDetailRoute = createRoute({
 const settingsRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/settings',
-  component: AISettingsPage,
+  component: SettingsPage,
 });
 
 const reportViewRoute = createRoute({

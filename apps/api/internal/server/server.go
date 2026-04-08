@@ -76,6 +76,7 @@ func New(deps *Dependencies) http.Handler {
 	wsH      := handlers.NewWorkflowStateHandlers(deps.DB)
 	thH      := handlers.NewTransitionHookHandlers(deps.DB)
 	pwsH     := handlers.NewProjectWorkflowStateHandlers(deps.DB)
+	activityH := handlers.NewActivityHandlers(deps.DB)
 	realtimeH := handlers.NewWSHandler(deps.Hub, deps.Auth, deps.DB)
 	vcsEncryptor, _ := vcs.NewTokenEncryptor(deps.Config.VCSEncryptionKey)
 	vcsConnH := handlers.NewVCSConnectionHandlers(deps.DB, vcsEncryptor)
@@ -315,6 +316,9 @@ func New(deps *Dependencies) http.Handler {
 
 				// Report generation
 				r.Post("/reports/generate", reportH.Generate)
+
+				// Activity feed
+				r.Get("/activity", activityH.ListByProject)
 			})
 
 			// Sprint item management (add/remove work items from a sprint)
@@ -359,6 +363,8 @@ func New(deps *Dependencies) http.Handler {
 					r.Post("/lock", estH.Lock)
 					r.Delete("/", estH.Reset)
 				})
+				// Activity feed for this work item
+				r.Get("/activity", activityH.ListByWorkItem)
 				// VCS activity (branches, PRs, commits linked to this work item)
 				r.Get("/vcs-summary", vcsActH.VCSSummary)
 				r.Get("/branches", vcsActH.ListBranches)

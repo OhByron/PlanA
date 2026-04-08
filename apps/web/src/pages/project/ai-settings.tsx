@@ -80,19 +80,25 @@ export function AISettingsPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl">
+    <div className="p-6 max-w-2xl space-y-8">
       <LicenceSection />
+
+      <hr className="border-gray-200" />
       <ProjectDetailsSection projectId={projectId} />
+
+      <hr className="border-gray-200" />
       <ProjectSettingsSection projectId={projectId} />
 
-      <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('aiSettings.title')}</h2>
-      <p className="text-sm text-gray-500 mb-6">
-        {t('aiSettings.description')}
-      </p>
+      <hr className="border-gray-200" />
+      <section>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('aiSettings.title')}</h2>
+        <p className="text-sm text-gray-500 mb-6">
+          {t('aiSettings.description')}
+        </p>
 
-      <div className="space-y-4">
-        <div>
-          <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.provider')}</label>
+        <div className="space-y-4">
+          <div>
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.provider')}</label>
           <Select value={provider} onChange={(e) => { setProvider(e.target.value); setModel(''); }}>
             <option value="">{t('aiSettings.notConfigured')}</option>
             <option value="anthropic">{t('aiSettings.anthropic')}</option>
@@ -154,11 +160,14 @@ export function AISettingsPage() {
           </Button>
           {saved && <span className="text-sm text-green-600">{t('aiSettings.settingsSaved')}</span>}
         </div>
-      </div>
+        </div>
+      </section>
 
+      <hr className="border-gray-200" />
       {/* Workflow State Subset */}
       <WorkflowSubsetSection projectId={projectId} />
 
+      <hr className="border-gray-200" />
       {/* Stakeholder Sharing */}
       <ShareTokensSection projectId={projectId} />
     </div>

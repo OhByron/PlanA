@@ -584,6 +584,23 @@
     "useAllStates": "Use all states"
   },
 
+  "activity": {
+    "title": "Activity",
+    "noActivity": "No activity yet.",
+    "created": "created {{title}}",
+    "updated": "updated item",
+    "deleted": "deleted item",
+    "movedTo": "moved to {{state}}",
+    "assigned": "changed assignment",
+    "changedPriority": "changed priority to {{priority}}",
+    "cancelled": "cancelled item",
+    "restored": "restored item",
+    "commented": "commented on {{title}}",
+    "addedToSprint": "added to sprint",
+    "removedFromSprint": "removed from sprint",
+    "updatedSprint": "updated sprint"
+  },
+
   "presence": {
     "oneViewer": "1 viewer",
     "multipleViewers": "{{count}} viewing"
@@ -856,6 +873,8 @@
   },
 
   "settings": {
+    "general": "General",
+    "repositories": "Repositories",
     "projectSettings": "Planning Defaults",
     "projectSettingsDesc": "Set the default time horizons for this project. These auto-fill dates when creating epics and sprints, and inform timeline planning.",
     "projectDuration": "Feature / Project Duration",
