@@ -13,7 +13,7 @@ COPY apps/api/ .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /bin/api ./cmd/server
 
 # Runtime
-FROM alpine:3.21
+FROM alpine:3.23
 
 RUN apk add --no-cache ca-certificates wget
 COPY --from=builder /bin/api /api
