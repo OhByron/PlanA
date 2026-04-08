@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -37,12 +38,7 @@ type WorkflowState struct {
 
 // ---------- Helpers ----------
 
-func (h *WorkflowStateHandlers) requireOrgAdmin(ctx interface {
-	Value(any) any
-	Deadline() (time.Time, bool)
-	Done() <-chan struct{}
-	Err() error
-}, w http.ResponseWriter, orgID, userID string) bool {
+func (h *WorkflowStateHandlers) requireOrgAdmin(ctx context.Context, w http.ResponseWriter, orgID, userID string) bool {
 	var role string
 	err := h.db.QueryRow(ctx,
 		`SELECT role FROM organization_members WHERE organization_id = $1 AND user_id = $2`,
@@ -254,6 +250,7 @@ func (h *WorkflowStateHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 		`SELECT is_initial, is_terminal FROM workflow_states WHERE id = $1 AND org_id = $2`,
 		stateID, orgID).Scan(&isInitial, &isTerminal)
 	if err != nil {
+		slog.Error("workflow_states.Delete: lookup failed", "error", err, "stateID", stateID, "orgID", orgID)
 		writeError(w, http.StatusNotFound, "not_found", "Workflow state not found")
 		return
 	}
@@ -277,9 +274,23 @@ func (h *WorkflowStateHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	_ = h.db.QueryRow(r.Context(),
 		`SELECT position FROM workflow_states WHERE id = $1`, stateID).Scan(&position)
 
+	// Clear any project FK references to this state
+	_, _ = h.db.Exec(r.Context(),
+		`UPDATE projects SET pr_open_transition_state_id = NULL WHERE pr_open_transition_state_id = $1`, stateID)
+	_, _ = h.db.Exec(r.Context(),
+		`UPDATE projects SET pr_merge_transition_state_id = NULL WHERE pr_merge_transition_state_id = $1`, stateID)
+	// Clear project workflow state subsets
+	_, _ = h.db.Exec(r.Context(),
+		`DELETE FROM project_workflow_states WHERE workflow_state_id = $1`, stateID)
+
 	tag, err := h.db.Exec(r.Context(),
 		`DELETE FROM workflow_states WHERE id = $1 AND org_id = $2`, stateID, orgID)
-	if err != nil || tag.RowsAffected() == 0 {
+	if err != nil {
+		slog.Error("workflow_states.Delete: exec failed", "error", err)
+		writeError(w, http.StatusConflict, "delete_failed", fmt.Sprintf("Cannot delete: %v", err))
+		return
+	}
+	if tag.RowsAffected() == 0 {
 		writeError(w, http.StatusNotFound, "not_found", "Workflow state not found")
 		return
 	}
