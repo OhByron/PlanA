@@ -130,125 +130,146 @@ function VelocityChart({
     }
   }
 
+  const chartHeight = 160;
+  const barAreaTop = 20;    // space for value labels
+  const barAreaBottom = 24; // space for sprint names
+  const barAreaHeight = chartHeight - barAreaTop - barAreaBottom;
+  const count = completedSprints.length;
+
+  // SVG dimensions: use a fixed width per sprint for clean rendering
+  const sprintWidth = 80;
+  const gap = 12;
+  const chartWidth = count * sprintWidth + (count - 1) * gap;
+  const barWidth = Math.min(sprintWidth * 0.6, 40);
+
+  // Position helpers
+  const xCenter = (i: number) => i * (sprintWidth + gap) + sprintWidth / 2;
+  const yPos = (v: number) => {
+    const ratio = maxVelocity > 0 ? v / maxVelocity : 0;
+    return barAreaTop + barAreaHeight * (1 - ratio);
+  };
+
   return (
     <Section title={t('reports.velocity')} subtitle={t('reports.velocitySubtitle')}>
-      {/* Chart area: bars with SVG trend overlay */}
-      <div className="relative">
-        {/* Bar chart */}
-        <div className="flex items-end gap-3 h-40">
-          {completedSprints.map((sprint) => {
-            const velocity = sprint.velocity ?? 0;
-            const height = maxVelocity > 0 ? (velocity / maxVelocity) * 100 : 0;
+      <div className="overflow-x-auto">
+        <svg
+          width={Math.max(chartWidth, 200)}
+          height={chartHeight}
+          className="block"
+        >
+          {/* Y-axis grid lines */}
+          {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+            const y = barAreaTop + barAreaHeight * (1 - ratio);
             return (
-              <div key={sprint.id} className="flex flex-col items-center gap-1 flex-1 min-w-[60px]">
-                <span className="text-xs font-medium text-gray-700">{velocity}</span>
-                <div
-                  className="w-full rounded-t bg-brand-500 transition-all"
-                  style={{ height: `${height}%`, minHeight: velocity > 0 ? 4 : 0 }}
-                />
-                <span className="text-[10px] text-gray-400 truncate w-full text-center">
-                  {sprint.name}
-                </span>
-              </div>
+              <line
+                key={ratio}
+                x1={0}
+                y1={y}
+                x2={chartWidth}
+                y2={y}
+                stroke="#f3f4f6"
+                strokeWidth={1}
+              />
             );
           })}
-        </div>
 
-        {/* SVG trend line overlay */}
-        {completedSprints.length >= 2 && (
-          <svg
-            className="absolute inset-0 pointer-events-none"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            style={{ width: '100%', height: '100%' }}
-          >
-            {(() => {
-              const count = completedSprints.length;
-              // The bar area excludes the top label (~16px) and bottom label (~16px).
-              // Full container is h-40 = 160px. We compute in percent of the container.
-              const topOffset = 10; // % from top (label area)
-              const bottomOffset = 10; // % from bottom (name label area)
-              const barAreaPct = 100 - topOffset - bottomOffset;
+          {/* Bars */}
+          {velocities.map((v, i) => {
+            const barH = maxVelocity > 0 ? (v / maxVelocity) * barAreaHeight : 0;
+            const x = xCenter(i) - barWidth / 2;
+            const y = barAreaTop + barAreaHeight - barH;
+            return (
+              <g key={completedSprints[i]!.id}>
+                {/* Bar */}
+                <rect
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={Math.max(barH, v > 0 ? 2 : 0)}
+                  rx={3}
+                  fill="#7c3aed"
+                />
+                {/* Value label */}
+                <text
+                  x={xCenter(i)}
+                  y={y - 6}
+                  textAnchor="middle"
+                  className="text-xs font-medium"
+                  fill="#374151"
+                >
+                  {v}
+                </text>
+                {/* Sprint name */}
+                <text
+                  x={xCenter(i)}
+                  y={chartHeight - 4}
+                  textAnchor="middle"
+                  className="text-[10px]"
+                  fill="#9ca3af"
+                >
+                  {completedSprints[i]!.name}
+                </text>
+              </g>
+            );
+          })}
 
-              // X positions: center of each bar (evenly spaced with gap)
-              // Each bar is flex-1 within a gap-3 flex container.
-              // Approximate center: (i + 0.5) / count * 100%
-              const xPct = (i: number) => ((i + 0.5) / count) * 100;
-              // Y positions: map velocity to the bar area
-              const yPct = (v: number) => {
-                const ratio = maxVelocity > 0 ? v / maxVelocity : 0;
-                return topOffset + barAreaPct * (1 - ratio);
-              };
+          {/* Trend line */}
+          {count >= 2 && (
+            <>
+              <polyline
+                points={velocities.map((v, i) => `${xCenter(i)},${yPos(v)}`).join(' ')}
+                fill="none"
+                stroke="#4f46e5"
+                strokeWidth={2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              {velocities.map((v, i) => (
+                <circle
+                  key={i}
+                  cx={xCenter(i)}
+                  cy={yPos(v)}
+                  r={4}
+                  fill="#4f46e5"
+                  stroke="white"
+                  strokeWidth={2}
+                />
+              ))}
+            </>
+          )}
 
-              // Build velocity trend points
-              const trendPoints = velocities
-                .map((v, i) => `${xPct(i)},${yPct(v)}`)
-                .join(' ');
-
-              // Build moving average points (skip NaN entries)
-              const maPoints = showMovingAvg
-                ? movingAvg
-                    .map((v, i) => (Number.isNaN(v) ? null : `${xPct(i)},${yPct(v)}`))
-                    .filter(Boolean)
-                    .join(' ')
-                : '';
-
-              return (
-                <>
-                  {/* Velocity trend line */}
-                  <polyline
-                    points={trendPoints}
-                    fill="none"
-                    stroke="#4f46e5"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                  />
-                  {/* Data point dots */}
-                  {velocities.map((v, i) => (
-                    <circle
-                      key={i}
-                      cx={xPct(i)}
-                      cy={yPct(v)}
-                      r="2.5"
-                      fill="#4f46e5"
-                      stroke="white"
-                      strokeWidth="1"
-                    />
-                  ))}
-                  {/* 3-sprint moving average (dashed) */}
-                  {showMovingAvg && maPoints && (
-                    <polyline
-                      points={maPoints}
-                      fill="none"
-                      stroke="#f59e0b"
-                      strokeWidth="2"
-                      strokeDasharray="6 4"
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                    />
-                  )}
-                </>
-              );
-            })()}
-          </svg>
-        )}
+          {/* 3-sprint moving average (dashed) */}
+          {showMovingAvg && (
+            <polyline
+              points={movingAvg
+                .map((v, i) => (Number.isNaN(v) ? null : `${xCenter(i)},${yPos(v)}`))
+                .filter(Boolean)
+                .join(' ')}
+              fill="none"
+              stroke="#f59e0b"
+              strokeWidth={2}
+              strokeDasharray="6 4"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+            />
+          )}
+        </svg>
       </div>
 
       {/* Legend */}
-      <div className="mt-2 flex flex-wrap gap-4 text-xs text-gray-500">
-        <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-4 rounded" style={{ backgroundColor: '#7c3aed' }} />
+      <div className="mt-3 flex flex-wrap gap-4 text-xs text-gray-500">
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-3 w-3 rounded" style={{ backgroundColor: '#7c3aed' }} />
           {t('reports.velocity')}
         </span>
-        {completedSprints.length >= 2 && (
-          <span className="flex items-center gap-1">
-            <span className="inline-block h-0.5 w-4" style={{ backgroundColor: '#4f46e5' }} />
+        {count >= 2 && (
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-0.5 w-4 rounded" style={{ backgroundColor: '#4f46e5' }} />
             {t('reports.trend')}
           </span>
         )}
         {showMovingAvg && (
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1.5">
             <span className="inline-block h-0.5 w-4" style={{ borderTop: '2px dashed #f59e0b' }} />
             {t('reports.threeSprintAvg')}
           </span>
