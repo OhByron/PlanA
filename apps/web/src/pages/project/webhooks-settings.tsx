@@ -67,7 +67,7 @@ export function WebhooksSettingsTab({ projectId }: { projectId: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-3xl space-y-6 py-8 px-6">
       <div>
         <h2 className="text-lg font-semibold text-gray-900 mb-1">
           {t('webhooks.title') ?? 'Outbound Webhooks'}
