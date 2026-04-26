@@ -27,7 +27,7 @@
     "i18next-browser-languagedetector": "^8.2.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-i18next": "^17.0.2"
+    "react-i18next": "^17.0.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
