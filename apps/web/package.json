@@ -17,7 +17,7 @@
     "@projecta/types": "workspace:*",
     "@projecta/ui": "workspace:*",
     "@tanstack/react-query": "^5.100.5",
-    "@tanstack/react-router": "^1.168.24",
+    "@tanstack/react-router": "^1.168.25",
     "@tiptap/extension-placeholder": "^3.22.4",
     "@tiptap/pm": "^3.22.4",
     "@tiptap/react": "^3.22.4",
