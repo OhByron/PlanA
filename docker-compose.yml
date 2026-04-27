@@ -44,6 +44,35 @@ services:
       timeout: 5s
       retries: 5
 
+  # Local LLM backend — bundled with PlanA so AI features (acceptance criteria,
+  # task decomposition, sprint goals, release notes, executive summaries) run
+  # without any external API key. Default model is gemma4:26b.
+  #
+  # Opt-in: docker compose --profile local-ai up -d
+  # First run: docker exec -it $(docker compose ps -q ollama) ollama pull gemma4:26b
+  #
+  # Point the API at it by adding to your .env:
+  #   AI_DEFAULT_PROVIDER=ollama
+  #   AI_DEFAULT_MODEL=gemma4:26b
+  #   AI_DEFAULT_ENDPOINT=http://localhost:11434
+  #   AI_DEFAULT_NUM_CTX=16384
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    profiles:
+      - local-ai
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 volumes:
   postgres_data:
   redis_data:
+  ollama_data:

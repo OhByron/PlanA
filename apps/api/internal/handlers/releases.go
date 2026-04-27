@@ -416,20 +416,9 @@ func (h *ReleaseHandlers) EnhanceNotes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get AI provider
-	var providerType, model, apiKey, endpoint *string
-	_ = h.db.QueryRow(r.Context(),
-		`SELECT ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&providerType, &model, &apiKey, &endpoint)
-
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "no_ai", "AI provider not configured for this project")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusInternalServerError, "ai_error", "Failed to initialize AI provider")
+	// Get AI provider (project config + global env fallback)
+	provider, _, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
