@@ -41,6 +41,12 @@ services:
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      # Global AI defaults — used when a project has no per-project AI config.
+      # Set to ollama + the bundled service when running with --profile local-ai.
+      AI_DEFAULT_PROVIDER: ${AI_DEFAULT_PROVIDER:-}
+      AI_DEFAULT_MODEL: ${AI_DEFAULT_MODEL:-}
+      AI_DEFAULT_ENDPOINT: ${AI_DEFAULT_ENDPOINT:-}
+      AI_DEFAULT_NUM_CTX: ${AI_DEFAULT_NUM_CTX:-}
       ENV: production
       PORT: "8080"
     expose:

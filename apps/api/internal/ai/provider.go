@@ -134,6 +134,11 @@ func NewProvider(providerType, model, apiKey, endpoint string) (Provider, error)
 			ep = endpoint
 		}
 		return NewOpenAIProvider(apiKey, model, ep), nil
+	case "ollama":
+		// Ollama is unauthenticated locally; apiKey is ignored. num_ctx is
+		// taken from AI_DEFAULT_NUM_CTX so it's tunable per deployment without
+		// schema changes.
+		return NewOllamaProvider(model, endpoint, defaultNumCtx()), nil
 	default:
 		return nil, fmt.Errorf("unsupported AI provider: %s", providerType)
 	}

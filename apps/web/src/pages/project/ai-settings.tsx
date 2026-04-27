@@ -68,8 +68,16 @@ export function AISettingsPage() {
     anthropic: ['claude-sonnet-4-20250514', 'claude-haiku-4-5-20251001'],
     openai: ['gpt-4o', 'gpt-4o-mini'],
     azure_openai: ['gpt-4o'],
+    ollama: ['gemma4:26b'],
     custom: [],
   };
+
+  // Ollama runs locally and doesn't take an API key.
+  const requiresApiKey = provider !== '' && provider !== 'ollama';
+  const showsEndpoint = provider === 'azure_openai' || provider === 'custom' || provider === 'ollama';
+  const endpointPlaceholder = provider === 'ollama'
+    ? 'http://localhost:11434'
+    : 'https://your-instance.openai.azure.com/v1';
 
   if (loading) {
     return (
@@ -101,6 +109,7 @@ export function AISettingsPage() {
             <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.provider')}</label>
           <Select value={provider} onChange={(e) => { setProvider(e.target.value); setModel(''); }}>
             <option value="">{t('aiSettings.notConfigured')}</option>
+            <option value="ollama">{t('aiSettings.ollama', { defaultValue: 'Ollama (local — Gemma 4)' })}</option>
             <option value="anthropic">{t('aiSettings.anthropic')}</option>
             <option value="openai">{t('aiSettings.openai')}</option>
             <option value="azure_openai">{t('aiSettings.azureOpenai')}</option>
@@ -128,27 +137,34 @@ export function AISettingsPage() {
               )}
             </div>
 
-            <div>
-              <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.apiKey')}</label>
-              <Input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder={settings?.api_key ? t('aiSettings.currentKey', { key: settings.api_key }) : t('aiSettings.enterApiKey')}
-              />
-              <p className="mt-1 text-xs text-gray-400">
-                {t('aiSettings.apiKeyHelp')}
-              </p>
-            </div>
+            {requiresApiKey && (
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.apiKey')}</label>
+                <Input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder={settings?.api_key ? t('aiSettings.currentKey', { key: settings.api_key }) : t('aiSettings.enterApiKey')}
+                />
+                <p className="mt-1 text-xs text-gray-400">
+                  {t('aiSettings.apiKeyHelp')}
+                </p>
+              </div>
+            )}
 
-            {(provider === 'azure_openai' || provider === 'custom') && (
+            {showsEndpoint && (
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-500">{t('aiSettings.endpointUrl')}</label>
                 <Input
                   value={endpoint}
                   onChange={(e) => setEndpoint(e.target.value)}
-                  placeholder="https://your-instance.openai.azure.com/v1"
+                  placeholder={endpointPlaceholder}
                 />
+                {provider === 'ollama' && (
+                  <p className="mt-1 text-xs text-gray-400">
+                    {t('aiSettings.ollamaHint', { defaultValue: 'Leave blank to use the bundled Ollama service. The model must be pulled first: ollama pull gemma4:26b' })}
+                  </p>
+                )}
               </div>
             )}
           </>

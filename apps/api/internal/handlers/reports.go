@@ -218,18 +218,10 @@ func (h *ReportHandlers) Generate(w http.ResponseWriter, r *http.Request) {
 	report["blockers"] = blocked
 
 	// --------------- AI executive summary (optional) ---------------
-
-	var providerType, model, apiKey, endpoint *string
-	_ = h.db.QueryRow(r.Context(),
-		`SELECT ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`, projectID,
-	).Scan(&providerType, &model, &apiKey, &endpoint)
-
-	if providerType != nil && apiKey != nil && *providerType != "" && *apiKey != "" {
-		provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-		if err == nil {
-			summary := h.generateSummary(r, provider, projectName, report)
-			report["executive_summary"] = summary
-		}
+	// Falls through silently if no AI is configured (project-level or global env).
+	if provider, _, err := ai.LoadProviderForProject(r.Context(), h.db, projectID); err == nil {
+		summary := h.generateSummary(r, provider, projectName, report)
+		report["executive_summary"] = summary
 	}
 
 	writeJSON(w, http.StatusOK, report)

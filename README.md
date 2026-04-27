@@ -146,7 +146,16 @@ Group completed sprint items into versioned releases. Template-based note genera
 Cross-project metrics aggregation with initiative progress rollup (epics, stories, points), project health table with computed indicators (healthy/at_risk/blocked), summary cards, inline progress bars.
 
 ### Sprint Goal AI
-"Generate with AI" button on sprint detail generates a business-value focused goal from the sprint's items. Uses multi-provider AI system (Anthropic, OpenAI, Azure).
+"Generate with AI" button on sprint detail generates a business-value focused goal from the sprint's items. Uses multi-provider AI system — defaults to a bundled local LLM (Ollama running Gemma 4 26B) so AI features work out of the box without an API key. Anthropic Claude, OpenAI, and Azure OpenAI are also supported per-project for users who prefer a hosted model.
+
+To enable the bundled local LLM:
+
+```bash
+docker compose --profile local-ai up -d
+docker exec -it $(docker compose ps -q ollama) ollama pull gemma4:26b
+```
+
+Then set `AI_DEFAULT_PROVIDER=ollama`, `AI_DEFAULT_MODEL=gemma4:26b`, and `AI_DEFAULT_ENDPOINT=http://localhost:11434` in `.env`.
 
 ### Definition of Ready
 Automated readiness checklist for stories: description, acceptance criteria, tasks, estimates, design approval. Progress indicator shows how refined each story is.
@@ -180,7 +189,7 @@ Installable on mobile and desktop with offline-capable service worker caching.
 | **Database** | PostgreSQL 16 |
 | **Cache** | Redis 7 |
 | **Proxy** | Caddy 2 (production) |
-| **AI** | Anthropic Claude / OpenAI (optional, user-provided keys) |
+| **AI** | Ollama + Gemma 4 (default, bundled) — Anthropic Claude / OpenAI / Azure also supported |
 
 ## Architecture
 

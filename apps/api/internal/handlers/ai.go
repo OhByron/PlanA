@@ -2,15 +2,36 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/OhByron/PlanA/internal/ai"
 	"github.com/OhByron/PlanA/internal/auth"
 )
+
+// loadAIProvider loads the project's AI configuration (with env-driven fallback
+// to the global default) and writes an HTTP error response if it can't be
+// resolved. When err is non-nil the caller should return; provider is unset.
+func loadAIProvider(w http.ResponseWriter, r *http.Request, db DBPOOL, projectID string) (ai.Provider, string, bool) {
+	provider, projectName, err := ai.LoadProviderForProject(r.Context(), db, projectID)
+	if err == nil {
+		return provider, projectName, true
+	}
+	switch {
+	case errors.Is(err, pgx.ErrNoRows):
+		writeError(w, http.StatusNotFound, "not_found", "Project not found")
+	case errors.Is(err, ai.ErrNotConfigured):
+		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project. Add a provider in project settings, or set AI_DEFAULT_PROVIDER on the server.")
+	default:
+		writeError(w, http.StatusInternalServerError, "ai_error", err.Error())
+	}
+	return nil, "", false
+}
 
 type AIHandlers struct {
 	db DBPOOL
@@ -47,32 +68,15 @@ func (h *AIHandlers) SuggestAC(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
-	// Get project AI settings
-	var providerType, model, apiKey, endpoint *string
-	var projectName string
-	err := h.db.QueryRow(r.Context(),
-		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "not_found", "Project not found")
-		return
-	}
-
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project. Go to project settings to add an AI provider and API key.")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
 	// Gather context
 	var storyTitle string
 	var storyDesc, epicID *string
-	err = h.db.QueryRow(r.Context(),
+	err := h.db.QueryRow(r.Context(),
 		`SELECT title, description::text, epic_id FROM work_items WHERE id = $1`, workItemID,
 	).Scan(&storyTitle, &storyDesc, &epicID)
 	if err != nil {
@@ -129,7 +133,7 @@ func (h *AIHandlers) SuggestAC(w http.ResponseWriter, r *http.Request) {
 		Language:         h.userLanguage(r),
 	}
 
-	slog.Info("ai.SuggestAC", "project", projectName, "story", storyTitle, "provider", *providerType)
+	slog.Info("ai.SuggestAC", "project", projectName, "story", storyTitle)
 
 	result, err := provider.SuggestAC(r.Context(), req)
 	if err != nil {
@@ -205,29 +209,14 @@ func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) 
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
-	var providerType, model, apiKey, endpoint *string
-	var projectName string
-	err := h.db.QueryRow(r.Context(),
-		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "not_found", "Project not found")
-		return
-	}
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
 	var storyTitle, storyType string
 	var storyDesc, epicID *string
-	err = h.db.QueryRow(r.Context(),
+	err := h.db.QueryRow(r.Context(),
 		`SELECT title, type, description::text, epic_id FROM work_items WHERE id = $1`, workItemID,
 	).Scan(&storyTitle, &storyType, &storyDesc, &epicID)
 	if err != nil {
@@ -287,23 +276,8 @@ func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) 
 func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 
-	var providerType, model, apiKey, endpoint *string
-	var projectName string
-	err := h.db.QueryRow(r.Context(),
-		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "not_found", "Project not found")
-		return
-	}
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
@@ -391,30 +365,14 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
-	// Get project AI settings
-	var providerType, model, apiKey, endpoint *string
-	var projectName string
-	err := h.db.QueryRow(r.Context(),
-		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "not_found", "Project not found")
-		return
-	}
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
 	// Get the work item's source_test_result_id and parent story title
 	var sourceTestResultID, parentID *string
-	err = h.db.QueryRow(r.Context(),
+	err := h.db.QueryRow(r.Context(),
 		`SELECT source_test_result_id, parent_id FROM work_items WHERE id = $1`, workItemID,
 	).Scan(&sourceTestResultID, &parentID)
 	if err != nil {
@@ -455,7 +413,7 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 		Language:     h.userLanguage(r),
 	}
 
-	slog.Info("ai.SuggestFromTestFailure", "project", projectName, "test", testName, "provider", *providerType)
+	slog.Info("ai.SuggestFromTestFailure", "project", projectName, "test", testName)
 
 	result, err := provider.SuggestDefect(r.Context(), req)
 	if err != nil {
@@ -473,30 +431,15 @@ func (h *AIHandlers) SuggestDecomposition(w http.ResponseWriter, r *http.Request
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
-	var providerType, model, apiKey, endpoint *string
-	var projectName string
-	err := h.db.QueryRow(r.Context(),
-		`SELECT name, ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
-		projectID).Scan(&projectName, &providerType, &model, &apiKey, &endpoint)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "not_found", "Project not found")
-		return
-	}
-	if providerType == nil || apiKey == nil || *providerType == "" || *apiKey == "" {
-		writeError(w, http.StatusBadRequest, "ai_not_configured", "AI is not configured for this project.")
-		return
-	}
-
-	provider, err := ai.NewProvider(*providerType, deref(model), *apiKey, deref(endpoint))
-	if err != nil {
-		writeError(w, http.StatusBadRequest, "ai_error", err.Error())
+	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
+	if !ok {
 		return
 	}
 
 	// Get story context
 	var storyTitle, storyType string
 	var storyDesc, epicID *string
-	err = h.db.QueryRow(r.Context(),
+	err := h.db.QueryRow(r.Context(),
 		`SELECT title, type, description::text, epic_id FROM work_items WHERE id = $1`, workItemID,
 	).Scan(&storyTitle, &storyType, &storyDesc, &epicID)
 	if err != nil {
@@ -550,7 +493,7 @@ func (h *AIHandlers) SuggestDecomposition(w http.ResponseWriter, r *http.Request
 		Language:         h.userLanguage(r),
 	}
 
-	slog.Info("ai.SuggestDecomposition", "project", projectName, "story", storyTitle, "provider", *providerType)
+	slog.Info("ai.SuggestDecomposition", "project", projectName, "story", storyTitle)
 
 	result, err := provider.SuggestDecomposition(r.Context(), req)
 	if err != nil {
