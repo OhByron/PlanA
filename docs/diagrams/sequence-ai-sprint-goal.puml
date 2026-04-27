@@ -1,0 +1,47 @@
+@startuml PlanA-Sequence-AI-Sprint-Goal
+!theme plain
+title PlanA — Sequence: AI Sprint Goal Generation
+
+skinparam shadowing false
+
+actor "PM User" as U
+participant "Web (Sprint Detail)" as Web
+participant "API Router" as Router
+participant "AI Handler\n(handlers/ai.go)" as AIH
+participant "AI Provider\n(internal/ai)" as AI
+participant "Anthropic / OpenAI" as Ext
+database "PostgreSQL" as PG
+
+U -> Web : Click "Generate with AI"
+Web -> Router : POST /api/projects/{pid}/sprints/{sid}/suggest-goal
+Router -> AIH : SuggestSprintGoal()
+
+AIH -> PG : SELECT project ai_settings (provider, model, encrypted key)
+PG --> AIH : settings
+
+alt no key configured
+  AIH --> Web : 412 { error: "ai_not_configured" }
+else configured
+  AIH -> PG : SELECT sprint items, epic titles, project name
+  PG --> AIH : context bundle
+
+  AIH -> AI : NewProvider(settings)
+  AIH -> AI : SuggestSprintGoal(context)
+  AI -> AI : build prompt (business-value framing)
+  AI -> Ext : POST /v1/messages (Anthropic) or /chat/completions (OpenAI)
+  Ext --> AI : completion
+  AI --> AIH : { goal: string, alternatives: [...] }
+
+  AIH --> Web : 200 { suggestions }
+  Web -> U : show editable suggestion
+  U -> Web : edit & save
+  Web -> Router : PATCH /api/sprints/{sid} { goal }
+  Router -> AIH : (handled by sprint handler)
+end
+
+note over AI, Ext
+  Provider abstraction: openai.go, anthropic.go.
+  Keys are user-provided per project; never global.
+end note
+
+@enduml

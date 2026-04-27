@@ -1,0 +1,54 @@
+@startuml PlanA-Sequence-Realtime-Presence
+!theme plain
+title PlanA — Sequence: Realtime Connection & Presence
+
+skinparam shadowing false
+
+actor "User A" as A
+actor "User B" as B
+participant "Web (A)" as WebA
+participant "Web (B)" as WebB
+participant "Caddy" as Caddy
+participant "Realtime Hub\n(realtime/hub.go)" as Hub
+participant "Client A\n(realtime/client.go)" as ClA
+participant "Client B" as ClB
+database "Redis\n(presence)" as Redis
+
+A -> WebA : open project page
+WebA -> Caddy : GET /api/ws (Upgrade)\nAuthorization: Bearer JWT
+Caddy -> Hub : Upgrade()
+Hub -> Hub : verify JWT, create Client A
+Hub -> ClA : register
+WebA -> Hub : subscribe { channel: "project:{pid}" }
+Hub -> Redis : SADD presence:project:{pid} userA
+Hub -> ClB : presence.join { userA } (if B already on channel)
+
+B -> WebB : open same project
+WebB -> Hub : WS upgrade & subscribe
+Hub -> Redis : SADD presence:project:{pid} userB
+Hub -> ClA : presence.join { userB }
+Hub -> ClB : presence.snapshot { [userA, userB] }
+
+== Live update during edit ==
+
+A -> WebA : drag card to "In Progress"
+WebA -> Caddy : PATCH /api/work-items/{id}
+Caddy -> Hub : (handler runs, see other diagram)
+Hub -> ClA : work_item.updated
+Hub -> ClB : work_item.updated
+WebA -> WebA : optimistic UI confirmed
+WebB -> WebB : invalidate query cache, re-render
+
+== Disconnect ==
+
+A -> WebA : close tab
+WebA -> Hub : WS close
+Hub -> Redis : SREM presence:project:{pid} userA
+Hub -> ClB : presence.leave { userA }
+
+note over Hub
+  Channels: project:{id}, org:{id}, epic:{id}.
+  Frontend falls back to polling if WS is down.
+end note
+
+@enduml

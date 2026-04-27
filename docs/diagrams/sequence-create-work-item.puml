@@ -1,0 +1,52 @@
+@startuml PlanA-Sequence-Create-Work-Item
+!theme plain
+title PlanA — Sequence: Create Work Item (Story / Task)
+
+skinparam shadowing false
+
+actor "User" as U
+participant "Web App" as Web
+participant "API Router\n(chi)" as Router
+participant "Auth Middleware" as Mw
+participant "WorkItems Handler\n(handlers/workitems.go)" as WI
+database "PostgreSQL" as PG
+participant "Realtime Hub\n(realtime/hub.go)" as Hub
+participant "Webhook Deliverer\n(webhookdelivery)" as WHD
+participant "Outbound Subscriber\n(external)" as Ext
+participant "Other Clients\n(WebSocket)" as Others
+
+U -> Web : Submit new story dialog
+Web -> Router : POST /api/projects/{pid}/work-items\nAuthorization: Bearer JWT
+Router -> Mw : verify JWT
+Mw --> Router : userCtx
+Router -> WI : Create(req)
+WI -> PG : SELECT project access for user
+PG --> WI : ok
+WI -> PG : SELECT initial workflow_state for project
+PG --> WI : workflow_state_id
+WI -> PG : INSERT work_items (...)
+PG --> WI : work_item row
+
+WI -> WI : build event { type: "work_item.created", data }
+
+par Realtime broadcast
+  WI -> Hub : Publish("project:{pid}", event)
+  Hub -> Others : WS message
+else Outbound webhooks
+  WI -> WHD : DeliverEvent(pid, "work_item.created", payload)
+  WHD -> PG : SELECT outbound_webhooks WHERE event matches
+  loop for each subscription
+    WHD -> WHD : sign HMAC-SHA256(secret, payload)
+    WHD -> Ext : POST url\nX-Signature: sha256=...
+    Ext --> WHD : 2xx / retry on failure
+    WHD -> PG : INSERT webhook_deliveries (status, attempts)
+  end
+else Activity log
+  WI -> PG : INSERT activity_log (action="created", entity="work_item")
+end
+
+WI --> Router : 201 { work_item }
+Router --> Web : JSON
+Web -> Web : invalidate query cache, render card
+
+@enduml

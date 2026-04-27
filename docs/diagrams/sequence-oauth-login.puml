@@ -1,0 +1,51 @@
+@startuml PlanA-Sequence-OAuth-Login
+!theme plain
+title PlanA — Sequence: OAuth Login (GitHub / Google)
+
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+
+actor "User" as U
+participant "Web App\n(React)" as Web
+participant "Caddy" as Caddy
+participant "API Router\n(chi)" as Router
+participant "Auth Handler\n(handlers/auth.go)" as AuthH
+participant "OAuth Pkg\n(internal/oauth)" as OAuth
+participant "Provider\n(GitHub/Google)" as Provider
+database "PostgreSQL" as PG
+database "Redis" as Redis
+
+U -> Web : Click "Sign in with GitHub"
+Web -> Caddy : POST /api/auth/github/initiate
+Caddy -> Router : forward
+Router -> AuthH : GitHubInitiate()
+AuthH -> OAuth : NewPKCE() (state, verifier)
+AuthH -> Redis : SET pkce:{state} verifier (TTL)
+AuthH --> Web : 200 { auth_url }
+Web -> U : redirect to auth_url
+U -> Provider : login & consent
+Provider -> Caddy : GET /api/auth/github/callback?code&state
+Caddy -> Router : forward
+Router -> AuthH : GitHubCallback()
+AuthH -> Redis : GET pkce:{state}
+Redis --> AuthH : verifier
+AuthH -> OAuth : ExchangeCode(code, verifier)
+OAuth -> Provider : POST /token
+Provider --> OAuth : access_token
+OAuth -> Provider : GET /user
+Provider --> OAuth : profile { id, email, name, avatar }
+OAuth --> AuthH : profile
+AuthH -> PG : UPSERT users (github_id|google_id)
+PG --> AuthH : user row
+AuthH -> PG : INSERT auth_sessions (token_hash, expires_at)
+AuthH -> AuthH : sign JWT
+AuthH --> Web : 302 redirect /?token=JWT
+Web -> Web : store token in localStorage
+Web -> U : show app shell
+
+note over AuthH, Redis
+  PKCE state has short TTL.
+  Replay or expired state is rejected.
+end note
+
+@enduml
