@@ -1,0 +1,327 @@
+@startuml PlanA-Domain-Class-Diagram
+!theme plain
+title PlanA — Domain Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classBackgroundColor #FAFAFA
+skinparam classBorderColor #555555
+hide circle
+
+' ==================== Identity & Org ====================
+
+package "Identity & Org" {
+
+  class User {
+    +id: UUID
+    +email: string
+    +name: string
+    +avatar_url: string
+    +github_id: string
+    +google_id: string
+    +created_at: timestamp
+  }
+
+  class AuthSession {
+    +id: UUID
+    +user_id: UUID
+    +token_hash: string
+    +expires_at: timestamp
+  }
+
+  class Organization {
+    +id: UUID
+    +name: string
+    +slug: string
+    +created_at: timestamp
+  }
+
+  class OrganizationMember {
+    +organization_id: UUID
+    +user_id: UUID
+    +role: admin | member | viewer
+  }
+
+  class Team {
+    +id: UUID
+    +organization_id: UUID
+    +name: string
+    +slug: string
+  }
+
+  class TeamMember {
+    +team_id: UUID
+    +user_id: UUID
+    +role: string
+  }
+
+  class WorkflowState {
+    +id: UUID
+    +org_id: UUID
+    +name: string
+    +slug: string
+    +color: string
+    +position: int
+    +is_initial: bool
+    +is_terminal: bool
+  }
+}
+
+' ==================== Project & Planning ====================
+
+package "Project & Planning" {
+
+  class Initiative {
+    +id: UUID
+    +organization_id: UUID
+    +name: string
+    +slug: string
+    +objective: string
+    +success_metrics: text
+  }
+
+  class Project {
+    +id: UUID
+    +team_id: UUID
+    +name: string
+    +slug: string
+    +description: text
+    +methodology: scrum | kanban | shape_up
+    +status: string
+    +sprint_duration_weeks: int
+    +default_project_months: int
+  }
+
+  class DodItem {
+    +id: UUID
+    +project_id: UUID
+    +text: string
+    +order_index: int
+  }
+}
+
+' ==================== Work Items ====================
+
+package "Work Items" {
+
+  class Epic {
+    +id: UUID
+    +project_id: UUID
+    +title: string
+    +description: text
+    +status: open | in_progress | done | cancelled
+    +priority: int
+    +start_date: date
+    +due_date: date
+    +assignee_id: UUID
+  }
+
+  class WorkItem {
+    +id: UUID
+    +project_id: UUID
+    +epic_id: UUID
+    +parent_id: UUID
+    +type: story | bug | task
+    +title: string
+    +description: jsonb (Tiptap)
+    +workflow_state_id: UUID
+    +priority: int
+    +assignee_id: UUID
+    +story_points: int
+    +labels: string[]
+    +order_index: int
+    +design_ready: bool
+    +is_blocked: bool
+    +created_by: UUID
+  }
+
+  class AcceptanceCriterion {
+    +id: UUID
+    +work_item_id: UUID
+    +given: text
+    +when: text
+    +then: text
+  }
+
+  class Comment {
+    +id: UUID
+    +work_item_id: UUID
+    +user_id: UUID
+    +body: jsonb (Tiptap)
+    +created_at: timestamp
+  }
+
+  class DesignAttachment {
+    +id: UUID
+    +work_item_id: UUID
+    +type: figma | url | image
+    +figma_file_key: string
+    +figma_status: linked | stale | approved | in_review
+  }
+
+  class WorkItemDependency {
+    +id: UUID
+    +source_id: UUID
+    +target_id: UUID
+    +type: depends_on | relates_to
+    +strength: hard | soft
+    +created_by: UUID
+  }
+}
+
+' ==================== Sprints & Releases ====================
+
+package "Sprints & Releases" {
+
+  class Sprint {
+    +id: UUID
+    +project_id: UUID
+    +name: string
+    +goal: text
+    +start_date: date
+    +end_date: date
+    +status: planned | active | completed | cancelled
+    +velocity: int
+  }
+
+  class SprintItem {
+    +sprint_id: UUID
+    +work_item_id: UUID
+    +order_index: int
+  }
+
+  class Release {
+    +id: UUID
+    +project_id: UUID
+    +name: string
+    +version: string
+    +status: draft | published | archived
+    +share_token: string
+    +published_at: timestamp
+  }
+
+  class ReleaseItem {
+    +release_id: UUID
+    +work_item_id: UUID
+  }
+}
+
+' ==================== Activity & Notifications ====================
+
+package "Activity & Notifications" {
+
+  class Notification {
+    +id: UUID
+    +user_id: UUID
+    +type: string
+    +work_item_id: UUID
+    +actor_id: UUID
+    +read_at: timestamp
+    +created_at: timestamp
+  }
+
+  class ActivityLog {
+    +id: UUID
+    +project_id: UUID
+    +user_id: UUID
+    +action: string
+    +entity_type: string
+    +entity_id: UUID
+    +changes: jsonb
+    +created_at: timestamp
+  }
+}
+
+' ==================== VCS & Outbound Webhooks ====================
+
+package "VCS & Webhooks" {
+
+  class VCSConnection {
+    +id: UUID
+    +project_id: UUID
+    +provider: github | gitlab
+    +owner: string
+    +repo: string
+    +encrypted_token: bytes
+    +secret: string
+    +enabled: bool
+    +webhook_id: string
+  }
+
+  class VCSActivity {
+    +id: UUID
+    +connection_id: UUID
+    +branch: string
+    +commit_hash: string
+    +title: string
+    +author: string
+    +url: string
+    +pull_request_number: int
+  }
+
+  class OutboundWebhook {
+    +id: UUID
+    +project_id: UUID
+    +url: string
+    +secret: string
+    +event_types: string[]
+    +enabled: bool
+  }
+
+  class WebhookDelivery {
+    +id: UUID
+    +webhook_id: UUID
+    +event_type: string
+    +payload: jsonb
+    +status_code: int
+    +attempts: int
+    +delivered_at: timestamp
+  }
+}
+
+' ==================== Relationships ====================
+
+User "1" -- "*" AuthSession
+User "1" -- "*" OrganizationMember
+User "1" -- "*" TeamMember
+Organization "1" -- "*" OrganizationMember
+Organization "1" -- "*" Team
+Organization "1" -- "*" WorkflowState
+Organization "1" -- "*" Initiative
+Team "1" -- "*" TeamMember
+Team "1" -- "*" Project
+
+Project "1" -- "*" Epic
+Project "1" -- "*" WorkItem
+Project "1" -- "*" Sprint
+Project "1" -- "*" Release
+Project "1" -- "*" DodItem
+Project "1" -- "*" VCSConnection
+Project "1" -- "*" OutboundWebhook
+Project "1" -- "*" ActivityLog
+
+Epic "1" -- "*" WorkItem
+WorkItem "1" -- "*" WorkItem : parent/child
+WorkItem "1" -- "*" AcceptanceCriterion
+WorkItem "1" -- "*" Comment
+WorkItem "1" -- "*" DesignAttachment
+WorkItem "*" -- "1" WorkflowState
+WorkItem "*" -- "0..1" User : assignee
+
+WorkItem "1" -- "*" WorkItemDependency : source
+WorkItem "1" -- "*" WorkItemDependency : target
+
+Sprint "1" -- "*" SprintItem
+SprintItem "*" -- "1" WorkItem
+
+Release "1" -- "*" ReleaseItem
+ReleaseItem "*" -- "1" WorkItem
+
+User "1" -- "*" Notification : recipient
+User "1" -- "*" Comment : author
+User "1" -- "*" ActivityLog : actor
+
+VCSConnection "1" -- "*" VCSActivity
+OutboundWebhook "1" -- "*" WebhookDelivery
+
+@enduml

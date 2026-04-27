@@ -1,0 +1,96 @@
+@startuml PlanA-Architecture
+!theme plain
+title PlanA — System Architecture / Component Diagram
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam roundCorner 8
+
+actor "User\n(Browser / PWA)" as User
+actor "Webhook Sender\n(GitHub / GitLab)" as VCS_Sender
+
+cloud "External Services" as External {
+  component "GitHub OAuth" as GH_OAuth
+  component "Google OAuth" as GG_OAuth
+  component "Anthropic / OpenAI" as AI_Ext
+  component "Resend (email)" as Resend
+}
+
+node "Edge / Proxy" as Edge {
+  component "Caddy 2\n(HTTPS / Let's Encrypt)" as Caddy
+}
+
+node "Frontend" as Frontend {
+  component "Web App (Vite + React 19)\nTanStack Router/Query\nTipTap, React Flow" as Web
+  component "Mobile (PWA shell)" as Mobile
+}
+
+node "API (Go :8080)" as API {
+  component "HTTP Router\n(chi + middleware)" as Router
+  component "Auth\n(JWT, sessions)" as Auth
+  component "OAuth\n(GitHub / Google + PKCE)" as OAuth
+  component "Handlers\n(workitems, sprints,\nepics, releases, ...)" as Handlers
+  component "Realtime Hub\n(WebSocket + presence)" as Realtime
+  component "AI Provider\n(Anthropic / OpenAI)" as AI
+  component "VCS Provider\n(GitHub / GitLab)" as VCS
+  component "Webhook Deliverer\n(HMAC-SHA256, retry)" as WHDeliver
+  component "Email Service" as Email
+  component "Migrations Runner" as Migrations
+  component "Licence" as Licence
+}
+
+database "PostgreSQL 16" as PG
+database "Redis 7\n(sessions, PKCE,\npresence)" as Redis
+
+User --> Caddy : HTTPS
+Caddy --> Web : / (static)
+Caddy --> Router : /api/*
+Caddy --> Realtime : /api/ws (upgrade)
+
+Web --> Router : REST (JSON)
+Web --> Realtime : WebSocket
+Mobile --> Caddy
+
+Router --> Auth
+Router --> Handlers
+Handlers --> Auth
+Handlers --> Realtime : publish events
+Handlers --> WHDeliver : publish events
+Handlers --> AI
+Handlers --> VCS
+Handlers --> Email
+Handlers --> Licence
+
+Auth --> Redis
+OAuth --> Redis : PKCE state
+OAuth --> GH_OAuth
+OAuth --> GG_OAuth
+Router --> OAuth
+
+Handlers --> PG
+Auth --> PG
+Migrations --> PG
+
+AI --> AI_Ext
+Email --> Resend
+WHDeliver --> External : outbound HTTP
+
+VCS_Sender --> Caddy : webhook
+Caddy --> Router : /api/webhooks/{provider}
+Router --> VCS
+VCS --> Handlers
+VCS --> PG
+
+Realtime --> Redis : (future) pub/sub
+
+note bottom of API
+  Single Go binary. Migrations
+  run at startup; no separate step.
+end note
+
+note right of Realtime
+  Channels: project:{id}, org:{id},
+  epic:{id}. Presence on join/leave.
+end note
+
+@enduml

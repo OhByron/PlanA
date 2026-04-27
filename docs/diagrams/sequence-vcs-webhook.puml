@@ -1,0 +1,58 @@
+@startuml PlanA-Sequence-VCS-Webhook
+!theme plain
+title PlanA — Sequence: VCS Webhook (GitHub / GitLab → Auto-Transition)
+
+skinparam shadowing false
+
+participant "GitHub / GitLab" as VCS
+participant "Caddy" as Caddy
+participant "API Router" as Router
+participant "VCS Webhook Handler\n(handlers/vcs_webhooks.go)" as WHH
+participant "VCS Provider\n(vcs/github.go | gitlab.go)" as Prov
+participant "Item Matcher\n(vcs/item_matcher.go)" as Matcher
+database "PostgreSQL" as PG
+participant "Realtime Hub" as Hub
+participant "Connected Clients" as Clients
+
+VCS -> Caddy : POST /api/webhooks/{provider}/{connectionID}\nX-Hub-Signature-256 / X-Gitlab-Token
+Caddy -> Router : forward
+Router -> WHH : HandleGitHub() / HandleGitLab()
+WHH -> PG : SELECT vcs_connections WHERE id={connectionID}
+PG --> WHH : connection (encrypted secret)
+WHH -> Prov : ValidateWebhook(signature, body, secret)
+
+alt invalid signature
+  Prov --> WHH : error
+  WHH --> Router : 401 Unauthorized
+else valid
+  Prov --> WHH : ok
+  WHH -> Prov : ParseEvent(body) -> Event{ type, branch, commits, PR }
+  Prov --> WHH : Event
+
+  WHH -> Matcher : MatchWorkItems(commitMessages, branchName)
+  Matcher --> WHH : [workItemIDs]
+
+  WHH -> PG : INSERT vcs_activity (commit, branch, author, url, PR#)
+
+  alt PR opened
+    WHH -> PG : UPDATE work_items\nSET workflow_state_id = "in_review"\nWHERE id IN matched
+  else PR merged
+    WHH -> PG : UPDATE work_items\nSET workflow_state_id = "done"\nWHERE id IN matched
+  else push to default branch
+    WHH -> PG : UPDATE work_items (auto-transition rule)
+  end
+
+  WHH -> Hub : Publish("project:{pid}", "vcs.activity")
+  Hub -> Clients : WS broadcast
+  WHH -> Hub : Publish("project:{pid}", "work_item.updated")
+  Hub -> Clients : WS broadcast
+
+  WHH --> Router : 200 OK
+end
+
+note right of Prov
+  Encrypted token used for outbound
+  bot comments (e.g. "Linked to PLN-42").
+end note
+
+@enduml

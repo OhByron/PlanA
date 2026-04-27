@@ -60,3 +60,4 @@ apps/api/internal/handlers/*_test.go
 
 MainPreserve.json
 MainPreserve.json
+docs/diagrams/plantuml-1.2026.2.jar
