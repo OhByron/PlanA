@@ -20,6 +20,11 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
+        // AI generation against a local LLM can take 20-60s for long-form
+        // outputs (release notes, executive summaries). Default proxy timeout
+        // would 502 those calls. Bump to 5 min in dev.
+        timeout: 300000,
+        proxyTimeout: 300000,
       },
     },
   },

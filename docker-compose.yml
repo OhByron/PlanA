@@ -65,6 +65,23 @@ services:
       - ollama_data:/root/.ollama
     profiles:
       - local-ai
+    environment:
+      OLLAMA_KEEP_ALIVE: "30m"
+      # Pin Ollama to a single GPU. gemma4:26b (17 GB Q4) fits comfortably
+      # in a 24 GB card, and most deployments only have one GPU anyway.
+      # Splitting the model across multiple GPUs adds sync overhead without
+      # buying capacity. To use a larger model that needs >24 GB, raise
+      # `count` below and remove this env var.
+      CUDA_VISIBLE_DEVICES: "0"
+    # GPU passthrough — falls back to CPU if the host has no NVIDIA runtime.
+    # Install NVIDIA Container Toolkit on the host to enable.
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 30s
