@@ -61,3 +61,7 @@ apps/api/internal/handlers/*_test.go
 MainPreserve.json
 MainPreserve.json
 docs/diagrams/plantuml-1.2026.2.jar
+
+# Claude Code: per-developer overrides and runtime state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
