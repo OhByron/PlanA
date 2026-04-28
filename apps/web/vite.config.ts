@@ -12,6 +12,11 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // Vite 8 auto-enables this when launched under an agent (e.g. Claude Code).
+    // It registers unhandledrejection/error listeners that call ws.send(); if the
+    // HMR socket is dropped, ws is undefined and the forwarder's own rejection
+    // re-fires the listener, looping until the tab OOMs. Disable explicitly.
+    forwardConsole: false,
     proxy: {
       '/api/ws': {
         target: 'ws://localhost:8080',
