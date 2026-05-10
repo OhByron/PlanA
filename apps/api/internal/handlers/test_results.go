@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
 
+	"github.com/OhByron/PlanA/internal/auth"
 	"github.com/OhByron/PlanA/internal/vcs"
 )
 
@@ -103,6 +104,15 @@ func (h *TestResultHandlers) ImportJUnit(w http.ResponseWriter, r *http.Request)
 	projectID := chi.URLParam(r, "projectID")
 	if projectID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "projectID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -239,6 +249,15 @@ func (h *TestResultHandlers) Webhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var body webhookRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -308,6 +327,15 @@ func (h *TestResultHandlers) List(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	if projectID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "projectID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -385,9 +413,19 @@ func (h *TestResultHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 // Get returns a single test result by its ID.
 func (h *TestResultHandlers) Get(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
 	resultID := chi.URLParam(r, "resultID")
 	if resultID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "resultID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -395,7 +433,7 @@ func (h *TestResultHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, project_id, work_item_id, test_name, status, duration_ms,
 			error_message, source, suite_name, run_id, reported_at, created_at
-		 FROM test_results WHERE id = $1`, resultID,
+		 FROM test_results WHERE id = $1 AND project_id = $2`, resultID, projectID,
 	).Scan(
 		&tr.ID, &tr.ProjectID, &tr.WorkItemID, &tr.TestName, &tr.Status, &tr.DurationMs,
 		&tr.ErrorMessage, &tr.Source, &tr.SuiteName, &tr.RunID, &tr.ReportedAt, &tr.CreatedAt,
@@ -432,25 +470,22 @@ func (h *TestResultHandlers) Summary(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verify work item exists.
-	var exists bool
-	err := h.db.QueryRow(r.Context(),
-		`SELECT EXISTS(SELECT 1 FROM work_items WHERE id = $1)`, workItemID,
-	).Scan(&exists)
-	if err != nil || !exists {
-		if err != nil {
-			slog.Error("test_results.Summary: existence check failed", "error", err)
-		}
-		if !exists {
-			writeError(w, http.StatusNotFound, "not_found", "Work item not found")
-			return
-		}
-		writeError(w, http.StatusInternalServerError, "db_error", "Failed to check work item")
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
 	var s testSummary
-	err = h.db.QueryRow(r.Context(),
+	err := h.db.QueryRow(r.Context(),
 		`SELECT
 			COUNT(*),
 			COUNT(*) FILTER (WHERE status = 'pass'),
