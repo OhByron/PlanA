@@ -59,15 +59,21 @@ func (h *Hub) Unregister(c *Client) {
 		return
 	}
 
-	// Remove from all channels and clean up presence
+	// Snapshot the channel set before deletion so the presence.left broadcast
+	// below has something to iterate over.
+	subscribed := make([]string, 0, len(h.clientChannels[c]))
 	for ch := range h.clientChannels[c] {
+		subscribed = append(subscribed, ch)
+	}
+
+	// Remove from all channels and clean up presence
+	for _, ch := range subscribed {
 		if subs, ok := h.channels[ch]; ok {
 			delete(subs, c)
 			if len(subs) == 0 {
 				delete(h.channels, ch)
 			}
 		}
-		// Remove presence
 		if entries, ok := h.presence[ch]; ok {
 			delete(entries, c.UserID)
 			if len(entries) == 0 {
@@ -79,8 +85,8 @@ func (h *Hub) Unregister(c *Client) {
 	delete(h.clientChannels, c)
 	delete(h.clients, c)
 
-	// Broadcast presence.left for project channels
-	for ch := range h.clientChannels[c] {
+	// Broadcast presence.left for project channels to remaining subscribers
+	for _, ch := range subscribed {
 		if isProjectChannel(ch) {
 			h.publishLocked(ch, NewEvent(EventPresenceLeft, ch, map[string]string{
 				"user_id": c.UserID,
