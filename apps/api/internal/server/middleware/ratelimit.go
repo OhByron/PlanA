@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"net"
 	"net/http"
 	"sync"
 	"time"
@@ -70,11 +71,16 @@ func (rl *RateLimiter) Allow(ip string) bool {
 }
 
 // Middleware returns an HTTP middleware that rate-limits requests.
+//
+// The key is the client host derived from r.RemoteAddr, which the chi
+// RealIP middleware populates from a trusted X-Forwarded-For chain when
+// the API runs behind a proxy. Reading X-Forwarded-For directly here
+// would let any client spoof the limiter key by forging the header.
 func (rl *RateLimiter) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ip := r.RemoteAddr
-		if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
-			ip = forwarded
+		if host, _, err := net.SplitHostPort(ip); err == nil {
+			ip = host
 		}
 		if !rl.Allow(ip) {
 			w.Header().Set("Content-Type", "application/json")
