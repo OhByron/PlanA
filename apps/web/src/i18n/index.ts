@@ -36,10 +36,19 @@ export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]['code'];
 
 const LANGUAGE_CODES = SUPPORTED_LANGUAGES.map((l) => l.code);
 
-// Lazy-load non-English translations
+// Vite-time map of all non-English locale modules. Excluding en.json from the
+// glob is what stops the "ineffective dynamic import" warning — en is bundled
+// statically up top, every other language is a per-locale chunk loaded on demand.
+const localeImporters = import.meta.glob<{ default: unknown }>([
+  './locales/*.json',
+  '!./locales/en.json',
+]);
+
 const lazyLoadTranslation = async (lang: string) => {
   if (lang === 'en') return en;
-  const mod = await import(`./locales/${lang}.json`);
+  const importer = localeImporters[`./locales/${lang}.json`];
+  if (!importer) return en;
+  const mod = await importer();
   return mod.default;
 };
 
