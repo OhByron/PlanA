@@ -68,6 +68,15 @@ func (h *AIHandlers) SuggestAC(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
 	if !ok {
 		return
@@ -149,6 +158,16 @@ func (h *AIHandlers) SuggestAC(w http.ResponseWriter, r *http.Request) {
 // GET /api/projects/{projectID}/ai-settings
 func (h *AIHandlers) GetSettings(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	var provider, model, key, endpoint *string
 	err := h.db.QueryRow(r.Context(),
 		`SELECT ai_provider, ai_model, ai_api_key, ai_endpoint FROM projects WHERE id = $1`,
@@ -176,6 +195,17 @@ func (h *AIHandlers) GetSettings(w http.ResponseWriter, r *http.Request) {
 // PATCH /api/projects/{projectID}/ai-settings
 func (h *AIHandlers) UpdateSettings(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !checkProjectAdmin(r.Context(), h.db, projectID, claims.UserID) {
+		writeError(w, http.StatusForbidden, "forbidden", "Project admin access required")
+		return
+	}
+
 	var body struct {
 		Provider string `json:"provider"`
 		Model    string `json:"model"`
@@ -208,6 +238,15 @@ func deref(s *string) string {
 func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
 	if !ok {
@@ -275,6 +314,15 @@ func (h *AIHandlers) SuggestDescription(w http.ResponseWriter, r *http.Request) 
 // POST /api/projects/{projectID}/ai/suggest-inline
 func (h *AIHandlers) SuggestInline(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
 	if !ok {
@@ -365,6 +413,15 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
 	if !ok {
 		return
@@ -430,6 +487,15 @@ func (h *AIHandlers) SuggestFromTestFailure(w http.ResponseWriter, r *http.Reque
 func (h *AIHandlers) SuggestDecomposition(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	workItemID := chi.URLParam(r, "workItemID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	provider, projectName, ok := loadAIProvider(w, r, h.db, projectID)
 	if !ok {
