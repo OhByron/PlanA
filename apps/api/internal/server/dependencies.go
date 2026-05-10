@@ -10,17 +10,19 @@ import (
 	"github.com/OhByron/PlanA/internal/config"
 	"github.com/OhByron/PlanA/internal/oauth"
 	"github.com/OhByron/PlanA/internal/realtime"
+	"github.com/OhByron/PlanA/internal/webhookdelivery"
 )
 
 // Dependencies holds all services required to build the HTTP handler tree.
 // Constructed once in main and passed to server.New.
 type Dependencies struct {
-	Config *config.Config
-	Logger *slog.Logger
-	DB     *pgxpool.Pool
-	Redis  *redis.Client
-	Auth   *auth.Service
-	Hub    *realtime.Hub
-	GitHub *oauth.GitHubProvider
-	Google *oauth.GoogleProvider
+	Config           *config.Config
+	Logger           *slog.Logger
+	DB               *pgxpool.Pool
+	Redis            *redis.Client
+	Auth             *auth.Service
+	Hub              *realtime.Hub
+	GitHub           *oauth.GitHubProvider
+	Google           *oauth.GoogleProvider
+	WebhookDeliverer *webhookdelivery.Deliverer
 }

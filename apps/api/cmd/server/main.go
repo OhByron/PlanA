@@ -21,6 +21,7 @@ import (
 	"github.com/OhByron/PlanA/internal/oauth"
 	"github.com/OhByron/PlanA/internal/realtime"
 	"github.com/OhByron/PlanA/internal/server"
+	"github.com/OhByron/PlanA/internal/webhookdelivery"
 )
 
 func main() {
@@ -75,16 +76,18 @@ func main() {
 	googProvider := oauth.NewGoogleProvider(cfg)
 
 	hub := realtime.NewHub()
+	webhookDeliverer := webhookdelivery.NewDeliverer(pool)
 
 	deps := &server.Dependencies{
-		Config: cfg,
-		Logger: logger,
-		DB:     pool,
-		Redis:  rdb,
-		Auth:   authSvc,
-		Hub:    hub,
-		GitHub: ghProvider,
-		Google: googProvider,
+		Config:           cfg,
+		Logger:           logger,
+		DB:               pool,
+		Redis:            rdb,
+		Auth:             authSvc,
+		Hub:              hub,
+		GitHub:           ghProvider,
+		Google:           googProvider,
+		WebhookDeliverer: webhookDeliverer,
 	}
 
 	handler := server.New(deps)
@@ -121,6 +124,10 @@ func main() {
 	if err := httpServer.Shutdown(shutdownCtx); err != nil {
 		slog.Error("forced shutdown", "error", err)
 	}
+
+	// Cancel any in-flight webhook delivery retries so we don't block
+	// process exit on a 30s sleep.
+	webhookDeliverer.Shutdown()
 
 	slog.Info("server stopped")
 }

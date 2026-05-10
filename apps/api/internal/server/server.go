@@ -13,7 +13,6 @@ import (
 	"github.com/OhByron/PlanA/internal/realtime"
 	"github.com/OhByron/PlanA/internal/server/middleware"
 	"github.com/OhByron/PlanA/internal/vcs"
-	"github.com/OhByron/PlanA/internal/webhookdelivery"
 )
 
 // New builds and returns the complete HTTP handler tree.
@@ -40,8 +39,8 @@ func New(deps *Dependencies) http.Handler {
 	})
 	r.Use(c.Handler)
 
-	// Create webhook deliverer for outbound webhooks
-	webhookDeliverer := webhookdelivery.NewDeliverer(deps.DB)
+	// Webhook deliverer for outbound webhooks; main owns its lifecycle.
+	webhookDeliverer := deps.WebhookDeliverer
 
 	// Create event publish function that bridges handlers to the realtime Hub
 	// and triggers outbound webhook deliveries

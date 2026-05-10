@@ -34,28 +34,40 @@ type Webhook struct {
 
 // Deliverer sends webhook payloads to registered URLs.
 type Deliverer struct {
-	db     *pgxpool.Pool
-	client *http.Client
+	db      *pgxpool.Pool
+	client  *http.Client
+	baseCtx context.Context
+	cancel  context.CancelFunc
 }
 
-// NewDeliverer creates a new webhook deliverer.
+// NewDeliverer creates a new webhook deliverer. Call Shutdown during graceful
+// shutdown to cancel in-flight retries.
 func NewDeliverer(db *pgxpool.Pool) *Deliverer {
+	ctx, cancel := context.WithCancel(context.Background())
 	return &Deliverer{
 		db: db,
 		client: &http.Client{
 			Timeout: 10 * time.Second,
 		},
+		baseCtx: ctx,
+		cancel:  cancel,
 	}
 }
+
+// Shutdown cancels the base context, interrupting any in-progress delivery
+// retries. Safe to call multiple times.
+func (d *Deliverer) Shutdown() { d.cancel() }
 
 // DeliverEvent finds all webhooks registered for the given event type in the
 // project and delivers the payload asynchronously.
 func (d *Deliverer) DeliverEvent(projectID, eventType string, data map[string]any) {
 	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		// Lookup runs against the base context so a server shutdown cancels
+		// the query but the parent goroutine doesn't cancel children on return.
+		queryCtx, cancel := context.WithTimeout(d.baseCtx, 30*time.Second)
 		defer cancel()
 
-		rows, err := d.db.Query(ctx,
+		rows, err := d.db.Query(queryCtx,
 			`SELECT id, url, secret FROM outbound_webhooks
 			 WHERE project_id = $1 AND enabled = true AND $2 = ANY(event_types)`,
 			projectID, eventType)
@@ -91,22 +103,32 @@ func (d *Deliverer) deliver(wh Webhook, payload Payload) {
 	mac.Write(body)
 	signature := "sha256=" + hex.EncodeToString(mac.Sum(nil))
 
-	// Generate delivery ID
+	// Record the delivery row up front so we can update it on each attempt.
+	// If the audit insert fails we abort the delivery entirely — sending without
+	// a row would silently no-op every recordSuccess/recordFailure UPDATE.
 	var deliveryID string
-	ctx := context.Background()
-	_ = d.db.QueryRow(ctx,
+	if err := d.db.QueryRow(d.baseCtx,
 		`INSERT INTO outbound_webhook_deliveries (webhook_id, event_type, payload)
 		 VALUES ($1, $2, $3) RETURNING id`,
-		wh.ID, payload.Event, body).Scan(&deliveryID)
+		wh.ID, payload.Event, body).Scan(&deliveryID); err != nil {
+		slog.Error("webhook: failed to record delivery, skipping send",
+			"webhookID", wh.ID, "url", wh.URL, "error", err)
+		return
+	}
 
 	delays := []time.Duration{0, 1 * time.Second, 5 * time.Second, 30 * time.Second}
 
 	for attempt, delay := range delays {
 		if delay > 0 {
-			time.Sleep(delay)
+			select {
+			case <-time.After(delay):
+			case <-d.baseCtx.Done():
+				d.recordFailure(deliveryID, attempt+1, 0, "", "delivery cancelled: "+d.baseCtx.Err().Error())
+				return
+			}
 		}
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodPost, wh.URL, bytes.NewReader(body))
+		req, err := http.NewRequestWithContext(d.baseCtx, http.MethodPost, wh.URL, bytes.NewReader(body))
 		if err != nil {
 			d.recordFailure(deliveryID, attempt+1, 0, "", err.Error())
 			continue
@@ -121,6 +143,9 @@ func (d *Deliverer) deliver(wh Webhook, payload Payload) {
 		resp, err := d.client.Do(req)
 		if err != nil {
 			d.recordFailure(deliveryID, attempt+1, 0, "", err.Error())
+			if d.baseCtx.Err() != nil {
+				return
+			}
 			continue
 		}
 
@@ -128,7 +153,6 @@ func (d *Deliverer) deliver(wh Webhook, payload Payload) {
 		resp.Body.Close()
 
 		if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-			// Success
 			d.recordSuccess(deliveryID, attempt+1, resp.StatusCode, string(respBody))
 			return
 		}
