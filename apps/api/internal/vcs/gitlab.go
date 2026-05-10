@@ -76,7 +76,7 @@ func (g *GitLabProvider) RegisterWebhook(ctx context.Context, token, owner, repo
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return 0, fmt.Errorf("gitlab API: %w", err)
 	}
@@ -105,7 +105,7 @@ func (g *GitLabProvider) DeleteWebhook(ctx context.Context, token, owner, repo s
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("gitlab API: %w", err)
 	}
@@ -126,7 +126,7 @@ func (g *GitLabProvider) TestConnection(ctx context.Context, token, owner, repo 
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("gitlab API: %w", err)
 	}

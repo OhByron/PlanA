@@ -14,6 +14,11 @@ import (
 	"time"
 )
 
+// httpClient is the package-level HTTP client used for all GitHub/GitLab API
+// calls. http.DefaultClient has no Timeout and would hang indefinitely on a
+// stalled connection if the caller's context lacks a deadline.
+var httpClient = &http.Client{Timeout: 30 * time.Second}
+
 // GitHubProvider implements the Provider interface for GitHub.
 type GitHubProvider struct{}
 
@@ -83,7 +88,7 @@ func (g *GitHubProvider) RegisterWebhook(ctx context.Context, token, owner, repo
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return 0, fmt.Errorf("github API: %w", err)
 	}
@@ -112,7 +117,7 @@ func (g *GitHubProvider) DeleteWebhook(ctx context.Context, token, owner, repo s
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("github API: %w", err)
 	}
@@ -133,7 +138,7 @@ func (g *GitHubProvider) TestConnection(ctx context.Context, token, owner, repo 
 	}
 	g.setHeaders(req, token)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("github API: %w", err)
 	}

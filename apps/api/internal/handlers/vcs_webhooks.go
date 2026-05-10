@@ -485,7 +485,7 @@ func (h *VCSWebhookHandlers) postGitHubComment(ctx context.Context, token, owner
 	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
 	req.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := vcsHTTPClient.Do(req)
 	if err != nil {
 		slog.Error("vcs_webhooks: GitHub comment failed", "error", err)
 		return
@@ -509,7 +509,7 @@ func (h *VCSWebhookHandlers) postGitLabComment(ctx context.Context, token, owner
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := vcsHTTPClient.Do(req)
 	if err != nil {
 		slog.Error("vcs_webhooks: GitLab comment failed", "error", err)
 		return

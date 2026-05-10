@@ -9,10 +9,16 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
+
+// vcsHTTPClient is the shared client for outbound calls to GitHub / GitLab
+// API endpoints from VCS handlers. http.DefaultClient has no Timeout, so a
+// stalled connection would block the handler indefinitely.
+var vcsHTTPClient = &http.Client{Timeout: 30 * time.Second}
 
 // DBPOOL abstracts the pgxpool.Pool methods used by handlers.
 // *pgxpool.Pool satisfies this interface implicitly.

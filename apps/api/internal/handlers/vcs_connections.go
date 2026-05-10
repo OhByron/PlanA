@@ -438,7 +438,7 @@ func (h *VCSConnectionHandlers) TestConnection(w http.ResponseWriter, r *http.Re
 	}
 	req.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := vcsHTTPClient.Do(req)
 	if err != nil {
 		writeJSON(w, http.StatusOK, map[string]any{
 			"success": false,

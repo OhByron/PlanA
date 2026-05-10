@@ -439,7 +439,7 @@ func (h *VCSActivityHandlers) createGitHubBranch(ctx context.Context, token, own
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := vcsHTTPClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("get base ref: %w", err)
 	}
@@ -469,7 +469,7 @@ func (h *VCSActivityHandlers) createGitHubBranch(ctx context.Context, token, own
 	req2.Header.Set("Accept", "application/vnd.github+json")
 	req2.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp2, err := http.DefaultClient.Do(req2)
+	resp2, err := vcsHTTPClient.Do(req2)
 	if err != nil {
 		return fmt.Errorf("create ref: %w", err)
 	}
@@ -488,7 +488,7 @@ func (h *VCSActivityHandlers) createGitLabBranch(ctx context.Context, token, own
 	req.Header.Set("PRIVATE-TOKEN", token)
 	req.Header.Set("User-Agent", "PlanA/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := vcsHTTPClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("create branch: %w", err)
 	}
