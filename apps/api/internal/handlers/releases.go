@@ -359,9 +359,11 @@ func (h *ReleaseHandlers) GenerateNotes(w http.ResponseWriter, r *http.Request) 
 		if err := rows.Scan(&itemType, &itemNumber, &title); err != nil {
 			continue
 		}
-		line := fmt.Sprintf("- #%d %s", 0, title)
+		var line string
 		if itemNumber != nil {
 			line = fmt.Sprintf("- #%d %s", *itemNumber, title)
+		} else {
+			line = "- " + title
 		}
 		switch itemType {
 		case "story":
