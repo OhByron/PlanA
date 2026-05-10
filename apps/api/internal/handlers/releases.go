@@ -149,7 +149,7 @@ func (h *ReleaseHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch and return
-	h.getAndRespond(w, r, releaseID, http.StatusCreated)
+	h.getAndRespond(w, r, projectID, releaseID, http.StatusCreated)
 }
 
 // ---------- Get ----------
@@ -166,7 +166,7 @@ func (h *ReleaseHandlers) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.getAndRespond(w, r, releaseID, http.StatusOK)
+	h.getAndRespond(w, r, projectID, releaseID, http.StatusOK)
 }
 
 // ---------- Update ----------
@@ -240,7 +240,7 @@ func (h *ReleaseHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.getAndRespond(w, r, releaseID, http.StatusOK)
+	h.getAndRespond(w, r, projectID, releaseID, http.StatusOK)
 }
 
 // ---------- Add/Remove Items ----------
@@ -261,6 +261,22 @@ func (h *ReleaseHandlers) AddItem(w http.ResponseWriter, r *http.Request) {
 		WorkItemID string `json:"work_item_id"`
 	}
 	if !readJSON(w, r, &body) {
+		return
+	}
+
+	var releaseOK, itemOK bool
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM releases WHERE id = $1 AND project_id = $2)`,
+		releaseID, projectID).Scan(&releaseOK)
+	if !releaseOK {
+		writeError(w, http.StatusNotFound, "not_found", "Release not found")
+		return
+	}
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM work_items WHERE id = $1 AND project_id = $2)`,
+		body.WorkItemID, projectID).Scan(&itemOK)
+	if !itemOK {
+		writeError(w, http.StatusBadRequest, "validation_error", "Work item not found in this project")
 		return
 	}
 
@@ -287,9 +303,11 @@ func (h *ReleaseHandlers) RemoveItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, _ = h.db.Exec(r.Context(),
-		`DELETE FROM release_items WHERE release_id = $1 AND work_item_id = $2`,
-		releaseID, workItemID)
+	_, _ = h.db.Exec(r.Context(), `
+		DELETE FROM release_items
+		WHERE release_id = $1 AND work_item_id = $2
+		  AND release_id IN (SELECT id FROM releases WHERE project_id = $3)`,
+		releaseID, workItemID, projectID)
 	w.WriteHeader(http.StatusNoContent)
 }
 
@@ -310,8 +328,12 @@ func (h *ReleaseHandlers) GenerateNotes(w http.ResponseWriter, r *http.Request) 
 	// Get release info
 	var name string
 	var version *string
-	_ = h.db.QueryRow(r.Context(),
-		`SELECT name, version FROM releases WHERE id = $1`, releaseID).Scan(&name, &version)
+	if err := h.db.QueryRow(r.Context(),
+		`SELECT name, version FROM releases WHERE id = $1 AND project_id = $2`,
+		releaseID, projectID).Scan(&name, &version); err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Release not found")
+		return
+	}
 
 	// Get items grouped by type
 	rows, err := h.db.Query(r.Context(),
@@ -387,7 +409,8 @@ func (h *ReleaseHandlers) GenerateNotes(w http.ResponseWriter, r *http.Request) 
 
 	// Save notes to release
 	_, _ = h.db.Exec(r.Context(),
-		`UPDATE releases SET notes = $1 WHERE id = $2`, notes, releaseID)
+		`UPDATE releases SET notes = $1 WHERE id = $2 AND project_id = $3`,
+		notes, releaseID, projectID)
 
 	writeJSON(w, http.StatusOK, map[string]string{"notes": notes})
 }
@@ -408,8 +431,12 @@ func (h *ReleaseHandlers) EnhanceNotes(w http.ResponseWriter, r *http.Request) {
 
 	// Get current notes
 	var currentNotes *string
-	_ = h.db.QueryRow(r.Context(),
-		`SELECT notes FROM releases WHERE id = $1`, releaseID).Scan(&currentNotes)
+	if err := h.db.QueryRow(r.Context(),
+		`SELECT notes FROM releases WHERE id = $1 AND project_id = $2`,
+		releaseID, projectID).Scan(&currentNotes); err != nil {
+		writeError(w, http.StatusNotFound, "not_found", "Release not found")
+		return
+	}
 
 	if currentNotes == nil || *currentNotes == "" {
 		writeError(w, http.StatusBadRequest, "no_notes", "Generate template notes first before enhancing with AI")
@@ -437,7 +464,8 @@ func (h *ReleaseHandlers) EnhanceNotes(w http.ResponseWriter, r *http.Request) {
 
 	// Save enhanced notes
 	_, _ = h.db.Exec(r.Context(),
-		`UPDATE releases SET notes = $1 WHERE id = $2`, enhanced, releaseID)
+		`UPDATE releases SET notes = $1 WHERE id = $2 AND project_id = $3`,
+		enhanced, releaseID, projectID)
 
 	writeJSON(w, http.StatusOK, map[string]string{"notes": enhanced})
 }
@@ -465,7 +493,7 @@ func (h *ReleaseHandlers) Publish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.getAndRespond(w, r, releaseID, http.StatusOK)
+	h.getAndRespond(w, r, projectID, releaseID, http.StatusOK)
 }
 
 // ---------- Share / Unshare ----------
@@ -547,13 +575,13 @@ func (h *ReleaseHandlers) Public(w http.ResponseWriter, r *http.Request) {
 
 // ---------- Helpers ----------
 
-func (h *ReleaseHandlers) getAndRespond(w http.ResponseWriter, r *http.Request, releaseID string, status int) {
+func (h *ReleaseHandlers) getAndRespond(w http.ResponseWriter, r *http.Request, projectID, releaseID string, status int) {
 	var rel releaseResponse
 	err := h.db.QueryRow(r.Context(),
 		`SELECT r.id, r.project_id, r.name, r.version, r.description, r.status,
 		        r.notes, r.share_token, r.published_at, r.created_by, r.created_at, r.updated_at,
 		        (SELECT COUNT(*) FROM release_items ri WHERE ri.release_id = r.id)
-		   FROM releases r WHERE r.id = $1`, releaseID,
+		   FROM releases r WHERE r.id = $1 AND r.project_id = $2`, releaseID, projectID,
 	).Scan(&rel.ID, &rel.ProjectID, &rel.Name, &rel.Version, &rel.Description,
 		&rel.Status, &rel.Notes, &rel.ShareToken, &rel.PublishedAt, &rel.CreatedBy,
 		&rel.CreatedAt, &rel.UpdatedAt, &rel.ItemCount)
