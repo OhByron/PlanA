@@ -20,10 +20,14 @@ type importRequest struct {
 // Import creates a new project from an exported JSON document.
 // POST /api/orgs/{orgID}/teams/{teamID}/projects/import
 func (h *ProjectHandlers) Import(w http.ResponseWriter, r *http.Request) {
+	orgID := chi.URLParam(r, "orgID")
 	teamID := chi.URLParam(r, "teamID")
 	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
 		return
 	}
 
@@ -60,6 +64,16 @@ func (h *ProjectHandlers) Import(w http.ResponseWriter, r *http.Request) {
 
 	if export.Version == "" || export.Project == nil {
 		writeError(w, http.StatusBadRequest, "validation_error", "Missing version or project data")
+		return
+	}
+
+	// Verify the (possibly body-overridden) teamID belongs to the URL orgID
+	// so requireOrgAdmin's check still binds the import to that org.
+	var teamOrgID string
+	if err := h.db.QueryRow(r.Context(),
+		`SELECT organization_id FROM teams WHERE id = $1`, teamID,
+	).Scan(&teamOrgID); err != nil || teamOrgID != orgID {
+		writeError(w, http.StatusNotFound, "not_found", "Team not found in this organization")
 		return
 	}
 
