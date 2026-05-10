@@ -12,6 +12,7 @@ import (
 const (
 	sessionTokenDuration = 7 * 24 * time.Hour
 	issuer               = "plana-api"
+	audience             = "plana-web"
 )
 
 // SessionClaims are the claims embedded in a user session JWT.
@@ -40,6 +41,7 @@ func (s *Service) IssueSessionToken(userID, email string) (string, error) {
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    issuer,
 			Subject:   userID,
+			Audience:  jwt.ClaimStrings{audience},
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(sessionTokenDuration)),
 		},
@@ -62,6 +64,7 @@ func (s *Service) ValidateSessionToken(tokenStr string) (*SessionClaims, error) 
 		func(t *jwt.Token) (any, error) { return s.sessionSecret, nil },
 		jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Alg()}),
 		jwt.WithIssuer(issuer),
+		jwt.WithAudience(audience),
 		jwt.WithExpirationRequired(),
 	)
 	if err != nil {
