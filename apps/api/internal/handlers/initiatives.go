@@ -62,6 +62,15 @@ type updateInitiativeRequest struct {
 func (h *InitiativeHandlers) List(w http.ResponseWriter, r *http.Request) {
 	orgID := chi.URLParam(r, "orgID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireOrgMember(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, organization_id, title, description, status, priority,
 		        start_date, target_date, order_index, created_by, created_at, updated_at
@@ -108,6 +117,10 @@ func (h *InitiativeHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	orgID := chi.URLParam(r, "orgID")
 
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
+
 	var req createInitiativeRequest
 	if !readJSON(w, r, &req) {
 		return
@@ -141,14 +154,24 @@ func (h *InitiativeHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 // Get returns a single initiative by ID.
 func (h *InitiativeHandlers) Get(w http.ResponseWriter, r *http.Request) {
+	orgID := chi.URLParam(r, "orgID")
 	initiativeID := chi.URLParam(r, "initiativeID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireOrgMember(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	var i initiativeResponse
 	err := h.db.QueryRow(r.Context(),
 		`SELECT id, organization_id, title, description, status, priority,
 		        start_date, target_date, order_index, created_by, created_at, updated_at
 		   FROM initiatives
-		  WHERE id = $1`, initiativeID,
+		  WHERE id = $1 AND organization_id = $2`, initiativeID, orgID,
 	).Scan(
 		&i.ID, &i.OrganizationID, &i.Title, &i.Description,
 		&i.Status, &i.Priority, &i.StartDate, &i.TargetDate,
@@ -169,7 +192,17 @@ func (h *InitiativeHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 // Update patches an initiative using dynamic SET for partial updates.
 func (h *InitiativeHandlers) Update(w http.ResponseWriter, r *http.Request) {
+	orgID := chi.URLParam(r, "orgID")
 	initiativeID := chi.URLParam(r, "initiativeID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	var req updateInitiativeRequest
 	if !readJSON(w, r, &req) {
@@ -222,13 +255,13 @@ func (h *InitiativeHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fields = append(fields, "updated_at = NOW()")
-	args = append(args, initiativeID)
+	args = append(args, initiativeID, orgID)
 
 	query := fmt.Sprintf(
-		`UPDATE initiatives SET %s WHERE id = $%d
+		`UPDATE initiatives SET %s WHERE id = $%d AND organization_id = $%d
 		 RETURNING id, organization_id, title, description, status, priority,
 		           start_date, target_date, order_index, created_by, created_at, updated_at`,
-		strings.Join(fields, ", "), argN)
+		strings.Join(fields, ", "), argN, argN+1)
 
 	var i initiativeResponse
 	err := h.db.QueryRow(r.Context(), query, args...).Scan(
@@ -251,9 +284,20 @@ func (h *InitiativeHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 // Delete removes an initiative by ID.
 func (h *InitiativeHandlers) Delete(w http.ResponseWriter, r *http.Request) {
+	orgID := chi.URLParam(r, "orgID")
 	initiativeID := chi.URLParam(r, "initiativeID")
 
-	result, err := h.db.Exec(r.Context(), `DELETE FROM initiatives WHERE id = $1`, initiativeID)
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
+
+	result, err := h.db.Exec(r.Context(),
+		`DELETE FROM initiatives WHERE id = $1 AND organization_id = $2`, initiativeID, orgID)
 	if err != nil {
 		slog.Error("initiatives.Delete: delete failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to delete initiative")

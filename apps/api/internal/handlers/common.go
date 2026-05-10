@@ -56,6 +56,34 @@ func requireProjectAccess(ctx context.Context, db DBPOOL, w http.ResponseWriter,
 	return true
 }
 
+// requireOrgMember verifies the user is a member of the org (any role) and
+// writes a 403 if not. Returns true if access is granted.
+func requireOrgMember(ctx context.Context, db DBPOOL, w http.ResponseWriter, orgID, userID string) bool {
+	var exists bool
+	err := db.QueryRow(ctx,
+		`SELECT EXISTS(SELECT 1 FROM organization_members WHERE organization_id = $1 AND user_id = $2)`,
+		orgID, userID).Scan(&exists)
+	if err != nil || !exists {
+		writeError(w, http.StatusForbidden, "forbidden", "You do not have access to this organization")
+		return false
+	}
+	return true
+}
+
+// requireOrgAdmin verifies the user is an admin of the org and writes a 403
+// if not. Returns true if access is granted.
+func requireOrgAdmin(ctx context.Context, db DBPOOL, w http.ResponseWriter, orgID, userID string) bool {
+	var role string
+	err := db.QueryRow(ctx,
+		`SELECT role FROM organization_members WHERE organization_id = $1 AND user_id = $2`,
+		orgID, userID).Scan(&role)
+	if err != nil || role != "admin" {
+		writeError(w, http.StatusForbidden, "forbidden", "Org admin access required")
+		return false
+	}
+	return true
+}
+
 // resolveProjectID looks up the project_id for a work item. Returns empty string if not found.
 func resolveProjectID(ctx context.Context, db DBPOOL, workItemID string) string {
 	var projectID string
