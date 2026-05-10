@@ -64,13 +64,7 @@ func (h *WorkflowStateHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verify membership (any role)
-	var exists bool
-	_ = h.db.QueryRow(r.Context(),
-		`SELECT EXISTS(SELECT 1 FROM organization_members WHERE organization_id = $1 AND user_id = $2)`,
-		orgID, claims.UserID).Scan(&exists)
-	if !exists {
-		writeError(w, http.StatusForbidden, "forbidden", "Not a member of this organization")
+	if !requireOrgMember(r.Context(), h.db, w, orgID, claims.UserID) {
 		return
 	}
 
@@ -330,14 +324,23 @@ func (h *WorkflowStateHandlers) Reorder(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Validate bookends: first must be initial, last must be terminal
+	// Validate bookends: first must be initial, last must be terminal.
+	// Surface DB errors as 500 rather than misreporting them as validation failures.
 	var firstInitial, lastTerminal bool
-	_ = h.db.QueryRow(r.Context(),
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT is_initial FROM workflow_states WHERE id = $1 AND org_id = $2`,
-		body.StateIDs[0], orgID).Scan(&firstInitial)
-	_ = h.db.QueryRow(r.Context(),
+		body.StateIDs[0], orgID).Scan(&firstInitial); err != nil {
+		slog.Error("workflow_states.Reorder: first-state lookup failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to validate workflow states")
+		return
+	}
+	if err := h.db.QueryRow(r.Context(),
 		`SELECT is_terminal FROM workflow_states WHERE id = $1 AND org_id = $2`,
-		body.StateIDs[len(body.StateIDs)-1], orgID).Scan(&lastTerminal)
+		body.StateIDs[len(body.StateIDs)-1], orgID).Scan(&lastTerminal); err != nil {
+		slog.Error("workflow_states.Reorder: last-state lookup failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to validate workflow states")
+		return
+	}
 
 	if !firstInitial {
 		writeError(w, http.StatusBadRequest, "validation_error", "First state must be Backlog (initial)")
