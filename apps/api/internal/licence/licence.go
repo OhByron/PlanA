@@ -134,7 +134,7 @@ func GetInfo(lic *Licence, hasKey bool) Info {
 		}
 	}
 	return Info{
-		Valid:        true,
+		Valid:        !expired,
 		HasKey:       hasKey,
 		Tier:         lic.Tier,
 		Organisation: lic.Organisation,
