@@ -37,6 +37,15 @@ func NewEpicDepHandlers(db DBPOOL) *EpicDepHandlers { return &EpicDepHandlers{db
 func (h *EpicDepHandlers) ListByProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(), `
 		SELECT d.id, d.source_id, d.target_id, d.type, d.strength, d.created_by, d.created_at
 		FROM epic_dependencies d
@@ -65,10 +74,14 @@ func (h *EpicDepHandlers) ListByProject(w http.ResponseWriter, r *http.Request) 
 
 // Create adds an epic dependency.
 func (h *EpicDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
 	epicID := chi.URLParam(r, "epicID")
 	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -86,6 +99,22 @@ func (h *EpicDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	if body.Strength == "" {
 		body.Strength = "hard"
+	}
+
+	var srcOK, tgtOK bool
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM epics WHERE id = $1 AND project_id = $2)`,
+		epicID, projectID).Scan(&srcOK)
+	if !srcOK {
+		writeError(w, http.StatusNotFound, "not_found", "Epic not found in this project")
+		return
+	}
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM epics WHERE id = $1 AND project_id = $2)`,
+		body.TargetID, projectID).Scan(&tgtOK)
+	if !tgtOK {
+		writeError(w, http.StatusBadRequest, "validation_error", "Target epic not found in this project")
+		return
 	}
 
 	var d containerDepResponse
@@ -106,8 +135,22 @@ func (h *EpicDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 // Delete removes an epic dependency by ID.
 func (h *EpicDepHandlers) Delete(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
 	depID := chi.URLParam(r, "depID")
-	tag, err := h.db.Exec(r.Context(), `DELETE FROM epic_dependencies WHERE id = $1`, depID)
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
+	tag, err := h.db.Exec(r.Context(), `
+		DELETE FROM epic_dependencies
+		WHERE id = $1
+		  AND source_id IN (SELECT id FROM epics WHERE project_id = $2)`,
+		depID, projectID)
 	if err != nil {
 		slog.Error("epicDeps.Delete: exec failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to delete epic dependency")
@@ -129,6 +172,15 @@ func NewSprintDepHandlers(db DBPOOL) *SprintDepHandlers { return &SprintDepHandl
 // ListByProject returns all sprint dependencies for sprints in a project.
 func (h *SprintDepHandlers) ListByProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	rows, err := h.db.Query(r.Context(), `
 		SELECT d.id, d.source_id, d.target_id, d.type, d.strength, d.created_by, d.created_at
@@ -158,10 +210,14 @@ func (h *SprintDepHandlers) ListByProject(w http.ResponseWriter, r *http.Request
 
 // Create adds a sprint dependency.
 func (h *SprintDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
 	sprintID := chi.URLParam(r, "sprintID")
 	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
@@ -179,6 +235,22 @@ func (h *SprintDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	if body.Strength == "" {
 		body.Strength = "hard"
+	}
+
+	var srcOK, tgtOK bool
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM sprints WHERE id = $1 AND project_id = $2)`,
+		sprintID, projectID).Scan(&srcOK)
+	if !srcOK {
+		writeError(w, http.StatusNotFound, "not_found", "Sprint not found in this project")
+		return
+	}
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM sprints WHERE id = $1 AND project_id = $2)`,
+		body.TargetID, projectID).Scan(&tgtOK)
+	if !tgtOK {
+		writeError(w, http.StatusBadRequest, "validation_error", "Target sprint not found in this project")
+		return
 	}
 
 	var d containerDepResponse
@@ -199,8 +271,22 @@ func (h *SprintDepHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 // Delete removes a sprint dependency by ID.
 func (h *SprintDepHandlers) Delete(w http.ResponseWriter, r *http.Request) {
+	projectID := chi.URLParam(r, "projectID")
 	depID := chi.URLParam(r, "depID")
-	tag, err := h.db.Exec(r.Context(), `DELETE FROM sprint_dependencies WHERE id = $1`, depID)
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
+	tag, err := h.db.Exec(r.Context(), `
+		DELETE FROM sprint_dependencies
+		WHERE id = $1
+		  AND source_id IN (SELECT id FROM sprints WHERE project_id = $2)`,
+		depID, projectID)
 	if err != nil {
 		slog.Error("sprintDeps.Delete: exec failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to delete sprint dependency")
