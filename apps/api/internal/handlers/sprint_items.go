@@ -58,6 +58,15 @@ func (h *SprintItemHandlers) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var itemOK bool
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM work_items WHERE id = $1 AND project_id = $2)`,
+		workItemID, projectID).Scan(&itemOK)
+	if !itemOK {
+		writeError(w, http.StatusBadRequest, "validation_error", "Work item not found in this project")
+		return
+	}
+
 	var body addSprintItemRequest
 	// Body is optional; ignore decode errors for empty bodies.
 	_ = json.NewDecoder(r.Body).Decode(&body)
