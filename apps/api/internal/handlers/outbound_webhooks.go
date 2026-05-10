@@ -12,8 +12,11 @@ import (
 	"github.com/jackc/pgx/v5"
 
 	"github.com/OhByron/PlanA/internal/auth"
+	"github.com/OhByron/PlanA/internal/safehttp"
 	"github.com/OhByron/PlanA/internal/vcs"
 )
+
+var webhookTestClient = safehttp.NewClient(10 * time.Second)
 
 // OutboundWebhookHandlers manages outbound webhook registrations.
 type OutboundWebhookHandlers struct {
@@ -312,6 +315,11 @@ func (h *OutboundWebhookHandlers) Test(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := safehttp.CheckExternal(url); err != nil {
+		writeJSON(w, http.StatusOK, map[string]any{"success": false, "error": err.Error()})
+		return
+	}
+
 	// Send a test ping
 	payload := map[string]any{
 		"event":      "ping",
@@ -326,7 +334,7 @@ func (h *OutboundWebhookHandlers) Test(w http.ResponseWriter, r *http.Request) {
 	req.Header.Set("X-PlanA-Event", "ping")
 	req.Header.Set("User-Agent", "PlanA-Webhook/1.0")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := webhookTestClient.Do(req)
 	if err != nil {
 		writeJSON(w, http.StatusOK, map[string]any{"success": false, "error": err.Error()})
 		return

@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"github.com/OhByron/PlanA/internal/safehttp"
 )
 
 // Payload is the structure sent to webhook URLs.
@@ -45,10 +47,8 @@ type Deliverer struct {
 func NewDeliverer(db *pgxpool.Pool) *Deliverer {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &Deliverer{
-		db: db,
-		client: &http.Client{
-			Timeout: 10 * time.Second,
-		},
+		db:      db,
+		client:  safehttp.NewClient(10 * time.Second),
 		baseCtx: ctx,
 		cancel:  cancel,
 	}
@@ -96,6 +96,11 @@ func (d *Deliverer) DeliverEvent(projectID, eventType string, data map[string]an
 
 // deliver sends the payload to a single webhook with retry.
 func (d *Deliverer) deliver(wh Webhook, payload Payload) {
+	if err := safehttp.CheckExternal(wh.URL); err != nil {
+		slog.Warn("webhook: blocked unsafe URL", "webhookID", wh.ID, "url", wh.URL, "error", err)
+		return
+	}
+
 	body, _ := json.Marshal(payload)
 
 	// Compute HMAC signature
