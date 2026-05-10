@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/OhByron/PlanA/internal/auth"
 )
@@ -85,9 +87,12 @@ func (h *SprintItemHandlers) Add(w http.ResponseWriter, r *http.Request) {
 		sprintID, workItemID, orderIndex,
 	).Scan(&si.SprintID, &si.WorkItemID, &si.OrderIndex, &si.AddedAt)
 	if err != nil {
-		// ON CONFLICT DO NOTHING returns no row if already exists.
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusConflict, "conflict", "Work item already in sprint")
+			return
+		}
 		slog.Error("sprint_items.Add: insert failed", "error", err)
-		writeError(w, http.StatusConflict, "conflict", "Work item already in sprint")
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to add work item to sprint")
 		return
 	}
 
