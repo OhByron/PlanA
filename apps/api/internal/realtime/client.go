@@ -145,15 +145,12 @@ func (c *Client) WritePump() {
 		c.conn.Close()
 	}()
 
+	// The Hub never closes c.send; WritePump exits when ReadPump's
+	// conn.Close makes the next NextWriter or ping error.
 	for {
 		select {
-		case message, ok := <-c.send:
+		case message := <-c.send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if !ok {
-				// Hub closed the channel
-				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
-				return
-			}
 
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {

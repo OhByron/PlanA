@@ -30,7 +30,7 @@ type OllamaProvider struct {
 
 // NewOllamaProvider builds a provider for an Ollama-compatible host.
 // model defaults to gemma4:26b, endpoint to http://localhost:11434,
-// numCtx to 16384 (≈50K chars input headroom).
+// numCtx to 16384 tokens (~64K chars total, shared between prompt and response).
 func NewOllamaProvider(model, endpoint string, numCtx int) *OllamaProvider {
 	if model == "" {
 		model = "gemma4:26b"
