@@ -29,7 +29,11 @@ type notificationResponse struct {
 
 // List returns unread notifications for the current user.
 func (h *NotificationHandlers) List(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	rows, err := h.db.Query(r.Context(), `
 		SELECT id, user_id, type, work_item_id, actor_id, data, read_at, created_at
@@ -65,7 +69,11 @@ func (h *NotificationHandlers) List(w http.ResponseWriter, r *http.Request) {
 
 // UnreadCount returns the count of unread notifications.
 func (h *NotificationHandlers) UnreadCount(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	var count int
 	err := h.db.QueryRow(r.Context(),
@@ -81,7 +89,11 @@ func (h *NotificationHandlers) UnreadCount(w http.ResponseWriter, r *http.Reques
 
 // MarkAllRead marks all unread notifications as read.
 func (h *NotificationHandlers) MarkAllRead(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	_, err := h.db.Exec(r.Context(),
 		`UPDATE notifications SET read_at = NOW() WHERE user_id = $1 AND read_at IS NULL`,

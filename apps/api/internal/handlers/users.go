@@ -30,7 +30,11 @@ type meResponse struct {
 
 // Me returns the profile of the currently authenticated user.
 func (h *UserHandlers) Me(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	var resp meResponse
 	err := h.db.QueryRow(r.Context(), `
@@ -49,7 +53,11 @@ func (h *UserHandlers) Me(w http.ResponseWriter, r *http.Request) {
 
 // MyWorkItems returns all active work items assigned to the current user.
 func (h *UserHandlers) MyWorkItems(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	// Find items assigned to any project_member linked to this user
 	// (by user_id match OR email match for admins who aren't formally linked)
@@ -96,7 +104,11 @@ func (h *UserHandlers) MyWorkItems(w http.ResponseWriter, r *http.Request) {
 // UpdatePreferences updates the current user's preferences (e.g., daily digest opt-in).
 // PATCH /api/me/preferences
 func (h *UserHandlers) UpdatePreferences(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	var body struct {
 		DailyDigest *bool   `json:"daily_digest"`

@@ -68,7 +68,11 @@ func NewProjectHandlers(db DBPOOL) *ProjectHandlers { return &ProjectHandlers{db
 // List returns all projects for a given team, scoped to the user's access.
 // Org admins see all projects; other users only see projects they're a member of.
 func (h *ProjectHandlers) List(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	teamID := chi.URLParam(r, "teamID")
 	if teamID == "" {
@@ -150,7 +154,11 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		methodology = *body.Methodology
 	}
 
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	var p Project
 	err := h.db.QueryRow(r.Context(),
@@ -201,7 +209,11 @@ func (h *ProjectHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 // Get returns a single project by ID, verifying the user has access.
 func (h *ProjectHandlers) Get(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
 
 	projectID := chi.URLParam(r, "projectID")
 	if projectID == "" {
