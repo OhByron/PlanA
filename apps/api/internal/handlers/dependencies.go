@@ -132,6 +132,15 @@ func (h *DependencyHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var targetOK bool
+	_ = h.db.QueryRow(r.Context(),
+		`SELECT EXISTS(SELECT 1 FROM work_items WHERE id = $1 AND project_id = $2)`,
+		body.TargetID, projectID).Scan(&targetOK)
+	if !targetOK {
+		writeError(w, http.StatusBadRequest, "validation_error", "Target work item not found in this project")
+		return
+	}
+
 	// Prevent dependencies between a parent and its direct children.
 	// A task cannot depend on its own parent story (or vice versa).
 	var sourceParent, targetParent *string
@@ -298,6 +307,27 @@ func (h *DependencyHandlers) BulkCommit(w http.ResponseWriter, r *http.Request) 
 		} else if item.Strength != "hard" && item.Strength != "soft" {
 			writeError(w, http.StatusBadRequest, "validation_error", "strength must be 'hard' or 'soft'")
 			return
+		}
+	}
+
+	// Verify every referenced source/target work item belongs to the URL project,
+	// so a project member cannot plant a dependency between work items in another project.
+	seen := make(map[string]bool)
+	for _, item := range body.Create {
+		for _, id := range []string{item.SourceID, item.TargetID} {
+			if seen[id] {
+				continue
+			}
+			seen[id] = true
+			var ok bool
+			_ = h.db.QueryRow(r.Context(),
+				`SELECT EXISTS(SELECT 1 FROM work_items WHERE id = $1 AND project_id = $2)`,
+				id, projectID).Scan(&ok)
+			if !ok {
+				writeError(w, http.StatusBadRequest, "validation_error",
+					"All dependency source/target IDs must belong to this project")
+				return
+			}
 		}
 	}
 
