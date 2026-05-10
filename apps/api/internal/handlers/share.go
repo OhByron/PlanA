@@ -242,7 +242,7 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 		Type   string    `json:"type"`
 		DoneAt time.Time `json:"done_at"`
 	}
-	var completed []completedItem
+	completed := []completedItem{}
 	rows, err := h.db.Query(r.Context(),
 		`SELECT wi.title, wi.type, wi.updated_at FROM work_items wi
 		 JOIN workflow_states ws ON ws.id = wi.workflow_state_id
@@ -279,7 +279,7 @@ func (h *ShareHandlers) Dashboard(w http.ResponseWriter, r *http.Request) {
 		Name     string `json:"name"`
 		Velocity *int   `json:"velocity"`
 	}
-	var velocity []velocityPoint
+	velocity := []velocityPoint{}
 	vRows, err := h.db.Query(r.Context(),
 		`SELECT name, velocity FROM sprints
 		 WHERE project_id = $1 AND status = 'completed' AND velocity IS NOT NULL
