@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
@@ -289,8 +290,23 @@ func (h *AuthHandlers) consumePKCE(ctx context.Context, state string) (verifier 
 	return val, true
 }
 
+// allowedRedirectReasons enumerates the error codes the API may surface to
+// the frontend's /auth/error page. Anything outside this list — including a
+// raw provider-supplied "error" query param — is collapsed to provider_error
+// so an attacker can't steer the frontend into rendering arbitrary text.
+var allowedRedirectReasons = map[string]bool{
+	"bad_state":       true,
+	"exchange_failed": true,
+	"db_error":        true,
+	"token_error":     true,
+	"provider_error":  true,
+}
+
 func (h *AuthHandlers) redirectError(w http.ResponseWriter, r *http.Request, reason string) {
-	http.Redirect(w, r, h.cfg.FrontendURL+"/auth/error?reason="+reason, http.StatusFound)
+	if !allowedRedirectReasons[reason] {
+		reason = "provider_error"
+	}
+	http.Redirect(w, r, h.cfg.FrontendURL+"/auth/error?reason="+url.QueryEscape(reason), http.StatusFound)
 }
 
 // --- DB helpers ---
