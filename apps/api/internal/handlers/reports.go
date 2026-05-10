@@ -244,9 +244,14 @@ func (h *ReportHandlers) userLanguage(r *http.Request) string {
 }
 
 func (h *ReportHandlers) generateSummary(r *http.Request, provider ai.Provider, projectName string, report map[string]any) string {
-	metrics := report["metrics"].(map[string]any)
-	defects := report["defects"].(defectSummary)
-	tests := report["tests"].(map[string]int)
+	metrics, ok1 := report["metrics"].(map[string]any)
+	defects, ok2 := report["defects"].(defectSummary)
+	tests, ok3 := report["tests"].(map[string]int)
+	blockers, ok4 := report["blockers"].([]blockedItem)
+	if !ok1 || !ok2 || !ok3 || !ok4 {
+		slog.Warn("reports.Generate: report shape unexpected, skipping AI summary")
+		return ""
+	}
 
 	prompt := fmt.Sprintf(`Write a concise executive summary (3-4 paragraphs) for a project status report.
 
@@ -263,7 +268,7 @@ Return only the summary text, no JSON wrapper.`,
 		metrics["done_points"], metrics["total_points"],
 		defects.Total, defects.Open, defects.Critical,
 		tests["total"], tests["pass_rate"],
-		len(report["blockers"].([]blockedItem)),
+		len(blockers),
 	)
 
 	resp, err := provider.SuggestDescription(r.Context(), ai.SuggestDescRequest{
