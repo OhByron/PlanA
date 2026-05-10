@@ -55,6 +55,15 @@ func (h *EpicHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	pp := parsePagination(r)
 
 	var total int
@@ -198,6 +207,20 @@ func (h *EpicHandlers) Get(w http.ResponseWriter, r *http.Request) {
 	epicID := chi.URLParam(r, "epicID")
 	if epicID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "epicID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveEpicProjectID(r.Context(), h.db, epicID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Epic not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 

@@ -20,6 +20,20 @@ import (
 func (h *SprintHandlers) Burndown(w http.ResponseWriter, r *http.Request) {
 	sprintID := chi.URLParam(r, "sprintID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Sprint not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	// Get sprint dates
 	var startDate, endDate *time.Time
 	err := h.db.QueryRow(r.Context(),
@@ -162,6 +176,15 @@ func (h *SprintHandlers) List(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	if projectID == "" {
 		writeError(w, http.StatusBadRequest, "missing_param", "projectID is required")
+		return
+	}
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
 		return
 	}
 
