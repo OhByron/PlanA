@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -499,9 +500,10 @@ func (h *VCSWebhookHandlers) postGitHubComment(ctx context.Context, token, owner
 
 func (h *VCSWebhookHandlers) postGitLabComment(ctx context.Context, token, owner, repo string, mrIID int64, body string) {
 	payload, _ := json.Marshal(map[string]string{"body": body})
-	url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/merge_requests/%d/notes", owner, repo, mrIID)
+	projectID := url.PathEscape(owner) + "%2F" + url.PathEscape(repo)
+	apiURL := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s/merge_requests/%d/notes", projectID, mrIID)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(payload))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, bytes.NewReader(payload))
 	if err != nil {
 		return
 	}

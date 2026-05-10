@@ -514,7 +514,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 	if body.EpicID != nil {
 		if *body.EpicID == "" {
-			fields = append(fields, fmt.Sprintf("epic_id = NULL"))
+			fields = append(fields, "epic_id = NULL")
 		} else {
 			fields = append(fields, fmt.Sprintf("epic_id = $%d", argN))
 			args = append(args, *body.EpicID)
@@ -523,7 +523,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 	if body.ParentID != nil {
 		if *body.ParentID == "" {
-			fields = append(fields, fmt.Sprintf("parent_id = NULL"))
+			fields = append(fields, "parent_id = NULL")
 		} else {
 			fields = append(fields, fmt.Sprintf("parent_id = $%d", argN))
 			args = append(args, *body.ParentID)
@@ -532,7 +532,7 @@ func (h *WorkItemHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	}
 	if body.AssigneeID != nil {
 		if *body.AssigneeID == "" {
-			fields = append(fields, fmt.Sprintf("assignee_id = NULL"))
+			fields = append(fields, "assignee_id = NULL")
 		} else {
 			fields = append(fields, fmt.Sprintf("assignee_id = $%d", argN))
 			args = append(args, *body.AssigneeID)

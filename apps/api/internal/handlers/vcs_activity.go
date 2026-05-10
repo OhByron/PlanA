@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -482,9 +483,10 @@ func (h *VCSActivityHandlers) createGitHubBranch(ctx context.Context, token, own
 }
 
 func (h *VCSActivityHandlers) createGitLabBranch(ctx context.Context, token, owner, repo, baseBranch, newBranch string) error {
-	url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/repository/branches?branch=%s&ref=%s",
-		owner, repo, newBranch, baseBranch)
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, url, nil)
+	projectID := url.PathEscape(owner) + "%2F" + url.PathEscape(repo)
+	apiURL := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s/repository/branches?branch=%s&ref=%s",
+		projectID, url.QueryEscape(newBranch), url.QueryEscape(baseBranch))
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, nil)
 	req.Header.Set("PRIVATE-TOKEN", token)
 	req.Header.Set("User-Agent", "PlanA/1.0")
 

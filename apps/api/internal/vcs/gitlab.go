@@ -8,8 +8,17 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 )
+
+// gitlabProjectID returns the URL-encoded "owner/repo" path segment that
+// GitLab's REST API uses as the project identifier. Builds owner%2Frepo
+// with each side individually escaped so values with spaces, hashes, or
+// other reserved characters produce a valid request.
+func gitlabProjectID(owner, repo string) string {
+	return url.PathEscape(owner) + "%2F" + url.PathEscape(repo)
+}
 
 // GitLabProvider implements the Provider interface for GitLab.
 type GitLabProvider struct{}
@@ -69,7 +78,7 @@ func (g *GitLabProvider) RegisterWebhook(ctx context.Context, token, owner, repo
 	})
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/hooks", owner, repo),
+		"https://gitlab.com/api/v4/projects/"+gitlabProjectID(owner, repo)+"/hooks",
 		bytes.NewReader(body))
 	if err != nil {
 		return 0, err
@@ -99,7 +108,7 @@ func (g *GitLabProvider) RegisterWebhook(ctx context.Context, token, owner, repo
 // DeleteWebhook removes a webhook from the GitLab project.
 func (g *GitLabProvider) DeleteWebhook(ctx context.Context, token, owner, repo string, webhookID int64) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete,
-		fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/hooks/%d", owner, repo, webhookID), nil)
+		fmt.Sprintf("https://gitlab.com/api/v4/projects/%s/hooks/%d", gitlabProjectID(owner, repo), webhookID), nil)
 	if err != nil {
 		return err
 	}
@@ -120,7 +129,7 @@ func (g *GitLabProvider) DeleteWebhook(ctx context.Context, token, owner, repo s
 // TestConnection verifies credentials can access the project.
 func (g *GitLabProvider) TestConnection(ctx context.Context, token, owner, repo string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s", owner, repo), nil)
+		"https://gitlab.com/api/v4/projects/"+gitlabProjectID(owner, repo), nil)
 	if err != nil {
 		return err
 	}

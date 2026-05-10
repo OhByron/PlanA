@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -419,7 +420,7 @@ func (h *VCSConnectionHandlers) TestConnection(w http.ResponseWriter, r *http.Re
 	case "github":
 		testURL = fmt.Sprintf("https://api.github.com/repos/%s/%s", owner, repo)
 	case "gitlab":
-		testURL = fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s", owner, repo)
+		testURL = "https://gitlab.com/api/v4/projects/" + url.PathEscape(owner) + "%2F" + url.PathEscape(repo)
 	}
 
 	req, err := http.NewRequestWithContext(r.Context(), http.MethodGet, testURL, nil)
