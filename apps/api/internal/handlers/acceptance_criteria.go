@@ -41,6 +41,20 @@ func (h *ACHandlers) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, work_item_id, given_clause, when_clause, then_clause, order_index, created_at, updated_at
 		 FROM acceptance_criteria WHERE work_item_id = $1 ORDER BY order_index`, workItemID)

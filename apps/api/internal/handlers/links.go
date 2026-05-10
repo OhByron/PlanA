@@ -29,6 +29,21 @@ type linkResponse struct {
 // List returns all links for a work item.
 func (h *LinkHandlers) List(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(),
 		`SELECT id, work_item_id, label, url, created_at
 		 FROM work_item_links WHERE work_item_id = $1 ORDER BY created_at`, workItemID)

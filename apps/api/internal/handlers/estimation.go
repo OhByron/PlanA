@@ -36,6 +36,20 @@ type voteRequest struct {
 func (h *EstimationHandlers) List(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(), `
 		SELECT v.id, v.member_id, pm.name, v.value, v.created_at
 		FROM estimation_votes v
