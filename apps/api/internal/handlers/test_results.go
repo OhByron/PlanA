@@ -66,9 +66,14 @@ type junitError struct {
 var extractItemNumber = vcs.ExtractItemNumber
 
 // newUUID generates a v4 UUID string without external dependencies.
+// Panics if crypto/rand fails — refusing to issue a predictable run_id is
+// the only correct behaviour, and the chi Recoverer middleware turns it
+// into a 500 for the caller.
 func newUUID() string {
 	var b [16]byte
-	_, _ = rand.Read(b[:])
+	if _, err := rand.Read(b[:]); err != nil {
+		panic("crypto/rand.Read failed: " + err.Error())
+	}
 	b[6] = (b[6] & 0x0f) | 0x40 // version 4
 	b[8] = (b[8] & 0x3f) | 0x80 // variant 10
 	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x",

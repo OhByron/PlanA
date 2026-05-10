@@ -650,7 +650,9 @@ func (h *ReleaseHandlers) getAndRespond(w http.ResponseWriter, r *http.Request, 
 
 func generateShareToken() string {
 	b := make([]byte, 24)
-	rand.Read(b)
+	if _, err := rand.Read(b); err != nil {
+		panic("crypto/rand.Read failed: " + err.Error())
+	}
 	return hex.EncodeToString(b)
 }
 
