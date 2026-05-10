@@ -79,12 +79,10 @@ func (h *VCSWebhookHandlers) HandleGitHub(w http.ResponseWriter, r *http.Request
 	deliveryID := r.Header.Get("X-GitHub-Delivery")
 
 	conn, err := h.getConnection(r.Context(), connectionID)
-	if err != nil {
+	if err != nil || !conn.Enabled {
+		// Collapse "missing connection" and "disabled connection" into the
+		// same 404 so an attacker can't enumerate valid IDs by status code.
 		http.Error(w, "not found", http.StatusNotFound)
-		return
-	}
-	if !conn.Enabled {
-		http.Error(w, "connection disabled", http.StatusServiceUnavailable)
 		return
 	}
 
@@ -124,12 +122,8 @@ func (h *VCSWebhookHandlers) HandleGitLab(w http.ResponseWriter, r *http.Request
 	deliveryID := r.Header.Get("X-Gitlab-Event-UUID")
 
 	conn, err := h.getConnection(r.Context(), connectionID)
-	if err != nil {
+	if err != nil || !conn.Enabled {
 		http.Error(w, "not found", http.StatusNotFound)
-		return
-	}
-	if !conn.Enabled {
-		http.Error(w, "connection disabled", http.StatusServiceUnavailable)
 		return
 	}
 
