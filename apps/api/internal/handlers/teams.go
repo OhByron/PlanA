@@ -106,6 +106,10 @@ func (h *TeamHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 	orgID := chi.URLParam(r, "orgID")
 
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
+
 	var body struct {
 		Name string `json:"name"`
 	}
@@ -161,7 +165,7 @@ func (h *TeamHandlers) Create(w http.ResponseWriter, r *http.Request) {
 
 // Get returns a single team by ID, verifying it belongs to the org.
 func (h *TeamHandlers) Get(w http.ResponseWriter, r *http.Request) {
-	_, ok := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Missing or invalid session")
 		return
@@ -169,6 +173,10 @@ func (h *TeamHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 	orgID := chi.URLParam(r, "orgID")
 	teamID := chi.URLParam(r, "teamID")
+
+	if !requireOrgMember(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	var t teamResponse
 	err := h.db.QueryRow(r.Context(),
@@ -192,7 +200,7 @@ func (h *TeamHandlers) Get(w http.ResponseWriter, r *http.Request) {
 
 // Update patches a team's name and/or slug.
 func (h *TeamHandlers) Update(w http.ResponseWriter, r *http.Request) {
-	_, ok := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Missing or invalid session")
 		return
@@ -200,6 +208,10 @@ func (h *TeamHandlers) Update(w http.ResponseWriter, r *http.Request) {
 
 	orgID := chi.URLParam(r, "orgID")
 	teamID := chi.URLParam(r, "teamID")
+
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	var body struct {
 		Name *string `json:"name"`
@@ -266,21 +278,27 @@ type teamMemberResponse struct {
 
 // ListMembers returns all members of a team.
 func (h *TeamHandlers) ListMembers(w http.ResponseWriter, r *http.Request) {
-	_, ok := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Missing or invalid session")
 		return
 	}
 
+	orgID := chi.URLParam(r, "orgID")
 	teamID := chi.URLParam(r, "teamID")
+
+	if !requireOrgMember(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	rows, err := h.db.Query(r.Context(), `
 		SELECT tm.user_id, tm.role, tm.job_role, tm.created_at,
 		       u.email, u.name, u.avatar_url
 		  FROM team_members tm
 		  JOIN users u ON u.id = tm.user_id
-		 WHERE tm.team_id = $1
-		 ORDER BY u.name`, teamID)
+		  JOIN teams t ON t.id = tm.team_id
+		 WHERE tm.team_id = $1 AND t.organization_id = $2
+		 ORDER BY u.name`, teamID, orgID)
 	if err != nil {
 		slog.Error("teams.ListMembers: query failed", "error", err)
 		writeError(w, http.StatusInternalServerError, "db_error", "Failed to list team members")
@@ -309,7 +327,7 @@ func (h *TeamHandlers) ListMembers(w http.ResponseWriter, r *http.Request) {
 
 // Delete removes a team by ID.
 func (h *TeamHandlers) Delete(w http.ResponseWriter, r *http.Request) {
-	_, ok := auth.ClaimsFromContext(r.Context())
+	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeError(w, http.StatusUnauthorized, "unauthorized", "Missing or invalid session")
 		return
@@ -317,6 +335,10 @@ func (h *TeamHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 
 	orgID := chi.URLParam(r, "orgID")
 	teamID := chi.URLParam(r, "teamID")
+
+	if !requireOrgAdmin(r.Context(), h.db, w, orgID, claims.UserID) {
+		return
+	}
 
 	result, err := h.db.Exec(r.Context(),
 		`DELETE FROM teams WHERE id = $1 AND organization_id = $2`,
