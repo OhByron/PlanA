@@ -99,6 +99,20 @@ func (h *SprintItemHandlers) ListItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveSprintProjectID(r.Context(), h.db, sprintID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Sprint not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	rows, err := h.db.Query(r.Context(), fmt.Sprintf(`
 		SELECT %s
 		  FROM sprint_items si
@@ -181,6 +195,15 @@ func (h *SprintItemHandlers) Remove(w http.ResponseWriter, r *http.Request) {
 // GET /api/projects/{projectID}/sprint-assigned
 func (h *SprintItemHandlers) AssignedItemIDs(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
+
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
 
 	rows, err := h.db.Query(r.Context(), `
 		SELECT DISTINCT si.work_item_id
