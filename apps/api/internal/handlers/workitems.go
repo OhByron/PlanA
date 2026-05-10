@@ -297,11 +297,14 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	var inheritedStartDate, inheritedDueDate *time.Time
 	if epicID == nil || *epicID == "" {
 		if body.ParentID != nil && *body.ParentID != "" {
-			// Inherit epic and dates from parent
+			// Inherit epic and dates from parent.
 			var parentEpicID *string
-			h.db.QueryRow(r.Context(),
+			if err := h.db.QueryRow(r.Context(),
 				`SELECT epic_id, start_date, due_date FROM work_items WHERE id = $1`, *body.ParentID,
-			).Scan(&parentEpicID, &inheritedStartDate, &inheritedDueDate)
+			).Scan(&parentEpicID, &inheritedStartDate, &inheritedDueDate); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+				slog.Warn("workitems.Create: parent inheritance lookup failed",
+					"parentID", *body.ParentID, "error", err)
+			}
 			epicID = parentEpicID
 		}
 		if epicID == nil || *epicID == "" {
@@ -315,16 +318,25 @@ func (h *WorkItemHandlers) Create(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Resolve dates: explicit request > inherited from parent > nil
+	// Resolve dates: explicit request > inherited from parent > nil.
+	// Reject malformed dates rather than silently writing the zero time.
 	var startDate, dueDate *time.Time
 	if body.StartDate != nil && *body.StartDate != "" {
-		t, _ := time.Parse("2006-01-02", *body.StartDate)
+		t, err := time.Parse("2006-01-02", *body.StartDate)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "validation_error", "start_date must be YYYY-MM-DD")
+			return
+		}
 		startDate = &t
 	} else {
 		startDate = inheritedStartDate
 	}
 	if body.DueDate != nil && *body.DueDate != "" {
-		t, _ := time.Parse("2006-01-02", *body.DueDate)
+		t, err := time.Parse("2006-01-02", *body.DueDate)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "validation_error", "due_date must be YYYY-MM-DD")
+			return
+		}
 		dueDate = &t
 	} else {
 		dueDate = inheritedDueDate
