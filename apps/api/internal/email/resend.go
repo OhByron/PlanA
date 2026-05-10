@@ -30,7 +30,7 @@ type sendRequest struct {
 // Send delivers an email. If no API key is configured, logs the email instead.
 func (s *Sender) Send(to, subject, html string) error {
 	if s.apiKey == "" {
-		slog.Info("email (dry run — no RESEND_API_KEY)", "to", to, "subject", subject)
+		slog.Info("email (dry run — no RESEND_API_KEY)", "subject", subject)
 		return nil
 	}
 
@@ -62,7 +62,7 @@ func (s *Sender) Send(to, subject, html string) error {
 		return fmt.Errorf("resend API returned %d: %s", resp.StatusCode, respBody)
 	}
 
-	slog.Info("email sent", "to", to, "subject", subject)
+	slog.Info("email sent", "subject", subject)
 	return nil
 }
 

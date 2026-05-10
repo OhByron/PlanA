@@ -79,7 +79,7 @@ func (d *DigestRunner) Run(ctx context.Context) {
 			continue
 		}
 		if err := d.sender.Send(u.email, "Your PlanA Daily Digest", html); err != nil {
-			slog.Error("digest: failed to send", "user", u.email, "error", err)
+			slog.Error("digest: failed to send", "user_id", u.id, "error", err)
 			continue
 		}
 		sent++

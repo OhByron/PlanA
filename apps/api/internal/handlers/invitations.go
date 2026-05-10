@@ -121,7 +121,7 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.email.SendInvitation(memberEmail, inv.InviteURL, projectName, orgName, roleName); err != nil {
-		slog.Error("invitation email failed", "error", err, "to", memberEmail)
+		slog.Error("invitation email failed", "error", err, "member_id", memberID)
 		// Don't fail the request — the invite link is still valid
 	}
 

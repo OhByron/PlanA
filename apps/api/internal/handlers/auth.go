@@ -82,7 +82,7 @@ func (h *AuthHandlers) GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		h.redirectError(w, r, "exchange_failed")
 		return
 	}
-	slog.Info("github exchange success", "user", ghUser.Login, "email", ghUser.Email)
+	slog.Info("github exchange success", "login", ghUser.Login)
 
 	userID, email, err := upsertGitHubUser(r.Context(), h.db, ghUser)
 	if err != nil {
