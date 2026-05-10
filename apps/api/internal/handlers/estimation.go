@@ -186,11 +186,24 @@ func (h *EstimationHandlers) Lock(w http.ResponseWriter, r *http.Request) {
 func (h *EstimationHandlers) Reset(w http.ResponseWriter, r *http.Request) {
 	workItemID := chi.URLParam(r, "workItemID")
 
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "unauthorized", "Authentication required")
+		return
+	}
+	projectID := resolveProjectID(r.Context(), h.db, workItemID)
+	if projectID == "" {
+		writeError(w, http.StatusNotFound, "not_found", "Work item not found")
+		return
+	}
+	if !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
 	h.db.Exec(r.Context(), `DELETE FROM estimation_votes WHERE work_item_id = $1`, workItemID)
 	w.WriteHeader(http.StatusNoContent)
 
 	if h.publish != nil {
-		projectID := resolveProjectID(r.Context(), h.db, workItemID)
 		h.publish("project:"+projectID+":estimation:"+workItemID, "vote.reset", map[string]string{
 			"work_item_id": workItemID,
 		})

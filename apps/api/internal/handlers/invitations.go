@@ -51,6 +51,11 @@ func (h *InvitationHandlers) Create(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectID")
 	memberID := chi.URLParam(r, "memberID")
 
+	if !checkProjectAdmin(r.Context(), h.db, projectID, claims.UserID) {
+		writeError(w, http.StatusForbidden, "forbidden", "Project admin access required")
+		return
+	}
+
 	// Get the member's email and job role
 	var memberEmail, jobRole string
 	err := h.db.QueryRow(r.Context(),
