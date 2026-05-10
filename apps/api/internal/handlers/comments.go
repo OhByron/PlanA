@@ -191,6 +191,23 @@ func (h *CommentHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var commentUserID string
+	if err := h.db.QueryRow(r.Context(),
+		`SELECT user_id FROM comments WHERE id = $1`, commentID,
+	).Scan(&commentUserID); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Comment not found")
+			return
+		}
+		slog.Error("comments.Update: ownership check failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to load comment")
+		return
+	}
+	if commentUserID != claims.UserID && !checkProjectAdmin(r.Context(), h.db, projectID, claims.UserID) {
+		writeError(w, http.StatusForbidden, "forbidden", "Only the author or a project admin can edit this comment")
+		return
+	}
+
 	var body updateCommentRequest
 	if !readJSON(w, r, &body) {
 		return
@@ -235,6 +252,23 @@ func (h *CommentHandlers) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 	projectID := resolveCommentProjectID(r.Context(), h.db, commentID)
 	if projectID == "" || !requireProjectAccess(r.Context(), h.db, w, projectID, claims.UserID) {
+		return
+	}
+
+	var commentUserID string
+	if err := h.db.QueryRow(r.Context(),
+		`SELECT user_id FROM comments WHERE id = $1`, commentID,
+	).Scan(&commentUserID); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			writeError(w, http.StatusNotFound, "not_found", "Comment not found")
+			return
+		}
+		slog.Error("comments.Delete: ownership check failed", "error", err)
+		writeError(w, http.StatusInternalServerError, "db_error", "Failed to load comment")
+		return
+	}
+	if commentUserID != claims.UserID && !checkProjectAdmin(r.Context(), h.db, projectID, claims.UserID) {
+		writeError(w, http.StatusForbidden, "forbidden", "Only the author or a project admin can delete this comment")
 		return
 	}
 
