@@ -1,72 +1,29 @@
 package middleware
 
-import (
-	"bytes"
-	"io"
-	"net/http"
-	"strings"
-)
+import "net/http"
 
-// SanitizeBody is a middleware that strips potentially dangerous HTML tags
-// from request bodies. This is a defense-in-depth measure — the frontend
-// uses Tiptap which doesn't render raw HTML, but this protects against
-// any future raw HTML rendering.
-func SanitizeBody(next http.Handler) http.Handler {
+// maxRequestBody is the absolute upper bound for any request body. Handlers
+// that legitimately need more (file imports, JUnit XML uploads) wrap r.Body
+// with their own io.LimitReader at the route-specific size; this cap is just
+// defense in depth against unbounded reads.
+const maxRequestBody = 64 << 20 // 64 MiB
+
+// LimitBody wraps r.Body with http.MaxBytesReader so any handler that reads
+// the body — including json.Decode — gets a bounded, error-on-overflow stream
+// instead of buffering arbitrarily large input.
+//
+// Note: an earlier version of this file shipped a SanitizeBody middleware
+// that buffered the entire body, cast it to string (corrupting non-UTF-8
+// uploads), and substring-stripped tokens like "javascript:" or "<script"
+// from arbitrary JSON values. That broke legitimate content (e.g. comments
+// referencing the word "javascript:") and provided no real XSS protection
+// since the frontend uses Tiptap which doesn't render raw HTML. Output-side
+// rendering is the correct layer for that defense.
+func LimitBody(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Body != nil && (r.Method == "POST" || r.Method == "PATCH" || r.Method == "PUT") {
-			body, err := io.ReadAll(r.Body)
-			r.Body.Close()
-			if err != nil {
-				next.ServeHTTP(w, r)
-				return
-			}
-			// Strip script tags and event handlers from the body
-			cleaned := stripDangerousHTML(string(body))
-			r.Body = io.NopCloser(bytes.NewBufferString(cleaned))
-			r.ContentLength = int64(len(cleaned))
+		if r.Body != nil {
+			r.Body = http.MaxBytesReader(w, r.Body, maxRequestBody)
 		}
 		next.ServeHTTP(w, r)
 	})
-}
-
-func stripDangerousHTML(s string) string {
-	// Remove <script> tags and their content
-	for {
-		lower := strings.ToLower(s)
-		start := strings.Index(lower, "<script")
-		if start == -1 {
-			break
-		}
-		end := strings.Index(lower[start:], "</script>")
-		if end == -1 {
-			s = s[:start]
-			break
-		}
-		s = s[:start] + s[start+end+9:]
-	}
-	// Remove event handler attributes (onclick, onerror, etc.)
-	for _, attr := range []string{"onclick", "onerror", "onload", "onmouseover", "onfocus", "onblur"} {
-		for {
-			lower := strings.ToLower(s)
-			idx := strings.Index(lower, attr+"=")
-			if idx == -1 {
-				break
-			}
-			// Find the end of the attribute value
-			end := idx + len(attr) + 1
-			if end < len(s) && (s[end] == '"' || s[end] == '\'') {
-				quote := s[end]
-				closeIdx := strings.IndexByte(s[end+1:], quote)
-				if closeIdx != -1 {
-					s = s[:idx] + s[end+1+closeIdx+1:]
-				} else {
-					s = s[:idx]
-				}
-			}
-		}
-	}
-	// Remove javascript: URLs
-	s = strings.ReplaceAll(s, "javascript:", "")
-	s = strings.ReplaceAll(s, "JAVASCRIPT:", "")
-	return s
 }

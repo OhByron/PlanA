@@ -24,7 +24,7 @@ func New(deps *Dependencies) http.Handler {
 	r.Use(chimiddleware.RealIP)
 	r.Use(middleware.Logger(deps.Logger))
 	r.Use(chimiddleware.Recoverer)
-	r.Use(middleware.SanitizeBody)
+	r.Use(middleware.LimitBody)
 
 	allowedOrigins := []string{"http://localhost:5173"}
 	if deps.Config.Environment == "production" && deps.Config.AllowedOrigins != "" {
